@@ -1,0 +1,101 @@
+﻿@model TSMC14B.Areas.Main.Models.PMfrequencySetModel
+@{
+    //ViewBag.Title = "編輯";
+    //Layout = null;
+}
+@section JavaScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sbmit').click(function () {
+                var plc_id = $('#plc_id').val();
+                var ToolID = $('#ToolID').val();
+                var freq_id = $('#frequency').val();
+                var frequency = $('#frequency option:selected').text()
+                var tolerance = $('#tolerance').val();
+                var onoffStatus = $('#onoffStatus:checked').val();
+                var PowerOnDate = $('#PowerOnDate').val();
+                var UnSetTooLate = $('#UnSetTooLate').val();
+                if (frequency.length > 0) {
+                    if (tolerance.length > 0) {
+                        if (freq_id == "") {
+                            freq_id = 0;
+                            frequency = 0;
+                            hiConfirm('是否確定新增?', '確認', function (r) { if (r) { $.post('@Url.Action("AddPMScheduleSet")', [{ name: 'selectplcid', value: plc_id }, { name: 'selecttoolid', value: ToolID }, { name: 'selectfreqid', value: freq_id }, { name: 'selectfrequency', value: frequency }, { name: 'selecttolerance', value: tolerance }, { name: 'selectstatus', value: onoffStatus }, { name: 'selectpowerondate', value: PowerOnDate }, { name: 'selectUnSetTooLate', value: UnSetTooLate }], function (data) { alert(data.Msg); setTimeout("CloseModelWindow();", 1000); }, 'json'); } });
+                            //alert(plc_id + ToolID + freq_id + frequency + tolerance + onoffStatus + PowerOnDate + UnSetTooLate);
+                        } else {
+                            hiConfirm('是否確定新增?', '確認', function (r) { if (r) { $.post('@Url.Action("AddPMScheduleSet")', [{ name: 'selectplcid', value: plc_id }, { name: 'selecttoolid', value: ToolID }, { name: 'selectfreqid', value: freq_id }, { name: 'selectfrequency', value: frequency }, { name: 'selecttolerance', value: tolerance }, { name: 'selectstatus', value: onoffStatus }, { name: 'selectpowerondate', value: PowerOnDate }, { name: 'selectUnSetTooLate', value: UnSetTooLate }], function (data) { alert(data.Msg); setTimeout("CloseModelWindow();", 1000); }, 'json'); } });
+                            //alert(plc_id + ToolID + freq_id + frequency + tolerance + onoffStatus + PowerOnDate + UnSetTooLate);
+                        }
+                    }
+                    else {
+                        alert('請填入容許值');
+                    }
+                }
+                else {
+                    alert('請填入週期');
+                }
+            });
+        });
+    </script>
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset style="width: 90%; margin: 0 auto;">
+        <legend>@ViewBag.Title</legend>
+        <ul class="ul" style="display:none">
+            <li>@Html.LabelFor(model => model.plc_id)</li>
+            <li>@Html.DisplayFor(model => model.plc_id)@Html.HiddenFor(model => model.plc_id)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.ToolID)</li>
+            <li>@Html.DisplayFor(model => model.ToolID)@Html.HiddenFor(model => model.ToolID)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.frequency)</li>
+            <li>@Html.DropDownList("frequency", ViewBag.frequency as IEnumerable<SelectListItem>, "請選擇週期")</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.tolerance)</li>
+            <li>@Html.TextBoxFor(model => model.tolerance, new { style = "width: 100px;" })</li>
+        </ul>
+        <ul class="ul">
+            @*<li>@Html.LabelFor(model => model.onoffStatus)</li>*@
+            @*<li>@Html.TextBoxFor(model => model.tolerance, new { style = "width: 100px;" })</li>*@
+            <li><label id="lbl_onoffStatust">Status：</label></li>
+            @*<li>
+                    <input type="radio" name="group1" class="rbn" value="1" id="rbnT1" checked="checked">ON
+                    <input type="radio" name="group1" class="rbn" value="0" id="rbnT2" >OFF
+                </li>*@
+            <li>@Html.RadioButtonFor(model => model.onoffStatus, "ON") ON</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>@Html.RadioButtonFor(model => model.onoffStatus, "OFF") OFF</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.PowerOnDate)</li>
+            <li>@Html.TextBoxFor(model => model.PowerOnDate, new { style = "width: 100px;"  }) (格式：yyyy-MM-dd)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.UnSetTooLate)</li>
+            <li>@Html.TextBoxFor(model => model.UnSetTooLate, new { style = "width: 100px;" }) (時間輸入範圍0~999/小時)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.userlogin)</li>
+            <li>@Html.DisplayFor(model => model.userlogin)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.date)</li>
+            <li>@Html.DisplayFor(model => model.date)</li>
+        </ul>
+        <ul class="ul">
+            <li>
+                <input type="button" id="sbmit" value="設定" style="width: 80px" />&nbsp;&nbsp;&nbsp;
+            <li>
+                <input type="button" value="重填" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;
+            </li>
+            <li>
+                <input type="button" value="取消" style="width: 80px" onclick="CloseModelWindow();" />
+            </li>
+        </ul>
+    </fieldset>
+}

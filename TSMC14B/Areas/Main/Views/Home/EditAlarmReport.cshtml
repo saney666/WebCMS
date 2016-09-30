@@ -1,0 +1,95 @@
+﻿@model TSMC14B.Areas.Main.Models.AlarmReportModel
+@{
+    ViewBag.Title = "編輯";
+    //Layout = null;
+}
+@section JavaScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('.ul').jqf1();
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+        });
+    </script>
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset style="width: 90%; margin: 0 auto;">
+        <legend>@ViewBag.Title</legend>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.ToolID)</li>
+            <li>@Html.HiddenFor(model => model.AlarmID)@Html.HiddenFor(model => model.ToolID)@Html.DisplayFor(model => model.ToolID)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.Vendor)</li>
+            <li>@Html.HiddenFor(model => model.Vendor)@Html.HiddenFor(model => model.System)@Html.DisplayFor(model => model.Vendor)</li>
+        </ul>
+        @* <ul class="ul">
+            <li>@Html.LabelFor(model => model.GroupName)</li>
+            <li>@Html.DisplayFor(model => model.GroupName)</li>
+        </ul>*@
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model._DateTime)</li>
+            <li>@Html.DisplayFor(model => model._DateTime)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.AlarmMsg)</li>
+            <li>@Html.DisplayFor(model => model.AlarmMsg)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.effectOutPut)</li>
+            <li>@Html.RadioButtonFor(model => model.effectOutPut, "Y") Y</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>@Html.RadioButtonFor(model => model.effectOutPut, "N") N</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.effectDateTime)</li>
+            <li>@Html.TextBoxFor(model => model.effectDateTime, new { style = "width: 200px;" })</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.Status)</li>
+            <li>@Html.TextBoxFor(model => model.Status, new { style = "width: 300px;" })</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.AlarmCause)</li>
+            <li>@Html.TextBoxFor(model => model.AlarmCause, new { style = "width: 300px;" })</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.ChangeParts)</li>
+            <li>@Html.TextBoxFor(model => model.ChangeParts, new { style = "width: 300px;" })</li>
+        </ul>
+       @* <ul class="ul" style="display:none">
+            <li>@Html.LabelFor(model => model.pmCycle)</li>
+            <li>@Html.DisplayFor(model => model.pmCycle)@Html.HiddenFor(model => model.pmCycle)</li>
+        </ul>*@
+      @*  <ul class="ul">
+            <li>@Html.LabelFor(model => model.pmDate)</li>
+            <li>@Html.DisplayFor(model => model.pmDate)@Html.HiddenFor(model => model.pmDate)</li>
+        </ul>*@
+        @*<ul class="ul">
+            <li>@Html.LabelFor(model => model.oldPMWeek)</li>
+            <li>@Html.TextBoxFor(model => model.oldPMWeek, new { style = "width: 300px;" })</li>
+        </ul>*@
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.Closed)</li>
+            <li>@Html.RadioButtonFor(model => model.Closed, "Y") Y</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>@Html.RadioButtonFor(model => model.Closed, "N") N</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.ReceptionName)</li>
+            <li>@Html.DisplayFor(model => model.ReceptionName)</li>
+        </ul>
+        <ul class="ul">
+            <li>
+                <input type="submit" value="確定" style="width: 80px" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="重填" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="取消" style="width: 80px" onclick="CloseModelWindow();" /></li>
+        </ul>
+    </fieldset>
+}

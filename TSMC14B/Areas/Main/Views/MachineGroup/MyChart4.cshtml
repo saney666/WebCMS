@@ -1,0 +1,343 @@
+﻿@{
+    ViewBag.Title = "MyChart4";
+}
+<script type="text/javascript">
+    var vName = '@ViewData["vName"]';
+    var toolId = '@ViewData["toolId"]';
+    var TagName = '@ViewData["TagName"]';
+    var StartDate = '@ViewData["StartDate"]';
+    var EndDate = '@ViewData["EndDate"]';
+    var flag = '@ViewData["flag"]';
+    var Y1Y2 = '@ViewData["Y1Y2"]';
+    var isLimit = '@ViewData["isLimit"]';
+    var isStack = '@ViewData["isStack"]';
+
+    var EditStartDate = StartDate;
+    var EditEndDate = EndDate;
+
+    var mousedownX = 0;
+    var mousedownY = 0;
+    var mouseupX = 0;
+    var Rangeflag = 0;
+
+    var YMax = 0;
+    var YMin = 0;
+    var XMax;
+    var XMin;
+    var editYMax = 0;
+    var editYMin = 0;
+
+    $(function () {
+        $.post('@Url.Action("JsonMyChart")', { 'toolId': toolId, 'TagName': TagName, 'StartDate': StartDate, 'EndDate': EndDate, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'isStack': isStack},
+            function (data) {
+                $("#chart").css('background-image', 'url(' + data.ImgCode + ')');
+                YMax = data.YMax;
+                YMin = data.YMin;
+                XMax = data.XMax;
+                XMin = data.XMin;
+                StartDate = data.XMin;
+                EndDate = data.XMax;
+                editYMax = data.YMax;
+                editYMin = data.YMin;
+
+                //$("#Y1Y2").html('YMax:' + data.YMax + ' YMin:' + data.YMin + 'XMax:' + data.XMax + ' XMin:' + data.XMin);
+                //$("#Y1Y2").html(data.ImageMap);
+        });
+
+        $("#chart").mousedown(function (e) {
+            event.preventDefault();
+            if (e.button == 0) {
+                var value = YMax - ((YMax - YMin) / 466) * (e.clientY - 90);
+                //$("#XY").html('X:' + e.clientX + ' Y:' + e.clientY + 'Value:' + value);
+                editYMax = value;
+                mousedownX = e.clientX;
+                mousedownY = e.clientY;
+
+                if (e.clientX <= 85) {
+                    mousedownX = 85;
+                }
+                if (e.clientX >= 785) {
+                    mousedownX = 785;
+                }
+                if (e.clientY <= 88) {
+                    mousedownY = 88
+                }
+                if (e.clientY >= 556) {
+                    mousedownY = 556
+                }
+                
+                Rangeflag = 1;
+            }
+        });
+        $("#chart").mousemove(function (e) {
+            var RangeX = e.clientX;
+            var RangeY = e.clientY;
+            if (e.clientX <= 85) {
+                RangeX = 85;
+            }
+            if (e.clientX >= 785) {
+                RangeX = 785;
+            }
+            if (e.clientY <= 88) {
+                RangeY=88
+            }
+            if (e.clientY >= 556) {
+                RangeY = 556
+            }
+            //$("#XY").html('X:' + RangeX + ' Y:' + RangeY);
+            var value = Math.floor((YMax - ((YMax - YMin) / 466) * (RangeY - 90)) * 100) / 100;
+            var tempSdate = new Date(EditStartDate);
+            var tempEdate = new Date(EditEndDate);
+            var tempDT = new Date(tempSdate.valueOf() + ((tempEdate - tempSdate) / 700) * (RangeX - 85));
+
+            //$("#XY").html('Value:' + value + ' Date:' + tempDT.getFullYear() + '/' + (parseInt(tempDT.getMonth()) + 1) + '/' + tempDT.getDate() + ' ' + AddZero(tempDT.getHours()) + ':' + AddZero(tempDT.getMinutes()) + ':' + AddZero(tempDT.getSeconds()));
+            if (Rangeflag == 0) {
+                if (RangeX >= 78 && RangeX <= 785 && RangeY >= 88 && RangeY <= 556) {
+                    $("#divRange").css('left', (RangeX - 10) + 'px');
+                    $("#divRange").css('top', (RangeY - 20) + 'px');
+                }
+            } else if (Rangeflag == 2) {
+    
+            }
+            else {
+                var tempwidth = RangeX - mousedownX;
+                var temphight = RangeY - mousedownY;
+                if (tempwidth<=0) {
+                    tempwidth = 0;
+                }
+                if (temphight <= 0) {
+                    temphight = 0;
+                }
+                $("#divRange").css('width', tempwidth + 'px');
+                $("#divRange").css('height', temphight + 'px');
+            }
+        });
+
+        $("#chart").mouseup(function (e) {
+            if (e.button == 0) {
+                //$("#XY").html('X:' + e.clientX + ' Y:' + e.clientY);
+                
+                mouseupX = e.clientX;
+                mouseupY = e.clientY;
+                if ((mouseupX - mousedownX) > 20 && (mouseupY - mousedownY) > 20) {
+                    var value = YMax - ((YMax - YMin) / 466) * (e.clientY - 90);
+                    var tempSdate = new Date(EditStartDate);
+                    var tempEdate = new Date(EditEndDate);
+                    
+                    //var pixelPerMicrosecond = (UTCEdate - UTCSdate) / 850;
+                    var pixelPerMicrosecond = ((tempEdate - tempSdate) / 700);
+                    tempSdate = new Date(tempSdate.valueOf() + (pixelPerMicrosecond * (mousedownX - 85)));
+                    tempEdate = new Date(tempEdate.valueOf() - (pixelPerMicrosecond * (785 - mouseupX))+1000);
+                    EditStartDate = tempSdate;
+                    EditEndDate = tempEdate;
+
+                    editYMin = value;
+
+                    //$("#XY").html('editYMax:' + editYMax + ' editYMin:' + editYMin);
+                    //var StartDate = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
+                    //var EndDate = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
+                    YMax = 0;
+                    YMin = 0;
+                    var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds() +'.'+tempSdate.getMilliseconds() ;
+                    var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds() + '.' + tempEdate.getMilliseconds();
+                    var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'YMax': editYMax, 'YMin': editYMin, 'isStack': isStack };
+                    //console.log(p);
+                    $("#chart").css('background-image', '');
+                    $.post('@Url.Action("JsonMyChart")',p ,
+                                    function (data) {
+                                        $("#chart").css('background-image', 'url(' + data.ImgCode + ')');
+                                        YMax = data.YMax;
+                                        YMin = data.YMin;
+                                        XMax = data.XMax;
+                                        XMin = data.XMin;
+                                        EditStartDate = data.XMin;
+                                        EditEndDate = data.XMax;
+                                        isLimit = true;
+                                        //$("#Y1Y2").html('YMax:' + data.YMax + ' YMin:' + data.YMin + ' XMin:' + data.XMin + 'XMax:' + data.XMax);
+                                    });
+                }
+                $("#divRange").css('width', '1px');
+                $("#divRange").css('height', '1px');
+                Rangeflag = 0;
+            }
+        });
+        $("#chart").dblclick(function (e) {
+            var tLeft = e.clientX-100;
+            var twidth = 200;
+            var tTop = e.clientY-75;
+            var theight = 150;
+
+            if (tLeft <= 85) {
+                tLeft = 85;
+            }
+            if ((e.clientX + 100) >= 785) {
+                twidth = twidth - (e.clientX-10 + 100 - 785)-10;
+            }
+            if (tTop <= 88) {
+                tTop = 88
+            }
+            if ((e.clientY + 75) >= 556) {
+                theight = theight - (e.clientY-20 + 75-556)-20;
+            }
+            Rangeflag = 2;
+            $("#divRange").animate({ left: (tLeft - 10), top: (tTop - 20) }, "fast").animate({ width: twidth, height: theight }, "normal", "swing", function () {
+                $("#divRange").css({width:1,height:1,left:(e.clientX - 10) + 'px',top:(e.clientY - 20) + 'px'});
+                var tempSdate = new Date(EditStartDate);
+                var tempEdate = new Date(EditEndDate);
+                var pixelPerMicrosecond = ((tempEdate - tempSdate) / 700);
+                tempSdate = new Date(tempSdate.valueOf() + (pixelPerMicrosecond * (tLeft - 85)));
+                tempEdate = new Date(tempEdate.valueOf() - (pixelPerMicrosecond * (785 - tLeft-twidth))+1000);
+                EditStartDate = tempSdate;
+                EditEndDate = tempEdate;
+                var value = YMax - ((YMax - YMin) / 466) * (tTop + theight - 90);
+                editYMin = value;
+                editYMax = YMax - ((YMax - YMin) / 466) * (tTop - 90);
+                var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
+                var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
+                var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'YMax': editYMax, 'YMin': editYMin, 'isStack': isStack };
+                //console.log(p);
+                $("#chart").css('background-image', '');
+                $.post('@Url.Action("JsonMyChart")', p,
+                                    function (data) {
+                                        $("#chart").css('background-image', 'url(' + data.ImgCode + ')');
+                                        YMax = data.YMax;
+                                        YMin = data.YMin;
+                                        XMax = data.XMax;
+                                        XMin = data.XMin;
+                                        EditStartDate = data.XMin;
+                                        EditEndDate = data.XMax;
+                                        isLimit = true;
+                                        Rangeflag = 0;
+                                        //$("#Y1Y2").html('YMax:' + data.YMax + ' YMin:' + data.YMin + ' XMin:' + data.XMin + 'XMax:' + data.XMax);
+                                    });
+            });
+        });
+    });
+
+    function DateShiftLeft() {
+        var tempSdate = new Date(EditStartDate);
+        var tempEdate = new Date(EditEndDate);
+        tempSdate = new Date(tempSdate.valueOf() - ((tempEdate - tempSdate) / 3));
+        tempEdate = new Date(tempEdate.valueOf() - ((tempEdate - tempSdate) / 3)+1000);
+        EditStartDate = tempSdate;
+        EditEndDate = tempEdate;
+
+        var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
+        var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
+        var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'YMax': editYMax, 'YMin': editYMin, 'isStack': isStack };
+        //console.log(p);
+        $("#chart").css('background-image', '');
+        $.post('@Url.Action("JsonMyChart")', p,
+            function (data) {
+                $("#chart").css('background-image', 'url(' + data.ImgCode + ')');
+                YMax = data.YMax;
+                YMin = data.YMin;
+            });
+    }
+    function DateShiftRight() {
+        var tempSdate = new Date(EditStartDate);
+        var tempEdate = new Date(EditEndDate);
+        tempSdate = new Date(tempSdate.valueOf() + ((tempEdate - tempSdate) / 3));
+        tempEdate = new Date(tempEdate.valueOf() + ((tempEdate - tempSdate) / 3)+1000);
+        EditStartDate = tempSdate;
+        EditEndDate = tempEdate;
+
+        var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
+        var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
+        var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'YMax': editYMax, 'YMin': editYMin, 'isStack': isStack };
+        //console.log(p);
+        $("#chart").css('background-image', '');
+        $.post('@Url.Action("JsonMyChart")',p ,
+            function (data) {
+                $("#chart").css('background-image', 'url(' + data.ImgCode + ')');
+                YMax = data.YMax;
+                YMin = data.YMin;
+            });
+    }
+    function DateZoomIn() {
+        var tempSdate = new Date(EditStartDate);
+        var tempEdate = new Date(EditEndDate);
+        tempSdate = new Date(tempSdate.valueOf() + ((tempEdate - tempSdate) / 4));
+        tempEdate = new Date(tempEdate.valueOf() - ((tempEdate - tempSdate) / 4));
+        EditStartDate = tempSdate;
+        EditEndDate = tempEdate;
+        
+        editYMax = editYMax - Math.abs(editYMax - editYMin) / 4;
+        editYMin = editYMin + Math.abs(editYMax - editYMin) / 4;
+
+        var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
+        var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
+        var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'YMax': editYMax, 'YMin': editYMin, 'isStack': isStack };
+        //console.log(p);
+        $("#chart").css('background-image', '');
+        $.post('@Url.Action("JsonMyChart")',p ,
+            function (data) {
+                $("#chart").css('background-image', 'url(' + data.ImgCode + ')');
+                YMax = data.YMax;
+                YMin = data.YMin;
+                
+            });
+    }
+    function DateZoomOut() {
+        var tempSdate = new Date(EditStartDate);
+        var tempEdate = new Date(EditEndDate);
+        tempSdate = new Date(tempSdate.valueOf() - ((tempEdate - tempSdate) / 4));
+        tempEdate = new Date(tempEdate.valueOf() + ((tempEdate - tempSdate) / 4));
+        EditStartDate = tempSdate;
+        EditEndDate = tempEdate;
+
+        editYMax = editYMax + Math.abs(editYMax - editYMin) / 4;
+        editYMin = editYMin - Math.abs(editYMax - editYMin) / 4;
+
+        var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
+        var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
+        var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'YMax': editYMax, 'YMin': editYMin, 'isStack': isStack };
+        //console.log(p);
+        $("#chart").css('background-image', '');
+        $.post('@Url.Action("JsonMyChart")',p ,
+            function (data) {
+                $("#chart").css('background-image', 'url(' + data.ImgCode + ')');
+                YMax = data.YMax;
+                YMin = data.YMin;
+            });
+    }
+    function DateReSet() {
+        var tempSdate = new Date(StartDate);
+        var tempEdate = new Date(EndDate);
+        EditStartDate = StartDate;
+        EditEndDate = EndDate;
+        isLimit = true;
+        var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
+        var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
+        //var p = [{ name: 'toolId', value: toolId }, { name: 'TagName', value: TagName }, { name: 'StartDate', value: SD }, { name: 'EndDate', value: ED }, { name: 'flag', value: 3 }, { name: 'Y1Y2', value: Y1Y2 }, { name: 'isLimit', value: true }, { name: 'isStack', value: isStack }];
+        var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'isStack': isStack };
+        //console.log(p);
+        $("#chart").css('background-image', '');
+        $.post('@Url.Action("JsonMyChart")',p ,
+            function (data) {
+                $("#chart").css('background-image', 'url(' + data.ImgCode + ')');
+                YMax = data.YMax;
+                YMin = data.YMin;
+                editYMax = data.YMax;
+                editYMin = data.YMin;
+                isLimit = true;
+            });
+    }
+    function AddZero(num) {
+        return (num >= 0 && num < 10) ? "0" + num : num + "";
+    }
+</script>
+<input type="button" id="btnLeft" value="<-" onclick="DateShiftLeft()" />
+<input type="button" id="btnRight" value="->" onclick="DateShiftRight()" />
+<input type="button" id="btnBig" value="Zoom In" onclick="DateZoomIn()" />
+<input type="button" id="btnSmall" value="Zoom Out" onclick="DateZoomOut()" />
+<input type="button" id="btnReSet" value="Reset" onclick="DateReSet()" />
+<span id="XY"></span>
+<span id="Y1Y2"></span>
+<div id="chart" style="width: 800px; height: 600px; position: relative;z-index:100;">
+    <div id="divRange" style="width: 1px; height: 1px; border-width: 1px; border-color: black; border-style: solid; background-color: rgba(0%,10%,20%,0.5); position: absolute; top: 69px"></div>
+</div>
+<div  style="background-color:rgba(0%,0%,0%,0.5);width: 800px; height: 600px;vertical-align:middle;text-align:center;top:21px;position:absolute;">
+    <img style="width:100px;height:100px;margin:0 auto;vertical-align: middle;position:absolute;top:250px;left:350px;" src="/Content/Icons/circle_animation.gif" alt="Loading" />
+</div>
+<img usemap="ChartImageMap"  src="#" style="width: 800px; height: 600px;vertical-align:middle;text-align:center;top:21px;z-index:101;" />

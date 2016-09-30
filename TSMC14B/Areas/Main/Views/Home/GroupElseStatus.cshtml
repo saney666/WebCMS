@@ -1,0 +1,125 @@
+﻿@model IEnumerable<TSMC14B.Areas.Main.Models.StatusDetialModel>
+@{
+    ViewBag.Title = "狀態數";
+}
+<h2>@Request["vName"] @Request["Status"] @ViewBag.Title</h2>
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var _vName = window.location.search;
+            var _intvName = window.location.search.indexOf("vName");
+            _vName = _vName.substring(_intvName + 6, _vName.length).split("&", 1);
+            var _status = window.location.search;
+            var _intstatus = window.location.search.indexOf("Status");
+            _status = _status.substring(_intstatus + 7, _status.length).split("&", 1);
+            $('.flexme').flexigrid({
+                width: 660,
+                height: "auto",
+                url: '@Url.Action("JsonGroupElseStatus")?vName=' + _vName + '&Status=' + _status,
+                dataType: 'json',
+                colModel: [
+                           { display: '設備狀態', name: 'Statusid', width: 71, sortable: false, align: 'center', hide: false },
+                           { display: 'Tool ID', name: 'ToolID', width: 85, sortable: false, align: 'center', hide: false },
+                           { display: 'Location ID', name: 'LocationID', width: 80, sortable: false, align: 'center', hide: false },
+                           { display: '左右邊', name: 'LocationSide', width: 50, sortable: false, align: 'center', hide: false },
+                           { display: '課別名稱', name: 'gName', width: 85, sortable: false, align: 'center', hide: false },
+                           { display: '柱位', name: 'location', width: 80, sortable: false, align: 'center', hide: false },
+                           { display: '設備型號', name: 'TypeName', width: 120, sortable: false, align: 'center', hide: false }
+                ],
+                onSuccess: function () {
+                    $('.flexme > tbody > tr > td[abbrr="Statusid"] > div').each(function () {
+                        switch (parseInt($(this).text())) {
+
+                            case 99:
+                                $(this).parent().append('<div style="text-align:center; width:70px;">運轉中<br /><img src="@Url.Content("~/images/status_7.jpg")" alt="" /></div>');
+                                break;
+
+                            case 98:
+                                $(this).parent().append('<div style="text-align:center; width:70px;">異常<br /><img src="@Url.Content("~/images/status_1.jpg")" alt="" /></div>');
+                                break;
+
+                            case 97:
+                                $(this).parent().append('<div style="text-align:center; width:70px;">警告<br /><img src="@Url.Content("~/images/status_2.jpg")" alt="" /></div>');
+                                break;
+
+                            case 96:
+                                $(this).parent().append('<div style="text-align:center; width:70px;">升溫<br /><img src="@Url.Content("~/images/status_3.gif")" alt="" /></div>');
+                                break;
+
+                            case 95:
+                                $(this).parent().append('<div style="text-align:center; width:70px;">降溫<br /><img src="@Url.Content("~/images/status_4.gif")" alt="" /></div>');
+                                break;
+
+                            case 94:
+                                $(this).parent().append('<div style="text-align:center; width:70px;">沒回應 / 暫停 / 無狀態<br /><img src="@Url.Content("~/images/status_10.jpg")" alt="" /></div>');
+                                break;
+
+                            case 20:
+                                $(this).parent().append('<div style="text-align:center; width:70px;">Service<br /></div>');
+                                break;
+
+                            case 16:
+                                $(this).parent().append('<div style="text-align:center; width:70px;">Dry Clean<br /><img src="@Url.Content("~/images/status_5.gif")" alt="" /></div>');
+                                break;
+
+                        }
+                    });
+                    $('.flexme > tbody > tr > td[abbrr="Statusid"] > div[style="width: 71px; text-align: center; white-space: normal;"]').remove(); //for IE
+                    $('.flexme > tbody > tr > td[abbrr="Statusid"] > div[style="width: 71px; text-align: center;"]').remove(); //for IE
+                    $('.flexme > tbody > tr > td[abbrr="Statusid"] > div[style="text-align: center; width: 71px; white-space: normal;"]').remove(); //for Chrome
+                    $('.flexme > tbody > tr > td[abbrr="Statusid"] > div[style="text-align: center; width: 71px;"]').remove(); //for Chrome
+                },
+                usepager: false,
+            });
+            $('.flexme1').flexigrid({
+                width: 830,
+                height: "auto",
+                url: '@Url.Action("JsonGroupElseStatus")?vName=' + _vName + '&Status=' + _status,
+                dataType: 'json',
+                colModel: [
+                           { display: '設備狀態', name: 'Statusid', width: 71, sortable: false, align: 'center', hide: false },
+                           { display: 'Tool ID', name: 'ToolID', width: 85, sortable: false, align: 'center', hide: false },
+                           { display: 'Location ID', name: 'LocationID', width: 80, sortable: false, align: 'center', hide: false },
+                           { display: '左右邊', name: 'LocationSide', width: 50, sortable: false, align: 'center', hide: false },
+                           { display: '課別名稱', name: 'gName', width: 85, sortable: false, align: 'center', hide: false },
+                           { display: '柱位', name: 'location', width: 80, sortable: false, align: 'center', hide: false },
+                           { display: '設備型號', name: 'TypeName', width: 120, sortable: false, align: 'center', hide: false },
+                           { display: '設定日期', name: 'UpdateDate', width: 70, sortable: false, align: 'center', hide: false },
+                           { display: '操作者', name: 'Op', width: 80, sortable: false, align: 'center', hide: false }
+                ],
+                onSuccess: function () {
+                    $('.flexme1 > tbody > tr > td[abbrr="Statusid"] > div').each(function () {
+                        switch (parseInt($(this).text())) {
+
+                            case 8:
+                                $(this).parent().append('<div style="text-align:center; width:70px;">PM 中<br /><img src="@Url.Content("~/images/status_5.gif")" alt="" /></div>');
+                                break;
+
+                        }
+                    });
+                    $('.flexme1 > tbody > tr > td[abbrr="Statusid"] > div[style="width: 71px; text-align: center; white-space: normal;"]').remove(); //for IE
+                    $('.flexme1 > tbody > tr > td[abbrr="Statusid"] > div[style="width: 71px; text-align: center;"]').remove(); //for IE
+                    $('.flexme1 > tbody > tr > td[abbrr="Statusid"] > div[style="text-align: center; width: 71px; white-space: normal;"]').remove(); //for Chrome
+                    $('.flexme1 > tbody > tr > td[abbrr="Statusid"] > div[style="text-align: center; width: 71px;"]').remove(); //for Chrome
+                },
+                nowrap: false,
+                usepager: false,
+            });
+
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+        });
+    </script>
+}
+@if (Request["Status"] == "PM")
+{
+    <table class="flexme1" />
+}
+else
+{
+    <table class="flexme" />
+}

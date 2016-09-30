@@ -1,0 +1,289 @@
+﻿@model TSMC14B.Areas.Main.Models.LoginModel
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewBag.Title = @TSMC14B.Menu.LogInManageSystem;
+}
+
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".rbn").change(function () {
+                var option;
+                option = $('.rbn:checked').val();
+                $('#select').css('display', 'none');
+                $('#add').css('display', 'none');
+                $('#change').css('display', 'none');
+                if (option == 1)
+                    $('#select').css('display', 'block');
+                else if (option == 2)
+                    $('#add').css('display', 'block');
+                else if (option == 3)
+                    $('#change').css('display', 'block');
+            });
+
+            $('.flexme').flexigrid({
+                width: 600,
+                height: "auto",
+                url: '@Url.Action("JsonActQuery")',
+                dataType: 'json',
+                colModel: [
+                    { display: '@TSMC14B.Menu.UserName', name: 'UserName', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '@TSMC14B.Menu.Password', name: 'Password', width: 100, sortable: false, align: 'center', hide: true },
+                    { display: '@TSMC14B.Menu.title', name: 'title', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '@TSMC14B.Menu.Level', name: 'Level', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '', name: 'cancel', width: 40, sortable: false, align: 'center', hide: false },
+                    { display: '', name: 'edit', width: 40, sortable: false, align: 'center', hide: false },
+                ],
+                procmsg: '@TSMC14B.Menu.procmsg',
+                rptext: '@TSMC14B.Menu.rptext',
+                pagestat: '@TSMC14B.Menu.pagestat',
+                pagetext: '@TSMC14B.Menu.pagetext',
+                outof: '@TSMC14B.Menu.outof',
+                nomsg: '@TSMC14B.Menu.nomsg',
+                usepager: true,
+                useRp: true,
+                rp: 10,
+                nowrap: false,
+                onSuccess: function () {
+                    $('.flexme > tbody > tr > td[abbrr="cancel"] > div').remove();
+                    $('.flexme > tbody > tr > td[abbrr="cancel"]').append('<div style="width:40px;"><a href="#" class="cancel" ><img src="@Url.Content("~/Content/Icons/delete.png")" alt="@TSMC14B.Menu.Delete" />@TSMC14B.Menu.Delete</a></div>');
+                    $('.cancel').click(function () {
+                        var UsrID = $(this).parent().parent().parent().children(':eq(0)').text();
+                        hiConfirm('@TSMC14B.Menu.IsDelete' + UsrID + '@TSMC14B.Menu.UserName？', '@TSMC14B.Menu.confirm', function (r) { if (r) { $.post('@Url.Action("JsonExecute")', [{ name: 'UserID', value: UsrID }, { name: 'Type', value: 'delete' }], function (data) { alert(data.Msg); $('.flexme').flexReload(); }, 'json') } });
+                    });
+                    $('.flexme > tbody > tr > td[abbrr="edit"] > div').remove();
+                    $('.flexme > tbody > tr > td[abbrr="edit"]').append('<div style="width=40px;"><a href="#" class="edit" ><img src="@Url.Content("~/Content/Icons/edit.png")" alt="@TSMC14B.Menu.Edit" />@TSMC14B.Menu.Edit</a></div>');
+                    $('.edit').click(function () {
+                        OpenModelWindow('@Url.Action("EditUser")?UsrName=' + $(this).parent().parent().parent().children(':eq(0)').text(), { width: 400, height: 300, caption: "@TSMC14B.Menu.modify", onclose: function () { $('.flexme').flexReload(); } });
+                    });
+                },
+                singleSelect: true,
+                rpOptions: [5, 10, 15, 20, 30, 50, 100],
+            });
+
+            @*if (('@Session["UserLevel"]').toString() != "系統管理者" && ('@Session["UserLevel"]').toString() != "帳號管理者") {
+                $('#rbnT3').attr('checked', 'checked');
+                $(".rbndiv,#select,#add,#LoginSelecter").css('display', 'none');
+                $("#change").css('display', 'block');
+            }
+            else {
+                $("#changePwd").css('display', 'none');
+            }*@
+
+            @*if (('@Session["UserLevelName"]').toString() != "系統管理者" || ('@Session["UserLevelName"]').toString() != "帳號管理員") {
+                $("#changePwd").css('display', 'none');
+            }
+            else {                
+                $('#rbnT3').attr('checked', 'checked');
+                $(".rbndiv,#select,#add,#LoginSelecter").css('display', 'none');
+                $("#change").css('display', 'block');
+            }*@
+
+            if ('@Session["UserLevel"]' != '' && parseInt('@Session["UserLevel"]') >= 800) {
+                $("#changePwd").css('display', 'none');
+            }
+            else {
+                $('#rbnT3').attr('checked', 'checked');
+                $(".rbndiv,#select,#add,#LoginSelecter").css('display', 'none');
+                $("#change").css('display', 'block');
+            }
+
+            $('.sbmit').click(function () {
+                var select = "";
+                $('.rbn:checked').each(function () {
+                    select = $(this).val();
+                });
+                if (select == "2") {
+                    var Session = "";
+                    var departmentId = $('#department_id').val();
+                    
+                    $('.rbnsession:checked').each(function () {
+                        Session = $(this).val();
+                    });
+                    if ($('#UsrName').val() != "" && $('#Pwd').val() != "" && $('#Pwd2').val() != "") {
+                        if ($('#Pwd').val() != $('#Pwd2').val())
+                        { alert('@TSMC14B.Menu.PasswordEnterError'); }
+                        else {
+                            $.post('@Url.Action("JsonExecute")', [{ name: 'UserID', value: $('#UsrName').val() }, { name: 'Pwd', value: $('#Pwd').val() }, { name: 'UsrTitle', value: $('#UsrTitle').val() }, { name: 'Level', value: Session }, { name: 'Type', value: 'Insert' }, { name: 'departmentId', value: departmentId }], function (data) { alert(data.Msg); $('.flexme').flexReload(); document.getElementById('UsrName').value = ''; document.getElementById('Pwd').value = ''; document.getElementById('Pwd2').value = ''; document.getElementById('UsrTitle').value = ''; }, 'json');
+                        }
+                    } else {
+                        alert('@TSMC14B.Menu.PleaseComplete');
+                    }
+                }
+                else if (select == "3") {
+                    if ($('#AdminPwd').val() != "" && $('#AdminPwd2').val() != "") {
+                        if ($('#AdminPwd').val() != $('#AdminPwd2').val())
+                        { alert('@TSMC14B.Menu.PasswordEnterError'); }
+                        else {
+                            $.post('@Url.Action("JsonExecute")', [{ name: 'UserID', value: '@Session["UserID"]' }, { name: 'Pwd', value: $('#AdminPwd').val() }, { name: 'Type', value: 'UpdateAdmin' }], function (data) { alert(data.Msg); $('.flexme').flexReload(); document.getElementById('AdminPwd').value = ''; document.getElementById('AdminPwd2').value = ''; }, 'json');
+                        }
+                    }
+                    else {
+                        alert('@TSMC14B.Menu.PleaseComplete');
+                    }
+                }
+            });
+        });
+    </script>
+}
+
+<h2>@TSMC14B.Menu.LogInManageSystem</h2>
+<div>
+    <table id="LoginSelecter" border="1" class="tb" style="font-size: 12px;">
+        <tr>
+            <td>
+                <div class="rbndiv">
+                    <input type="radio" name="group1" class="rbn" value="1" id="rbnT1">
+                    <label for="rbnT1">@TSMC14B.Menu.UserNameManage</label>
+                    <input type="radio" name="group1" class="rbn" value="2" id="rbnT2" checked="checked">
+                    <label for="rbnT2">@TSMC14B.Menu.AddNewUserName</label>
+                    <input type="radio" name="group1" class="rbn" value="3" id="rbnT3">
+                    <label for="rbnT3">@TSMC14B.Menu.ChangePassward</label>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <div id="select" style="display: none;">
+        <table class="flexme">
+        </table>
+    </div>
+    <form id="add">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <fieldset style="width: 500px; text-align: left;">
+                <legend>@TSMC14B.Menu.AddNewUserName</legend>
+                <table style="font-size: 12px;">
+                    <tr>
+                        <td style="text-align: right; width: 90px;">@TSMC14B.Menu.UserName：
+                        </td>
+                        <td style="text-align: left;">
+                            @*@Html.Editor("UsrName")*@
+                            @Html.TextBoxFor(model => model.UserName, new { id = "UsrName" })*
+                            @Html.ValidationMessageFor(model => model.UserName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">@TSMC14B.Menu.Password：
+                        </td>
+                        <td style="text-align: left;">
+                            @*@Html.Editor("Pwd")*@
+                            @Html.PasswordFor(model => model.Password, new { id = "Pwd" })*
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">@TSMC14B.Menu.confirm@TSMC14B.Menu.Password：
+                        </td>
+                        <td colspan="2" style="text-align: left;">
+                            @*@Html.Editor("Pwd2")*@
+                            @Html.PasswordFor(model => model.Password2, new { id = "Pwd2" })*
+                            @Html.ValidationMessageFor(model => model.Password2)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">@TSMC14B.Menu.title：
+                        </td>
+                        <td colspan="2" style="text-align: left;">
+                            @*@Html.Editor("UsrTitle")*@
+                            @Html.TextBoxFor(model => model.title, new { id = "UsrTitle" })
+                            @Html.ValidationMessageFor(model => model.title)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">@TSMC14B.Menu.department_name：
+                        </td>
+                        <td colspan="2" style="text-align: left;">
+                            @if (ViewBag.department_info != null)
+                            {
+                                //foreach (var item in (IEnumerable<SelectListItem>)ViewBag.department_info)
+                                //{
+                                //    <span style="display:inline-block;">
+                                //         <input class="rbnsession" name="group2" type="radio" value="@item.Value" checked="checked" id="rbnS @item.Value" />
+                                //         <label for="rbnS @item.Value">@item.Text</label>
+                                //     </span>
+                                // }
+                                @Html.DropDownListFor(model => model.department_id, ViewBag.department_info as IEnumerable<SelectListItem>)
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">@TSMC14B.Menu.Competence：
+                        </td>
+                        <td colspan="2" style="text-align: left;">
+                            @if (ViewBag.sessionType != null)
+                            {
+                                foreach (var item in ViewBag.sessionType as IEnumerable<SelectListItem>)
+                                {
+                                <span style="display: inline-block;">
+                                    <input class="rbnsession" name="group2" type="radio" value="@item.Value" checked="checked" id="rbnS @item.Value" />
+                                    <label for="rbnS @item.Value">@item.Text</label>
+                                </span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 100px;">
+                            <input type="button" class="sbmit" value="@TSMC14B.Menu.confirm" style="width: 80px" />&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td style="width: 100px;">
+                            <input type="reset" value="@TSMC14B.Menu.Clear" id="clear1" style="width: 80px" />
+                        </td>
+                        <td style="text-align: right; font-size: smaller; color: red;">*@TSMC14B.Menu.RequiredField
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        }
+    </form>
+    <form id="change" style="display: none;">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <div id="changePwd" style="width: 510px; background-color: aqua;">@TSMC14B.Menu.ChangePassward</div>
+            <fieldset style="width: 500px; text-align: left;">
+                <legend>@TSMC14B.Menu.ChangePassward</legend>
+                <table style="font-size: 12px;">
+                    <tr>
+                        <td style="text-align: right; width: 90px;">@TSMC14B.Menu.Password：
+                        </td>
+                        <td>
+                            @*@Html.Editor("AdminPwd")*@
+                            @Html.PasswordFor(model => model.Password, new { id = "AdminPwd" })
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">@TSMC14B.Menu.confirm@TSMC14B.Menu.Password：
+                        </td>
+                        <td>
+                            @*@Html.Editor("AdminPwd2")*@
+                            @Html.PasswordFor(model => model.Password2, new { id = "AdminPwd2" })
+                            @Html.ValidationMessageFor(model => model.Password2)
+                        </td>
+                    </tr>
+                </table>
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 100px;">
+                            <input type="button" class="sbmit" value="@TSMC14B.Menu.confirm" style="width: 80px" />&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td style="width: 100px;">
+                            <input type="reset" value="@TSMC14B.Menu.Clear" id="clear2" style="width: 80px" />
+                        </td>
+                        <td style="text-align: right; font-size: smaller; color: red;">*@TSMC14B.Menu.passwordAtLast
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        }
+    </form>
+</div>

@@ -1,0 +1,47 @@
+﻿@model TSMC14B.Areas.Main.Models.PhoneCallModel
+@{
+    ViewBag.Title = @TSMC14B.Menu.Edit;
+}
+@section JavaScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+        });
+    </script>
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset style="width: 90%; margin: 0 auto;">
+        <legend>@ViewBag.Title</legend>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.department_name)</li>
+            <li>@Html.HiddenFor(model => model.department_name)@Html.HiddenFor(model => model.department_name)@Html.DisplayFor(model => model.department_name)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.sensorID)</li>
+            <li>@Html.HiddenFor(model => model.sensorID)@Html.DisplayFor(model => model.sensorID)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.data_Tag)</li>
+            <li>@Html.HiddenFor(model => model.data_Tag)@Html.HiddenFor(model => model.FullTagName)@Html.HiddenFor(model => model.plc_id)@Html.DisplayFor(model => model.data_Tag)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.CallOut)</li>
+            <li>@Html.RadioButtonFor(model => model.CallOut, true) @TSMC14B.Menu.PhoneCallSend</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>@Html.RadioButtonFor(model => model.CallOut, false) @TSMC14B.Menu.PhoneCallNotSend</li>
+        </ul>
+        <ul class="ul">
+            <li>
+                <input type="submit" value="@TSMC14B.Menu.confirm" style="width: 80px" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Refill" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Cancel" style="width: 80px" onclick="CloseModelWindow();" /></li>
+        </ul>
+    </fieldset>
+}

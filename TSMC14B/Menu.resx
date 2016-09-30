@@ -1,0 +1,513 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AlarmMessage" xml:space="preserve">
+    <value>Alarm 訊息</value>
+  </data>
+  <data name="AlarmMonth" xml:space="preserve">
+    <value>一週警告</value>
+  </data>
+  <data name="AlarmMonthExport" xml:space="preserve">
+    <value>一週警告匯出</value>
+  </data>
+  <data name="AlarmNow" xml:space="preserve">
+    <value>即時警告</value>
+  </data>
+  <data name="AlarmType" xml:space="preserve">
+    <value>狀態</value>
+  </data>
+  <data name="AlarmValue" xml:space="preserve">
+    <value>數值</value>
+  </data>
+  <data name="AlarmWeek" xml:space="preserve">
+    <value>24小時警告</value>
+  </data>
+  <data name="AlarmWeekExport" xml:space="preserve">
+    <value>24小時警告匯出</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="alreadySelectValueTag" xml:space="preserve">
+    <value>已選取數值</value>
+  </data>
+  <data name="cancelPM" xml:space="preserve">
+    <value>解隔離</value>
+  </data>
+  <data name="cancelPMing" xml:space="preserve">
+    <value>解隔離中</value>
+  </data>
+  <data name="ChangeParts" xml:space="preserve">
+    <value>零件更換紀錄</value>
+  </data>
+  <data name="ChartExport" xml:space="preserve">
+    <value>匯出資料</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>清除選取</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>結案</value>
+  </data>
+  <data name="DealWith" xml:space="preserve">
+    <value>處理狀況</value>
+  </data>
+  <data name="department_name" xml:space="preserve">
+    <value>部門</value>
+  </data>
+  <data name="draw" xml:space="preserve">
+    <value>繪製</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>編輯</value>
+  </data>
+  <data name="effectDateTime" xml:space="preserve">
+    <value>影響時段及時間</value>
+  </data>
+  <data name="effectOutPut" xml:space="preserve">
+    <value>影響生產</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>選擇結束時間</value>
+  </data>
+  <data name="EndTimeNotOverNowTime" xml:space="preserve">
+    <value>結束時間請勿選擇超過現在時間</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>輸入</value>
+  </data>
+  <data name="EqFdcTable" xml:space="preserve">
+    <value>設備FDC資料表</value>
+  </data>
+  <data name="EqLimitSetting" xml:space="preserve">
+    <value>設備上下限設定</value>
+  </data>
+  <data name="eqValueChart" xml:space="preserve">
+    <value>設備數值資料統計</value>
+  </data>
+  <data name="IsCancelPM" xml:space="preserve">
+    <value>是否解隔離</value>
+  </data>
+  <data name="IsHiEnable" xml:space="preserve">
+    <value>上限</value>
+  </data>
+  <data name="IsLoEnable" xml:space="preserve">
+    <value>下限</value>
+  </data>
+  <data name="IsPM" xml:space="preserve">
+    <value>是否隔離</value>
+  </data>
+  <data name="LastEditUser" xml:space="preserve">
+    <value>最後修改者</value>
+  </data>
+  <data name="LastUpdateTime" xml:space="preserve">
+    <value>最近更新時間</value>
+  </data>
+  <data name="LimitList" xml:space="preserve">
+    <value>上下限清單</value>
+  </data>
+  <data name="Limit_Max" xml:space="preserve">
+    <value>手動上限值</value>
+  </data>
+  <data name="Limit_Max_Setting" xml:space="preserve">
+    <value>目前上限設定</value>
+  </data>
+  <data name="Limit_Min" xml:space="preserve">
+    <value>手動下限值</value>
+  </data>
+  <data name="Limit_Min_Setting" xml:space="preserve">
+    <value>目前下限設定</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>柱位</value>
+  </data>
+  <data name="LoginManage" xml:space="preserve">
+    <value>帳號管理</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>登出</value>
+  </data>
+  <data name="MoreValueTagMoreEq" xml:space="preserve">
+    <value>多數值多設備</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="noSelectValueTag" xml:space="preserve">
+    <value>未選取數值</value>
+  </data>
+  <data name="OneEqMoreValueTag" xml:space="preserve">
+    <value>單一設備多數值</value>
+  </data>
+  <data name="OneValueTagMoreEq" xml:space="preserve">
+    <value>單一數值多設備</value>
+  </data>
+  <data name="plaseSelectDate" xml:space="preserve">
+    <value>請選擇日期</value>
+  </data>
+  <data name="plaseSelectDep" xml:space="preserve">
+    <value>請選擇部門</value>
+  </data>
+  <data name="plaseSelectEQ" xml:space="preserve">
+    <value>請選擇設備</value>
+  </data>
+  <data name="plaseSelectOption" xml:space="preserve">
+    <value>請選擇</value>
+  </data>
+  <data name="plaseSelectValueName" xml:space="preserve">
+    <value>請勾選數值名稱</value>
+  </data>
+  <data name="plc_name" xml:space="preserve">
+    <value>機號</value>
+  </data>
+  <data name="PM" xml:space="preserve">
+    <value>隔離</value>
+  </data>
+  <data name="PMing" xml:space="preserve">
+    <value>隔離中</value>
+  </data>
+  <data name="Query" xml:space="preserve">
+    <value>查詢</value>
+  </data>
+  <data name="QueryString" xml:space="preserve">
+    <value>查詢字串</value>
+  </data>
+  <data name="ReceptionName" xml:space="preserve">
+    <value>處理人員</value>
+  </data>
+  <data name="Stack" xml:space="preserve">
+    <value>疊圖</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>選擇開始時間</value>
+  </data>
+  <data name="status" xml:space="preserve">
+    <value>狀態</value>
+  </data>
+  <data name="TagName" xml:space="preserve">
+    <value>數值名稱</value>
+  </data>
+  <data name="typeName" xml:space="preserve">
+    <value>機型</value>
+  </data>
+  <data name="Weekly" xml:space="preserve">
+    <value>週期</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="_DateTime" xml:space="preserve">
+    <value>日期/時間</value>
+  </data>
+  <data name="AddNewUserName" xml:space="preserve">
+    <value>新增帳號</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="ChangePassward" xml:space="preserve">
+    <value>變更您的密碼</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="Competence" xml:space="preserve">
+    <value>權限</value>
+  </data>
+  <data name="confirm" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>刪除</value>
+  </data>
+  <data name="IsDelete" xml:space="preserve">
+    <value>是否刪除</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>級別</value>
+  </data>
+  <data name="LogInManageSystem" xml:space="preserve">
+    <value>登入帳號管理系統</value>
+  </data>
+  <data name="LogInPage" xml:space="preserve">
+    <value>登入頁面</value>
+  </data>
+  <data name="modify" xml:space="preserve">
+    <value>修改</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>新密碼</value>
+  </data>
+  <data name="nomsg" xml:space="preserve">
+    <value>沒有項目</value>
+  </data>
+  <data name="outof" xml:space="preserve">
+    <value>共</value>
+  </data>
+  <data name="pagestat" xml:space="preserve">
+    <value>顯示 第 {from} 項 到 第 {to} 項，總共 {total} 項目</value>
+  </data>
+  <data name="pagetext" xml:space="preserve">
+    <value>頁次</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密碼</value>
+  </data>
+  <data name="passwordAtLast" xml:space="preserve">
+    <value>密碼最少8個字最長20個字</value>
+  </data>
+  <data name="PasswordEnterError" xml:space="preserve">
+    <value>密碼輸入錯誤</value>
+  </data>
+  <data name="PasswordMustSame" xml:space="preserve">
+    <value>密碼須相同</value>
+  </data>
+  <data name="PleaseComplete" xml:space="preserve">
+    <value>請填寫完整</value>
+  </data>
+  <data name="procmsg" xml:space="preserve">
+    <value>搜尋中, 請稍候 ...</value>
+  </data>
+  <data name="Refill" xml:space="preserve">
+    <value>重填</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>為必填欄位</value>
+  </data>
+  <data name="rptext" xml:space="preserve">
+    <value>每頁筆數</value>
+  </data>
+  <data name="title" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+  <data name="titleLongest" xml:space="preserve">
+    <value>名稱最長20個字…</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>登入帳號</value>
+  </data>
+  <data name="UserNameAlreadyExists" xml:space="preserve">
+    <value>帳號已存在</value>
+  </data>
+  <data name="UserNameManage" xml:space="preserve">
+    <value>查詢管理所有帳號</value>
+  </data>
+  <data name="UserNameMust" xml:space="preserve">
+    <value>帳號必填</value>
+  </data>
+  <data name="bsHead" xml:space="preserve">
+    <value>大小頭</value>
+  </data>
+  <data name="GasValve" xml:space="preserve">
+    <value>氣動閥</value>
+  </data>
+  <data name="HandValve" xml:space="preserve">
+    <value>手閥</value>
+  </data>
+  <data name="IsHasPM" xml:space="preserve">
+    <value>是否有實際PM</value>
+  </data>
+  <data name="LPipe" xml:space="preserve">
+    <value>L管</value>
+  </data>
+  <data name="memo" xml:space="preserve">
+    <value>pm事由</value>
+  </data>
+  <data name="ms" xml:space="preserve">
+    <value>水氣分離盒</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>操作者</value>
+  </data>
+  <data name="other" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="PendingList" xml:space="preserve">
+    <value>待處理清單</value>
+  </data>
+  <data name="plaseCheckType" xml:space="preserve">
+    <value>請勾選類別</value>
+  </data>
+  <data name="plasePMMemo" xml:space="preserve">
+    <value>請填寫PM理由</value>
+  </data>
+  <data name="plaseSelectType" xml:space="preserve">
+    <value>請選擇類型</value>
+  </data>
+  <data name="pmCycle" xml:space="preserve">
+    <value>PM週期(天)</value>
+  </data>
+  <data name="PMingList" xml:space="preserve">
+    <value>PM中清單</value>
+  </data>
+  <data name="pmNextTime" xml:space="preserve">
+    <value>下次PM時間</value>
+  </data>
+  <data name="pmSet" xml:space="preserve">
+    <value>設定pm時間</value>
+  </data>
+  <data name="pmUnset" xml:space="preserve">
+    <value>解除pm時間</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="TemporaryPFlag" xml:space="preserve">
+    <value>臨時拉P</value>
+  </data>
+  <data name="ThreeWay" xml:space="preserve">
+    <value>三通</value>
+  </data>
+  <data name="ToolId" xml:space="preserve">
+    <value>機台名稱</value>
+  </data>
+  <data name="toolidinput" xml:space="preserve">
+    <value>輸入Tool ID後按Enter</value>
+  </data>
+  <data name="Tpipe" xml:space="preserve">
+    <value>T管</value>
+  </data>
+  <data name="Turning" xml:space="preserve">
+    <value>轉彎處</value>
+  </data>
+  <data name="UpdateDate" xml:space="preserve">
+    <value>更新日期</value>
+  </data>
+  <data name="Upturning" xml:space="preserve">
+    <value>Inlet上方彎管</value>
+  </data>
+  <data name="Vendor" xml:space="preserve">
+    <value>廠商</value>
+  </data>
+  <data name="Manually" xml:space="preserve">
+    <value>自訂</value>
+  </data>
+  <data name="DefaultValue" xml:space="preserve">
+    <value>預設值</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>全選</value>
+  </data>
+  <data name="PhoneCallNotSend" xml:space="preserve">
+    <value>不發送</value>
+  </data>
+  <data name="PhoneCallSend" xml:space="preserve">
+    <value>發送</value>
+  </data>
+</root>

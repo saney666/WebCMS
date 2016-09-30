@@ -1,0 +1,35 @@
+﻿@model TSMC14B.Areas.Main.Models.ChamberListModel
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewBag.Title = Request["EQID"] ;
+}
+@section JavaScript{
+    <script type="text/javascript">
+        $(function () {
+            var EQID = '@Request["EQID"]';
+            if (EQID == "ALSPUT02") {
+                $('#@Request["EQID"]-C').css('background-color', 'red');
+            }
+        });
+    </script>
+}
+<h2>@Request["EQID"]</h2>
+<a onclick="window.history.go(-1);" style="color:blue;cursor:pointer;text-decoration:underline;">回上一頁</a><br/>
+<input type="button" name="reload" value="Reload Page" onclick="javascript: reload();"  style="color:red;font-weight:bold;"/>
+<hr />
+<table style="border:groove;border-width:thin;width:800px">
+    <tr >
+        <td style="width:100px;border:outset;border-width:thin;background-color:lightgray;">EQID</td>
+        <td colspan="50" style="border:outset;border-width:thin;background-color:lightgray;">Chamber</td>
+    </tr>
+    <tr>
+        <td style="border:outset;border-width:thin;background-color:lightblue;text-align:center;">@Request["EQID"]</td>
+        <td colspan="50">
+             <input type="button" id="@Request["EQID"]-A" value="A" onclick="location.href = 'Chamber?Chamber=' + this.id;" style="background-color:lightgreen;"/>
+            <input type="button" id="@Request["EQID"]-B" value="B" onclick="location.href = 'Chamber?Chamber=' + this.id;" style="background-color:lightgreen;"/>
+            <input type="button" id="@Request["EQID"]-C" value="C" onclick="location.href = 'Chamber?Chamber=' + this.id;" style="background-color:lightgreen;"/>
+            <input type="button" id="@Request["EQID"]-D" value="D" onclick="location.href = 'Chamber?Chamber=' + this.id;" style="background-color:lightgreen;"/>
+        </td>
+    </tr>
+</table>

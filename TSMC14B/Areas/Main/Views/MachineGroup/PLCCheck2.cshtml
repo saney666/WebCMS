@@ -1,0 +1,680 @@
+﻿@model TSMC14B.Areas.Main.Models.PLCCheckModel
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewBag.Title = Request["vName"] + " EQP Type";
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/ptTimeSelect/jquery.datetimepicker.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.datetimepicker.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript">
+        var meter2=null;
+        $(document).ready(function () {
+            //$('.ul').jqf1();
+            meter2 = setTimeout("reload();", 60000);
+            if(getCookie('EQPType')=='1'){
+                $('.chamber').show();
+                $('.EQPType2 [checked="checked"]').attr('checked',false);
+                $('#EQPType2').attr('checked',true);
+            }else {
+                $('.chamber').hide();
+            }
+
+            $('.tb').css('font-size', '12px');
+            $('.EQPType').change(function () {
+                if($(this).val()==1){
+                    cookieValue = "EQPType=1";
+                    document.cookie = cookieValue;
+                    $('.chamber').show();
+                }else{
+                    cookieValue = "EQPType=0";
+                    document.cookie = cookieValue;
+                    $('.chamber').hide();
+                }
+            });
+
+            $('.EQID').click(function () {
+                $(this).parent().find('.chamber').toggle();
+            });
+
+            if ($('#toolidinput[value*="*"]').length) {
+                $("#toolid option:nth-child(1)").attr("selected", true);
+                $("#toolid option:selected").attr("selected", "");
+                $("#toolid").attr("disabled", true);
+            };
+
+            $('#toolidinput').keyup(function (event) {
+                changeIndex($("#toolidinput").val());
+            });
+
+            $('#toolidinput').keypress(function (e) {
+                if (e.keyCode == 13 && $('#toolidinput').val().length > 0) {
+                    var vName = '@Request["vName"]';
+                    var device = $('#device option:selected').val();
+                    var toolid = $('#toolid option:selected').val();
+                    $.post('@Url.Action("JsonGetTag")', [{ name: 'Vendor', value: vName }, { name: 'Device', value: device == "請選擇" ? "" : device }, { name: 'ToolID', value: toolid }],
+                         function (data) {
+                             $('#td').empty();
+                             $('#td').append($('<table><tr>'));
+                             $.each(data, function (i, item) {
+                                 $('#td').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Value + '" value="' + item.Key + '" class="cb_Tag" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
+                                 if ((i + 1) % 5 == 0) {
+                                     $('#td').append($('</tr><tr>'));
+                                 }
+                             });
+                             $('#td').append($('</tr></table>'));
+
+                             $('.cb_Tag').change(function () {
+                                 var _toolid = $("#toolid").val();
+                                 var _name = $(this).attr('name');
+                                 var _value = $(this).val();
+                                 if ($(this).attr('checked') == 'checked') { ToolValueTagADD(_toolid, _name, _value); } else { ToolValueTagRemove(_value); }
+                             });
+                         }, 'json');
+                }
+            });
+
+            function changeIndex(chkvalue) {
+                var objval; var isFound; var tempval;
+                if ((chkvalue == "")) {
+                    //$("#toolId option:selected").attr("selected", "");
+                    $("#toolid option:nth-child(1)").attr("selected", true);
+                    //$("#toolId").attr("disabled", "");
+                    isFound = false;
+                    return;
+                };
+                if (chkvalue.indexOf("*") >= 0) {
+                    $("#toolid option:nth-child(1)").attr("selected", true);
+                    $("#toolid option:selected").attr("selected", "");
+                    $("#toolid").attr("disabled", true);
+                } else {
+                    if (!isFound) {
+                        $("#toolid").attr("disabled", false);
+                        $('#toolid>option[value^=' + chkvalue.toUpperCase() + '],#toolid>option[value^=' + chkvalue + ']').first().attr("selected", true);
+                        isFound = true;
+                    };
+                }; return;
+            };
+
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+
+            var _flag = window.location.search;
+            var _intflag = window.location.search.indexOf("Flag");
+            _flag = _flag.substring(_intflag, _intflag + 6);
+
+            if (_flag.substring(_flag.length - 1, _flag.length) == "1" || _flag.substring(_flag.length - 1, _flag.length) == "") {
+                $('#rbnT1').attr("checked", "checked");
+                $('#tb1').css("display", "block");
+                $('#tb2').css("display", "none");
+            }
+            else if (_flag.substring(_flag.length - 1, _flag.length) == "2") {
+                $('#rbnT2').attr("checked", "checked");
+                $('#tb1').css("display", "none");
+                $('#tb2').css("display", "block");
+            }
+
+            $('.rbn').change(function () {
+                $('.rbn:checked').each(function (e) {
+                    if ($(this).val() == "1") {
+                        $('#tb1').css("display", "block");
+                        $('#tb2').css("display", "none");
+                        $('#tb3').css("display", "none");
+                    }
+                    else if ($(this).val() == "2") {
+                        $('#tb1').css("display", "none");
+                        $('#tb2').css("display", "block");
+                        $('#tb3').css("display", "none");
+                    }
+                    else if ($(this).val() == "3") {
+                        $('#tb1').css("display", "none");
+                        $('#tb2').css("display", "none");
+                        $('#tb3').css("display", "block");
+                    }
+                });
+            });
+
+            //單一設備多數值
+            $("#device").change(function () {
+                var selectedValue = $('#device option:selected').val();
+                var vendorname = '@Request["vName"]';
+                $.post('@Url.Action("JsonGettid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "請選擇" ? "" : selectedValue }], function (data) {
+                    $('#toolid').empty();
+                    $('#toolid').append($('<option></option>').val('').text('請選擇'));
+                    $.each(data, function (i, item) {
+                        $('#toolid').append($('<option></option>').val(item.Value).text(item.Value));
+                    });
+                }, 'json');
+                @*location.href = "@Url.Action("PLCCheck")?vName=" + _vName + "&Device=" + gName + "&Flag=1";*@
+            });
+
+            $("#toolid").change(function () {
+                var vName = '@Request["vName"]';
+                var device = $('#device option:selected').val();
+                var toolid = $('#toolid option:selected').val();
+                $.post('@Url.Action("JsonGetTag")', [{ name: 'Vendor', value: vName }, { name: 'Device', value: device == "請選擇" ? "" : device }, { name: 'ToolID', value: toolid }],
+                           function (data) {
+                               $('#td').empty();
+                               //$('#cb_vName').append($('<option></option>').val('').text('ALL'));
+                               $('#td').append($('<table><tr>'));
+                               $.each(data, function (i, item) {
+                                   $('#td').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Value + '" value="' + item.Key + '" class="cb_Tag" /><label for="' + item.Key + '"  style="cursor: pointer;">' + item.Value + '</label></td>'));
+                                   if ((i + 1) % 5 == 0) {
+                                       $('#td').append($('</tr><tr>'));
+                                   }
+                                   if ($('#ValueTag' + item.Key).length == 1) { $('#' + item.Key).attr('checked', true); }
+                               });
+                               $('#td').append($('</tr></table>'));
+
+                               $('.cb_Tag').change(function () {
+                                   var _toolid = $("#toolid").val();
+                                   var _name = $(this).attr('name');
+                                   var _value = $(this).val();
+                                   if ($(this).attr('checked') == 'checked') { ToolValueTagADD(_toolid, _name, _value); } else { ToolValueTagRemove(_value); }
+                               });
+                           }, 'json');
+                @*location.href = "@Url.Action("PLCCheck")?vName=" + _vName + "&Device=" + gName + "&ToolID=" + toolid + "&Flag=1";*@
+            });
+
+            //單一數值多設備
+            $("#Device2").change(function () {
+                var _vName = window.location.search;
+                var _intvName = window.location.search.indexOf("vName");
+                _vName = _vName.substring(_intvName + 6, _vName.length).split("&", 1);
+                var gName = null;
+                var option = null;
+                $('#device2').each(function (e) {
+                    gName = $(this).val();
+                });
+
+                var selectedValue = $('#Device2 option:selected').val();
+                var vendorname = '@Request["vName"]';
+                $.post('@Url.Action("JsonGetTypeid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "請選擇" ? "" : selectedValue }], function (data) {
+                    $('#Typeid').empty();
+                    $('#Typeid').append($('<option></option>').val('').text('請選擇'));
+                    $.each(data, function (i, item) {
+                        $('#Typeid').append($('<option></option>').val(item.Value).text(item.Value));
+                    });
+                }, 'json');
+                @*location.href = "@Url.Action("PLCCheck")?vName=" + _vName + "&Device=" + gName + "&Flag=2";*@
+            });
+            $("#Typeid").change(function () {
+                //var _vName = window.location.search;
+                //var _intvName = window.location.search.indexOf("vName");
+                //_vName = _vName.substring(_intvName + 6, _vName.length).split("&", 1);
+                //var gName = null;
+                //var typeid = null;
+                //$('#device2').each(function (e) {
+                //    gName = $(this).val();
+                //});
+                //$('#Typeid').each(function (e) {
+                //    typeid = $(this).val();
+                //});
+                var vendorname = '@Request["vName"]';
+                var selectedValue = $('#Typeid option:selected').val();
+                $.post('@Url.Action("JsonGettid2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "請選擇" ? "" : selectedValue }],
+                              function (data) {
+                                  $('#td2').empty();
+                                  //$('#cb_vName').append($('<option></option>').val('').text('ALL'));
+                                  $('#td').append($('<table><tr>'));
+                                  $.each(data, function (i, item) {
+                                      $('#td2').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Key + '" value="' + item.Key + '" class="cb_toolid" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
+                                      if ((i + 1) % 5 == 0) {
+                                          $('#td2').append($('</tr><tr>'));
+                                      }
+                                  });
+                                  $('#td').append($('</tr></table>'));
+                              }, 'json');
+                $.post('@Url.Action("JsonGetTag2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "請選擇" ? "" : selectedValue }], function (data) {
+                    $('#TagName2').empty();
+                    $('#TagName2').append($('<option></option>').val('').text('請選擇'));
+                    $.each(data, function (i, item) {
+                        $('#TagName2').append($('<option></option>').val(item.Key).text(item.Value));
+                    });
+                }, 'json');
+                @*location.href = "@Url.Action("PLCCheck")?vName=" + _vName + "&Device=" + gName + "&Typeid=" + typeid + "&Flag=2";*@
+            });
+
+            //多數值多設備
+            $("#Device3").change(function () {
+                var _vName = window.location.search;
+                var _intvName = window.location.search.indexOf("vName");
+                _vName = _vName.substring(_intvName + 6, _vName.length).split("&", 1);
+                var gName = null;
+                var option = null;
+                $('#device3').each(function (e) {
+                    gName = $(this).val();
+                });
+                var selectedValue = $('#Device3 option:selected').val();
+                var vendorname = '@Request["vName"]';
+                $.post('@Url.Action("JsonGetTypeid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "請選擇" ? "" : selectedValue }], function (data) {
+                    $('#Typeid2').empty();
+                    $('#Typeid2').append($('<option></option>').val('').text('請選擇'));
+                    $.each(data, function (i, item) {
+                        $('#Typeid2').append($('<option></option>').val(item.Value).text(item.Value));
+                    });
+                }, 'json');
+            });
+            $("#Typeid2").change(function () {
+                var vendorname = '@Request["vName"]';
+                var selectedValue = $('#Typeid2 option:selected').val();
+                $.post('@Url.Action("JsonGettid2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "請選擇" ? "" : selectedValue }],
+                          function (data) {
+                              $('#td3').empty();
+                              $('#td3').append($('<table><tr>'));
+                              $.each(data, function (i, item) {
+                                  $('#td3').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Key + '" value="' + item.Key + '" class="cb_toolid2" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
+                                  if ((i + 1) % 5 == 0) {
+                                      $('#td3').append($('</tr><tr>'));
+                                  }
+                              });
+                              $('#td3').append($('</tr></table>'));
+                          }, 'json');
+                $.post('@Url.Action("JsonGetTag2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "請選擇" ? "" : selectedValue }], function (data) {
+                    $('#TagName3').empty();
+                    $('#TagName3').append($('<table><tr>'));
+                    $.each(data, function (i, item) {
+                        $('#TagName3').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Key + '" value="' + item.Key + '" class="cb_tName" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
+                        if ((i + 1) % 5 == 0) {
+                            $('#TagName3').append($('</tr><tr>'));
+                        }
+                    });
+                    $('#TagName3').append($('</tr></table>'));
+                }, 'json');
+            });
+
+            $('#StartDate').datetimepicker();
+            $('#EndDate').datetimepicker({
+                Time59: true
+            });
+            $('#StartDate2').datetimepicker();
+            $('#EndDate2').datetimepicker({
+                Time59: true
+            });
+            $('#StartDate3').datetimepicker();
+            $('#EndDate3').datetimepicker({
+                Time59: true
+            });
+
+            //if ($("#StartDate").val().length == 0) {
+            //    var dt = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
+            //    $("#StartDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 00:00');
+            //};
+            //if ($("#EndDate").val().length == 0) {
+            //    var dt = new Date(Date.now());
+
+            //    $("#EndDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()));
+            //};
+            //if ($("#StartDate2").val().length == 0) {
+            //    var dt = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
+            //    $("#StartDate2").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 00:00');
+            //};
+            //if ($("#EndDate2").val().length == 0) {
+            //    var dt = new Date(Date.now());
+
+            //    $("#EndDate2").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()));
+            //};
+            //if ($("#StartDate3").val().length == 0) {
+            //    var dt = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
+            //    $("#StartDate3").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 00:00');
+            //};
+            //if ($("#EndDate3").val().length == 0) {
+            //    var dt = new Date(Date.now());
+            //    $("#EndDate3").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()));
+            //};
+        });
+
+        function ChartExport(id) {
+            var action = "3";
+            //$('.rbn:checked').each(function (e) {
+            //    action += $(this).val();
+            //});
+            ////單一設備多數值
+            //var toolid = $('#toolid').val();
+            //var tagName = "";
+            //$('.cb_Tag:checked').each(function (e) {
+            //    tagName += $(this).val() + ",";
+            //});
+            //tagName = tagName.substring(0, tagName.length - 1);
+            ////單一數值多設備
+            //var tagName2 = "";
+            //var toolid2 = "";
+            //$('.cb_toolid:checked').each(function (e) {
+            //    tagName2 += 'P5_' + $(this).val() + $('#TagName2').val() + ",";
+            //    toolid2 += $(this).val() + ",";
+            //});
+            //toolid2 = toolid2.substring(0, toolid2.length - 1);
+            //tagName2 = tagName2.substring(0, tagName2.length - 1);
+            ////多數值多設備
+            var tagName3 = '';
+            var toolid3 = '';
+            $('.ValueTag').each(function (e) {
+                if ($('#cbx' + $(this).attr('id').replace('ValueTag', '')).attr('checked') == 'checked') {
+                    if (toolid3.indexOf($(this).attr('toolid')) == -1) {
+                        toolid3 = toolid3 + $(this).attr('toolid') + ",";
+                    }
+                    if (tagName3.indexOf($(this).attr('id').replace('ValueTag', '')) == -1) {
+                        tagName3 = tagName3 + $(this).attr('id').replace('ValueTag', '') + ",";
+                    }
+                }
+            });
+            //var items = $(".ValueTag").sortable("serialize", { key: "sort" });
+            //$(items).each(function (e) {
+            ////    alert($(this).attr('toolid'));
+            //    if ($('#cbx' + $(this).attr('id').replace('ValueTag', '')).attr('checked') == 'checked') {
+            //        if (toolid3.indexOf($(this).attr('toolid')) == -1) {
+            //            toolid3 = toolid3 + $(this).attr('toolid') + ",";
+            //        }
+            //        if (tagName3.indexOf($(this).attr('id').replace('ValueTag', '')) == -1) {
+            //            tagName3 = tagName3 + $(this).attr('id').replace('ValueTag', '') + ",";
+            //        }
+            //    }
+            //});
+            toolid3 = toolid3.substring(0, toolid3.length - 1);
+            tagName3 = tagName3.substring(0, tagName3.length - 1);
+            //alert('toolid3: ' + toolid3 + ' tagName3:' + tagName3);
+            var fromDate = $("#StartDate").val();
+            var toDate = $("#EndDate").val();
+            var vName = '@Request["vName"]';
+            var dt = new Date(Date.now());
+            if (action == 1) {
+                if (new Date($("#EndDate").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
+                    if (tagName.length > 0) {
+                        if (id == 'search') {
+                            OpenModelWindow('@Url.Action("MyChart")?toolId=' + toolid + '&TagName=' + tagName + '&StartDate=' + fromDate + '&EndDate=' + toDate + '&flag=' + action, { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
+                        }
+                        else if (id == 'export') {
+                            location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid + '&TagName=' + tagName + '&StartDate=' + fromDate + '&EndDate=' + toDate + '&flag=' + action + '&output=' + id;
+                        }
+                }
+                else {
+                    alert('請勾選數值名稱');
+                }
+            }
+            else {
+                alert("結束時間請勿選擇超過現在時間");
+            }
+        } else if (action == 2) {
+            if (new Date($("#EndDate2").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
+                if (toolid2.length > 0) {
+                    if (id == 'search') {
+                        OpenModelWindow('@Url.Action("MyChart")?toolId=' + toolid2 + '&TagName=' + tagName2 + '&StartDate=' + $("#StartDate2").val() + '&EndDate=' + $("#EndDate2").val() + '&flag=' + action, { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
+                    }
+                    else if (id == 'export') {
+                        location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid2 + '&TagName=' + tagName2 + '&StartDate=' + $("#StartDate2").val() + '&EndDate=' + $("#EndDate2").val() + '&flag=' + action + '&output=' + id;
+                    }
+            }
+            else {
+                alert('請勾選設備數值');
+            }
+        }
+        else {
+            alert("結束時間請勿選擇超過現在時間");
+        }
+    } else if (action == 3) {
+        if (new Date($("#EndDate3").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
+            if (toolid3.length > 0) {
+                if (id == 'search') {
+                    OpenModelWindow('@Url.Action("MyChart")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action, { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
+                }
+                else if (id == 'export') {
+                    location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate3").val() + '&EndDate=' + $("#EndDate3").val() + '&flag=' + action + '&output=' + id;
+                }
+        }
+        else {
+            alert('請勾選設備');
+        }
+    }
+    else {
+        alert("結束時間請勿選擇超過現在時間");
+    }
+}
+}
+function ToolValueTagADD(toolid, name, value) {
+    if ($('#ValueTag' + value).length == 0) {
+        $('#ToolIdValueTag').append('<div id="tempDiv" style="height:100px;" ></div>');
+        $('#ToolIdValueTag').append('<div id="ValueTag' + value + '" class="ValueTag" name=' + name + ' toolid=' + toolid + ' style="display: none;background-color:#f2ffff;border-style:ridge;border-width:3px;border-color:silver;padding:2px 3px 2px 3px;margin:3px 0px 3px 0px;position:relative;"><input type="checkbox" id="cbx' + value + '" style="vertical-align:middle;" checked="checked" /><label for="cbx' + value + '" style="vertical-align:middle;cursor: pointer;">' + toolid + name + '</label><img class="uncheck" style="vertical-align:middle;position:absolute;right:0px;top:5px;cursor: pointer;" src="/images/uncheck.png" /></div>');
+        $('#tempDiv').slideUp("fast", function () {
+            $('#tempDiv').remove();
+        });
+        $('#ValueTag' + value).fadeIn("slow");
+        ValueTagHeader();
+        $('.uncheck').click(function () {
+            if ($(this).parent().attr('toolid') == $('#toolid').val()) {
+                var _value = $(this).parent().attr('id').replace('ValueTag', '');
+                $('.cb_Tag').each(function () {
+                    if (_value == $(this).attr('id')) {
+                        $(this).attr('checked', false);
+                    }
+                });
+            }
+            ToolValueTagRemove($(this).parent().attr('id').replace('ValueTag', ''));
+        });
+    }
+}
+function ToolValueTagRemove(value) {
+    $('#ValueTag' + value).fadeOut("fast", function () {
+        $('#ValueTag' + value).remove();
+        ValueTagHeader();
+    });
+}
+function ValueTagHeader() {
+    if ($('.ValueTag').length == 0) {
+        $('#ValueTagHeader').text('未選取數值');
+    } else {
+        $('#ValueTagHeader').text('已選取數值:' + $('.ValueTag').length);
+    }
+}
+function ClearAll() {
+    $('.ValueTag').remove();
+    $('.cb_Tag:checked').attr('checked', false);
+    ValueTagHeader();
+}
+function reload() {
+    location.reload();
+}
+String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g,"");
+}
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
+};
+</script>
+}
+<style>
+    [name=ALSPUT01] {
+        background-color: lightgreen;
+    }
+</style>
+<h2>@Request["vName"]</h2>
+@*@Html.Partial("MachineGroupTitle", ViewData["PageName"] = "PLCCheck")*@
+<input type="button" name="reload" value="Reload Page" onclick="javascript: reload();" style="color: red; font-weight: bold;" />
+<input type="radio" id="EQPType1" name="EQPType" class="EQPType" value="0" checked="checked" /><label for="EQPType1">EQP Type(Tool Only)</label>
+<input type="radio" id="EQPType2" name="EQPType" class="EQPType" value="1" /><label for="EQPType2">EQP Type(All Status)</label>
+<span style="color:blue">@TSMC14B.Menu.LastUpdateTime:@DateTime.Now.ToString("MM/dd HH:mm:ss")</span>
+<hr />
+<table style="border: groove; border-width: thin; width: 800px">
+    <tr>
+        <td style="width: 100px; border: outset; border-width: thin; background-color: lightgray;"><span style="">EQPTYPE</span></td>
+        <td colspan="50" style="border: outset; border-width: thin; background-color: lightgray;"><span>EQID</span></td>
+    </tr>
+    @{string processNameString = string.Empty;}
+
+    @foreach (var item in ViewData["process_name"] as IEnumerable<string>)
+    {
+        <tr>
+            <td style="border: outset; border-width: thin; background-color:lightblue; text-align: center; font-weight: bold; vertical-align:middle; ">@item</td>
+            <td colspan="50" style="border-bottom-width: thin; border-bottom-style: groove;">
+                @{
+                    string processName = item.ToString();
+                    List<TSMC14B.Areas.Main.Models.vw_eq_status> codes2 = (from row in ViewData["Device"] as List<TSMC14B.Areas.Main.Models.vw_eq_status> where row.process_name == processName select row).ToList();
+                }
+                @foreach (var item2 in (from c in codes2 select c.EQID).Distinct())
+                {
+                    string EQID = item2.ToString();
+                    List<TSMC14B.Areas.Main.Models.vw_eq_status> codes3 = (from row in ViewData["Device"] as List<TSMC14B.Areas.Main.Models.vw_eq_status> where row.process_name == processName && row.EQID == EQID select row).ToList();
+
+                    var codes4 = from row in ViewData["Device"] as List<TSMC14B.Areas.Main.Models.vw_eq_status> where row.process_name == processName && row.EQID == EQID group row by row.chamber;
+
+                    Int16 toolStatus = 0;
+                    foreach (var item3 in from c in codes3 select c)
+                    {
+                        if (item3.sid == 1)
+                        {
+                            toolStatus = 1;
+                            break;
+                        }
+                        else if (item3.sid == 9 && toolStatus != 1)
+                        {
+                            toolStatus = 9;
+                        }
+                        else if (item3.sid == 2 && toolStatus != 1 && toolStatus != 9)
+                        {
+                            toolStatus = 2;
+                        }
+                        else if (item3.sid == 8 && toolStatus != 1 && toolStatus != 2 && toolStatus != 9)
+                        {
+                            toolStatus = 8;
+                        }
+                        else if (item3.sid == 5 && toolStatus != 1 && toolStatus != 2 && toolStatus != 8 && toolStatus != 0 && toolStatus != 9)
+                        {
+                            toolStatus = 5;
+                        }
+                        else if (item3.sid == 0 && toolStatus != 1 && toolStatus != 2 && toolStatus != 8 && toolStatus != 9)
+                        {
+                            toolStatus = 0;
+                        }
+                    }
+
+                    String toolColor = string.Empty;
+
+                    switch (toolStatus)
+                    {
+                        case 0:
+                            toolColor = "lightgreen";
+                            break;
+                        case 1:
+                            toolColor = "red";
+                            break;
+                        case 2:
+                            toolColor = "yellow";
+                            break;
+                        case 5:
+                            toolColor = "lightgray";
+                            break;
+                        case 8:
+                            toolColor = "blue";
+                            break;
+                        case 9:
+                            toolColor = "red";
+                            break;
+                        case 98:
+                            toolColor = "lightgray";
+                            break;
+                        case 99:
+                            toolColor = "red";
+                            break;
+                        default:
+                            toolColor = "lightgreen";
+                            break;
+                    }
+                
+                        <span style="display: inline-flex; border: outset; border-width: 3px;border-color: lightgray;  background-color:@toolColor; padding: 2px">
+                        
+                        <label class="EQID" style="border: solid; border-width: 1px; border-color: black; font-weight: bold; font-size:20px;">@item2</label>
+                            @foreach (var item4 in (from c in codes3 select c.chamber).Distinct())
+                            {
+                                Int32 chamberStatus =0;
+                                String chamberColor = string.Empty;
+                                foreach (var item3 in from c in codes3 where c.chamber == item4 select c)
+                                {
+                                    
+                                    if (item3.sid == 1)
+                                    {
+                                        chamberStatus = 1;
+                                        break;
+                                    }
+                                    else if (item3.sid == 9 && chamberStatus != 1)
+                                    {
+                                        chamberStatus = 9;
+
+                                    }
+                                    else if (item3.sid == 2 && chamberStatus != 1 && chamberStatus != 9)
+                                    {
+                                        chamberStatus = 2;
+
+                                    }
+                                    else if (item3.sid == 8 && chamberStatus != 1 && chamberStatus != 2 && chamberStatus != 9)
+                                    {
+                                        chamberStatus = 8;
+                                    }
+                                    else if (item3.sid == 5 && chamberStatus != 1 && chamberStatus != 2 && chamberStatus != 8 && chamberStatus != 0 && chamberStatus != 9)
+                                    {
+                                        chamberStatus = 5;
+                                    }
+                                    else if (item3.sid == 0 && chamberStatus != 1 && chamberStatus != 2 && chamberStatus != 8 && chamberStatus != 9)
+                                    {
+                                        chamberStatus = 0;
+                                    }
+                                    
+                                }
+
+
+                                switch (chamberStatus)
+                                {
+                                    case 0:
+                                        chamberColor = "lightgreen";
+                                        break;
+                                    case 1:
+                                        chamberColor = "red";
+                                        break;
+                                    case 2:
+                                        chamberColor = "yellow";
+                                        break;
+                                    case 5:
+                                        chamberColor = "lightgray";
+                                        break;
+                                    case 8:
+                                        chamberColor = "blue";
+                                        break;
+                                    case 9:
+                                        chamberColor = "red";
+                                        break;
+                                    case 98:
+                                        chamberColor = "lightgray";
+                                        break;
+                                    case 99:
+                                        chamberColor = "red";
+                                        break;
+                                    default:
+                                        chamberColor = "lightgreen";
+                                        break;
+                                }
+                                
+                                @:<table class="chamber" style="display:none;border:groove; border-width: 2px;border-color: lightgray;padding:1px;margin:1px;background-color:@chamberColor;"><tr><td>
+                                    @item4
+                                @:</td></tr><tr><td>
+                                foreach (var item3 in from c in codes3 where c.chamber == item4 select c)
+                                {
+                                        <input type="button" style="font-size:10px;padding:0px 1px;border-width:2px;background-color:@item3.sColor;"  value="@item3.WEB_code" onclick="location.href = 'Accessory?pid=@item3.pid    ';" />
+                                }
+                                @:</td></tr></table>
+                            }
+                    </span>
+                }
+            </td>
+        </tr>         
+    } 
+</table>
+<div style="height:50px">
+    
+</div>

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TSMC14B.Areas.Main.Models.StatusDetialModel>
+@{
+    ViewBag.Title = "斷線機台";
+}
+
+<h2>@Request["eqFloor"] @Request["locArea"]區 @Request["Area"] @ViewBag.Title</h2>
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var _eqFloor = window.location.search;
+            var _inteqFloor = window.location.search.indexOf("eqFloor");
+            _eqFloor = _eqFloor.substring(_inteqFloor + 8, _eqFloor.length).split("&", 1);
+            var _locArea = window.location.search;
+            var _intlocArea = window.location.search.indexOf("locArea");
+            _locArea = _locArea.substring(_intlocArea + 8, _locArea.length).split("&", 1);
+            var _Area = window.location.search;
+            var _intArea = window.location.search.indexOf("&Area");
+            _Area = _Area.substring(_intArea + 6, _Area.length).split("&", 1);
+            $('.flexme').flexigrid({
+                width: 750,
+                height: "auto",
+                url: '@Url.Action("JsonCutOffDeatil")?eqFloor=' + _eqFloor + '&locArea=' + _locArea + '&Area=' + _Area,
+                dataType: 'json',
+                colModel: [
+                    { display: '斷線時間', name: 'AlarmTime', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: 'ToolID', name: 'toolID', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: 'locationID', name: 'location_id', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '柱位(樓)', name: 'location', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '廠牌', name: 'vendor_name', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: 'NGVMB', name: 'VMB', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: 'PowerSource', name: 'PW_Source', width: 80, sortable: false, align: 'center', hide: false },
+                ],
+                usepager: true,
+                useRp: true,
+                rp: 10,
+                nowrap: false,
+                singleSelect: true,
+                rpOptions: [10, 20, 30, 50, 100],
+            });
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+        });
+    </script>
+}
+<table class="flexme" />

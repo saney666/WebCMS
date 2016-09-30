@@ -1,0 +1,192 @@
+﻿@{
+    ViewBag.Title = "FDCPM";
+    Layout = "~/Areas/Main/Views/Shared/_Layout.cshtml";
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Themes/Shared/ptTimeSelect/jquery.datetimepicker.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.datetimepicker.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.FDCPM').change(function () {
+                if ($(this).val() == 0) {
+                    $('#spStartDate').css('display', 'none');
+                    $('#spEndDate').css('display', 'none');
+                    $('#spTools').css('display', 'none');
+                } else {
+                    $('#spStartDate').css('display', '');
+                    $('#spEndDate').css('display', '');
+                    $('#spTools').css('display', '');
+                    
+                }
+                ChartExport('search');
+            });
+            var startdate = new Date(Date.now() - (7 * 24 * 60 * 60 * 1000));
+            var enddate = new Date(Date.now());
+            $('#FDCPMStartDate').val(startdate.getFullYear() + '-' + AddZero(parseInt(startdate.getMonth()) + 1) + '-' + AddZero(startdate.getDate()) + ' 00:00');
+            $('#FDCPMEndDate').val(enddate.getFullYear() + '-' + AddZero(parseInt(enddate.getMonth()) + 1) + '-' + AddZero(enddate.getDate()) + ' 23:59');
+            $('#FDCPMStartDate').datetimepicker();
+            $('#FDCPMEndDate').datetimepicker({
+                Time59: true
+            });
+            $('#department_name').change(function () {
+                $.post('@Url.Action("JsonTool")', { "dName": this.value }, function (data) {
+                    $('#Tools').empty();
+                    $('#Tools').append('<option value="">' + '@TSMC14B.Menu.plaseSelectOption' + '</option>');
+                    for (var i in data) {
+                        $('#Tools').append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                    }
+                }, "json");
+            });
+
+            $('.flexme').flexigrid({
+                //title: 'FDC List',
+                width: 1214,
+                height: "auto",
+                //url: '@Url.Action("JsonFDCPM")?history=' + $('.FDCPM').val() + '&page=1&rp=20',
+                dataType: 'json',
+                colModel: [
+                    { display: 'pid', name: 'pid', width: 60, sortable: false, align: 'center', hide: true },
+                    { display: '@TSMC14B.Menu.department_name', name: 'department_name', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '設定時間', name: 'builtdate', width: 120, sortable: false, align: 'center', hide: false },
+                    { display: 'Name', name: 'chamberName', width: 150, sortable: false, align: 'center', hide: false },
+                    { display: '延後時間', name: 'FDCPMTime', width: 140, sortable: false, align: 'center', hide: false },
+                    { display: '理由', name: 'memo', width: 140, sortable: false, align: 'center', hide: false },
+                    { display: '狀態', name: 'FDCPMStatus', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: '操作人員', name: 'login_name', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '', name: 'stop', width: 300, sortable: false, align: 'left', hide: false }
+                ],
+                procmsg: '@TSMC14B.Menu.procmsg',
+                rptext: '@TSMC14B.Menu.rptext',
+                pagestat: '@TSMC14B.Menu.pagestat',
+                pagetext: '@TSMC14B.Menu.pagetext',
+                outof: '@TSMC14B.Menu.outof',
+                nomsg: '@TSMC14B.Menu.nomsg',
+                usepager: true,
+                useRp: true,
+                rp: 20,
+                nowrap: false,
+                onSuccess: function () {
+                    $('.flexme > tbody > tr > td[abbrr="stop"] > div').empty();
+                    if ($('.FDCPM:checked').val() == 0) {
+                        $('.flexme > tbody > tr > td[abbrr="stop"] > div').each(function () {
+                            var dept = $(this).parent().parent().children(':eq(1)').text();
+                            var pid = $(this).parent().parent().children(':eq(0)').text();
+                            
+                            if (dept == '@Session["UserdepartmentName"]' || parseInt('@Session["UserLevel"]') >= 900) {
+                                $(this).append('<span ><input  id="tbx_' + pid + '" class="FDCPMPCUPTIME" style="width: 110px" ><input type="button" id="btns_' + pid + '" class="FDCPMSetting" value="設定" style="width: 80px" /><input type="button" id="btnr_' + pid + '" class="FDCPMReSet stop" value="解除" style="width: 80px" /></span>');
+                                //$('.flexme > tbody > tr > td[abbrr="stop"] > div')
+                                //<a href="#" class="stop" ><span style="width:100%;"><img src="@Url.Content("~/images/stop.png")" alt="" /></span></a>
+                            }
+                        });
+
+                        $('.stop').click(function (i, e) {
+                            var pid = $(this).parent().parent().parent().parent().children(':eq(0)').text();
+                            
+                            FDCPMNOW(pid);
+                        });
+
+                        var d = new Date(Date.now());
+                        $('.FDCPMPCUPTIME').val(d.getFullYear() + '-' + AddZero(parseInt(d.getMonth()) + 1) + '-' + AddZero(d.getDate()) + ' 23:59');
+                        $('.FDCPMPCUPTIME').datetimepicker();
+
+                        $('.FDCPMSetting').click(function (i, e) {
+                            var pid = $(this).parent().parent().parent().parent().children(':eq(0)').text();
+                            var setDateTime = $(this).parent().children('#tbx_' + pid).val();
+                            var memo = $(this).parent().parent().parent().parent().children(':eq(5)').text();
+                            //console.log($(this).parent().children('#tbx_' + pid));
+                            FDCPM(pid, setDateTime, memo);
+                        });
+
+                        $('.flexme > tbody > tr > td[abbrr="chamberName"] > div').each(function () {
+                            var pid = $(this).parent().parent().children(':eq(0)').text();
+                            //$(this).html('<a href="@Url.Action("Accessory","MachineGroup")?pid=' + pid + '">' + $(this).text() + '</a>');
+                            
+                        });
+                    } else {
+                        $('.flexme > tbody > tr > td[abbrr="stop"] > div').remove();
+                    }
+                },
+                singleSelect: true,
+                rpOptions: [5, 10, 15, 20, 30, 50, 100],
+            });
+            ChartExport('search');
+        });
+        function AddZero(num) {
+            return (num >= 0 && num < 10) ? "0" + num : num + "";
+        }
+        function ChartExport(id) {
+            if (id == 'search') {
+                var urlStr = '@Url.Action("JsonFDCPM")?history=' + $('.FDCPM:checked').val() + '&dept=' + $('#department_name').val() + '&tool=' + $('#Tools').val() + '&startdate=' + $('#FDCPMStartDate').val() + '&enddate=' + $('#FDCPMEndDate').val() + '&page=1&rp=20';
+
+                $(".flexme").flexOptions({ url: urlStr });
+                    $('.flexme').flexReload();
+                } else {
+                location.href = '@Url.Action("FDCPM")?history=' + $('.FDCPM:checked').val() + '&dept=' + $('#department_name').val() + '&tool=' + $('#Tools').val() + '&startdate=' + $('#FDCPMStartDate').val() + '&enddate=' + $('#FDCPMEndDate').val() + '&output=' + id;
+                }
+        }
+function FDCPMNOW(pid) {
+    var dt = new Date(Date.now() + 1000 * 5);
+    var setDateTime = dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
+        if (confirm('是否設定開始資料收集')) {
+            $.post('@Url.Action("JsonEQFDCPM","MachineGroup")', [{ name: 'pid', value: pid }, { name: 'delayFDCUploadTime', value: setDateTime }, { name: 'SetFlag', value: false }], function (data) { setTimeout(function () { $('.flexme').flexReload(); alert(data.result); }, 2000) });
+        }
+}
+function FDCPM(pid, setDateTime,memo) {
+    var setDateTime = setDateTime;
+            if (confirm('是否設定延遲資料收集')) {
+                $.post('@Url.Action("JsonEQFDCPM","MachineGroup")', [{ name: 'pid', value: pid }, { name: 'delayFDCUploadTime', value: setDateTime }, { name: 'SetFlag', value: true }, { name: 'memo', value: memo }],
+                                  function (data) { setTimeout(function () { $('.flexme').flexReload(); alert(data.result); }, 1000) });
+    }
+}
+    </script>
+}
+<h2>延後上報機台列表</h2>
+<div>
+    <input type="radio" id="FDCPM_Now"  class="FDCPM" name="FDCPM" value="0" checked="checked" />
+    <label for="FDCPM_Now">即時列表</label>
+    <input type="radio" id="FDCPM_History"  class="FDCPM" name="FDCPM" value="1" /><label for="FDCPM_History">歷史列表</label>
+    <table border="1" class="tb" style="width: 550px">
+        <tr>
+            <td style="text-align: left;">
+                <label for="lbl_department_name">@TSMC14B.Menu.plaseSelectDep</label>
+                <select id="department_name">
+                    <option value="">ALL</option>
+                    @foreach (var item in ViewBag.department_name as IEnumerable<SelectListItem>)
+                    {
+                        <option  value="@item.Value" 
+                                
+                                @if (item.Selected)
+                                {
+		                            @:selected="selected"
+	                            }
+                                >@item.Text</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <span id="spTools" style="display: none;">
+                    <label for="lbl_chamberName">@TSMC14B.Menu.plaseSelectEQ</label>
+                    <select id="Tools">
+                        <option value="">請選擇</option>
+                        @foreach (var item in ViewBag.Tool)
+                        {
+                            <option  value="@item.Value" >@item.Text</option>
+                        }
+                    </select>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;"><span id="spStartDate" style="display: none;">
+                <label>StartDate</label><input id="FDCPMStartDate" type="datetime" /></span></td>
+            <td style="text-align: right;"><span id="spEndDate" style="display: none;">
+                <label>EndDate</label><input id="FDCPMEndDate" type="datetime" /></span></td>
+        </tr>
+    </table>
+</div>
+<input type="button" id="sbmit" value="@TSMC14B.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search');" />
+<input type="button" id="btnExport" value="@TSMC14B.Menu.ChartExport" style="width: 80px;" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp; 
+<table class="flexme">
+</table>

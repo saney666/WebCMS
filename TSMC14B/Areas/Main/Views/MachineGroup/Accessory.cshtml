@@ -1,0 +1,731 @@
+﻿@model TSMC14B.Areas.Main.Models.ChamberModel
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewBag.Title = Request["Chamber"];
+}
+
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Themes/Shared/ptTimeSelect/jquery.datetimepicker.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.datetimepicker.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        var meter3 = null;
+        //meter2 = setTimeout("Alarm('MainNoW');", 10000);
+        $(document).ready(function () {
+            Getdata();
+            $('.flexme').flexigrid({
+                width: 1195,
+                height: "auto",
+                url: '@Url.Action("JsonEQAlarm")?ToolID=@ViewData["toolid"]',
+                dataType: 'json',
+                colModel: [
+                        { display: '@TSMC14B.Menu._DateTime', name: '_DateTime', width: 150, sortable: false, align: 'center', hide: false },
+                        { display: 'Tool ID', name: 'ToolID', width: 120, sortable: false, align: 'center', hide: false },
+                        { display: '@TSMC14B.Menu.Location', name: 'Location', width: 70, sortable: false, align: 'center', hide: false },
+                        { display: '@TSMC14B.Menu.department_name', name: 'department_name', width: 60, sortable: false, align: 'center', hide: false },
+                        { display: '@TSMC14B.Menu.AlarmValue', name: 'AlarmValue', width: 60, sortable: false, align: 'center', hide: false },
+                        { display: '@TSMC14B.Menu.AlarmType', name: 'AlarmType', width: 60, sortable: false, align: 'center', hide: false },
+                        { display: '@TSMC14B.Menu.AlarmMessage', name: 'AlarmMessage', width: 250, sortable: false, align: 'center', hide: false },
+                        { display: 'Alarm Level', name: 'AlarmLevel', width: 80, sortable: false, align: 'center', hide: true },
+                ],
+                onSuccess: function () {
+                    //$('.flexme > tbody > tr > td[abbrr="Acknowledge"] > div').text('');
+                    //$('.flexme > tbody > tr > td[abbrr="Mute"] > div').text('');
+                    //$('.flexme > tbody > tr > td[abbrr="Acknowledge"]').append('<a href="#" style="text-align: center;" class="Acknowledge" ><div style=" width: 100px;">Acknowledge</div></a>')
+                    //    .each(function (i, e) {
+                    //        var alarmTime = $(this).parent().children(':eq(0)').text();
+                    //        var toolidd = $(this).parent().children(':eq(1)').text();
+                    //    });
+                    //$('.flexme > tbody > tr > td[abbrr="Mute"]').append('<a href="#" style="text-align: center;" class="Mute" ><div style=" width: 100px;">Mute</div></a>')
+                    //    .each(function (i, e) {
+                    //        var alarmTime = $(this).parent().children(':eq(0)').text();
+                    //        var toolidd = $(this).parent().children(':eq(1)').text();
+                    //    });
+                    //$('.flexme > tbody > tr > td[abbrr="ToolID"] > div').each(function (i, e) {
+                    //    //$(this).wrap('<a href=# class="SingleAlarm"></a>');
+                    //});
+                    //$(".Acknowledge").click(function () {
+                    //    //var alarmTime = $(this).parent().parent().children(':eq(0)').text();
+                    //    //var toolidd = $(this).parent().parent().children(':eq(1)').text();
+                    //    setAcknowledge($(this).parent().parent());
+                    //    $('.flexme').flexReload();
+                    //});
+                    //if (vendorName == 'Main') {
+                    //$('.flexme > tbody > tr > td[abbrr="AlarmMessage"] > div').each(function (i, e) {
+                    //    $(this).wrap('<a href=# class="AlarmMsg"></a>');
+                    //});
+                    @*$(".AlarmMsg").click(function () {
+                        var toolidd = $(this).parents('tr').children('[abbrr="ToolID"]').text();
+                        var Alarm = $(this).parents('tr').children('[abbrr="AlarmMessage"]').text();
+                        $.post('@Url.Action("AlarmTagList")', [{ name: 'Comment', value: Alarm }],
+                            function (data) {
+                                var temp2 = '';
+                                var Startdate = new Date(Date.now() - 7 * 24 * 3600 * 1000);
+                                var Enddate = new Date;
+                                var dataCount = 0;
+                                var Startday = Startdate.getFullYear() + "-" + (Startdate.getMonth() + 1) + "-" + Startdate.getDate() + " " + Startdate.getHours() + ":" + Startdate.getMinutes() + ":" + Startdate.getSeconds();
+                                var Endday = Enddate.getFullYear() + "-" + (Enddate.getMonth() + 1) + "-" + Enddate.getDate() + " " + Enddate.getHours() + ":" + Enddate.getMinutes() + ":" + Enddate.getSeconds();
+                                $.each(data, function (i, item) {
+                                    temp2 = temp2 + 'P5_' + toolidd + item.Value + ',';
+                                    dataCount += 1;
+                                });
+                                if (dataCount > 0) {
+                                    OpenModelWindow('@Url.Action("../MachineGroup/MyChart")?toolId=' + toolidd + '&TagName=' + temp2 + '&StartDate=' + Startday + '&EndDate=' + Endday + '&flag=' + 3, { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
+                                }
+                                else {
+                                    alert('Alarm 訊息:' + Alarm + ' 未設定對應數值!!');
+                                }
+                            }, 'json');
+                    });*@
+                    //}
+                    $('.SingleAlarm').click(function () {
+                        location.href = "@Url.Action("AlarmDeal")?StartDate=" + $(this).parents('tr').children('[abbrr="_DateTime"]').text() + ".000" + "&EndDate=" + $(this).parents('tr').children('[abbrr="_DateTime"]').text() + ".999" + "&ToolID=" + $(this).parents('tr').children('[abbrr="ToolID"]').text() + "&AlarmMsg=" + $(this).parents('tr').children('[abbrr="AlarmMessage"]').text() + "&Closed=&Vendor=" + $(this).parents('tr').children('[abbrr="Vendor"]').text() + "&Post=1";
+                    });
+                    //if ($('.Acknowledge').size() == 0 || $('.Mute').size() == 0) {
+                    //    $('#mediaPlayer').get(0).stop();
+                    //}
+                    //else {
+                    //    $('#mediaPlayer').get(0).Play();
+                    //}
+                    @*//if ($('.Acknowledge').size() == 0) { $('#mediaPlayer').remove();}*@
+                    //$('.AckALL').click(function () {
+                    //    $('.Acknowledge').each(function (i, e) {
+
+                    //        setAcknowledge($(this).parent().parent());
+                    //    });
+                    //    $('.flexme').flexReload();
+                    //});
+                    //$('.MuteALL').click(function () {
+                    //    $('.Mute').each(function (i, e) {
+
+                    //        setMute($(this).parent().parent());
+                    //    });
+                    //    $('.flexme').flexReload();
+                    //});
+                    @* if ('@Session["vendorName"]' == "" || '@Session["vendorName"]' == "Main") {
+                        $("#gridTitle").html("&nbsp&nbsp " + '@Session["vendorName"]' + " PreAlarm List");
+                    }
+                    else {
+                        $("#gridTitle").html("&nbsp&nbsp Alarm Now List");
+                    }
+                //$('#btn_index').click(function () {
+                //    $('.flexme td:nth-child(4)').hide();
+                //});*@
+                },
+                procmsg: '@TSMC14B.Menu.procmsg',
+                rptext: '@TSMC14B.Menu.rptext',
+                pagestat: '@TSMC14B.Menu.pagestat',
+                pagetext: '@TSMC14B.Menu.pagetext',
+                outof: '@TSMC14B.Menu.outof',
+                nomsg: '@TSMC14B.Menu.nomsg',
+                usepager: true,
+                useRp: true,
+                rp: 20,
+                nowrap: false,
+                singleSelect: true,
+                rpOptions: [5, 10, 15, 20, 30, 50],
+            });
+            $('.ChartLink').click(function () {
+                var toolid = '@ViewData["toolid"]';
+                var Tag_Name = this.id;
+                //OpenModelWindow('@Url.Action("MyChart")?toolId=' + toolid + '&TagName=P5_'+toolid+'_MP_PW&StartDate=@DateTime.Now.AddHours(-2).ToString("yyyy-MM-dd HH:mm")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd%2HH:mm")&flag=3', { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
+                OpenModelWindow('@Url.Action("MyChart")?toolId=' + toolid + '&TagName=P5_' + toolid + Tag_Name + '&StartDate=@DateTime.Now.AddHours(-2).ToString("yyyy-MM-dd") @DateTime.Now.AddHours(-2).ToString("HH:mm:ss")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd") @DateTime.Now.ToString("HH:mm:ss")&flag=4', { width: 900, height: 700, caption: "Thend Chart", onclose: function () { } });
+            });
+            if (('@ViewData["vName"]'=='@Session["UserdepartmentName"]' &&  parseInt('@Session["UserLevel"]') >=500)||parseInt('@Session["UserLevel"]') >=900) {
+                $('#FDCPM').show();
+            }
+            if ($("#tbxnextFDCUploadSetDate").val().length == 0) {
+                var dt = new Date(Date.now() );
+                $("#tbxnextFDCUploadSetDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' +AddZero( dt.getHours()) + ':' +AddZero( dt.getMinutes()));
+            }
+            $('#tbxnextFDCUploadSetDate').datetimepicker();
+            $('#btn_PM').click(function () {
+                //console.log($(this).data("toolid"));
+                var toolidd = $(this).data("toolid");
+                var pmFlagg = $(this).data("pmflag");
+
+                var sType = "";
+                $('.cb_sType:checked').each(function (e) {
+                    sType += $(this).val() + ",";
+                });
+                sType = sType.substring(0, sType.length - 1);
+
+                //console.log(pmFlagg);
+                if (toolidd.length > 0) {
+                    @*if (pmFlagg == 0) {
+                        if (sType.length > 0) {
+                            if ($('#memo').val().length > 0) {
+                                hiConfirm('是否解除隔離？', '確認', function (r) { if (r) { $.post('@Url.Action("CancelPM")', [{ name: 'toolId', value: toolidd }, { name: 'selectType', value: sType }, { name: 'pmFlag', value: pmFlagg }, { name: 'memo', value: $('#memo').val() }, { name: 'bellow', value: $('#Bellow').val() }, { name: 'turning', value: $('#Turning').val() }, { name: 'threeway', value: $('#ThreeWay').val() }, { name: 'handvalve', value: $('#HandValve').val() }, { name: 'bshead', value: $('#bsHead').val() }, { name: 'gasvalve', value: $('#GasValve').val() }, { name: 'lpipe', value: $('#LPipe').val() }, { name: 'entry', value: $('#Entry').val() }, { name: 'inlet', value: $('#Inlet').val() }, { name: 'mixingbox', value: $('#MixingBox').val() }, { name: 'reactor', value: $('#Reactor').val() }, { name: 'tank', value: $('#Tank').val() }, { name: 'outlet', value: $('#Outlet').val() }, { name: 'tpipe', value: $('#Tpipe').val() }, { name: 'pmlpipe', value: $('#Pmlpipe').val() }, { name: 'upturning', value: $('#Upturning').val() }, { name: 'ms', value: $('#ms').val() }, { name: 'inlet_TP', value: $('#Inlet_TP').val() }, { name: 'mixingbox_TP', value: $('#MixingBox_TP').val() }, { name: 'reactor_TP', value: $('#Reactor_TP').val() }, { name: 'tank_TP', value: $('#Tank_TP').val() }, { name: 'outlet_TP', value: $('#Outlet_TP').val() }, { name: 'tpipe_TP', value: $('#Tpipe_TP').val() }, { name: 'pmlpipe_TP', value: $('#Pmlpipe_TP').val() }, { name: 'upturning_TP', value: $('#Upturning_TP').val() }, { name: 'ms_TP', value: $('#ms_TP').val() }], function (data) { alert(data.Msg); setTimeout("location.reload();", 5000); }, 'json'); } });
+                            }
+                            else {
+                                alert('請填寫隔離原因');
+                            }
+                        }
+                        else {
+                            alert('請勾選類別');
+                        }
+                    }
+                    else
+                        hiConfirm('是否隔離？', '確認', function (r) { if (r) { $.post('@Url.Action("CancelPM")', [{ name: 'toolId', value: toolidd }, { name: 'pmFlag', value: pmFlagg }, { name: 'memo', value: '' }], function (data) { alert(data.Msg); setTimeout("location.reload();", 5000); }, 'json'); } });*@
+                    if (pmFlagg == 1) {
+                        hiConfirm('@TSMC14B.Menu.IsPM？', '確認', function (r) { if (r) { $.post('@Url.Action("CancelPM", "Home")', [{ name: 'toolId', value: toolidd }, { name: 'pmFlag', value: pmFlagg }, { name: 'memo', value: '' }], function (data) { alert(data.Msg); setTimeout("location.reload();", 5000); }, 'json'); } });
+                    } else if (pmFlagg == 0) {
+                        //if ($('#memo').val().length > 0) {
+                        hiConfirm('@TSMC14B.Menu.IsCancelPM？', '確認', function (r) { if (r) { $.post('@Url.Action("CancelPM", "Home")', [{ name: 'toolId', value: toolidd }, { name: 'selectType', value: sType }, { name: 'pmFlag', value: pmFlagg }, { name: 'memo', value: $('#memo').val() }], function (data) { alert(data.Msg); setTimeout("location.reload();", 5000); }, 'json'); } });
+                        //} else {
+                        //alert('請填寫隔離原因');
+                        //}
+                    }
+            }
+            });
+            Alarm('MainNow');
+        });
+        function AddZero(num) {
+            return (num >= 0 && num < 10) ? "0" + num : num + "";
+        }
+    function reload() {
+        location.reload();
+    }
+    var meter2 = 0;
+    function Getdata() {
+        clearTimeout(meter2);
+        if ('@ViewBag.IsValueNow' == 'True') {
+            $.post('@Url.Action("JsonEQValueNow")', [{ name: 'pid', value: '@ViewBag.plcId' }],
+                              function (data) {
+                                  if (data.rows.length > 0) {
+                                      $('#DataArea').empty();
+                                      $('#DataArea').append('<div id="HJFDCArea"></div><br/>');
+                                      $('#DataArea').append('<table>');
+                                      var flag = 0;
+                                      if ('@ViewBag.AccessoryType' == 'HJ') {
+                                              $('#HJFDCArea').append('<table><tr>');
+                                              $.each(data.rows, function (i, item) {
+                                                  
+                                                  if(item.Cht_Comment=='Mean'||item.Cht_Comment=='Stdev'||item.Cht_Comment=='Max'||item.Cht_Comment=='Min'){
+                                                      $('#HJFDCArea').append('<td style="width:170px;background-color:#f2ffff;border-style:ridge;border-width:3px;border-color:silver;padding:2px 3px 2px 3px;margin:3px 0px 3px 0px;position:relative;font-weight: bold;" ><a href="#" id="' + item.TagName + '" class="ChartLink2">' + item.Cht_Comment + '</a>：<span id="DP_Current">' + item.Value + '  ' + item.Unit + '</span></td>')
+                                                  }else {
+                                                      if (flag == 0) {
+                                                          $('#DataArea').append('<tr>');
+                                                      }
+                                                  
+                                                      $('#DataArea').append('<td style="width:170px;background-color:#f2ffff;border-style:ridge;border-width:3px;border-color:silver;padding:2px 3px 2px 3px;margin:3px 0px 3px 0px;position:relative;font-weight: bold;" ><a href="#" id="' + item.TagName + '" class="ChartLink2">' + item.Cht_Comment + '</a>：<span id="DP_Current">' + item.Value + '  ' + item.Unit + '</span></td>')
+                                                  
+                                                      if (flag == 4) {
+                                                          $('#DataArea').append('</tr>');
+                                                      }
+                                                      flag = flag + 1
+                                                      if (flag == 5) {
+                                                          flag = 0
+                                                      }
+                                                  }
+                                              });
+                                              $('#HJFDCArea').append('</tr>');
+                                              $('#HJFDCArea').append('</table>');
+                                          } else if ('@ViewBag.AccessoryType' == 'HN2') { 
+                                              $.each(data.rows, function (i, item) {
+                                                  if (flag == 0) {
+                                                      $('#DataArea').append('<tr>');
+                                                  }
+                                                  if(item.Cht_Comment == 'Run_Hours'||item.Cht_Comment == 'Run_Hour'){
+                                                      $('#DataArea').append('<td style="width:300px;background-color:#f2ffff;border-style:ridge;border-width:3px;border-color:silver;padding:2px 3px 2px 3px;margin:3px 0px 3px 0px;position:relative;font-weight: bold;" >' + item.Cht_Comment + '：<span id="DP_Current">' + item.Value + '  ' + item.Unit + '</span></td>')
+                                                  }else{
+                                                      $('#DataArea').append('<td style="width:300px;background-color:#f2ffff;border-style:ridge;border-width:3px;border-color:silver;padding:2px 3px 2px 3px;margin:3px 0px 3px 0px;position:relative;font-weight: bold;" ><a href="#" id="' + item.TagName + '" class="ChartLink2">' + item.Cht_Comment + '</a>：<span id="DP_Current">' + item.Value + '  ' + item.Unit + '</span></td>')
+                                                  }
+                                                  
+                                                  if (flag == 4) {
+                                                      $('#DataArea').append('</tr>');
+                                                  }
+                                                  flag = flag + 1
+                                                  if (flag == 5) {
+                                                      flag = 0
+                                                  }
+                                              });
+                                          }else {
+                                              $.each(data.rows, function (i, item) {
+                                                  if (flag == 0) {
+                                                      $('#DataArea').append('<tr>');
+                                                  }
+                                                  if(item.Cht_Comment == 'Run_Hours'||item.Cht_Comment == 'Run_Hour'){
+                                                      $('#DataArea').append('<td style="width:300px;background-color:#f2ffff;border-style:ridge;border-width:3px;border-color:silver;padding:2px 3px 2px 3px;margin:3px 0px 3px 0px;position:relative;font-weight: bold;" >' + item.Cht_Comment + '：<span id="DP_Current">' + item.Value + '  ' + item.Unit + '</span></td>')
+                                                  }else{
+                                                      $('#DataArea').append('<td style="width:300px;background-color:#f2ffff;border-style:ridge;border-width:3px;border-color:silver;padding:2px 3px 2px 3px;margin:3px 0px 3px 0px;position:relative;font-weight: bold;" ><a href="#" id="' + item.TagName + '" class="ChartLink2">' + item.Cht_Comment + '</a>：<span id="DP_Current">' + item.Value + '  ' + item.Unit + '</span></td>')
+                                                  }
+                                                  
+                                                  if (flag == 1) {
+                                                      $('#DataArea').append('</tr>');
+                                                  }
+                                                  if (flag == 0) {
+                                                      flag = 1;
+                                                  } else {
+                                                      flag = 0;
+                                                  }
+                                              });
+                                          }
+
+                                          $('#DataArea').append('</table>');
+                                          $('#EQStatus').text(data.status);
+
+                                          var ColorString = data.sColor;
+
+                                          $('#EQStatus').css('background-color', ColorString);
+
+                                          @*switch (data.IsPM) {
+                                              case 0:
+                                                  $('#btn_PM').val('@TSMC14B.Menu.cancelPM');
+                                                  $('#UnPM_Setting').css('display', 'block');
+                                                  break;
+                                              case 1:
+                                                  $('#btn_PM').val('@TSMC14B.Menu.PM');
+                                                  $('#UnPM_Setting').css('display', 'none');
+                                                  break;
+                                              case 2:
+                                                  $('#btn_PM').val('@TSMC14B.Menu.PMing');
+                                                  $('#UnPM_Setting').css('display', 'none');
+                                                  break;
+                                              case 3:
+                                                  $('#btn_PM').val('@TSMC14B.Menu.cancelPMing');
+                                                  $('#UnPM_Setting').css('display', 'none');
+                                                  break;
+                                          }*@
+
+                                          $('.ChartLink2').click(function () {
+                                              var toolid = '@ViewData["toolid"]';
+                                              var Tag_Name = this.id;
+                                              var scheight=screen.height;
+                                              var scwidth =screen.width;
+                                              
+                                              if('@ViewData["Is7DayUp"]'=='True'){
+                                                  //OpenModelWindow('@Url.Action("MyChart3")?toolId=' + toolid + '&TagName=' + Tag_Name + '&StartDate=@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd") @DateTime.Now.AddDays(-7).ToString("HH:mm:ss")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd") @DateTime.Now.ToString("HH:mm:ss")&flag=3&Y1Y2=Y1', { width: 900, height: 650, caption: "Thend Chart", onclose: function () { } });
+                                                  window.open('@Url.Action("MyChart4")?toolId=' + toolid + '&TagName=' + Tag_Name + '&StartDate=@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd") @DateTime.Now.AddDays(-7).ToString("HH:mm:ss")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd") @DateTime.Now.ToString("HH:mm:ss")&flag=3&Y1Y2=Y1', '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=yes,resizable=yes,top='+(((scheight-40)/2)-(690/2) <0?0:((scheight-40)/2)-(690/2))+',left='+((scwidth/2)-(840/2) <0?0:(scwidth/2)-(840/2))+',width=825,height=625');
+                                              }else{
+                                                  //OpenModelWindow('@Url.Action("MyChart")?toolId=' + toolid + '&TagName=' + Tag_Name + '&StartDate=@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd") @DateTime.Now.AddDays(-7).ToString("HH:mm:ss")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd") @DateTime.Now.ToString("HH:mm:ss")&flag=3&Y1Y2=Y1', { width: 900, height: 650, caption: "Thend Chart", onclose: function () { } });
+                                                  window.open('@Url.Action("MyChart4")?toolId=' + toolid + '&TagName=' + Tag_Name + '&StartDate=@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd") @DateTime.Now.AddDays(-7).ToString("HH:mm:ss")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd") @DateTime.Now.ToString("HH:mm:ss")&flag=3&Y1Y2=Y1', '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=yes,resizable=yes,top='+(((scheight-40)/2)-(690/2) <0?0:((scheight-40)/2)-(690/2))+',left='+((scwidth/2)-(840/2) <0?0:(scwidth/2)-(840/2))+',width=825,height=625');
+                                              }
+                                              console.log('@Url.Action("MyChart")?toolId=' + toolid + '&TagName=' + Tag_Name + '&StartDate=@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd HH:mm:ss")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")&flag=3&Y1Y2=Y1');
+                                          });
+                                      
+                                          meter2 = setTimeout("Getdata();", 2000);
+                                      }
+                                  }, 'json');
+                              } else {
+                                  $('#DP_Current').text(Math.floor((Math.random() * 50) + 1));
+                                  $('#DP_Power').text(Math.floor((Math.random() * 50) + 1));
+                                  $('#Exhaust').text(Math.floor((Math.random() * 50) + 1));
+                                  $('#H2O_Flow').text(Math.floor((Math.random() * 50) + 1));
+                                  $('#Run_Hours').text(Math.floor((Math.random() * 50) + 1));
+                                  $('#Total_N2').text(Math.floor((Math.random() * 50) + 1));
+                                  $('#DPBody_Temp').text(Math.floor((Math.random() * 50) + 1));
+                                  $('#DPMotor_Temp').text(Math.floor((Math.random() * 50) + 1));
+                                  $('#MB_Current').text(Math.floor((Math.random() * 50) + 1));
+                                  $('#MB_Power').text(Math.floor((Math.random() * 50) + 1));
+                                  $('#MB_Temp').text(Math.floor((Math.random() * 50) + 1));
+                                  meter2 = setTimeout("Getdata();", 1000);
+                              }
+  }
+
+function Alarm(tempvn) {
+ var urlStr = '';
+ if (tempvn == 'MainNow') {
+     $("#gridTitle").html("&nbsp&nbsp Alarm Now List");
+     urlStr = "@Url.Action("JsonEQAlarm")?toolId=@ViewData["toolid"]";
+ }
+ else if (tempvn == 'MainWeek') {
+     $("#gridTitle").html("&nbsp&nbsp OneDay Alarm List");
+     urlStr = "@Url.Action("JsonEQAlarmHistory")?toolId=@ViewData["toolid"]&StartDate=@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")";
+}
+else if (tempvn == 'MainMonth') {
+    $("#gridTitle").html("&nbsp&nbsp OneWeek Alarm List");
+    urlStr = "@Url.Action("JsonEQAlarmHistory")?toolId=@ViewData["toolid"]&StartDate=@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd HH:mm:ss")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")"
+}
+else if (tempvn == 'MainWeekExport') {
+    location.href = "@Url.Action("Accessory")?pid=@Request["pid"]&ToolID=@ViewData["toolid"]&StartDate=@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")&flag=1&output=export";
+}
+else if (tempvn == 'MainMonthExport') {
+    location.href = "@Url.Action("Accessory")?pid=@Request["pid"]&ToolID=@ViewData["toolid"]&StartDate=@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd HH:mm:ss")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")&flag=2&output=export";
+}
+    $(".flexme").flexOptions({ url: urlStr });
+    $('.flexme').flexReload();
+
+    clearTimeout(meter3);
+    if (tempvn == 'MainNow') {
+        meter3 = setTimeout("Alarm('" + tempvn + "');", 10000);
+    }
+ }
+function FDCPM() {
+    var setDateTime=$('#tbxnextFDCUploadSetDate').val();
+    var memo=$('#tbxnextFDCUploadMemo').val();
+    if(memo.length>0){
+        if (confirm('是否設定延遲資料收集')) {
+            $.post('@Url.Action("JsonEQFDCPM")', [{ name: 'pid', value: '@ViewBag.plcId' },{name:'delayFDCUploadTime',value:setDateTime},{name:'SetFlag',value:true},{name:'memo',value:memo}],function (data) {alert(data.result);reload();});
+        }
+    }else {
+        alert('請填寫原因');
+        return false;
+    }
+}
+function FDCPMNOW() {
+    var dt = new Date(Date.now()+1000*5);
+    var setDateTime=dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
+    if (confirm('是否設定開始資料收集')) {
+        $.post('@Url.Action("JsonEQFDCPM")', [{ name: 'pid', value: '@ViewBag.plcId' },{name:'delayFDCUploadTime',value:setDateTime},{name:'SetFlag',value:false}],function (data) {alert(data.result);reload();});
+    }
+}
+</script>
+    <style>
+        .btnPreWarning {
+            -moz-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            -webkit-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
+            background: -moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf',GradientType=0);
+            background-color: #63b8ee;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            border: 1px solid #3866a3;
+            display: inline-block;
+            cursor: pointer;
+            color: #14396a;
+            font-family: arial;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 4px 8px;
+            text-decoration: none;
+            text-shadow: 0px 1px 1px #7cacde;
+        }
+
+            .btnPreWarning:hover {
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
+                background: -moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee',GradientType=0);
+                background-color: #468ccf;
+            }
+
+            .btnPreWarning:active {
+                position: relative;
+                top: 1px;
+            }
+
+        .btnTrandChart {
+            -moz-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            -webkit-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
+            background: -moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf',GradientType=0);
+            background-color: #63b8ee;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            border: 1px solid #3866a3;
+            display: inline-block;
+            cursor: pointer;
+            color: #14396a;
+            font-family: arial;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 4px 8px;
+            text-decoration: none;
+            text-shadow: 0px 1px 1px #7cacde;
+            position: absolute;
+            /*top: 10px;*/
+            top: auto;
+            left: 1100px;
+        }
+
+            .btnTrandChart:hover {
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
+                background: -moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee',GradientType=0);
+                background-color: #468ccf;
+            }
+
+            .btnTrandChart:active {
+                position: absolute;
+                /*top: 10px;*/
+                top: auto;
+                left: 1100px;
+            }
+
+        .btnReport {
+            -moz-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            -webkit-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
+            background: -moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf',GradientType=0);
+            background-color: #63b8ee;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            border: 1px solid #3866a3;
+            display: inline-block;
+            cursor: pointer;
+            color: #14396a;
+            font-family: arial;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 4px 8px;
+            text-decoration: none;
+            text-shadow: 0px 1px 1px #7cacde;
+            position: absolute;
+            top: 90px;
+            left: 1000px;
+        }
+
+            .btnReport:hover {
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
+                background: -moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee',GradientType=0);
+                background-color: #468ccf;
+            }
+
+            .btnReport:active {
+                position: absolute;
+                top: 90px;
+                left: 1000px;
+            }
+
+        .btnDevicesConn {
+            -moz-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            -webkit-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
+            background: -moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf',GradientType=0);
+            background-color: #63b8ee;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            border: 1px solid #3866a3;
+            display: inline-block;
+            cursor: pointer;
+            color: #14396a;
+            font-family: arial;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 4px 8px;
+            text-decoration: none;
+            text-shadow: 0px 1px 1px #7cacde;
+            /*position: absolute;
+            top: 10px;
+            left: 1100px;*/
+        }
+
+            .btnDevicesConn:hover {
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
+                background: -moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee',GradientType=0);
+                background-color: #468ccf;
+            }
+
+            .btnDevicesConn:active {
+                position: relative;
+                top: 1px;
+            }
+
+
+        div.btnDiv2 {
+            position: relative;
+            /*left: 1100px;
+            border: 3px solid #73AD21;*/
+            margin-top: 10px;
+            float: left;
+        }
+
+        div.btnDiv3 {
+            /*position: absolute;
+            left: 1000px;*/
+            /*border: 3px solid #73AD21;
+            top: -400px;
+            float: left;*/
+            width:1189px;
+            position:relative;
+        }
+
+        div.btnDiv4 {
+            position: relative;
+            /*left: 1100px;
+            border: 3px solid #73AD21;
+            top: 30px;*/
+            float: left;
+        }
+
+        div.btnDiv5 {
+            position: relative;
+            /*left: 1100px;
+            border: 3px solid #73AD21;
+            top: 30px;*/
+            float: left;
+        }
+    </style>
+}
+
+<h2>
+        @Html.ActionLink(ViewData["vName"].ToString() + ">" + ViewData["AccessoryType"].ToString(), "PLCCheck2", "MachineGroup", new { vName = ViewBag.vName }, null)
+        > 
+    <label  >@ViewData["toolid"] 
+    
+          @if (Session["UserLevel"] !=null && (Int16)Session["UserLevel"] == 999)
+         { @ViewData["IOGNO"] 
+                                                                                                           }    
+        </label>
+</h2>
+<div class="btnDiv3">
+    @Html.ActionLink("TrendChart", "PLCCheckDemo", new { vName = ViewData["vName"], ToolID = ViewData["toolid"] }, new { target = "_blank", @class = "btnPreWarning" })
+
+    @{
+        List<TSMC14B.Areas.Main.Models.vw_eq_status> dataRows = ViewData["OtherAccessory"] as List<TSMC14B.Areas.Main.Models.vw_eq_status>;
+        foreach (var item in dataRows)
+        {
+                           <input type="button"
+                               class="btnDevicesConn" name="ALSPUT01" value="@item.chamberName"
+                               onclick="location.href = 'Accessory?pid=@item.pid'" />
+        }
+    }
+
+    @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN" )
+    {                   
+        <span id="FDCPM" style="font-weight:bold;right:0px;position:absolute;display:none;">
+            延後資料收集至:
+            <input class="text-box single-line" id="tbxnextFDCUploadSetDate" name="tbxnextFDCUploadSetDate"  placeholder="請填寫原因" type="text" value="" style="width:100px">
+            原因:
+            <input class="text-box single-line" id="tbxnextFDCUploadMemo" name="tbxnextFDCUploadMemo" type="text" value="">
+            <input type="button" class="btnDevicesConn"  value="設定延後收集資料" onclick="javascript:FDCPM();" />
+            <input type="button" class="btnDevicesConn"  value="設定開始收集資料" onclick="javascript:FDCPMNOW();" />
+        </span>
+   }
+
+    <div style="position: absolute; top: 100px; left: 1000px;
+         @if (ViewBag.IsAuth)
+         { @: display:block;
+                                                                                                           }
+         else
+         { @: display:none;
+                                                                                                           }
+         ">
+        @* <div id="UnPM_Setting"  @if ((int)ViewData["IsPM"] != 0)
+                                   { @:style="display:none;"
+                 }>
+                <label>是否有實際PM：</label><div style="display: inline-block;">
+                    <input class="cb_sType" name="sType" id="PM" type="checkbox" value="pm_flag" /><label for="PM">PM</label>
+                    <input class="cb_sType" name="sType" id="pumping" type="checkbox" value="pumping_done" /><label for="pumping">Pumping PM</label>
+                    <input class="cb_sType" name="sType" id="SEX" type="checkbox" value="sex_done" /><label for="SEX">SEX PM</label>
+                    <input class="cb_sType" name="sType" id="TS" type="checkbox" value="ts_flag" /><label for="TS">TS</label>
+                    <input class="cb_sType" name="sType" id="Other" type="checkbox" value="other_flag" /><label for="Other">Other</label>
+                </div>
+                <br />
+                <label>隔離原因：</label>
+                <input id="memo" type="text" />
+            </div>*@
+        @*<input id="btn_PM" style="display:none;" data-toolid="@ViewData["toolid"]" data-pmflag="@ViewData["IsPM"]" type="button" value="@switch ((int)ViewData["IsPM"])
+                                                                                                                   {
+                                                                                                                       case 0:@:@TSMC14B.Menu.cancelPM
+                                                                                                                break; case 1: @: @TSMC14B.Menu.PM
+                                                                                                                break; case 2: @: @TSMC14B.Menu.PMing
+                                                                                                                break; case 3: @: @TSMC14B.Menu.cancelPMing
+                                                                                                                break; } " class=" btnprewarning" />*@
+    </div>
+</div>
+<hr />
+<div style="position: relative; vertical-align: middle;">
+    <div class="btnDiv4">
+        <table style="width: 1100px; height: 400px">
+            <tr>
+                @if (ViewBag.AccessoryType == "PUMP")
+                {
+                    <td style="width: 350px; background-image: url('@ViewData["tImageUrl"]'); -moz-background-size: 450px; -o-background-size: 450px; -webkit-background-size: 450px; background-size: 450px; background-repeat: no-repeat; background-position: 0px 0px;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='@ViewData["tImageUrl"]', sizingMethod='scale');-ms-filter: " progid:dximagetransform.microsoft.alphaimageloader( src='@ViewData["tImageUrl"]' , sizingmethod='scale' )";">
+                        @*<img src="/images/Ed_IH600_1.jpg" alt="Edward Pum" style="width:600px;" />*@
+                    </td>
+                }
+                <td style="width: 750px; position: relative; overflow: auto;">
+                    <div style="height: 50px; font-size: 25px;">
+                        <label style="font-weight: bold;">@TSMC14B.Menu.typeName：</label><span id="tName">@ViewBag.tName</span>
+                        @if (@ViewBag.AccessoryType == "PUMP")
+                        {
+                            <label style="font-weight: bold;">@TSMC14B.Menu.plc_name：</label><span id="plc_name">@ViewBag.plc_name</span>
+                        }
+                        <label style="font-weight: bold;">@TSMC14B.Menu.status：</label><span id="EQStatus"></span>
+                    </div>
+
+                    <div id="DataArea" style="position: absolute;">
+                        <div id="HJFDCArea"></div>
+                        <table>
+                            <tr>
+                                <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_DP_C" class="ChartLink">DP_Current</a>：<span id="DP_Current"></span></td>
+                                <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_DP_P" class="ChartLink">DP_Power</a>：<span id="DP_Power"></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_Exh" class="ChartLink">Exhaust</a>：<span id="Exhaust"></span></td>
+                                <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_H2O_F" class="ChartLink">H2O_Flow</a>：<span id="H2O_Flow"></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_Run_H" class="ChartLink">Run_Hours</a>：<span id="Run_Hours"></span></td>
+                                <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_TTL_N2" class="ChartLink">Total_N2</a>：<span id="Total_N2"></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_DPB_T" class="ChartLink">DPBody_Temp</a>：<span id="DPBody_Temp"></span></td>
+                                <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_DPM_T" class="ChartLink">DPMotor_Temp</a>：<span id="DPMotor_Temp"></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_MB_C" class="ChartLink">MB_Current</a>：<span id="MB_Current"></span></td>
+                                <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_MB_P" class="ChartLink">MB_Power</a>：<span id="MB_Power"></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_MB_T" class="ChartLink">MB_Temp</a>：<span id="MB_Temp"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="btnDiv5">
+    <input id="btn_AlarmNow" type="button" value="@TSMC14B.Menu.AlarmNow" class="btnPreWarning" onclick="javascript: Alarm('MainNow');" />
+    <input id="btn_AlarmWeek" type="button" value="@TSMC14B.Menu.AlarmWeek" class="btnPreWarning" onclick="javascript: Alarm('MainWeek');" />
+    <input id="btn_AlarmWeekExport" type="button" value="@TSMC14B.Menu.AlarmWeekExport" class="btnPreWarning" onclick="javascript: Alarm('MainWeekExport');" />
+    <input id="btn_AlarmMonth" type="button" value="@TSMC14B.Menu.AlarmMonth" class="btnPreWarning" onclick="javascript: Alarm('MainMonth');" />
+    <input id="btn_AlarmMonthExport" type="button" value="@TSMC14B.Menu.AlarmMonthExport" class="btnPreWarning" onclick="javascript: Alarm('MainMonthExport');" />
+    <label style="font-size:larger;font-weight:bold;color:black;" ><label id="nextFDCUpload">@ViewBag.nextFDCUploadTime</label></label>
+    
+    <div id="gridTitle" style="font-size: 11px; font-weight: bold; color: black; background-color: #e0d8d8; height: 20px; width: 1195px; padding-top: 10px;">&nbsp&nbsp Alarm Now List</div>
+    <table class="flexme"></table>
+    <div id="text" style="height: 400px"></div>
+</div>
+
+

@@ -1,0 +1,351 @@
+﻿@model TSMC14B.Areas.Main.Models.AlarmTagNameModel
+@{
+    ViewBag.Title = "Settings";
+    Layout = "../Shared/_Layout.cshtml";
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            if ("@Request["vName"]" == "HJ") {
+                $("#AlarmArea").css('display', 'none');
+            }
+
+            $(".rbn1").change(function () {
+                var option;
+                option = $('.rbn1:checked').val();
+                $('.LT').css('display', 'none');
+                $('.AT').css('display', 'none');
+                if (option == 1)
+                    $('.LT').css('display', 'block');
+                else if (option == 2)
+                    $('.AT').css('display', 'block');
+            });
+            
+            $('.typeid').css("display", "none");
+            $('.rbn2').change(function () {
+                $('.rbn2:checked').each(function () {
+                    if ($(this).val() == 1) {
+                        $('.typeid').css("display", "inline");
+                        $('.toolid').css("display", "none");
+                    } else {
+                        $('.typeid').css("display", "none");
+                        $('.toolid').css("display", "inline");
+                    }
+                });
+            });
+
+            $(".rbn3").change(function () {
+                var option;
+                option3 = $('.rbn3:checked').val();
+                $('#select').css('display', 'none');
+                $('#add').css('display', 'none');
+                if (option3 == 1)
+                    $('#select').css('display', 'block');
+                else if (option3 == 2)
+                    $('#add').css('display', 'block');
+            });
+
+            $('#toolidinput').keyup(function (event) {
+                changeIndex($("#toolidinput").val());
+            });
+
+            $('#toolidinput').keypress(function (e) {
+                if (e.keyCode == 13 && $('#toolidinput').val().length > 0) {
+                    Post1('Search');
+                }
+            });
+
+            function changeIndex(chkvalue) {
+                var objval; var isFound; var tempval;
+                if ((chkvalue == "")) {
+                    //$("#toolId option:selected").attr("selected", "");
+                    $("#toolid option:nth-child(1)").attr("selected", true);
+                    //$("#toolId").attr("disabled", "");
+                    isFound = false;
+                    return;
+                };
+                if (chkvalue.indexOf("*") >= 0) {
+                    $("#toolid option:nth-child(1)").attr("selected", true);
+                    $("#toolid option:selected").attr("selected", "");
+                    $("#toolid").attr("disabled", true);
+                } else {
+                    if (!isFound) {
+                        $("#toolid").attr("disabled", false);
+                        $('#toolid>option[value^=' + chkvalue.toUpperCase() + '],#toolid>option[value^=' + chkvalue + ']').first().attr("selected", true);
+                        isFound = true;
+                    };
+                }; return;
+            };
+
+            $("#TypeName").change(function () {
+                var typeid = null;
+                $("#TypeName").each(function (e) {
+                    typeid = $(this).val();
+                })
+                var vendorname = '@Request["vName"]';
+
+                $.post('@Url.Action("JsonTypeCheck2")', [{ name: 'Vendor', value: vendorname }, { name: 'typeid', value: typeid == "" ? "" : typeid }], function (date) {
+                    $('#AlarmFullName').empty();
+                    $.each(date, function (i, item) {
+                        $('#AlarmFullName').append($('<option></option>').val(item.Key).text(item.Value));
+                    });
+
+                    $.post('@Url.Action("JsonTypeCheck")', [{ name: 'Vendor', value: vendorname }, { name: 'typeid', value: typeid == "" ? "" : typeid }], function (date) {
+                        //$('#TagFullName').empty();
+                        //$.each(date, function (i, item) {
+                        //    $('#TagFullName').append($('<option></option>').val(item.Key).text(item.Value));
+                        //});
+                        $("#td").empty();
+                        $.each(date, function (i, item) {
+                            $('#td').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Value + '" value="' + item.Key + '" class="cb_Tag" /><label for="' + item.Key + '"  style="cursor: pointer;">' + item.Value + '</label></td>'));
+                            if ((i + 1) % 2 == 0) {
+                                $('#td').append($('</tr><tr>'));
+                            }
+                        })
+                    }, 'json');
+                }, 'json');
+            });
+
+            $('.flexme1').flexigrid({
+                title: 'PM LiftTime',
+                height: "auto",
+                width: 684,
+                @*url: '@Url.Action("AlarmCheckList")?vName=@Request["vName"]&toolId=&fromDate=2013-01-01&toDate=2014-01-19&onceaday=0&output=0',*@
+                dataType: 'json',
+                colModel: [
+                    { display: 'ToolId', name: 'toolId', width: 100, sortable: true, align: 'center', hide: false },
+                    { display: 'typeId', name: 'typeId', width: 40, sortable: true, align: 'center', hide: true },
+                    { display: 'TypeName', name: 'tName', width: 60, sortable: true, align: 'center', hide: false },
+                    { display: 'PMLiftTime', name: 'PMLiftTime', width: 60, sortable: true, align: 'center', hide: false }
+                ],
+                usepager: true,
+                useRp: true,
+                rp: 20,
+                nowrap: false,
+                singleSelect: true,
+                rpOptions: [5, 10, 15, 20, 30, 50],
+            });
+
+            $('.flexme2').flexigrid({
+                title: 'Alarm by TagName',
+                width: 580,
+                height: "auto",
+                url: '@Url.Action("JsonAlarmTagName")?vName=' + "@Request["vName"]",
+                dataType: 'json',
+                colModel: [
+                    { display: 'SeqNO', name: 'SeqNO', width: 10, sortable: false, align: 'center', hide: true },
+                    { display: 'Alarm 訊息', name: 'Comment', width: 200, sortable: false, align: 'center', hide: false },
+                    { display: 'Type_id', name: 'Type_id', width: 10, sortable: false, align: 'center', hide: true },
+                    { display: 'Tag 編號', name: 'Tag_Name', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: 'Tag 名稱', name: 'Cht_Comment', width: 160, sortable: false, align: 'center', hide: false },
+                    { display: '', name: 'cancel', width: 40, sortable: false, align: 'center', hide: false },
+                    { display: '', name: 'edit', width: 40, sortable: false, align: 'center', hide: false },
+                ],
+                usepager: true,
+                useRp: true,
+                rp: 10,
+                nowrap: false,
+                onSuccess: function () {
+                    $('.flexme2 > tbody > tr > td[abbrr="cancel"] > div').remove();
+                    $('.flexme2 > tbody > tr > td[abbrr="cancel"]').append('<div style="width:40px;"><a href="#" class="cancel" ><img src="@Url.Content("~/Content/Icons/delete.png")" alt="刪除" />刪除</a></div>');
+                    $('.cancel').click(function () {
+                        var SeqNO = $(this).parent().parent().parent().children(':eq(0)').text();
+                        var Comment = $(this).parent().parent().parent().children(':eq(1)').text();
+                        var Typeid = $(this).parent().parent().parent().children(':eq(2)').text();
+                        var Tag_Name = $(this).parent().parent().parent().children(':eq(3)').text();
+                        var Cht_Comment = $(this).parent().parent().parent().children(':eq(4)').text();
+                        hiConfirm('是否刪除' + Comment + '/' + Cht_Comment + '？', '確認', function (r) { if (r) { $.post('@Url.Action("JsonAlermTagExe")', [{ name: 'SeqNO', value: SeqNO }, { name: 'Type', value: 'delete' }], function (data) { alert(data.Msg); $('.flexme2').flexReload(); }, 'json') } });
+                    });
+                    $('.flexme2 > tbody > tr > td[abbrr="edit"] > div').remove();
+                    $('.flexme2 > tbody > tr > td[abbrr="edit"]').append('<div style="width=40px;"><a href="#" class="edit" ><img src="@Url.Content("~/Content/Icons/edit.png")" alt="編輯" />編輯</a></div>');
+                    $('.edit').click(function () {
+                        OpenModelWindow('@Url.Action("EditAlarmTagName")?SeqNO=' + $(this).parent().parent().parent().children(':eq(0)').text() + '&vName=' + "@Request["vName"]", { width: 470, height: 280, caption: "修改", onclose: function () { $('.flexme2').flexReload(); } });
+                    });
+                },
+                singleSelect: true,
+                rpOption: [5, 10, 15, 20, 30, 50],
+            });
+
+            $('.sbmit').click(function () {
+                var select = "";
+                $('.rbn3:checked').each(function () {
+                    select = $(this).val();
+                });
+                if (select == "2") {
+                    var TagNameList = "";
+                    $('#td').find('.cb_Tag:checked').each(function (e) {
+                        TagNameList += $(this).val() + ";";
+                    })
+                    if (TagNameList.length > 0) {
+                        TagNameList = TagNameList.substring(0, TagNameList.length - 1);
+                        $.post('@Url.Action("JsonAlermTagExe")', [{ name: 'SeqNO', value: '0' }, { name: 'Comment', value: $('#AlarmFullName').val() }, { name: 'Tag_Name', value: TagNameList }, { name: 'Type', value: 'Insert' }], function (data) { alert(data.Msg); $('.flexme2').flexReload(); }, 'json');
+                    }
+                    else {
+                        alert('請選擇數值');
+                    }
+                }
+            });
+        });
+
+        function Post1(id) {
+            var _option = 1;
+            $('.rbn2:checked').each(function () {
+                _option = $(this).val();
+            });
+            if (_option == 1 && $('#typeid').val() == 0) {
+                alert('請選擇Type');
+                return;
+            } else if (_option == 0 && $('#toolid').val() == 0) {
+                alert('請選擇設備');
+                return;
+            }
+
+            if (id == 'Search') {
+                Search(_option, $('#toolid').val(), $('#typeid').val());
+            } else if (id == 'Set' || id == 'Reset') {
+                $.post('@Url.Action("JsonSetPMLifeTime")', [{ name: 'Option', value: _option }, { name: 'Toolid', value: $('#toolid').val() }, { name: 'Typeid', value: $('#typeid').val() }, { name: 'PmLT', value: $('#intPMLifeTime').val() }, { name: 'Reset', value: id }], function (data) { alert(data.Msg); Search(_option, $('#toolid').val(), $('#typeid').val()); }, 'json');
+            }
+        }
+        function Search(_option, toolid, typeid) {
+            var urlStr = '@Url.Action("JsonPMLifeTime")?Option=' + _option + '&toolId=' + toolid + '&typeid=' + typeid + '&page=1&rp=20';
+            $(".flexme1").flexOptions({ url: urlStr });
+            $('.flexme1').flexReload();
+        }
+    </script>
+}
+<h2>@Request["vName"] 選項設定</h2>
+@Html.Partial("MachineGroupTitle", ViewData["PageName"] = "Settings")
+
+<div class="rbndiv1">
+    <input type="radio" name="group1" class="rbn1" value="1" id="rbnL1" checked="checked">
+    <label for="rbnL1">PM LifeTime 設定</label>
+    <span id="AlarmArea">
+        <input type="radio" name="group1" class="rbn1" value="2" id="rbnL2">
+        <label for="rbnL2">Alarm 訊息設定</label>
+    </span>
+</div>
+<br />
+<div class="LT">
+    <table border="1" style="width:950px">
+        <tr>
+            <td colspan="4" style="vertical-align: middle;">
+                <input type="radio" name="group2" class="rbn2" value="0" id="rbnT1" checked="checked">
+                <label for="rbnT1">單機設定</label>
+                <input type="radio" name="group2" class="rbn2" value="1" id="rbnT2">
+                <label for="rbnT2">Type設定</label>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right; display: none;">
+                <label id="lbl_device">請選擇課別</label>
+                @Html.DropDownList("device", ViewBag.Device as IEnumerable<SelectListItem>, "請選擇")
+            </td>
+            <td style="text-align: right;">
+                <label id="lbl_toolid" class="toolid">請選擇設備</label>
+                <label id="lbl_typeid" class="typeid">請選擇Type</label>
+            </td>
+            <td>
+                <span class="toolid">
+                    <input type='text' placeholder='輸入Tool ID' id="toolidinput" />
+                    <select id="toolid" name="toolid">
+                        <option value="0">請選擇</option>
+                        @if (ViewBag.ToolID != null)
+                        {
+                            foreach (var item in ViewBag.ToolID as IEnumerable<SelectListItem>)
+                            {
+                                <option value="@item.Value">@item.Value</option>
+                            }
+                        }
+                    </select>
+                </span>
+                <span class="typeid">
+                    <select id="typeid" name="typeid">
+                        <option value="0">請選擇</option>
+                        @if (ViewBag.TypeID != null)
+                        {
+                            foreach (var item in ViewBag.TypeID as IEnumerable<SelectListItem>)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </span>
+                <label>設定PMLifeTime：</label><input type="text" id="intPMLifeTime" value="0" style="width: 30px" />
+                <input type="button" id="Search" value="搜尋" onclick="javascript: Post1('Search');" />
+                <input type="button" id="Edit" value="修改" onclick="javascript: Post1('Set');" />
+                <input type="button" id="Reset" value="Reset" onclick="javascript: Post1('Reset');" />
+            </td>
+        </tr>
+    </table>
+    <table class="flexme1"></table>
+</div>
+<div class="AT" style="display:none">
+    <table border="1" style="font-size: 12px;">
+        <tr>
+            <td>
+                <input type="radio" name="group3" class="rbn3" value="1" id="rbnS1" checked="checked">
+                <label for="rbnS1">查詢 Alarm 對應數值</label>
+                <input type="radio" name="group3" class="rbn3" value="2" id="rbnS2">
+                <label for="rbnS2">新增 Alarm 對應數值</label>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <div id="select">
+        <table class="flexme2"></table>
+    </div>
+    <form id="add" style="display:none">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <fieldset style="width: 600px; text-align: left;">
+                <legend>新增Alarm對應數值</legend>
+                <table style="font-size: 12px;">
+                    <tr>
+                        <td style="text-align: right; width: 90px;">
+                            Type：
+                        </td>
+                        <td style="text-align: left;">
+                            @Html.DropDownListFor(model => model.TypeName, ViewBag.TypeList as IEnumerable<SelectListItem>, "請選擇")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 90px;">
+                            Alarm訊息：
+                        </td>
+                        <td style="text-align: left;">
+                            @Html.DropDownListFor(model => model.AlarmFullName, ViewBag.AlarmList as IEnumerable<SelectListItem>)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            數值：
+                        </td>
+                        <td style="text-align: left;">
+                            @*@Html.DropDownListFor(model => model.TagFullName , ViewBag.TagList as IEnumerable<SelectListItem>)*@
+                            <div id="td">
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 100px;">
+                            <input type="button" class="sbmit" value="確定" style="width: 80px" />&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td style="width: 100px;">
+                            <input type="reset" value="清除" id="clear1" style="width: 80px" />
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </fieldset>
+        }
+    </form>
+</div>

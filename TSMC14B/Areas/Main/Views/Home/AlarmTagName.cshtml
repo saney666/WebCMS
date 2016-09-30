@@ -1,0 +1,146 @@
+﻿@model TSMC14B.Areas.Main.Models.AlarmTagNameModel
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewBag.Title = "選項設定";
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".rbn2").change(function () {
+                var option;
+                option = $('.rbn2:checked').val();
+                $('#select').css('display', 'none');
+                $('#add').css('display', 'none');
+                if (option == 1)
+                    $('#select').css('display', 'block');
+                else if (option == 2)
+                    $('#add').css('display', 'block');
+            });
+
+            $('.flexme').flexigrid({
+                width: 580,
+                height: "auto",
+                url: '@Url.Action("JsonAlarmTagName")',
+                dataType: 'json',
+                colModel: [
+                    { display: 'SeqNO', name: 'SeqNO', width: 10, sortable: false, align: 'center', hide: true },
+                    { display: 'Alarm 訊息', name: 'Comment', width: 200, sortable: false, align: 'center', hide: false },
+                    { display: 'Type_id', name: 'Type_id', width: 10, sortable: false, align: 'center', hide: true },
+                    { display: 'Tag 編號', name: 'Tag_Name', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: 'Tag 名稱', name: 'Cht_Comment', width: 160, sortable: false, align: 'center', hide: false },
+                    { display: '', name: 'cancel', width: 40, sortable: false, align: 'center', hide: false },
+                    { display: '', name: 'edit', width: 40, sortable: false, align: 'center', hide: false },
+                ],
+                usepager: true,
+                useRp: true,
+                rp:10,
+                nowrap: false,
+                onSuccess: function () {
+                    $('.flexme > tbody > tr > td[abbrr="cancel"] > div').remove();
+                    $('.flexme > tbody > tr > td[abbrr="cancel"]').append('<div style="width:40px;"><a href="#" class="cancel" ><img src="@Url.Content("~/Content/Icons/delete.png")" alt="刪除" />刪除</a></div>');
+                    $('.cancel').click(function () {
+                        var SeqNO = $(this).parent().parent().parent().children(':eq(0)').text();
+                        var Comment = $(this).parent().parent().parent().children(':eq(1)').text();
+                        var Typeid = $(this).parent().parent().parent().children(':eq(2)').text();
+                        var Tag_Name = $(this).parent().parent().parent().children(':eq(3)').text();
+                        var Cht_Comment = $(this).parent().parent().parent().children(':eq(4)').text();
+                        hiConfirm('是否刪除' + Comment + '/' + Cht_Comment + '？', '確認', function (r) { if (r) { $.post('@Url.Action("JsonAlermTagExe")', [{ name: 'SeqNO', value: SeqNO }, { name: 'Type', value: 'delete' }], function (data) { alert(data.Msg); $('.flexme').flexReload(); }, 'json') } });
+                    });
+                    $('.flexme > tbody > tr > td[abbrr="edit"] > div').remove();
+                    $('.flexme > tbody > tr > td[abbrr="edit"]').append('<div style="width=40px;"><a href="#" class="edit" ><img src="@Url.Content("~/Content/Icons/edit.png")" alt="編輯" />編輯</a></div>');
+                    $('.edit').click(function () {
+                        OpenModelWindow('@Url.Action("EditAlarmTagName")?SeqNO=' + $(this).parent().parent().parent().children(':eq(0)').text(), { width: 470, height: 220, caption: "修改", onclose: function () { $('.flexme').flexReload(); } });
+                    });
+                },
+                singleSelect:true,
+                rpOption:[5,10,15,20,30,50],
+            });
+
+            $('.sbmit').click(function () {
+                var select = "";
+                $('.rbn2:checked').each(function () {
+                    select = $(this).val();
+                });
+                if (select == "2") {
+                    $.post('@Url.Action("JsonAlermTagExe")', [{ name: 'SeqNO', value: '0' }, { name: 'Comment', value: $('#AlarmFullName').val() }, { name: 'Tag_Name', value: $('#TagFullName').val() }, { name: 'Type', value: 'Insert' }], function (data) { alert(data.Msg); $('.flexme').flexReload(); }, 'json');
+                }
+            });
+        });
+    </script>
+}
+
+<h2>選項設定</h2>
+<br />
+<div>
+    <table border="1" class="tb" style="font-size: 12px;">
+        <tr>
+            <td>
+                <div class="rbndiv1">
+                    <input type="radio" name="group1" class="rbn1" value="1" id="rbnS1" checked="checked">
+                    <label for="rbnS1">Alarm 訊息設定</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="rbndiv2">
+                    <input type="radio" name="group2" class="rbn2" value="1" id="rbnT1" checked="checked">
+                    <label for="rbnT1">查詢 Alarm 對應數值</label>
+                    <input type="radio" name="group2" class="rbn2" value="2" id="rbnT2">
+                    <label for="rbnT2">新增 Alarm 對應數值</label>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <div id="select" >
+        <table class="flexme">
+
+        </table>
+    </div>
+    <form id="add" style="display:none">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <fieldset style="width: 500px; text-align: left;">
+                <legend >新增Alarm對應數值</legend>
+                <table style="font-size: 12px;">
+                    <tr>
+                        <td style="text-align: right; width: 90px;">Alarm訊息：
+                        </td>
+                        <td style="text-align: left;">
+                            @Html.DropDownListFor(model => model.AlarmFullName , ViewBag.AlarmList as IEnumerable<SelectListItem>)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">數值：
+                        </td>
+                        <td style="text-align: left;">
+                            @Html.DropDownListFor(model => model.TagFullName , ViewBag.TagList as IEnumerable<SelectListItem>)
+                        </td>
+                    </tr>
+                    
+                </table>
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 100px;">
+                            <input type="button" class="sbmit" value="確定" style="width: 80px" />&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td style="width: 100px;">
+                            <input type="reset" value="清除" id="clear1" style="width: 80px" />
+                        </td>
+                        <td >
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        }
+    </form>
+</div>
+

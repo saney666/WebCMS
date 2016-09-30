@@ -1,0 +1,689 @@
+﻿@model TSMC14B.Areas.Main.Models.PLCCheckModel
+@{
+    ViewBag.Title = "Emergency";
+    Layout = "~/Areas/Main/Views/Shared/_Layout.cshtml";
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/MicrosoftAjax.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/MicrosoftMvcAjax.js")" type="text/javascript"></script>
+    <style>
+        td.floor {
+            width: 50px;
+            border-bottom: thin solid;
+            border-right: thin solid;
+            text-align: center;
+            padding-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            /*text-decoration:underline;*/
+        }
+
+        td.locArea_A {
+            border-bottom: thin solid;
+            padding-left: 10px;
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+
+        td.locArea_B {
+            border-bottom: thin solid;
+            padding-left: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        td.locArea {
+            margin-left: 10px;
+            padding-bottom: 10px;
+            padding-top: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        td.Area_L {
+            padding-left: 20px;
+            padding-right: 15px;
+            padding-bottom: 10px;
+            padding-top: 10px;
+            color: white;
+            background-color: gray;
+            border-left: thin solid;
+            border-width: 5px;
+            font-weight:bold;
+        }
+
+        td.Area_H {
+            color: white;
+            background-color: red;
+            border-left: thin solid;
+            border-width: 5px;
+            font-weight: bold;
+
+        }
+
+            /*td.Area_H:hover {
+                color: red;
+                background-color: #fff;
+                text-decoration: none;
+                border-left: thin solid;
+                border-width: 5px;
+                
+            }*/
+
+            /*td.Area_H:active {
+                background-color: #a6e2a6;
+                text-decoration: none;
+            }*/
+
+            td.Area_H a {
+                padding-left: 20px;
+                padding-right: 20px;
+                background-color: red;
+                color: white;
+                text-decoration: none;
+                border-width: 5px;
+            }
+
+                /*td.Area_H a:hover {
+                    color: red;
+                    background-color: #fff;
+                    text-decoration: none;
+                    border-left: thin solid;
+                }*/
+
+        /*td.Area_H a:active {
+            background-color: #a6e2a6;
+            text-decoration: none;
+        }*/
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setdivVendorgName();
+            layoutMapfun();
+
+            (function () {
+                $("td.Area_H a").fadeOut(100).fadeIn(100);
+                setTimeout(arguments.callee, 1000);
+
+            })();
+            //(function () {
+            //    $("ad").fadeOut(100).fadeIn(100);
+            //    setTimeout(arguments.callee, 1000);
+
+            //})();
+            //$(".rbn").change(function () {
+            //    var option;
+            //    option = $('.rbn:checked').val();
+            //    $('#Layout').css('display', 'none');
+            //    $('#SendMessage_select').css('display', 'none');
+            //    $('#ClosePC').css('display', 'none');
+            //    if (option == 1) {
+            //        $('#Layout').css('display', 'block');
+            //        //setTimeout(function () { $('#frm').submit() }, 20000);
+            //    }
+            //    else if (option == 2)
+            //        $('#SendMessage_select').css('display', 'block');
+            //    else if (option == 3)
+            //        $('#ClosePC').css('display', 'block');
+            //});
+            $(".submit").click(function () {
+                var rbn2;
+                var mystatu;
+                $('.rbn2:checked').each(function (e) {
+                    rbn2 = $(this).val();
+                })
+                mystatu = (rbn2 == "1") ? true : false;
+                $.post('@Url.Action("JsonSetPhoneCallStatus")', [{ name: 'statusNow', value: mystatu }], function (data) { alert(data.Msg); }, 'json');
+            });
+            var device = null;
+            $('#device').each(function (e) {
+                device = $(this).val();
+            });
+
+            $('.flexme').flexigrid({
+                width: 700,
+                height: "auto",
+                url: '@Url.Action("JsonCutOffQuery")?gName=' + device,
+                dataType: 'json',
+                colModel: [
+                    { display: '日期/時間', name: 'AlarmTime', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: 'ToolID', name: 'toolID', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '柱位', name: 'location', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: 'location ID', name: 'location_id', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '部門', name: 'vendor_name', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: 'NGVMB', name: 'VMB', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: 'PowerSource', name: 'PW_Source', width: 80, sortable: false, align: 'center', hide: false },
+                ],
+                usepager: true,
+                useRp: true,
+                rp: 10,
+                nowrap: false,
+                singleSelect: true,
+                rpOptions: [50, 100, 150, 200, 300],
+            });
+            $('#search').click(function () {
+                var device = null;
+                $('#device').each(function (e) {
+                    device = $(this).val();
+                });
+                var urlStr = '@Url.Action("JsonCutOffQuery")?gName=' + device;
+                $(".flexme").flexOptions({ url: urlStr }).flexReload();
+                $('.flexme').flexReload();
+            });
+            $('.send').click(function () {
+                var Message = $('#ta_Message').val();
+                if ($('.cb_vendorgName:checked').length == 0) {
+                    alert('請輸入課別名稱!!');
+                }
+                else if (Message == "") {
+                    alert('請輸入傳送訊息!!');
+                }
+                else {
+                    $('#sm').css('display', 'block');
+                    $('.send').attr("disabled", true);
+                    var gName = "";
+                    $('.cb_vendorgName:checked').each(function () {
+                        if (this.checked && $(this).val() != null) {
+                            gName += $(this).val() + ",";
+                        }
+                    });
+                    $.post('@Url.Action("JsonWriteToAlarm")', [{ name: 'SendTo', value: gName }, { name: 'SendBody', value: Message }], function (data) { alert(data.Msg); $('#sm').css('display', 'none'); $('.send').attr("disabled", false); }, 'json');
+                }
+
+            });
+            $("#cbAllCheck").click(function () {
+                var boo = $(this).prop("checked");
+                $('.cb_vendorgName').each(function () {
+                    $(this).prop("checked", boo);
+                });
+            });
+            meter3 = setTimeout("countSecond()", 1000000);
+            countSecond();
+        });
+        //$("img.ad").mouseenter(function () {
+            //$(this).attr("style", "cursor: pointer");
+            //$(this).css('cursor', 'pointer');
+            //alert("======");
+        //});
+        function setdivVendorgName() {
+            $.post('@Url.Action("JsonGetVendorgName")', null,
+                function (data) {
+                    var htmlstr = '';
+                    $('.div_gName').empty();
+                    htmlstr = '<table  style="width:350px" border="1"><tr>';
+                    $.each(data, function (i, item) {
+                        htmlstr += '<td><input type="checkbox" id="' + item.Key + '" name="' + item.Value + '" value="' + item.Key + '" class="cb_vendorgName" /><label for="' + item.Key + '"  style="cursor: pointer;">' + item.Value + '</label></td>'
+                        if ((i + 1) % 2 == 0) {
+                            htmlstr += '</tr><tr>'
+                        }
+                    });
+                    htmlstr += '</tr></table>';
+                    $('.div_gName').append(htmlstr);
+                }, 'json');
+        }
+        function layoutMapfun() {
+            var gName = "";
+            var htmlstr = "";
+            $.post('@Url.Action("JsonCutOffgName")',
+                       function (data) {
+                           $('#LayoutMap').empty();
+                           htmlstr = '<img class="ad" src="/images/E_Layout.png" border="0">';
+                           $.each(data, function (i, item) {
+                               if (item.Value != null) {
+                                    htmlstr += '<img class="ad" src="/images/' + item.Value + '_' + item.Key + '.gif" usemap="#demo" border="0">'
+                               }
+                           });
+                           htmlstr += '<map name="demo">';
+                           var coords = null;
+
+                           $.each(data, function (i, item) {
+                               var MergeName = item.Value + '_' + item.Key;
+                               var GroupName = item.Key;
+
+                               if (item.Value == "A" & (item.Key == "ETCH" | item.Key == "EPI")) {
+                                   GroupName = "ETCH & EPI";
+                               }
+
+                               if (item.Value != null) {
+                                   if (MergeName.toUpperCase() == "A_PVD") {
+                                       coords = '24,45,116,46,116,129,24,130';
+                                   }
+                                   else if (MergeName.toUpperCase() == "A_CVD") {
+                                       coords = '120,45,211,45,211,130,119,130';
+                                   }
+                                   else if (MergeName == "A_ETCH" || MergeName == "A_EPI") {
+                                       coords = '218,38,441,39,441,199,345,198,344,127,216,127';
+                                   }
+                                   else if (MergeName.toUpperCase() == "A_DIF-IMP") {
+                                       coords = '26,135,242,135,242,200,26,198';
+                                   }
+                                   else if (MergeName.toUpperCase() == "A_DIF-FUR") {
+                                       coords = '246,130,341,130,341,200,246,200';
+                                   }
+
+                                   else if (MergeName.toUpperCase() == "B_DIF-FUR") {
+                                       coords = '27,210,174,211,175,281,27,280';
+                                   }
+                                   else if (MergeName.toUpperCase() == "B_DIF-IMP") {
+                                       coords = '177,211,247,211,247,280,177,280';
+                                   }
+                                   else if (MergeName.toUpperCase() == "B_ETCH") {
+                                       coords = '26,282,246,284,246,371,26,370';
+                                   }
+                                   else if (MergeName.toUpperCase() == "B_PVD") {
+                                       coords = '252,216,343,215,343,365,252,365';
+                                   }
+                                   else if (MergeName.toUpperCase() == "B_CVD") {
+                                       coords = '347,216,438,214,438,365,346,365';
+                                   }
+                                   
+                                   htmlstr += '<area shape="poly" coords="' + coords + '" alt="' + GroupName + '" title="' + GroupName + '" target="_blank"  href="EmergencyDetail_byArea?locArea=' + item.Value + '&Area=' + item.Key + '">'
+                               }
+                           });
+
+                           htmlstr += '</map>';
+
+                           $('#LayoutMap').append($(htmlstr));
+                       },
+                       'json');
+        };
+        /*
+        //X Y 座標顯示
+        var IE = document.all ? true : false
+        // If NS -- that is, !IE -- then set up for mouse capture
+        if (!IE) document.captureEvents(Event.MOUSEMOVE)
+        document.onmousemove = getMouseXY;
+
+        // Temporary variables to hold mouse x-y pos.s
+        var tempX = 0
+        var tempY = 0
+
+        // Main function to retrieve mouse x-y pos.s
+        function getMouseXY(e) {
+            if (IE) { // grab the x-y pos.s if browser is IE
+                tempX = event.clientX + document.body.scrollLeft
+                tempY = event.clientY + document.body.scrollTop
+            } else {  // grab the x-y pos.s if browser is NS
+                tempX = e.pageX
+                tempY = e.pageY
+            }
+            // catch possible negative values in NS4
+            if (tempX < 0) { tempX = 0 }
+            if (tempY < 0) { tempY = 0 }
+            // show the position values in the form named Show
+            // in the text fields named MouseX and MouseY
+            document.Show.MouseX.value = tempX - 10
+            document.Show.MouseY.value = tempY - 130
+            return true
+        }
+        */
+
+        //var xx = 0;
+        //function countSecond() {
+        //    xx = xx + 1;
+        //    alert(xx);
+        //    setTimeout("countSecond( )", 5000);
+        //}
+
+        var xx = 0;
+        function countSecond() {
+            
+            xx = xx + 1;
+            if (xx > 3) {
+                $('#device').each(function (e) {
+                    device = $(this).val();
+                });
+                xx = 0;
+                //location.href = ("/Main/Home/Emergency");
+                var urlStr = "@Url.Action("JsonCutOffQuery")?gName=" + device ;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+
+                layoutMapfun();
+            }
+            meter3 = setTimeout("countSecond()", 10000);
+        }
+    </script>
+}
+<h2>緊急應變</h2>
+
+<div>
+    @*<table border="1" class="tb" style="font-size: 12px;">
+        <tr>
+            <td>
+                <input type="radio" name="group1" class="rbn" value="1" id="rbnT1" checked="checked">
+                <label for="rbnT1">Micro Layout</label>
+                <input type="radio" name="group1" class="rbn" value="2" id="rbnT2">
+                <label for="rbnT2">傳送簡訊 & 斷線機台</label>
+                <input type="radio" name="group1" class="rbn" value="3" id="rbnT3">
+                <label for="rbnT3">PhoneCall</label>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <br />*@
+    
+    @*<div id="Layout">
+        @{using (Html.BeginForm("Emergency", "Home", FormMethod.Post, new { name = "frm", id = "frm" }))
+          {
+            <table border="1" style="border-spacing: 1px 1px; padding: 2px 2px 2px 2px; width: 500px; border-collapse: collapse; font-size: 13px;">
+                <tr>
+                    <td rowspan="2" class="floor">2F
+                    </td>
+                    <td class="locArea_A">
+                        <table>
+                            <tr>
+                                <td class="locArea">A區</td>
+                                @foreach (var item in ViewBag.dtMircoLayout)
+                                {
+                                    if (item.eqFloor == "2F" && item.locArea == "A")
+                                    {
+                                        if (item.Highlight == 0)
+                                        {
+                                    <td class="Area_L">@item.Area</td>
+                                        }
+                                        else
+                                        {
+                                    <td class="Area_H">
+                                        <a href="/Main/Home/EmergencyDetail?eqFloor=@item.eqFloor&locArea=@item.locArea&Area=@item.Area" target="_blank">
+                                            @item.Area
+                                        </a>
+                                    </td>
+                                        }
+
+                                    }
+
+                                }
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="locArea_B">
+                        <table>
+                            <tr>
+                                <td class="locArea">B區</td>
+                                @foreach (var item in ViewBag.dtMircoLayout)
+                                {
+                                    if (item.eqFloor == "2F" && item.locArea == "B")
+                                    {
+                                        if (item.Highlight == 0)
+                                        {
+                                    <td class="Area_L">@item.Area</td>
+                                        }
+                                        else
+                                        {
+                                    <td class="Area_H">
+                                        <a href="/Main/Home/EmergencyDetail?eqFloor=@item.eqFloor&locArea=@item.locArea&Area=@item.Area" target="_blank">
+                                            @item.Area
+                                        </a>
+                                    </td>
+                                        }
+                                    }
+
+                                }
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td rowspan="2" class="floor">1F
+                    </td>
+                    <td class="locArea_A">
+                        <table>
+                            <tr>
+                                <td class="locArea">A區</td>
+                                @foreach (var item in ViewBag.dtMircoLayout)
+                                {
+                                    //<td style="text-align: center; height: 20px; vertical-align: middle; color: #00ccff; font-size: 12px;">@ViewBag.dtMircoLayout.Columns[i].ColumnName</td>
+                                    if (item.eqFloor == "1F" && item.locArea == "A")
+                                    {
+                                        if (item.Highlight == 0)
+                                        {
+                                    <td class="Area_L">@item.Area</td>
+                                        }
+                                        else
+                                        {
+                                    <td class="Area_H">
+                                        <a href="/Main/Home/EmergencyDetail?eqFloor=@item.eqFloor&locArea=@item.locArea&Area=@item.Area" target="_blank">
+                                            @item.Area
+                                        </a>
+                                    </td>
+                                        }
+                                    }
+
+                                }
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="locArea_B">
+                        <table>
+                            <tr>
+                                <td class="locArea">B區</td>
+                                @foreach (var item in ViewBag.dtMircoLayout)
+                                {
+                                    if (item.eqFloor == "1F" && item.locArea == "B")
+                                    {
+                                        if (item.Highlight == 0)
+                                        {
+                                    <td class="Area_L">@item.Area</td>
+                                        }
+                                        else
+                                        {
+                                    <td class="Area_H">
+                                        <a href="/Main/Home/EmergencyDetail?eqFloor=@item.eqFloor&locArea=@item.locArea&Area=@item.Area" target="_blank">
+                                            @item.Area
+                                        </a>
+                                    </td>
+                                        }
+                                    }
+
+                                }
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2" class="floor">B1
+                    </td>
+                    <td class="locArea_A">
+                        <table>
+                            <tr>
+                                <td class="locArea">A區</td>
+                                @foreach (var item in ViewBag.dtMircoLayout)
+                                {
+                                    if (item.eqFloor == "B1" && item.locArea == "A")
+                                    {
+                                        if (item.Highlight == 0)
+                                        {
+                                    <td class="Area_L">@item.Area</td>
+                                        }
+                                        else
+                                        {
+                                    <td class="Area_H">
+                                        <a href="/Main/Home/EmergencyDetail?eqFloor=@item.eqFloor&locArea=@item.locArea&Area=@item.Area" target="_blank">
+                                            @item.Area
+                                        </a>
+                                    </td>
+                                        }
+                                    }
+
+                                }
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="locArea_B">
+                        <table>
+                            <tr>
+                                <td class="locArea">B區</td>
+                                @foreach (var item in ViewBag.dtMircoLayout)
+                                {
+                                    if (item.eqFloor == "B1" && item.locArea == "B")
+                                    {
+                                        if (item.Highlight == 0)
+                                        {
+                                    <td class="Area_L">@item.Area</td>
+                                        }
+                                        else
+                                        {
+                                    <td class="Area_H">
+                                        <a href="/Main/Home/EmergencyDetail?eqFloor=@item.eqFloor&locArea=@item.locArea&Area=@item.Area" target="_blank">
+                                            @item.Area
+                                        </a>
+                                    </td>
+                                        }
+                                    }
+
+                                }
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+          }}
+    </div>*@
+    <table style ="width:1100px">
+        <tr>
+            <td style="width:720px">
+                @*<div id="ClosePC"">*@
+                    <fieldset style="width: 700px">
+                        <legend>PhoneCall 開關</legend>
+                        <table style="width: 500px">
+                            <tr>
+                                <td style="width: 170px"></td>
+                                <td>
+                                    <table style="width: 230px; font-size: 12px;">
+                                        <tr>
+                                            @*<td>
+                                                <br />
+                                                @if (!ViewBag.phoneCallStatus)
+                                                {   //off
+                                                    <input type="radio" name="group2" class="rbn2" value="0" id="rbnS4" checked="checked" />
+                                                    <label for="rbnS4">OFF</label>
+                                                }
+                                                else
+                                                {
+                                                    //on
+                                                    <input type="radio" name="group2" class="rbn2" value="0" id="rbnS6" />
+                                                    <label for="rbnS6">OFF</label>
+                                                }
+                                            </td>
+                                            <td>
+                                                <br />
+                                                @if (!ViewBag.phoneCallStatus)
+                                                {   //off
+                                                    <input type="radio" name="group2" class="rbn2" value="1" id="rbnS5" />
+                                                    <label for="rbnS5">ON</label>
+                                                }
+                                                else
+                                                {
+                                                    //on
+                                                    <input type="radio" name="group2" class="rbn2" value="1" checked="checked" id="rbnS7" />
+                                                    <label for="rbnS7">ON</label>
+                                                }
+                                            </td>*@
+                                            <td>
+                                                <br />
+                                                <input type="radio" name="group2" class="rbn2" value="0" id="rbnS6" />
+                                                <label for="rbnS6">OFF</label>
+                                            </td>
+                                            <td>
+                                                <br />
+                                                <input type="radio" name="group2" class="rbn2" value="1" id="rbnS5" />
+                                                <label for="rbnS5">ON</label>
+                                            </td>
+                                            <td>
+                                                <br />
+                                                <input type="button" class="submit" value="確認" style="width: 80px" />
+                                            </td>
+
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                            <tr style="height: 10px">
+                            </tr>
+                        </table>
+                    </fieldset>
+                @*</div>*@
+            </td>
+            <td rowspan="3">
+                <div id="LayoutMap" style="width:30px;height:30px">
+        
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <fieldset style="width: 700px">
+                    <legend>傳送簡訊</legend>
+
+                    <table style="width: 650px; font-size: 12px;">
+                        <tr>
+                            <td style="width: 250px;">部門群組：
+                        @*<input id="txt_gName" type="text" style="width:200px"/>*@
+
+                                <input type="checkbox" id="cbAllCheck" value=""  />
+                                <label style="cursor: pointer;" for="cbAllCheck">全部</label>
+                            </td>
+                            <td >訊息：
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="display: table-cell; vertical-align: top;" rowspan="2">
+                                <div class="div_gName">
+                                </div>
+                            </td>
+                            <td>
+                                <textarea id="ta_Message" style="width: 300px"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <input type="button" class="send" value="傳送" style="width: 80px" />&nbsp&nbsp&nbsp&nbsp
+                                        </td>
+                                        <td style="align-content: center">
+                                            <img alt="" src="/images/update.gif" width="230" height="10" id="sm" style="display: none" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="SendMessage_select">
+                    <fieldset style="width: 700px; align-content: center">
+                        <legend>異常機台</legend>
+                        <label style="font-size: 12px;">請選擇課別</label>
+                        @Html.DropDownList("device", ViewBag.Device as IEnumerable<SelectListItem>, "請選擇")
+                        <input type="button" id="search" value="查詢" style="width: 80px" />
+                        <table class="flexme">
+                        </table>
+                    </fieldset>
+                </div>
+            </td>
+        </tr>
+    </table>
+    @*<form name="Show">
+        <input type="text" name="MouseX" value="0" size="4">X 
+        <input type="text" name="MouseY" value="0" size="4">Y 
+    </form>   *@ 
+    

@@ -1,0 +1,54 @@
+﻿@model TSMC14B.Areas.Main.Models.TypeValuesModel
+@{
+    ViewBag.Title = @TSMC14B.Menu.Edit;
+}
+@section JavaScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+        });
+
+    </script>
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset style="width: 90%; margin: 0 auto;">
+        <legend>@ViewBag.Title</legend>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.vendor_name)</li>
+            <li>@Html.DisplayFor(model => model.vendor_name)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.type_name)</li>
+            <li>@Html.DisplayFor(model => model.type_name)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.Tag_Name)</li>
+            <li>@Html.DisplayFor(model => model.Tag_Name)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.Limit_Max)</li>
+            <li>@Html.TextBoxFor(model => model.Limit_Max, new { style = "width: 100px;" })</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.Limit_Min)</li>
+            <li>@Html.TextBoxFor(model => model.Limit_Min, new { style = "width: 100px;" })</li>
+        </ul>
+
+        <ul class="ul">
+            <li>
+                <input type="submit" value="@TSMC14B.Menu.confirm" style="width: 80px" />&nbsp;&nbsp;&nbsp;
+            </li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Refill" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;
+            </li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Cancel" style="width: 80px" onclick="CloseModelWindow();" />
+            </li>
+        </ul>
+    </fieldset>
+}

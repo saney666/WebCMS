@@ -1,0 +1,71 @@
+﻿@model TSMC14B.Areas.Main.Models.PMfrequencySetModel
+@{
+    //ViewBag.Title = "新增";
+    //Layout = null;
+}
+@section JavaScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('.ul').jqf1();
+            $('#sbmit').click(function () {
+                var ToolID = $('#ToolID').val();
+                var freq_id = $('#frequency').val();
+                var frequency = $('#frequency option:selected').text()
+                var tolerance = $('#tolerance').val();
+                if (frequency.length > 0) {
+                    if (tolerance.length > 0) {
+                        hiConfirm('是否確定更新?', '確認', function (r) { if (r) { $.post('@Url.Action("AddPMScheduleSet1")', [{ name: 'selecttoolid', value: ToolID }, { name: 'selectfreqid', value: freq_id }, { name: 'selectfrequency', value: frequency }, { name: 'selecttolerance', value: tolerance }], function (data) { alert(data.Msg); setTimeout("CloseModelWindow();", 1000); }, 'json'); } });
+                    }
+                    else {
+                        alert('請填入容許值');
+                    }
+                }
+                else {
+                    alert('請填入週期');
+                }
+            });
+        });
+    </script>
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset style="width: 90%; margin: 0 auto;">
+        <legend>@ViewBag.Title</legend>
+        <ul class="ul" style="display:none">
+            <li>@Html.LabelFor(model => model.plc_id)</li>
+            <li>@Html.DisplayFor(model => model.plc_id)</li>
+        </ul>
+        <ul class="ul" style="display:none">
+            <li>@Html.LabelFor(model => model.ToolID)</li>
+            <li>@Html.DisplayFor(model => model.ToolID)@Html.HiddenFor(model => model.ToolID)</li>
+        </ul>
+
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.frequency)</li>
+            <li>@Html.DropDownList("frequency", ViewBag.frequency as IEnumerable<SelectListItem>, "請選擇週期")</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.tolerance)</li>
+            <li>@Html.TextBoxFor(model => model.tolerance, new { style = "width: 100px;" })</li>
+        </ul>
+        <ul class="ul" style="display:none">
+            <li>@Html.LabelFor(model => model.userlogin)</li>
+            <li>@Html.DisplayFor(model => model.userlogin)</li>
+        </ul>
+        <ul class="ul" style="display:none">
+            <li>@Html.LabelFor(model => model.date)</li>
+            <li>@Html.DisplayFor(model => model.date)</li>
+        </ul>
+        <ul class="ul">
+            <li>
+                <input type="button" id="sbmit" value="設定" style="width: 80px" />&nbsp;&nbsp;&nbsp;
+            <li>
+                <input type="button" value="重填" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;
+            </li>
+            <li>
+                <input type="button" value="取消" style="width: 80px" onclick="CloseModelWindow();" />
+            </li>
+        </ul>
+    </fieldset>
+}

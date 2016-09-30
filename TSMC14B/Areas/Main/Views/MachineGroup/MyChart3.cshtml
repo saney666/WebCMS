@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "MyChart3";
+}
+<script type="text/javascript">
+    var vName = '@ViewData["vName"]';
+    var toolId = '@ViewData["toolId"]';
+    var TagName = '@ViewData["TagName"]';
+    var StartDate = '@ViewData["StartDate"]';
+    var EndDate = '@ViewData["EndDate"]';
+    var flag = '@ViewData["flag"]';
+    var Y1Y2 = '@ViewData["Y1Y2"]';
+    var isLimit = '@ViewData["isLimit"]';
+    var isStack = '@ViewData["isStack"]';
+
+    var EditStartDate = StartDate;
+    var EditEndDate = EndDate;
+
+    var mousedownX = 0;
+    var mousedownY = 0;
+    var mouseupX = 0;
+    var Rangeflag = 0;
+    $(function () {
+        $("#chart").css('background-image', 'url("/Main/MachineGroup/MyChart?toolId=' + toolId + '&TagName=' + TagName + '&StartDate=' + StartDate + '&EndDate=' + EndDate + '&flag=3&Y1Y2=' + Y1Y2 + '&isLimit=True&isStack=' + isStack + '")')
+
+        $("#chart").mousedown(function (e) {
+            //$("#XY").html('X:' + e.clientX + ' Y:' + e.clientY);
+            event.preventDefault();
+            if (e.button == 0) {
+                mousedownX = e.clientX;
+                mousedownY = e.clientY;
+                Rangeflag = 1;
+            }
+        });
+        $("#chart").mousemove(function (e) {
+            //$("#XY").html('X:' + e.clientX + ' Y:' + e.clientY); 
+            var RangeX = e.clientX;
+            if (e.clientX <= 85) {
+                RangeX = 85;
+            }
+            if (e.clientX >= 785) {
+                RangeX = 785;
+            }
+            if (Rangeflag == 0) {
+                if (RangeX >= 78 && RangeX <= 785) {
+                    $("#divRange").css('left', (RangeX - 10) + 'px');
+                }
+            } else {
+                var tempwidth = RangeX - mousedownX;
+                if (tempwidth<=0) {
+                    tempwidth = 0;
+                }
+                $("#divRange").css('width', tempwidth + 'px');
+            }
+        });
+        $("#chart").mouseup(function (e) {
+            if (e.button == 0) {
+                //$("#XY").html('X:' + e.clientX + ' Y:' + e.clientY);
+                mouseupX = e.clientX;
+                if ((mouseupX - mousedownX) > 20) {
+                    var tempSdate = new Date(EditStartDate);
+                    var tempEdate = new Date(EditEndDate);
+                    var UTCSdate = Date.UTC(tempSdate.getFullYear(), tempSdate.getMonth(), tempSdate.getDate(), tempSdate.getHours(), tempSdate.getMinutes(), tempSdate.getSeconds()) + (tempSdate.getTimezoneOffset() * 60 * 1000);
+                    var UTCEdate = Date.UTC(tempEdate.getFullYear(), tempEdate.getMonth(), tempEdate.getDate(), tempEdate.getHours(), tempEdate.getMinutes(), tempEdate.getSeconds()) + (tempEdate.getTimezoneOffset() * 60 * 1000);
+                    var pixelPerMicrosecond = (UTCEdate - UTCSdate) / 850;
+                    tempSdate = new Date(UTCSdate + (pixelPerMicrosecond * (mousedownX - 80)));
+                    tempEdate = new Date(UTCEdate - (pixelPerMicrosecond * (800 - mouseupX )));
+                    EditStartDate = tempSdate;
+                    EditEndDate = tempEdate;
+                    $("#chart").css('background-image', 'url("/Main/MachineGroup/MyChart?toolId=' + toolId + '&TagName=' + TagName +
+                        '&StartDate=' + tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds() +
+                        '&EndDate=' + tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds() +
+                        '&flag=3&Y1Y2=' + Y1Y2 + '&isStack=' + isStack + '")')
+                }
+                $("#divRange").css('width', '1px');
+                Rangeflag = 0;
+            }
+        });
+    });
+
+    function DateShiftLeft() {
+        var tempSdate = new Date(EditStartDate);
+        var tempEdate = new Date(EditEndDate);
+        var UTCSdate = Date.UTC(tempSdate.getFullYear(), (parseInt(tempSdate.getMonth())), tempSdate.getDate(), tempSdate.getHours(), tempSdate.getMinutes(), tempSdate.getSeconds()) + (tempSdate.getTimezoneOffset() * 60 * 1000);
+        var UTCEdate = Date.UTC(tempEdate.getFullYear(), (parseInt(tempEdate.getMonth())), tempEdate.getDate(), tempEdate.getHours(), tempEdate.getMinutes(), tempEdate.getSeconds()) + (tempEdate.getTimezoneOffset() * 60 * 1000);
+        tempSdate = new Date(UTCSdate - ((UTCEdate - UTCSdate) / 3));
+        tempEdate = new Date(UTCEdate - ((UTCEdate - UTCSdate) / 3));
+        EditStartDate = tempSdate;
+        EditEndDate = tempEdate;
+        $("#chart").css('background-image', 'url("/Main/MachineGroup/MyChart?toolId=' + toolId + '&TagName=' + TagName +
+            '&StartDate=' + tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds() +
+            '&EndDate=' + tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds() +
+            '&flag=3&Y1Y2=' + Y1Y2 + '&isLimit=True&isStack=' + isStack + '")')
+    }
+    function DateShiftRight() {
+        var tempSdate = new Date(EditStartDate);
+        var tempEdate = new Date(EditEndDate);
+        var UTCSdate = Date.UTC(tempSdate.getFullYear(), (parseInt(tempSdate.getMonth())), tempSdate.getDate(), tempSdate.getHours(), tempSdate.getMinutes(), tempSdate.getSeconds()) + (tempSdate.getTimezoneOffset() * 60 * 1000);
+        var UTCEdate = Date.UTC(tempEdate.getFullYear(), (parseInt(tempEdate.getMonth())), tempEdate.getDate(), tempEdate.getHours(), tempEdate.getMinutes(), tempEdate.getSeconds()) + (tempEdate.getTimezoneOffset() * 60 * 1000);
+        tempSdate = new Date(UTCSdate + ((UTCEdate - UTCSdate) / 3));
+        tempEdate = new Date(UTCEdate + ((UTCEdate - UTCSdate) / 3));
+        EditStartDate = tempSdate;
+        EditEndDate = tempEdate;
+        $("#chart").css('background-image', 'url("/Main/MachineGroup/MyChart?toolId=' + toolId + '&TagName=' + TagName +
+            '&StartDate=' + tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds() +
+            '&EndDate=' + tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds() +
+            '&flag=3&Y1Y2=' + Y1Y2 + '&isLimit=True&isStack=' + isStack + '")')
+    }
+    function DateZoomIn() {
+        var tempSdate = new Date(EditStartDate);
+        var tempEdate = new Date(EditEndDate);
+        var UTCSdate = Date.UTC(tempSdate.getFullYear(), (parseInt(tempSdate.getMonth())), tempSdate.getDate(), tempSdate.getHours(), tempSdate.getMinutes(), tempSdate.getSeconds()) + (tempSdate.getTimezoneOffset() * 60 * 1000);
+        var UTCEdate = Date.UTC(tempEdate.getFullYear(), (parseInt(tempEdate.getMonth())), tempEdate.getDate(), tempEdate.getHours(), tempEdate.getMinutes(), tempEdate.getSeconds()) + (tempEdate.getTimezoneOffset() * 60 * 1000);
+        tempSdate = new Date(UTCSdate + ((UTCEdate - UTCSdate) / 4));
+        tempEdate = new Date(UTCEdate - ((UTCEdate - UTCSdate) / 4));
+        EditStartDate = tempSdate;
+        EditEndDate = tempEdate;
+        $("#chart").css('background-image', 'url("/Main/MachineGroup/MyChart?toolId=' + toolId + '&TagName=' + TagName +
+            '&StartDate=' + tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds() +
+            '&EndDate=' + tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds() +
+            '&flag=3&Y1Y2=' + Y1Y2 + '&isStack=' + isStack + '")')
+    }
+    function DateZoomOut() {
+        var tempSdate = new Date(EditStartDate);
+        var tempEdate = new Date(EditEndDate);
+        var UTCSdate = Date.UTC(tempSdate.getFullYear(), (parseInt(tempSdate.getMonth())), tempSdate.getDate(), tempSdate.getHours(), tempSdate.getMinutes(), tempSdate.getSeconds()) + (tempSdate.getTimezoneOffset() * 60 * 1000);
+        var UTCEdate = Date.UTC(tempEdate.getFullYear(), (parseInt(tempEdate.getMonth())), tempEdate.getDate(), tempEdate.getHours(), tempEdate.getMinutes(), tempEdate.getSeconds()) + (tempEdate.getTimezoneOffset() * 60 * 1000);
+        tempSdate = new Date(UTCSdate - ((UTCEdate - UTCSdate) / 4));
+        tempEdate = new Date(UTCEdate + ((UTCEdate - UTCSdate) / 4));
+        EditStartDate = tempSdate;
+        EditEndDate = tempEdate;
+        $("#chart").css('background-image', 'url("/Main/MachineGroup/MyChart?toolId=' + toolId + '&TagName=' + TagName +
+            '&StartDate=' + tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds() +
+            '&EndDate=' + tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds() +
+            '&flag=3&Y1Y2=' + Y1Y2 + '&isStack=' + isStack + '")')
+    }
+    function DateReSet() {
+        var tempSdate = new Date(StartDate);
+        var tempEdate = new Date(EndDate);
+        EditStartDate = StartDate;
+        EditEndDate = EndDate;
+        $("#chart").css('background-image', 'url("/Main/MachineGroup/MyChart?toolId=' + toolId + '&TagName=' + TagName +
+            '&StartDate=' + tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds() +
+            '&EndDate=' + tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds() +
+            '&flag=3&Y1Y2=' + Y1Y2 + '&isLimit=True&isStack=' + isStack + '")')
+
+    }
+</script>
+<input type="button" id="btnLeft" value="<-" onclick="DateShiftLeft()" />
+<input type="button" id="btnRight" value="->" onclick="DateShiftRight()" />
+<input type="button" id="btnBig" value="Zoom In" onclick="DateZoomIn()" />
+<input type="button" id="btnSmall" value="Zoom Out" onclick="DateZoomOut()" />
+<input type="button" id="btnReSet" value="Reset" onclick="DateReSet()" />
+<span id="XY"></span>
+<div id="chart" style="width: 800px; height: 600px; position: relative;z-index:100;">
+    <div id="divRange" style="width: 1px; height: 467px; border-width: 1px; border-color: black; border-style: solid; background-color: rgba(0%,10%,20%,0.5); position: absolute; top: 69px"></div>
+</div>
+<div  style="background-color:rgba(0%,0%,0%,0.5);width: 800px; height: 600px;vertical-align:middle;text-align:center;top:21px;position:absolute;">
+    <img style="width:100px;height:100px;margin:0 auto;vertical-align: middle;position:absolute;top:250px;left:350px;" src="/Content/Icons/circle_animation.gif" alt="Loading" />
+</div>

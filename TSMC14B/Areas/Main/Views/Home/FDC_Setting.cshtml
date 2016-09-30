@@ -1,0 +1,263 @@
+﻿@{
+    ViewBag.Title = "Setting";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Themes/Shared/ptTimeSelect/jquery.datetimepicker.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.datetimepicker.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.tb').css('font-size', '12px');
+            if ($('#toolidinput[value*="*"]').length) {
+                $("#toolid option:nth-child(1)").attr("selected", true);
+                $("#toolid option:selected").attr("selected", "");
+                $("#toolid").attr("disabled", true);
+            };
+            $('#toolidinput').keyup(function (event) {
+                changeIndex($("#toolidinput").val());
+            });
+            $('#toolidinput').keypress(function (e) {
+                if (e.keyCode == 13) {
+                    //ChartExport('search');
+                    var ddltoolid = $("#toolid").val();
+                    if (ddltoolid == "@TSMC14B.Menu.plaseSelectOption")
+                        ddltoolid = "";
+                    var urlStr = '@Url.Action("AlarmCheckList")?vName=@Request["vName"]&toolId=' + ddltoolid + '&Device=' + $("#device").val() + '&fromDate=' + $("#StartDate").val() + '&toDate=' + $("#EndDate").val() + '&onceaday=0&output=0&page=1&rp=20';
+                    $(".flexme").flexOptions({ url: urlStr });
+                    $('.flexme').flexReload();
+                }
+            });
+            function changeIndex(chkvalue) {
+                var objval; var isFound; var tempval;
+                if ((chkvalue == "")) {
+                    $("#toolid option:nth-child(1)").attr("selected", true);
+                    isFound = false;
+                    return;
+                };
+                if (chkvalue.indexOf("*") >= 0) {
+                    $("#toolid option:nth-child(1)").attr("selected", true);
+                    $("#toolid option:selected").attr("selected", "");
+                    $("#toolid").attr("disabled", true);
+                } else {
+                    if (!isFound) {
+                        $("#toolid").attr("disabled", false);
+                        $('#toolid>option[value^=' + chkvalue.toUpperCase() + '],#toolid>option[value^=' + chkvalue + ']').first().attr("selected", true);
+                        isFound = true;
+                    };
+                }; return;
+            };
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+            $("#device").change(function () {
+                var _vName = window.location.search;
+                var _intvName = window.location.search.indexOf("vName");
+                _vName = _vName.substring(_intvName + 6, _vName.length).split("&", 1);
+                var gName = null;
+                var option = null;
+                $('#device').each(function (e) {
+                    gName = $(this).val();
+                })
+                option = $('.rbn:checked').val();
+                if (option == "0") {
+                    var selectedValue = $('#device option:selected').val();
+                    var vendorname = '@Request["vName"]';
+                    $.post('@Url.Action("JsonAlarmCheck")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                        $('#toolid').empty();
+                        $('#toolid').append($('<option></option>').val('').text('@TSMC14B.Menu.plaseSelectOption'));
+                        $.each(data, function (i, item) {
+                            $('#toolid').append($('<option></option>').val(item.Value).text(item.Value));
+                        });
+                    }, 'json');
+                    @*location.href = "@Url.Action("AlarmCheck")?vName=" + _vName + "&Device=" + gName;*@
+                }
+            });
+
+            //$(".rbn").change(function () {
+            //    $('.rbn:checked').each(function (e) {
+            //        toolidinput
+            //        if ($(this).val() == "2") {
+            //            $('#lbl_device').css("display", "none");
+            //            $('#device').css("display", "none");
+            //            $('#lbl_toolid').css("display", "none");
+            //            $('#toolid').css("display", "none");
+            //            $('#toolidinput').css("display", "none");
+            //        }
+            //        else if ($(this).val() == "0") {
+            //            $('#lbl_device').css("display", "block");
+            //            $('#device').css("display", "block");
+            //            $('#lbl_toolid').css("display", "block");
+            //            $('#toolid').css("display", "block");
+            //            $('#toolidinput').css("display", "block");
+            //        }
+            //        else if ($(this).val() == "1") {
+            //            $('#lbl_device').css("display", "block");
+            //            $('#device').css("display", "block");
+            //            $('#lbl_toolid').css("display", "none");
+            //            $('#toolid').css("display", "none");
+            //            $('#toolidinput').css("display", "none");
+            //        }
+            //    })
+            //});
+             @*
+            //// 預約開始時間的行為
+            //$("#StartDate").attr("readonly", true);
+            //$("#StartDate").change(function () {
+            //    var start = new Date($("#StartDate").val().replace("-", "/"));
+            //    var end = new Date($("#EndDate").val().replace("-", "/"));
+            //    //if (DateDiff("n", start, end) <= 0)
+            //    //    $("#EndDate").val(dateFormat.call(DateAdd("n", 15, start), i18n.datepicker.dateformat.fulldayvalue + " HH:mm "));
+            
+            //    $(this).focus();
+            //});
+            
+           //$("#sd").datepicker({
+            //    picker: "#sd,#StartDate", showtarget: $("#StartDate"),
+            //    onReturn: function (r) {
+            //        var sdt = $("#StartDate").val().split(" ");
+            //        if (sdt[0].indexOf("-") != -1)
+            //            sdt[0] = dateFormat.call(r, i18n.datepicker.dateformat.fulldayvalue);
+            //        else
+            //            sdt.splice(0, 0, dateFormat.call(r, i18n.datepicker.dateformat.fulldayvalue));
+            //        $("#StartDate").val(sdt.join(" "));
+            //        $("#StartDate").trigger("change");
+            //    }
+            //});
+             
+            //$('#st').ptTimeSelect({
+            //    setButtonLabel: "設定",
+            //    containerWidth: "300px",
+            //    //minutesList: ["00", "15", "30", "45"],
+            //    onClose: function (time) {
+            //        var sdt = $("#StartDate").val().split(" ");
+            //        if (sdt[0].indexOf("-") != -1)
+            //            $("#StartDate").val(sdt[0] + " " + $(time).val());
+            //        else
+            //            $("#StartDate").val($(time).val());
+            //        $("#StartDate").trigger("change");
+            //    }
+            //});
+           *@
+            //// 預約結束時間的行為
+            //$("#EndDate").attr("readonly", true);
+            //$("#EndDate").change(function () {
+            //    var start = new Date($("#StartDate").val().replace("-", "/"));
+            //    var end = new Date($("#EndDate").val().replace("-", "/"));
+            //    //if (DateDiff("n", start, end) <= 0)
+            //    //    $("#StartDate").val(dateFormat.call(DateAdd("n", -15, end), i18n.datepicker.dateformat.fulldayvalue + " HH:mm "));
+
+            //    $(this).focus();
+            //});
+            //$("#ed").datepicker({
+            //    picker: "#ed,#EndDate", showtarget: $("#EndDate"),
+            //    onReturn: function (r) {
+            //        var sdt = $("#EndDate").val().split(" ");
+            //        if (sdt[0].indexOf("-") != -1)
+            //            sdt[0] = dateFormat.call(r, i18n.datepicker.dateformat.fulldayvalue);
+            //        else
+            //            sdt.splice(0, 0, dateFormat.call(r, i18n.datepicker.dateformat.fulldayvalue));
+            //        $("#EndDate").val(sdt.join(" "));
+            //        $("#EndDate").trigger("change");
+            //    }
+            //});
+
+            //$('#et').ptTimeSelect({
+            //    setButtonLabel: "設定",
+            //    containerWidth: "300px",
+            //    //minutesList: ["00", "15", "30", "45"],
+            //    onClose: function (time) {
+            //        var sdt = $("#EndDate").val().split(" ");
+            //        if (sdt[0].indexOf("-") != -1)
+            //            $("#EndDate").val(sdt[0] + " " + $(time).val());
+            //        else
+            //            $("#EndDate").val($(time).val());
+            //        $("#EndDate").trigger("change");
+            //    }
+            //});
+
+            //$('#StartDate').datetimepicker();
+            //$('#EndDate').datetimepicker({
+            //    Time59: true
+            //});
+
+            $('.flexme').flexigrid({
+                title: '@TSMC14B.Menu.EqFdcTable',
+                height: "auto",
+                width: 1150,
+                url: '@Url.Action("JsonSensorTag")?page=1&rp=20',
+                dataType: 'json',
+                colModel: [
+                    { display: '@TSMC14B.Menu.department_name', name: 'department_name', width: 50, sortable: false, align: 'center', hide: false },
+                    { display: 'Sensor', name: 'Sensor', width: 130, sortable: true, align: 'center', hide: false },
+                    { display: 'Tool', name: 'Tool', width: 100, sortable: true, align: 'center', hide: false },
+                    { display: 'Tooltype', name: 'ToolType', width: 120, sortable: true, align: 'center', hide: false },
+                    { display: 'chamber', name: 'chamber', width: 100, sortable: true, align: 'center', hide: false },
+                    { display: 'ReportInterval(minute)', name: 'PeriodicReportInterval', width: 120, sortable: true, align: 'center', hide: false },
+                    { display: 'chamberTag', name: 'chamberTag', width: 120, sortable: true, align: 'center', hide: false },
+                    { display: 'sensorTag', name: 'sensorTag', width: 120, sortable: true, align: 'center', hide: false },
+                    { display: 'LinkprocessData', name: 'LinkProcessData', width: 120, sortable: true, align: 'center', hide: false },
+                    { display: '', name: 'edit', width: 10, sortable: false, align: 'left', hide: false }
+                ],
+                procmsg: '@TSMC14B.Menu.procmsg',
+                rptext: '@TSMC14B.Menu.rptext',
+                pagestat: '@TSMC14B.Menu.pagestat',
+                pagetext: '@TSMC14B.Menu.pagetext',
+                outof: '@TSMC14B.Menu.outof',
+                nomsg: '@TSMC14B.Menu.nomsg',
+                usepager: true,
+                useRp: true,
+                rp: 20,
+                nowrap: false,
+                onSuccess: function () {
+                    $('.flexme > tbody > tr > td[abbrr="edit"] > div').remove();
+                    //$('.flexme > tbody > tr > td[abbrr="edit"]').append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@TSMC14B.Menu.Edit" /></div></a>');
+                    
+                    $('.flexme > tbody > tr > td[abbrr="edit"]').each(function () {
+                        if ($(this).parent().children(':eq(0)').text() == '@Session["UserdepartmentName"]' || parseInt('@Session["UserLevel"]') > 900) {
+                            $(this).append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@TSMC14B.Menu.Edit" /></div></a>');
+                        }
+                    });
+                    $('.edit').click(function () {
+
+                        OpenModelWindow('@Url.Action("EditSensorTag_info")?SensorId=' + $(this).parent().parent().children(':eq(1)').text(), { width: 600, height: 400, caption: "@TSMC14B.Menu.Edit", onclose: function () { $('.flexme').flexReload(); } });
+                    });
+                },
+                singleSelect: true,
+                rpOptions: [5, 10, 15, 20, 30, 50]
+            });
+        });
+
+        //查詢&匯出
+        function ChartExport(id) {
+            var SearchTag = $('#tbx_SearchTag').val();
+            if (id == 'search') {
+                var urlStr = '@Url.Action("JsonSensorTag")?searchtag=' + SearchTag + '&page=1&rp=20';
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (id == 'export') {
+                @*location.href = "@Url.Action("AlarmCheck")?vName=" + _vendor + "&SelectType=" + rbn1 + "&Device=" + ddlDevice + "&toolid=" + ddltoolid + "&StartDate=" + $('#StartDate').val() + "&EndDate=" + $('#EndDate').val() + "&CheckType=" + rbn2 + "&output=" + id;*@
+                location.href = '@Url.Action("AlarmCheck")?vName=@Request["vName"]&toolId=' + ddltoolid + '&Device=' + ddlDevice + '&fromDate=' + $("#StartDate").val() + '&toDate=' + $("#EndDate").val() + '&onceaday=0&output=export';
+            }
+    }
+    </script>
+}
+<h2>FDC_Setting</h2>
+<table border="1" class="tb" style="width: 550px">
+    <tr>
+        <td style="text-align: right;"></td>
+        <td></td>
+        <td>
+            <label for="lbl_SearchTag">@TSMC14B.Menu.QueryString:</label>
+        </td>
+        <td>
+            <input type="text" id="tbx_SearchTag" value="" />
+            <input type="button" id="sbmit" value="@TSMC14B.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search')" />
+        </td>
+    </tr>
+</table>
+<table class="flexme"></table>

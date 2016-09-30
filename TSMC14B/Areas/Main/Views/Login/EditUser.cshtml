@@ -1,0 +1,61 @@
+﻿@model TSMC14B.Areas.Main.Models.LoginModel
+@{
+    ViewBag.Title = @TSMC14B.Menu.modify;
+}
+
+@section JavaScript{
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('.ul').jqf1();
+
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+
+            @*$('.sbmit').click(function () {
+                $.post('@Url.Action("JsonExecute")', [{ name: 'UserID', value: $('#UsrName').val() }, { name: 'Pwd', value: $('#Pwd').val() }, { name: 'UsrTitle', value: $('#UsrTitle').val() }, { name: 'Level', value: $('#Level').val() }, { name: 'Type', value: 'Update' }], function (data) { alert(data.Msg); CloseModelWindow(); }, 'json');
+            });*@
+        });
+    </script>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset style="width: 90%; margin: 0 auto;">
+        <legend>@ViewBag.Title</legend>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.UserName)</li>
+            <li>@Html.HiddenFor(model => model.UserName)@Html.DisplayFor(model => model.UserName)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.Password)</li>
+            <li>@Html.PasswordFor(model => model.Password)</li>
+            <li>@Html.ValidationMessageFor(model => model.Password)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.Level)</li>
+            <li>@Html.DropDownListFor(model => model.Level, ViewBag.sessionType as IEnumerable<SelectListItem>)</li>
+            <li>@Html.ValidationMessageFor(model => model.Level)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.title)</li>
+            <li>@Html.TextBoxFor(model => model.title)</li>
+            <li>@Html.ValidationMessageFor(model => model.title)</li>
+        </ul>
+        <ul class="ul">
+            <li>
+                <input type="submit" value="@TSMC14B.Menu.confirm" style="width: 80px" />&nbsp;&nbsp;&nbsp;
+            </li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Refill" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;
+            </li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Cancel" style="width: 80px" onclick="CloseModelWindow();" />
+            </li>
+        </ul>
+    </fieldset>
+}

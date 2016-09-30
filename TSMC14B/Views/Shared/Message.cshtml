@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "資訊通知";
+}
+
+<style type="text/css">
+    .msg_h { margin: 20% auto; border: 2px solid; height: auto; width: 300px; }
+    .msg_head_img { float:right; display:inline; padding-top:3px; }
+    .msg_head_txt { padding:5px; font-size:12px; font-weight:normal; }
+    .msg_body { padding:10px; }
+    .red1 {border-color: #FBC2C4;}
+    .red2 {background:#FBC2C4; color:#D12F19;}
+</style>
+
+<div class="msg_h red1">
+    <div class="msg_head_txt red2">
+        @ViewBag.MessageType
+    </div>
+    <div class="msg_body">
+        @ViewBag.Message
+        <br/>
+        @Html.ActionLink("Link","index")
+    </div>
+</div>

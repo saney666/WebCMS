@@ -1,0 +1,37 @@
+﻿@model IEnumerable<TSMC14B.Areas.Main.Models.SingleAlarmModel>
+    @{
+        ViewBag.Title = "SingleAlarmList";
+    }
+    @section JavaScript{
+        <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+        <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(function () {
+                $('.flexme').flexigrid({
+                    title: '設備警告資料表',
+                    height: "auto",
+                    width: 700,
+                    url: '@Url.Action("SingleAlarmJson")?Toolid=@Request["Toolid"]&page=1&rp=50',
+                    dataType: 'json',
+                    colModel: [
+                        { display: 'ToolID', name: 'ToolID', width: 80, sortable: true, align: 'center', hide: false },
+                        { display: '課別', name: 'GroupName', width: 60, sortable: true, align: 'center', hide: false },
+                        { display: '柱位', name: 'Location', width: 60, sortable: true, align: 'center', hide: false },
+                        { display: 'LocationID', name: 'LocationID', width: 80, sortable: true, align: 'center', hide: false },
+                        { display: '錯誤代碼', name: 'AlarmType', width: 50, sortable: true, align: 'center', hide: false },
+                        { display: '錯誤描述', name: 'AlarmMsg', width: 120, sortable: true, align: 'center', hide: false },
+                        { display: 'Alarmlevel', name: 'Alarmlevel', width: 50, sortable: true, align: 'center', hide: false },
+                        { display: '發生時間', name: 'AlarmTime_Begin', width: 90, sortable: true, align: 'left', hide: false }
+                    ],
+                    usepager: true,
+                    useRp: true,
+                    nowrap: false,
+                    rp: 10,
+                    singleSelect: true,
+                    rpOptions: [5, 10, 15, 20, 30, 50],
+                });
+            });
+        </script>
+    }
+    <h2>設備 @Request["ToolID"] 警告資料表</h2>
+    <table class="flexme"></table>

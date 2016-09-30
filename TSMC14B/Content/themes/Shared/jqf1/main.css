@@ -1,0 +1,134 @@
+/*
+  jQuery FormOne - JQF1 1.0.1 - 05/06/2010
+  Por: Thiago Azurem - azurem@gmail.com
+*/
+
+    body,div,h1,h2,h3,h4,h5,h6,pre,form,fieldset,p,blockquote,th,td,tt,img,dl,dt,dd button {  
+      margin: 0;
+      padding: 0;
+      border: 0;
+      outline: 0;
+      font-weight: inherit;
+      font-style: inherit;
+      font-size: 100%;
+      font-family: inherit;
+      vertical-align: baseline;
+    }
+
+/* GENERAL */
+  body { padding-left:10px; }
+  pre { clear:both;font:11px arial;border:1px dotted silver;border-top:0px;background-color:#f9f9f9;height:70px;overflow:auto; }
+  .ul, .ul li {list-style:none;margin:0px;padding:0px;float:left}
+  .ul li label { width:120px;float:left;padding-left:5px;border-bottom:2px solid silver; }
+  .ul { padding:8px 0px;border-bottom:1px dotted silver;float:left;width:100%; }
+  fieldset {border:5px solid gray;clear:both;width:510px;}
+  legend, h2, h1 {border:3px solid silver;padding:5px 10px;background-color:#fffff2;color:gray;clear:both;}
+/* END GENERAL */
+
+
+/* RESET */
+  .jqf1InpTextNormal input, .jqf1InpTextFocus input, .jqf1InpRadio input, .jqf1InpCheck input, .jqf1Txt textarea {margin:0px;padding:0px;border:0px;background:none;font:14px arial;}
+  .jqf1 input, .jqf1 textarea, .jqf1 select {font-family:inherit;font-size:inherit;font-weight:inherit; }
+  .jqf1Sel ul, .jqf1Sel ul li, .jqf1SelMulti ul, .jqf1SelMulti ul li {float:left;list-style:none;margin:0px;padding:0px;}
+/* END RESET */
+
+  .jqf1Hidden { filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);-moz-opacity: 0;opacity:0;overflow:hidden; }
+
+/* Input text */
+  .jqf1InpTextNormal, .jqf1InpTextFocus,
+  .jqf1InpTextNormal div, .jqf1InpTextFocus div,
+  .jqf1InpTextNormal input, .jqf1InpTextFocus input { height:22px;float:left;}
+  .jqf1InpTextNormal div, .jqf1InpTextFocus div { overflow:hidden; }
+  .jqf1InpTextNormal { background: url('images/jqf1.png') left top no-repeat; }
+  .jqf1InpTextFocus { background: url('images/jqf1.png') left -22px no-repeat; }
+  .jqf1InpTextNormal .div { background: url('images/jqf1.png') right -44px no-repeat; }
+  .jqf1InpTextFocus .div { background: url('images/jqf1.png') right -66px no-repeat; }
+  .jqf1InpTextNormal .div div { background: #ffffff url('images/jqf1.png') left -88px repeat-x;margin:0px 4px; }
+  .jqf1InpTextFocus .div div { background: #ecf5f9 url('images/jqf1.png') left -110px repeat-x;margin:0px 4px; }
+  * html .jqf1InpTextNormal .div div { margin:0px 1px; }
+  * html .jqf1InpTextFocus .div div { margin:0px 1px; }
+/* END Input text */
+
+/* Input radio e check */
+  .jqf1InpRadio, .jqf1InpRadio input { float:left; }
+  .jqf1InpRadio div { width:15px;height:16px;overflow:hidden; }
+  .jqf1InpRadio .inpRadioOff { background: url('images/jqf1.png') left -167px no-repeat;float:left;margin-top:2px; }
+  .jqf1InpRadio .inpRadioOn { background: url('images/jqf1.png') left -183px no-repeat;float:left;margin-top:2px; }
+  .jqf1InpCheck div { width:14px;height:17px;overflow:hidden; }
+  .jqf1InpCheck { background: url('images/jqf1.png') left -132px no-repeat;float:left;}
+  .jqf1InpCheck .inpCheckOn { background: url('images/jqf1.png') left -149px no-repeat;float:left; }
+/* END Input radio e check */
+
+/* Textareas e caixas de select multiple */
+  .jqf1Txt, .jqf1Txt div, .jqf1Txt textarea , .jqf1SelMulti, .jqf1SelMulti div{ float:left;clear:both;resize: none; }
+   /* Textareas */
+  .jqf1Normal { border:1px solid #b3b5bd;background: url('images/jqf1_textarea_bg.png');border-bottom:0px; }
+  .jqf1Focus { border:1px solid #55a7c8;background: url('images/jqf1_textarea_focus_bg.png');border-bottom:0px;}
+  .jqf1Normal .div { border:1px solid #e1e1e1;width:100%; }
+  .jqf1Focus .div { border:1px solid #b4d9ea;width:100%; }
+   /* Selects */
+  .jqf1SelMulti, .jqf1SelMulti div { overflow:hidden; }
+  .jqf1SelMulti { padding-bottom:1px;border:1px solid #b3b5bd; }
+  .jqf1SelMultiple { border:0px;padding:0px; }
+   /* Bordas */
+  .jqf1Txt .div div b, .jqf1SelMulti .div div b { width:4px;height:4px;overflow:hidden;position:absolute; }
+  .jqf1Txt textarea  { z-index:1;position:relative; }
+  .jqf1Normal .jqf1_a, .jqf1Normal .jqf1_b, .jqf1Normal .jqf1_c, .jqf1Normal .jqf1_d { background: url('images/jqf1_textarea.png') no-repeat; }
+  .jqf1Focus .jqf1_a, .jqf1Focus .jqf1_b, .jqf1Focus .jqf1_c, .jqf1Focus .jqf1_d { background: url('images/jqf1_textarea_focus.png') no-repeat; }
+  .jqf1Txt .jqf1_a, .jqf1SelMulti .jqf1_a { background-position: left -6px;margin:-2px 0px 0px -2px; }
+  .jqf1Txt .jqf1_b, .jqf1SelMulti .jqf1_b { background-position: right -6px;margin-top:-2px; }
+  .jqf1Txt .jqf1_c, .jqf1SelMulti .jqf1_c { background-position: left top;margin:-3px 0px 0px -2px; }
+  .jqf1Txt .jqf1_d, .jqf1SelMulti .jqf1_d { background-position: right top;margin-top:-3px; }
+/* END Textareas e caixas de select multiple */
+
+/* Input file e Button */
+  .jqf1InpFile, .jqf1InpFile div, .jqf1Btn, .jqf1Btn div, .jqf1Btn input, .jqf1Btn .div span { float:left;overflow:hidden; }
+  .jqf1 input, .jqf1Btn .div span { font:14px arial;padding-top:2px; }
+  .jqf1InpFile { color:gray; }
+  .jqf1Btn input, .jqf1Btn button { cursor:pointer; }
+  .jqf1Btn .div, .jqf1Btn .div div, .jqf1Btn .div span { height:22px; }
+  .jqf1Btn .div div { padding:0px 4px;text-align:center;color:#fff;letter-spacing:-0.2px; }
+  .jqf1Btn .div { background: url('images/jqf1.png') left -208px no-repeat; }
+  .jqf1Btn .div div { background: url('images/jqf1.png') right -256px no-repeat; }
+  .jqf1Btn .div span { background: url('images/jqf1.png') left -304px repeat-x; }
+
+/* END Input file e Button */
+
+/* Selects normal */
+  .jqf1Sel, .jqf1Sel .jqf1SelAtivo, .jqf1Sel .jqf1SelAtivo a {height:21px;float:left;overflow:hidden;}
+  .jqf1SelList ul, .jqf1Sel .jqf1SelList li { float:left;clear:both; }
+  .jqf1Sel { background: url('images/jqf1.png') left -354px no-repeat; }
+  .jqf1Sel .jqf1SelAtivo { background: url('images/jqf1.png') right -399px no-repeat;cursor:pointer; }
+  .jqf1Sel .jqf1SelAtivo span {background: url('images/jqf1.png') left -460px repeat-x;width:100%;height:23px;float:left;clear:both;margin-top:-24px; }
+  .jqf1Sel .jqf1SelAtivo a { background: url('images/jqf1.png') left -376px repeat-x;margin:0px 20px 0px 3px;color:#324a59;text-decoration:none;font:13px arial;clear:both;padding-top:2px; }
+  .jqf1Sel .jqf1SelList { float:left;width:100%; }
+  /* OBS: Altura do select aberto setada para todos em 100px */
+  /* Voce pode remover essa altura e sair atribuindo personalizado a cada select desejado */
+  .jqf1Sel .jqf1SelList div { position:absolute;margin-top:21px;z-index:3; }
+  .jqf1Sel .jqf1SelList ul { float:left;margin-left:3px;max-height:100px;background-color:#8b999e; }
+  * html .jqf1Sel .jqf1SelList ul {height:80px;}
+  .jqf1SelList ul { border-bottom:1px solid #000;border-right:1px solid #000;overflow:hidden;overflow-y:auto;font:12px arial; }
+  .jqf1Sel .jqf1SelList li, .jqf1Sel .jqf1SelList li span, .jqf1Sel .jqf1SelList li a, .jqf1SelMulti .div li a, .jqf1SelMulti .div li span, .jqf1SelMulti .div li { width:100%;float:left; }
+  .jqf1Sel .jqf1SelList li { border:1px solid #000;border-bottom:0px; }
+  .jqf1Sel .jqf1SelList li a { color:#ffffff;background-color: #88a6b1; }
+  .jqf1SelList li a { font:12px arial;text-decoration:none; }
+  .jqf1Sel .jqf1SelList li a:hover { color:#d0f3ff;background-color: #5e808c; }
+  .jqf1SelList li span { float:left;padding:2px 4px 3px 4px;margin-right:7px; }
+  *:first-child+html .jqf1SelList li span { padding-right:15px;width:auto; }
+  .jqf1SelMultiple li a { font:12px arial;color:#ffffff;background: #8b999e url('images/jqf1.png') 0px -424px no-repeat;float:left;padding-left:10px; }
+  .jqf1SelMultiple li a.jqf1OptPadding { background-position: 10px -424px }
+  .jqf1SelMultiple li.jqf1SelChecked a { background: #727a7d url('images/jqf1.png') 0px -591px no-repeat;float:left;padding-left:10px; }
+  .jqf1SelMultiple li.jqf1SelChecked a.jqf1OptPadding { background-position: 10px -591px }
+  .jqf1SelMultiple .jqf1SelList li a:hover { color:#d0f3ff }
+  .jqf1SelMulti .div li a { color:gray;background: url('images/jqf1.png') 2px -424px no-repeat;float:left;padding-left:12px;border-bottom:1px solid #f1f1f1; }
+  .jqf1SelMulti .div li a.jqf1OptPadding { background-position: 12px -424px }
+  .jqf1SelMulti .div li.jqf1SelChecked a { color:black;background: url('images/jqf1.png') 2px -591px no-repeat;float:left;padding-left:12px; }
+  .jqf1SelMulti .div li.jqf1SelChecked a.jqf1OptPadding { background-position: 12px -591px; }
+  .jqf1SelMulti .div .jqf1SelList ul { z-index:1;position:relative; }
+  .jqf1SelList ul input { border-bottom:2px solid silver;background-color:#ffffec;float:left;width:100%;padding:2px 0px; }
+  .jqf1Sel .jqf1SelList ul input { border-top:2px solid silver; }
+  .jqf1SelMulti .div em { float:left;width:100%;background-color:#f1f1f1;border-bottom:1px dotted silver;border-top:1px dotted silver;color:gray; }
+  .jqf1SelList li .jqf1OptPadding span {margin-left:11px;padding-right:5px;width:auto;}
+  *:first-child+html .jqf1SelList li .jqf1OptPadding span { margin-right:15px; }
+/* END Selects normal */
+

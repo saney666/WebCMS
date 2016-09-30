@@ -1,0 +1,753 @@
+﻿@model TSMC14B.Areas.Main.Models.PLCCheckModel
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewBag.Title = Request["vName"] + @TSMC14B.Menu.eqValueChart;
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/ptTimeSelect/jquery.datetimepicker.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.datetimepicker.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.tb').css('font-size', '12px');
+            if ($('#toolidinput[value*="*"]').length) {
+                $("#toolid option:nth-child(1)").attr("selected", true);
+                $("#toolid option:selected").attr("selected", "");
+                $("#toolid").attr("disabled", true);
+            };
+
+            $('#toolidinput').keyup(function (event) {
+                changeIndex($("#toolidinput").val());
+            });
+
+            $('#toolidinput').keypress(function (e) {
+                if (e.keyCode == 13 && $('#toolidinput').val().length > 0) {
+                    var vName = '@Request["vName"]';
+                    var device = $('#device option:selected').val();
+                    var toolid = $('#toolid option:selected').val();
+                    GetTag(vName, device, toolid);
+                }
+            });
+
+            $('#IsStack').change(function (e) {
+                CheckIsStack();
+            });
+
+            $('#cbxSelectAll').change(function (e) {
+               
+                if ($('#cbxSelectAll').attr('checked') == 'checked') {
+                    $('.cb_Tag').each(function (i, item) {
+                        $(this).attr('checked', 'checked');
+                        var _toolid = $("#toolid").val();
+                        var _name = $(this).attr('name');
+                        var _value = $(this).val();
+                        ToolValueTagADD(_toolid, _name, _value,true);
+                    });
+                } else {
+                    $('.cb_Tag').each(function (i, item) {
+                        $(this).attr('checked', null);
+                        var _value = $(this).val();
+                        ToolValueTagRemove(_value);
+                    });
+                }
+            });
+
+            function GetTag(vName, device, toolid) {
+                $.post('@Url.Action("JsonGetTag")', [{ name: 'Vendor', value: vName }, { name: 'Device', value: device == "@TSMC14B.Menu.plaseSelectOption" ? "" : device }, { name: 'ToolID', value: toolid }],
+                         function (data) {
+                             $('#td').empty();
+                             $('#td').append($('<table><tr>'));
+                             $.each(data, function (i, item) {
+                                 $('#td').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Value + '" value="' + item.Key + '" class="cb_Tag" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
+                                 if ((i + 1) % 5 == 0) {
+                                     $('#td').append($('</tr><tr>'));
+                                 }
+                             });
+                             $('#td').append($('</tr></table>'));
+                             $('.cb_Tag').change(function () {
+                                 var _toolid = $("#toolid").val();
+                                 var _name = $(this).attr('name');
+                                 var _value = $(this).val();
+                                 if ($(this).attr('checked') == 'checked') { ToolValueTagADD(_toolid, _name, _value); } else { ToolValueTagRemove(_value); }
+                             });
+                         }, 'json');
+            }
+
+            function changeIndex(chkvalue) {
+                var objval; var isFound; var tempval;
+                if ((chkvalue == "")) {
+                    $("#toolid option:nth-child(1)").attr("selected", true);
+                    isFound = false;
+                    return;
+                };
+                if (chkvalue.indexOf("*") >= 0) {
+                    $("#toolid option:nth-child(1)").attr("selected", true);
+                    $("#toolid option:selected").attr("selected", "");
+                    $("#toolid").attr("disabled", true);
+                } else {
+                    if (!isFound) {
+                        $("#toolid").attr("disabled", false);
+
+                        $('#toolid>option[value^=' + chkvalue.toUpperCase() + '],#toolid>option[value^=' + chkvalue + ']').first().attr("selected", true);
+                        isFound = true;
+                    };
+                }; return;
+            };
+
+            changeIndex('@Request["ToolID"]');
+
+            if ('@Request["ToolID"]' != '') {
+                GetTag('', '', '@Request["ToolID"]');
+            }
+
+
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+
+            var _flag = window.location.search;
+            var _intflag = window.location.search.indexOf("Flag");
+            _flag = _flag.substring(_intflag, _intflag + 6);
+
+            if (_flag.substring(_flag.length - 1, _flag.length) == "1" || _flag.substring(_flag.length - 1, _flag.length) == "") {
+                $('#rbnT1').attr("checked", "checked");
+                $('#tb1').css("display", "block");
+                $('#tb2').css("display", "none");
+            }
+            else if (_flag.substring(_flag.length - 1, _flag.length) == "2") {
+                $('#rbnT2').attr("checked", "checked");
+                $('#tb1').css("display", "none");
+                $('#tb2').css("display", "block");
+            }
+
+            $('.rbn').change(function () {
+                $('.rbn:checked').each(function (e) {
+                    if ($(this).val() == "1") {
+                        $('#tb1').css("display", "block");
+                        $('#tb2').css("display", "none");
+                        $('#tb3').css("display", "none");
+                    }
+                    else if ($(this).val() == "2") {
+                        $('#tb1').css("display", "none");
+                        $('#tb2').css("display", "block");
+                        $('#tb3').css("display", "none");
+                    }
+                    else if ($(this).val() == "3") {
+                        $('#tb1').css("display", "none");
+                        $('#tb2').css("display", "none");
+                        $('#tb3').css("display", "block");
+                    }
+                });
+            });
+
+            //單一設備多數值
+            $("#device").change(function () {
+                var selectedValue = $('#device option:selected').text();
+                var vendorname = '@Request["vName"]';
+                $.post('@Url.Action("JsonGettid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                    $('#toolid').empty();
+                    $('#toolid').append($('<option></option>').val('').text('@TSMC14B.Menu.plaseSelectOption'));
+                    $.each(data, function (i, item) {
+                        $('#toolid').append($('<option></option>').val(item.Value).text(item.Value));
+                    });
+                }, 'json');
+            });
+
+            $("#toolid").change(function () {
+                var vName = '@Request["vName"]';
+                var device = $('#device option:selected').val();
+                var toolid = $('#toolid option:selected').val();
+                $('#cbxSelectAll').attr('checked', false);
+                $('#td').empty();
+                $.post('@Url.Action("JsonGetTag")', [{ name: 'Vendor', value: vName }, { name: 'Device', value: device == "@TSMC14B.Menu.plaseSelectOption" ? "" : device }, { name: 'ToolID', value: toolid }],
+                           function (data) {
+                               $('#td').append($('<table><tr>'));
+                               var allflag = true;
+                               $.each(data, function (i, item) {
+                                   $('#td').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Value + '" value="' + item.Key + '" class="cb_Tag" /><label for="' + item.Key + '"  style="cursor: pointer;">' + item.Value + '</label></td>'));
+                                   if ((i + 1) % 5 == 0) {
+                                       $('#td').append($('</tr><tr>'));
+                                   }
+                                   if ($('#ValueTag' + item.Key).length == 1) { $('#' + item.Key).attr('checked', true); } else {
+                                       allflag = false;
+                                   }
+                               });
+                               if (allflag) {
+                                   $('#cbxSelectAll').attr('checked', true);
+                               }
+                               $('#td').append($('</tr></table>'));
+
+                               $('.cb_Tag').change(function () {
+                                   var _toolid = $("#toolid").val();
+                                   var _name = $(this).attr('name');
+                                   var _value = $(this).val();
+                                   if ($(this).attr('checked') == 'checked') { ToolValueTagADD(_toolid, _name, _value); } else { ToolValueTagRemove(_value); }
+                               });
+                           }, 'json');
+            });
+
+            //單一數值多設備
+            $("#Device2").change(function () {
+                var _vName = window.location.search;
+                var _intvName = window.location.search.indexOf("vName");
+                _vName = _vName.substring(_intvName + 6, _vName.length).split("&", 1);
+                var gName = null;
+                var option = null;
+                $('#device2').each(function (e) {
+                    gName = $(this).val();
+                });
+
+                var selectedValue = $('#Device2 option:selected').val();
+                var vendorname = '@Request["vName"]';
+                $.post('@Url.Action("JsonGetTypeid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                    $('#Typeid').empty();
+                    $('#Typeid').append($('<option></option>').val('').text('@TSMC14B.Menu.plaseSelectOption'));
+                    $.each(data, function (i, item) {
+                        $('#Typeid').append($('<option></option>').val(item.Value).text(item.Value));
+                    });
+                }, 'json');
+            });
+            $("#Typeid").change(function () {
+                //var _vName = window.location.search;
+                //var _intvName = window.location.search.indexOf("vName");
+                //_vName = _vName.substring(_intvName + 6, _vName.length).split("&", 1);
+                //var gName = null;
+                //var typeid = null;
+                //$('#device2').each(function (e) {
+                //    gName = $(this).val();
+                //});
+                //$('#Typeid').each(function (e) {
+                //    typeid = $(this).val();
+                //});
+                var vendorname = '@Request["vName"]';
+                var selectedValue = $('#Typeid option:selected').val();
+                $.post('@Url.Action("JsonGettid2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }],
+                              function (data) {
+                                  $('#td2').empty();
+                                  $('#td').append($('<table><tr>'));
+                                  $.each(data, function (i, item) {
+                                      $('#td2').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Key + '" value="' + item.Key + '" class="cb_toolid" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
+                                      if ((i + 1) % 5 == 0) {
+                                          $('#td2').append($('</tr><tr>'));
+                                      }
+                                  });
+                                  $('#td').append($('</tr></table>'));
+                              }, 'json');
+                $.post('@Url.Action("JsonGetTag2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                    $('#TagName2').empty();
+                    $('#TagName2').append($('<option></option>').val('').text('@TSMC14B.Menu.plaseSelectOption'));
+                    $.each(data, function (i, item) {
+                        $('#TagName2').append($('<option></option>').val(item.Key).text(item.Value));
+                    });
+                }, 'json');
+            });
+
+            //多數值多設備
+            $("#Device3").change(function () {
+                var _vName = window.location.search;
+                var _intvName = window.location.search.indexOf("vName");
+                _vName = _vName.substring(_intvName + 6, _vName.length).split("&", 1);
+                var gName = null;
+                var option = null;
+                $('#device3').each(function (e) {
+                    gName = $(this).val();
+                });
+                var selectedValue = $('#Device3 option:selected').val();
+                var vendorname = '@Request["vName"]';
+                $.post('@Url.Action("JsonGetTypeid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                    $('#Typeid2').empty();
+                    $('#Typeid2').append($('<option></option>').val('').text('@TSMC14B.Menu.plaseSelectOption'));
+                    $.each(data, function (i, item) {
+                        $('#Typeid2').append($('<option></option>').val(item.Value).text(item.Value));
+                    });
+                }, 'json');
+            });
+            $("#Typeid2").change(function () {
+                var vendorname = '@Request["vName"]';
+                var selectedValue = $('#Typeid2 option:selected').val();
+                $.post('@Url.Action("JsonGettid2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }],
+                          function (data) {
+                              $('#td3').empty();
+                              $('#td3').append($('<table><tr>'));
+                              $.each(data, function (i, item) {
+                                  $('#td3').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Key + '" value="' + item.Key + '" class="cb_toolid2" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
+                                  if ((i + 1) % 5 == 0) {
+                                      $('#td3').append($('</tr><tr>'));
+                                  }
+                              });
+                              $('#td3').append($('</tr></table>'));
+                          }, 'json');
+                $.post('@Url.Action("JsonGetTag2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                    $('#TagName3').empty();
+                    $('#TagName3').append($('<table><tr>'));
+                    $.each(data, function (i, item) {
+                        $('#TagName3').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Key + '" value="' + item.Key + '" class="cb_tName" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
+                        if ((i + 1) % 5 == 0) {
+                            $('#TagName3').append($('</tr><tr>'));
+                        }
+                    });
+                    $('#TagName3').append($('</tr></table>'));
+                }, 'json');
+            });
+
+            $('#StartDate').datetimepicker();
+            $('#EndDate').datetimepicker({
+                Time59: true
+            });
+            $('#StartDate2').datetimepicker();
+            $('#EndDate2').datetimepicker({
+                Time59: true
+            });
+            $('#StartDate3').datetimepicker();
+            $('#EndDate3').datetimepicker({
+                Time59: true
+            });
+
+            $("#StartDate").val(aryPara['SD']);
+            $("#EndDate").val(aryPara['ED']);
+
+            if ($("#StartDate").val().length == 0) {
+                var dt = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
+                $("#StartDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 00:00');
+            };
+            if ($("#EndDate").val().length == 0) {
+                var dt = new Date(Date.now());
+
+                $("#EndDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()));
+            };
+            if ($("#StartDate2").val().length == 0) {
+                var dt = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
+                $("#StartDate2").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 00:00');
+            };
+            if ($("#EndDate2").val().length == 0) {
+                var dt = new Date(Date.now());
+
+                $("#EndDate2").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()));
+            };
+            if ($("#StartDate3").val().length == 0) {
+                var dt = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
+                $("#StartDate3").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 00:00');
+            };
+            if ($("#EndDate3").val().length == 0) {
+                var dt = new Date(Date.now());
+                $("#EndDate3").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()));
+            };
+
+        });
+
+        var strUrl = location.search;
+        var getPara, ParaVal;
+        var aryPara = [];
+        if (strUrl.indexOf("?") != -1) {
+            var getSearch = strUrl.split("?");
+            getPara = getSearch[1].split("&");
+            for (i = 0; i < getPara.length; i++) {
+                ParaVal = getPara[i].split("=");
+                aryPara.push(ParaVal[0]);
+                aryPara[ParaVal[0]] = decodeURI(ParaVal[1]);
+            }
+        }
+
+
+        function ChartExport(id) {
+            var action = "4";
+            //$('.rbn:checked').each(function (e) {
+            //    action += $(this).val();
+            //});
+            ////單一設備多數值
+            //var toolid = $('#toolid').val();
+            //var tagName = "";
+            //$('.cb_Tag:checked').each(function (e) {
+            //    tagName += $(this).val() + ",";
+            //});
+            //tagName = tagName.substring(0, tagName.length - 1);
+            ////單一數值多設備
+            //var tagName2 = "";
+            //var toolid2 = "";
+            //$('.cb_toolid:checked').each(function (e) {
+            //    tagName2 += 'P5_' + $(this).val() + $('#TagName2').val() + ",";
+            //    toolid2 += $(this).val() + ",";
+            //});
+            //toolid2 = toolid2.substring(0, toolid2.length - 1);
+            //tagName2 = tagName2.substring(0, tagName2.length - 1);
+            //疊圖
+
+            //console.log($('#IsStack').attr('checked') == 'checked');
+
+            if ($('#IsStack').attr('checked') == 'checked') {
+                action = '2';
+            }
+
+            ////多數值多設備
+            var tagName3 = '';
+            var toolid3 = '';
+            var Y1Y2 = '';
+
+            $('.ValueTag').each(function (e) {
+                if ($('#cbx' + $(this).attr('id').replace('ValueTag', '')).attr('checked') == 'checked') {
+                    if (toolid3.indexOf($(this).attr('toolid')) == -1) {
+                        toolid3 = toolid3 + $(this).attr('toolid') + ",";
+                    }
+                    var tagName = $(this).attr('id').replace('ValueTag', '');
+                    if (tagName3.indexOf($(this).attr('id').replace('ValueTag', '')) == -1) {
+                        tagName3 = tagName3 + tagName + ",";
+                    }
+                    //console.log($(this).children('.Y1Y2:checked').val());
+                    //if (Y1Y2.indexOf($(this).attr('id').replace('ValueTag', '')) == -1) {
+                    //    Y1Y2 = Y1Y2 + $(this).children('.Y1Y2:checked').val() + ",";
+                    //}
+                    Y1Y2 = Y1Y2 + $(this).children('.Y1Y2:checked').val() + ",";
+                }
+            });
+
+            //var items = $(".ValueTag").sortable("serialize", { key: "sort" });
+            //$(items).each(function (e) {
+            ////    alert($(this).attr('toolid'));
+            //    if ($('#cbx' + $(this).attr('id').replace('ValueTag', '')).attr('checked') == 'checked') {
+            //        if (toolid3.indexOf($(this).attr('toolid')) == -1) {
+            //            toolid3 = toolid3 + $(this).attr('toolid') + ",";
+            //        }
+            //        if (tagName3.indexOf($(this).attr('id').replace('ValueTag', '')) == -1) {
+            //            tagName3 = tagName3 + $(this).attr('id').replace('ValueTag', '') + ",";
+            //        }
+            //    }
+            //});
+            var scheight = screen.height;
+            var scwidth = screen.width;
+            toolid3 = toolid3.substring(0, toolid3.length - 1);
+            tagName3 = tagName3.substring(0, tagName3.length - 1);
+            Y1Y2 = Y1Y2.substring(0, Y1Y2.length - 1);
+            var fromDate = $("#StartDate").val();
+            var toDate = $("#EndDate").val();
+            var vName = '@Request["vName"]';
+            var dt = new Date(Date.now());
+            if (action == 1) {
+                if (new Date($("#EndDate").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
+                    if (tagName.length > 0) {
+                        if (id == 'search') {
+                            OpenModelWindow('@Url.Action("MyChart")?toolId=' + toolid + '&TagName=' + tagName + '&StartDate=' + fromDate + '&EndDate=' + toDate + '&flag=' + action, { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
+                        }
+                        else if (id == 'export') {
+                            location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid + '&TagName=' + tagName + '&StartDate=' + fromDate + '&EndDate=' + toDate + '&flag=' + action + '&output=' + id;
+                        }
+                }
+                else {
+                    alert('@TSMC14B.Menu.plaseSelectValueName');
+                    }
+                }
+                else {
+                    alert("@TSMC14B.Menu.EndTimeNotOverNowTime");
+                }
+            } else if (action == 2) {
+                if (new Date($("#EndDate3").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
+                    if (toolid3.length > 0) {
+                        if (id == 'search') {
+                            //OpenModelWindow('@Url.Action("MyChart")?toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate3").val() + '&EndDate=' + $("#EndDate3").val() + '&flag=' + action, { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
+                            window.open('@Url.Action("MyChart4")?toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate3").val() + '&EndDate=' + $("#EndDate3").val() + '&flag=' + action + '&Y1Y2=' + Y1Y2 + '&IsStack=True', '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=no,resizable=yes,top=' + (((scheight - 40) / 2) - (690 / 2) < 0 ? 0 : ((scheight - 40) / 2) - (690 / 2)) + ',left=' + ((scwidth / 2) - (840 / 2) < 0 ? 0 : (scwidth / 2) - (840 / 2)) + ',width=825,height=625');
+                    }
+                    else if (id == 'export') {
+                        location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate3").val() + '&EndDate=' + $("#EndDate3").val() + '&flag=' + action + '&output=' + id;
+                    }
+            }
+            else {
+                alert('@TSMC14B.Menu.plaseSelectValueName');
+                }
+            }
+            else {
+                alert("@TSMC14B.Menu.EndTimeNotOverNowTime");
+            }
+        } else if (action == 3) {
+            if (new Date($("#EndDate3").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
+                if (toolid3.length > 0) {
+                    if (id == 'search') {
+                        OpenModelWindow('@Url.Action("MyChart")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action + '&Y1Y2=' + Y1Y2, { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
+                }
+                else if (id == 'export') {
+                    location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate3").val() + '&EndDate=' + $("#EndDate3").val() + '&flag=' + action + '&output=' + id;
+                }
+        }
+        else {
+            alert('@TSMC14B.Menu.plaseSelectOption');
+            }
+        }
+        else {
+            alert("@TSMC14B.Menu.EndTimeNotOverNowTime");
+        }
+    } else if (action == 4) {
+        if (new Date($("#EndDate3").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
+            if (toolid3.length > 0) {
+                if (id == 'search') {
+                    //OpenModelWindow('@Url.Action("MyChart")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action, { width: 900, height: 700, caption: "Thend Chart", onclose: function () { } });
+                    window.open('@Url.Action("MyChart5")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action, '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=yes,resizable=yes,top=' + (((scheight - 40) / 2) - (690 / 2) < 0 ? 0 : ((scheight - 40) / 2) - (690 / 2)) + ',left=' + ((scwidth / 2) - (840 / 2) < 0 ? 0 : (scwidth / 2) - (840 / 2)) + ',width=840,height=625');
+                }
+                else if (id == 'export') {
+                    location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action + '&output=' + id;
+                }
+        }
+        else {
+            alert('@TSMC14B.Menu.plaseSelectOption');
+            }
+        }
+        else {
+            alert("@TSMC14B.Menu.EndTimeNotOverNowTime");
+        }
+    }
+}
+        function ToolValueTagADD(toolid, name, value, selectAll) {
+            
+            if ($('.ValueTag').length > 14) { return false; }
+
+    if ($('#ValueTag' + value).length == 0) {
+        if (selectAll == null) {
+            $('#ToolIdValueTag').append('<div id="tempDiv" style="height:100px;" ></div>');
+        }
+        
+        $('#ToolIdValueTag').append('<div id="ValueTag' + value + '" class="ValueTag" name=' + name + ' toolid=' + toolid + ' style="display: none;background-color:#f2ffff;border-style:ridge;border-width:3px;border-color:silver;padding:2px 10px 2px 10px;margin:0px 0px 0px 0px;position:relative;width:100%;"><input type="checkbox" id="cbx' + value + '" style="vertical-align:middle;" checked="checked" /><label for="cbx' + value + '" style="vertical-align:middle;cursor: pointer;">' + toolid + name + '</label>             <input type="radio" name="Y1Y2' + value + '" class="Y1Y2" style="display:none;" id="rbnY1" value="Y1" checked ><label class="lblY1Y2" for="rbnY1" style="display:none;" >Y1</label><input type="radio" style="display:none;" name="Y1Y2' + value + '" class="Y1Y2" id="rbnY2" value="Y2" ><label class="lblY1Y2" style="display:none;" for="rbnY2" >Y2</label>                    <img class="uncheck" style="vertical-align:middle;position:absolute;right:0px;top:5px;cursor: pointer;" src="/images/uncheck.png" /></div>');
+        if (selectAll==null) {
+            $('#tempDiv').slideUp("fast", function () {
+                $('#tempDiv').remove();
+            });
+        }
+        
+        $('#ValueTag' + value).fadeIn("slow");
+        CheckIsStack();
+
+        ValueTagHeader();
+        $('.uncheck').click(function () {
+            if ($(this).parent().attr('toolid') == $('#toolid').val()) {
+                var _value = $(this).parent().attr('id').replace('ValueTag', '');
+                $('.cb_Tag').each(function () {
+                    if (_value == $(this).attr('id')) {
+                        $(this).attr('checked', false);
+                    }
+                });
+            }
+            ToolValueTagRemove($(this).parent().attr('id').replace('ValueTag', ''));
+        });
+    }
+}
+function ToolValueTagRemove(value) {
+    $('#ValueTag' + value).fadeOut("fast", function () {
+        $('#ValueTag' + value).remove();
+        ValueTagHeader();
+    });
+}
+function ValueTagHeader() {
+    if ($('.ValueTag').length == 0) {
+        $('#ValueTagHeader').text('@TSMC14B.Menu.noSelectValueTag');
+    } else {
+        $('#ValueTagHeader').text('@TSMC14B.Menu.alreadySelectValueTag:' + $('.ValueTag').length);
+    }
+}
+function ClearAll() {
+    $('.ValueTag').remove();
+    $('.cb_Tag:checked').attr('checked', false);
+    $('#cbxSelectAll').attr('checked', false);
+    ValueTagHeader();
+}
+function CheckIsStack() {
+    if ($('#IsStack').prop('checked')) {
+        $('.Y1Y2,.lblY1Y2').show();
+    } else {
+        $('.Y1Y2,.lblY1Y2').hide();
+    }
+}
+    </script>
+}
+
+<h2>@Request["vName"] @TSMC14B.Menu.eqValueChart</h2>
+@*@Html.Partial("MachineGroupTitle", ViewData["PageName"] = "PLCCheck")*@
+<hr />
+<div>
+    <div style="font-size: 12px;">
+        <input type="radio" name="group1" class="rbn" id="rbnT1" value="1" checked style="display: none;">
+        <label for="rbnT1" style="display: none;">@TSMC14B.Menu.OneEqMoreValueTag</label>
+        <input type="radio" name="group1" class="rbn" id="rbnT2" value="2" style="display: none;">
+        <label for="rbnT2" style="display: none;">@TSMC14B.Menu.OneValueTagMoreEq</label>
+        <input type="radio" name="group1" class="rbn" id="rbnT3" value="3" style="display: none;">
+        <label for="rbnT3" style="display: none;">@TSMC14B.Menu.MoreValueTagMoreEq</label>
+    </div>
+    <table style="width: 1150px">
+        <tr>
+            <td valign="top">
+                <table border="1" class="tb" id="tb1">
+                    <tr>
+                        <td style="text-align: right;">
+                            <label id="lbl_device">@TSMC14B.Menu.plaseSelectDep</label>
+                        </td>
+                        <td>@Html.DropDownList("device", ViewBag.Device as IEnumerable<SelectListItem>, @TSMC14B.Menu.plaseSelectOption)</td>
+                        <td style="text-align: right;">
+                            <label id="lbl_toolid">@TSMC14B.Menu.plaseSelectEQ</label>
+                        </td>
+                        <td>
+                            <input type='text' placeholder='@TSMC14B.Menu.Enter Tool ID' id="toolidinput" />
+                            <select id="toolid" name="toolid">
+                                <option>@TSMC14B.Menu.plaseSelectOption</option>
+                                @if (ViewBag.ToolID != null)
+                                {
+                                    foreach (var item in ViewBag.ToolID as IEnumerable<SelectListItem>)
+                                    {
+                                    <option value="@item.Value" >@item.Value</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <label for="lbl_StartDate">@TSMC14B.Menu.StartDate</label>
+                        </td>
+                        <td>
+                            @Html.Editor("StartDate")
+                        </td>
+                        <td style="text-align: right;">
+                            <label for="lbl_EndDate">@TSMC14B.Menu.EndDate</label>
+                        </td>
+                        <td>
+                            @Html.Editor("EndDate")
+                            <input type="checkbox" id="IsStack" /><label for="IsStack">@TSMC14B.Menu.Stack</label>
+                            <input type="checkbox" id="cbxSelectAll" /><label for="cbxSelectAll">@TSMC14B.Menu.SelectAll</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; vertical-align: middle;">
+                            <label for="lbl_TagName">@TSMC14B.Menu.TagName</label>
+                        </td>
+                        <td colspan="3">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div id="td">
+                                            <input class="cb_vName" name="vName" type="checkbox" style="display: none;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <table border="1" class="tb" id="tb2" style="display: none;">
+                    <tr>
+                        <td>
+                            <label>請選擇課別</label>
+                        </td>
+                        <td>
+                            @Html.DropDownList("Device2", ViewBag.Device as IEnumerable<SelectListItem>, "請選擇課別")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>請選擇設備</label>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div id="td2">
+                                            <input class="cb_vName2" name="vName2" type="checkbox" style="display: none;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="lbl_TagName">數值名稱</label>
+                        </td>
+                        <td>
+                            <select id="TagName2">
+                                <option value="">請選擇數值名稱</option>
+                                @if (ViewBag.TagName2 != null)
+                                {
+                                    foreach (var item in ViewBag.TagName2 as IEnumerable<SelectListItem>)
+                                    {
+                                    <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <tr>
+                            <td style="text-align: right;">
+                                <label for="lbl_StartDate">選擇開始時間</label>
+                            </td>
+                            <td>
+                                @Html.Editor("StartDate2")
+                            </td>
+                        </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <label for="lbl_StartDate">選擇結束時間</label>
+                        </td>
+                        <td>
+                            @Html.Editor("EndDate2")
+                        </td>
+                    </tr>
+                </table>
+                <table border="1" class="tb" id="tb3" style="display: none;">
+                    <tr>
+                        <td>
+                            <label>請選擇課別</label>
+                        </td>
+                        <td>
+                            @Html.DropDownList("Device3", ViewBag.Device as IEnumerable<SelectListItem>, "請選擇課別")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>請選擇設備</label>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div id="td3">
+                                            <input class="cb_vName3" name="vName3" type="checkbox" style="display: none;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="lbl_TagName">數值名稱</label>
+                        </td>
+                        <td>
+                            <div id="TagName3">
+                                <input class="cb_tName3" name="tName3" type="checkbox" style="display: none;" />
+                            </div>
+                        </td>
+                        <tr>
+                            <td style="text-align: right;">
+                                <label for="lbl_StartDate">選擇開始時間</label>
+                            </td>
+                            <td>
+                                @Html.Editor("StartDate3")
+                            </td>
+                        </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <label for="lbl_StartDate">選擇結束時間</label>
+                        </td>
+                        <td>
+                            @Html.Editor("EndDate3")
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <input type="button" value="@TSMC14B.Menu.draw Trend Chart" style="width: 120px" onclick="javascript: ChartExport('search');" />&nbsp;&nbsp;&nbsp;
+                <input type="button" value="@TSMC14B.Menu.ChartExport" style="width: 80px" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp;
+                <input type="button" value="@TSMC14B.Menu.ClearAll" style="width: 80px" onclick="javascript: ClearAll();" />&nbsp;&nbsp;&nbsp;
+            </td>
+            <td style="width: 390px">
+                <h2 style="border-style: ridge; font-weight: bold; width: 100%;">
+                    <label id="ValueTagHeader">@TSMC14B.Menu.noSelectValueTag</label>
+                </h2>
+                <div id="ToolIdValueTag"></div>
+            </td>
+        </tr>
+    </table>
+</div>

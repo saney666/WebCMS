@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "AlarmLimitHistory";
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.flexme').flexigrid({
+                title: '@TSMC14B.Menu.LimitList',
+            width: 850,
+            height: "auto",
+            url: '@Url.Action("JsonAlarmLimitHistory")?tagname=@Request["tagname"]',
+            dataType: 'json',
+            colModel: [
+                { display: '', name: 'FullTagName', width: 70, sortable: false, align: 'center', hide: true },
+                { display: 'TagName', name: 'FDC_Tag', width: 300, sortable: false, align: 'left', hide: false },
+                { display: 'EditTime', name: 'builddate', width: 120, sortable: false, align: 'left', hide: false },
+                { display: '上限設定值', name: 'Limit_Max_Setting', width: 65, sortable: false, align: 'center', hide: false },
+                { display: '@TSMC14B.Menu.Limit_Max', name: 'Limit_Max', width: 60, sortable: false, align: 'center', hide: true },
+                { display: '@TSMC14B.Menu.IsHiEnable', name: 'IsHiEnable', width: 50, sortable: false, align: 'center', hide: true },
+                { display: '下限設定值', name: 'Limit_Min_Setting', width: 65, sortable: false, align: 'center', hide: false },
+                { display: '@TSMC14B.Menu.Limit_Min', name: 'Limit_Min', width: 60, sortable: false, align: 'center', hide: true },
+                { display: '@TSMC14B.Menu.IsLoEnable', name: 'IsLoEnable', width: 50, sortable: false, align: 'center', hide: true },
+                { display: 'DelayTime(min)', name: 'DelayTime', width: 85, sortable: false, align: 'center', hide: false },
+                { display: 'editer', name: 'login_name', width: 60, sortable: false, align: 'center', hide: false },
+                { display: '', name: 'edit', width: 60, sortable: false, align: 'center', hide: true }
+            ],
+            procmsg: '@TSMC14B.Menu.procmsg',
+            rptext: '@TSMC14B.Menu.rptext',
+            pagestat: '@TSMC14B.Menu.pagestat',
+            pagetext: '@TSMC14B.Menu.pagetext',
+            outof: '@TSMC14B.Menu.outof',
+            nomsg: '@TSMC14B.Menu.nomsg',
+            usepager: true,
+            useRp: true,
+            rp: 20,
+            nowrap: false,
+            onSuccess: function () {
+                //$('.flexme > tbody > tr > td[abbrr="edit"] > div').remove();
+                //$('.flexme > tbody > tr > td[abbrr="edit"]').each(function () {
+                //    if ($(this).parent().children(':eq(0)').text() == '@Session["UserdepartmentName"]' || parseInt('@Session["UserLevel"]')>900) {
+                //        $(this).append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@TSMC14B.Menu.Edit" /></div></a>');
+                //    }
+                //});
+
+                //$('.edit').click(function () {
+                //    OpenModelWindow('@Url.Action("EditLimit")?TagName=' + $(this).parent().parent().children(':eq(1)').text(), { width: 700, height: 400, caption: "@TSMC14B.Menu.Edit", onclose: function () { $('.flexme').flexReload(); } });
+                //});
+            },
+            singleSelect: true,
+            rpOptions: [5, 10, 15, 20, 30, 50],
+        });
+    });
+    </script>
+}
+<h2 style="width:100%">AlarmLimitHistory</h2>
+<table class="flexme"></table>

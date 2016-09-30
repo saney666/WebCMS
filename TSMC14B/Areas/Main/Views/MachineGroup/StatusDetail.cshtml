@@ -1,0 +1,196 @@
+﻿
+    @{
+        Layout = "../Shared/_Layout.cshtml";
+        ViewBag.Title = Request["gName"] + "Status Detail";
+    }
+
+    <h2>@Request["gName"] Status Detail</h2>
+
+    @section JavaScript{
+        <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+        <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.tb').css('font-size', '12px');
+                if ($('#toolidinput[value*="*"]').length) {
+                    $("#toolid option:nth-child(1)").attr("selected", true);
+                    $("#toolid option:selected").attr("selected", "");
+                    $("#toolid").attr("disabled", true);
+                };
+                $('#toolidinput').keyup(function (event) {
+                    changeIndex($("#toolidinput").val());
+                });
+                $('#toolidinput').keypress(function (e) {
+                    if (e.keyCode == 13) {
+                        //ChartExport('search');
+                        var urlStr = '@Url.Action("JsonStatusDetail")?vName=@Request["vName"]&gName=@Request["gName"]&Status=' + $('#statusQuery').val() + "&toolId=" + $('#toolidinput').val() + '&page=1&rp=20';
+                        $(".flexme").flexOptions({ url: urlStr });
+                        $('.flexme').flexReload();
+                    }
+                });
+                function changeIndex(chkvalue) {
+                    var objval; var isFound; var tempval;
+                    if ((chkvalue == "")) {
+                        //$("#toolId option:selected").attr("selected", "");
+                        $("#toolid option:nth-child(1)").attr("selected", true);
+                        //$("#toolId").attr("disabled", "");
+                        isFound = false;
+                        return;
+                    };
+                    if (chkvalue.indexOf("*") >= 0) {
+                        $("#toolid option:nth-child(1)").attr("selected", true);
+                        $("#toolid option:selected").attr("selected", "");
+                        $("#toolid").attr("disabled", true);
+                    } else {
+                        if (!isFound) {
+                            $("#toolid").attr("disabled", false);
+                            $('#toolid>option[value^=' + chkvalue.toUpperCase() + '],#toolid>option[value^=' + chkvalue + ']').first().attr("selected", true);
+                            isFound = true;
+                        };
+                    }; return;
+                };
+                var _vName = window.location.search;
+                var _intvName = window.location.search.indexOf("vName");
+                _vName = _vName.substring(_intvName + 6, _vName.length).split("&", 1);
+
+                var _gName = window.location.search;
+                var _intgName = window.location.search.indexOf("gName");
+                _gName = _gName.substring(_intgName + 6, _gName.length).split("&", 1);
+                $('.flexme').flexigrid({
+                    width: 700,
+                    height: "auto",
+                    url: '@Url.Action("JsonStatusDetail")?vName=' + _vName + "&gName=" + _gName + "&page=1&rp=20",
+                    dataType: 'json',
+                    colModel: [
+                               { display: '設備狀態', name: 'Statusid', width: 80, sortable: false, align: 'center', hide: false },
+                               { display: 'Tool ID', name: 'ToolID', width: 85, sortable: false, align: 'center', hide: false },
+                               { display: 'Location ID', name: 'LocationID', width: 85, sortable: false, align: 'center', hide: false },
+                               { display: '左右邊', name: 'LocationSide', width: 50, sortable: false, align: 'center', hide: false },
+                               { display: '課別名稱', name: 'gName', width: 85, sortable: false, align: 'center', hide: false },
+                               { display: '柱位', name: 'location', width: 85, sortable: false, align: 'center', hide: false },
+                               { display: '設備型號', name: 'TypeName', width: 120, sortable: false, align: 'center', hide: false }
+                    ],
+                    usepager: true,
+                    useRp: true,
+                    nowrap: false,
+                    rp: 10,
+                    onSuccess: function () {
+                        $('.flexme > tbody > tr > td[abbrr="Statusid"] > div').each(function () {
+                            switch (parseInt($(this).text())) {
+                                case 0:
+                                    $(this).parent().append('<div style="text-align:center; width:81px;">正常<br /><img src="@Url.Content("~/images/status_0.jpg")" alt="" /></div>');
+                                    break;
+
+                                case 99:
+                                    $(this).parent().append('<div style="text-align:center; width:81px;">運轉中<br /><img src="@Url.Content("~/images/status_7.jpg")" alt="" /></div>');
+                                    break;
+
+                                case 1:
+                                    $(this).parent().append('<div style="text-align:center; width:81px;">異常<br /><img src="@Url.Content("~/images/status_1.jpg")" alt="" /></div>');
+                                    break;
+
+                                case 2:
+                                    $(this).parent().append('<div style="text-align:center; width:81px;">警告<br /><img src="@Url.Content("~/images/status_2.jpg")" alt="" /></div>');
+                                    break;
+
+                                case 96:
+                                    $(this).parent().append('<div style="text-align:center; width:81px;">升溫<br /><img src="@Url.Content("~/images/status_3.gif")" alt="" /></div>');
+                                    break;
+
+                                case 95:
+                                    $(this).parent().append('<div style="text-align:center; width:81px;">降溫<br /><img src="@Url.Content("~/images/status_4.gif")" alt="" /></div>');
+                                    break;
+
+                                case 94:
+                                    $(this).parent().append('<div style="text-align:center; width:81px;">沒回應 / 暫停 / 無狀態<br /><img src="@Url.Content("~/images/status_10.jpg")" alt="" /></div>');
+                                    break;
+
+                                case 8:
+                                    $(this).parent().append('<div style="text-align:center; width:81px;">停機 / PM 中<br /><img src="@Url.Content("~/images/status_5.gif")" alt="" /></div>');
+                                    break;
+                            }
+                        });
+                        $('.flexme > tbody > tr > td[abbrr="Statusid"] > div[style="width: 80px; text-align: center; white-space: normal;"]').empty(); //for IE
+                        $('.flexme > tbody > tr > td[abbrr="Statusid"] > div[style="text-align: center; width: 80px; white-space: normal;"]').empty(); //for Chrome
+                        $('.flexme > tbody > tr > td[abbrr="ToolID"] > div,.flexme > tbody > tr > td[abbrr="LocationID"] > div').each(function (i, e) {
+                            $(this).wrap('<a href=# class="SingleAlarm"></a>');
+                        });
+
+                        $('.SingleAlarm').click(function () {
+                            OpenModelWindow('@Url.Action("SingleAlarmList", "MachineGroup")?toolid=' + $(this).parents('tr').children('[abbrr="ToolID"]').text(), { width: 750, height: 600, caption: "Alarm List", onclose: function () { } });
+                        });
+                    },
+                    singleSelect: true,
+                    rpOptions: [5, 10, 15, 20, 30, 50],
+                });
+            });
+            function ChartExport(id) {
+                var _vName = window.location.search;
+                var _intvName = window.location.search.indexOf("vName");
+                _vName = _vName.substring(_intvName + 6, _vName.length).split("&", 1);
+
+                var _gName = window.location.search;
+                var _intgName = window.location.search.indexOf("gName");
+                _gName = _gName.substring(_intgName + 6, _gName.length).split("&", 1);
+
+                var urlStr = '@Url.Action("JsonStatusDetail")?vName=' + _vName + "&gName=" + _gName + "&Status=" + $('#statusQuery').val() + "&toolId=" + $('#toolid').val() + '&page=1&rp=20';
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            };
+        </script>
+    }
+    <br />
+    <table>
+        <tr>
+            <td style="color: #999999; font-size: medium;">
+                狀態說明：@*運轉中：<img src="@Url.Content("~/images/status_7.jpg")" border=0 height=18 width=15 alt="運轉中">*@
+                正常：<img src="@Url.Content("~/images/status_0.jpg")" border=0 height=18 width=15 alt="正常">
+                異常：<img src="@Url.Content("~/images/status_1.jpg")" border=0 height=18 width=15 alt="異常">
+                @*警告：<img src="@Url.Content("~/images/status_2.jpg")" border=0 height=18 width=15 alt="警告">
+                    升溫：<img src="@Url.Content("~/images/status_3.gif")" border=0 height=18 width=15 alt="升溫">　
+                    降溫：<img src="@Url.Content("~/images/status_4.gif")" border=0 height=18 width=15 alt="降溫">　*@
+                PM 中：<img src="@Url.Content("~/images/status_5.gif")" border=0 height=18 width=15 alt="停機 / PM 中">
+                @*沒回應 / 暫停 / 無狀態：<img src="@Url.Content("~/images/status_10.jpg")" border=0 height=18 width=15 alt="沒回應 / 暫停 / 無狀態">　*@
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <table class="tb">
+        <tr>
+            <td>
+                選擇查詢狀態：
+                <select id="statusQuery">
+                    <option value="">請選擇</option>
+                    <option value="0">正常 </option>
+                    <option value="1">異常 </option>
+                    <option value="2">警告 </option>
+                    <option value="3">升溫 </option>
+                    <option value="4">降溫 </option>
+                    <option value="5">停機 </option>
+                    <option value="6">手動運轉中 </option>
+                    <option value="7">運轉中 </option>
+                    <option value="8">PM 中 </option>
+                    <option value="10">沒回應 </option>
+                    <option value="11">暫停 </option>
+                    <option value="12">無狀態 </option>
+                    <option value="14">備援啟動 </option>
+                    <option value="15">當機 </option>
+                </select>
+            </td>
+            <td></td>
+            <td>
+                <label id="lbl_device">選擇要查詢的 @Request["vName"] 設備：</label>
+                <input type='text' placeholder='輸入Tool ID' id="toolidinput" />
+            </td>
+            <td>
+                @Html.DropDownList("toolid", ViewBag.ToolID as IEnumerable<SelectListItem>,"請選擇")
+            </td>
+            <td>
+                <input type="button" id="sbmit" value="查詢" style="width: 80px" onclick="javascript: ChartExport('search');" />&nbsp;&nbsp;&nbsp;
+            </td>
+            <td style="text-align: right; font-size: medium;">
+                <a href="MachineStatus?vName=@Request["vName"]">回查詢頁</a>
+            </td>
+        </tr>
+    </table>
+    <table class="flexme"></table>

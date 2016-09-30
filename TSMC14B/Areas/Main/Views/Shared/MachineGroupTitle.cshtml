@@ -1,0 +1,88 @@
+﻿<table>
+    <tr>
+        @*<td style="width: 140px">
+            <img src="../../../../images/main_01.gif" alt="" />
+        </td>*@
+        <td style="width: 57px">
+            @if (ViewData["PageName"] == "PLCCheck")
+            {
+                <img src="../../../../images/Button1_d.gif" alt="" />
+            }
+            else
+            {
+                <a href="PLCCheck?vName=@Request["vName"]">
+                    <img src="../../../../images/Button1.gif" alt="" title="設備數值資料統計" onmouseout="this.src='../../../../images/Button1.gif'" onmouseover="this.src='../../../../images/Button1_u.gif'" />
+                </a>
+            }
+        </td>
+        <td style="width: 57px">
+            @if (ViewData["PageName"] == "AlarmCheck")
+            {
+                <img src="../../../../images/Button2_d.gif" alt="" />
+            }
+            else
+            {
+                <a href="AlarmCheck?vName=@Request["vName"]">
+                    <img src="../../../../images/Button2.gif" alt="" title=" 設備警告資料查詢" onmouseout="this.src='../../../../images/Button2.gif'" onmouseover="this.src='../../../../images/Button2_u.gif'" />
+                </a>
+            }
+        </td>
+        @*   @if ((string)Request["vName"] == "HJ")
+        {
+            <td style="width: 57px">
+                @if (ViewData["PageName"] == "PLCCheckLimit")
+                {
+                    <img src="../../../../images/Button4_d.gif" alt="" />
+                }
+                else
+                {
+                    <a href="PLCCheckLimit?vName=@Request["vName"]">
+                    <img src="../../../../images/Button4.gif" alt="" title="設備上下限" onmouseout="this.src='../../../../images/Button4.gif'" onmouseover="this.src='../../../../images/Button4_u.gif'" />
+                </a>
+                }
+            </td>
+        }*@
+        @if (@Request["vName"] != "DPM")
+        {
+            <td style="width: 57px">
+                @if (ViewData["PageName"] == "MachineStatus")
+                {
+                    <img src="../../../../images/Button5_d.gif" alt="" />
+                }
+                else
+                {
+                    <a href="MachineStatus?vName=@Request["vName"]">
+                        <img src="../../../../images/Button5.gif" alt="" title="設備群組狀態顯示" onmouseout="this.src='../../../../images/Button5.gif'" onmouseover="this.src='../../../../images/Button5_u.gif'" />
+                    </a>
+                }
+            </td>
+        }
+        <td style="width: 57px">
+            @if (ViewData["PageName"] == "MachineValue")
+            {
+                <img src="../../../../images/Button6_d.gif" alt="" />
+            }
+            else
+            {
+                <a href="MachineValue?vName=@Request["vName"]">
+                    <img src="../../../../images/Button6.gif" alt="" title="設備數值資料顯示" onmouseout="this.src='../../../../images/Button6.gif'" onmouseover="this.src='../../../../images/Button6_u.gif'" />
+                </a>
+            }
+        </td>
+        @*@if (@Request["vName"] != "DPM")
+        {
+            <td style="width: 57px">
+                @if (ViewData["PageName"] == "Settings")
+                {
+                    <img src="../../../../images/Button3_d.gif" alt="" />
+                }
+                else
+                {
+                    <a href="Settings?vName=@Request["vName"]">
+                        <img src="../../../../images/Button3.gif" alt="" title="設備選項設定" onmouseout="this.src='../../../../images/Button3.gif'" onmouseover="this.src='../../../../images/Button3_u.gif'" />
+                    </a>
+                }
+            </td>
+        }*@
+    </tr>
+</table>

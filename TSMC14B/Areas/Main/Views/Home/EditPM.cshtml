@@ -1,0 +1,334 @@
+﻿@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('.ul').jqf1();
+            $('.tb').css('font-size', '12px');
+            $('#sbmit').click(function () {
+                var tid = '@Request["ToolID"]';
+                var sType = "";
+                $('.cb_sType:checked').each(function (e) {
+                    sType += $(this).val() + ",";
+                });
+                sType = sType.substring(0, sType.length - 1);
+                if (sType.length > 0) {
+                    if ($('#memo').val().length > 0) {
+                        hiConfirm('@TSMC14B.Menu.IsCancelPM ' + tid + '？', '@TSMC14B.Menu.confirm', function (r) { if (r) { $.post('@Url.Action("CancelPM")', [{ name: 'toolId', value: tid }, { name: 'selectType', value: sType }, { name: 'pmFlag', value: '0' }, { name: 'memo', value: $('#memo').val() }, { name: 'bellow', value: $('#Bellow').val() }, { name: 'turning', value: $('#Turning').val() }, { name: 'threeway', value: $('#ThreeWay').val() }, { name: 'handvalve', value: $('#HandValve').val() }, { name: 'bshead', value: $('#bsHead').val() }, { name: 'gasvalve', value: $('#GasValve').val() }, { name: 'lpipe', value: $('#LPipe').val() }, { name: 'entry', value: $('#Entry').val() }, { name: 'inlet', value: $('#Inlet').val() }, { name: 'mixingbox', value: $('#MixingBox').val() }, { name: 'reactor', value: $('#Reactor').val() }, { name: 'tank', value: $('#Tank').val() }, { name: 'outlet', value: $('#Outlet').val() }, { name: 'tpipe', value: $('#Tpipe').val() }, { name: 'pmlpipe', value: $('#Pmlpipe').val() }, { name: 'upturning', value: $('#Upturning').val() }, { name: 'ms', value: $('#ms').val() }, { name: 'inlet_TP', value: $('#Inlet_TP').val() }, { name: 'mixingbox_TP', value: $('#MixingBox_TP').val() }, { name: 'reactor_TP', value: $('#Reactor_TP').val() }, { name: 'tank_TP', value: $('#Tank_TP').val() }, { name: 'outlet_TP', value: $('#Outlet_TP').val() }, { name: 'tpipe_TP', value: $('#Tpipe_TP').val() }, { name: 'pmlpipe_TP', value: $('#Pmlpipe_TP').val() }, { name: 'upturning_TP', value: $('#Upturning_TP').val() }, { name: 'ms_TP', value: $('#ms_TP').val() }], function (data) { parent.hiAlert(data.Msg); CloseModelWindow(); }, 'json'); } });
+                    }
+                    else {
+                        alert('@TSMC14B.Menu.plasePMMemo');
+                    }
+                }
+                else {
+                    alert('@TSMC14B.Menu.plaseCheckType');
+                }
+            });
+            $("#pumping").change(function () {
+                if (this.checked == true) {
+                    $('.pump').slideDown();
+                }
+                else {
+                    $('.pump').slideUp();
+                }
+            });
+            $("#PM").change(function () {
+                $('#PM').each(function () {
+                    if (this.checked == true) {
+                        $('#TP').prop("checked", false);
+                        $('.pump3 :input').val("");
+                        $('.pump3').slideUp(10);
+                        $('.pump2').slideDown();
+                    }
+                    else {
+                        $('.pump2 :input').val("");
+                        $('.pump2').slideUp();
+                    }
+
+                });
+            });
+            $("#TP").change(function () {
+                if (this.checked == true) {
+                    $('#PM').prop("checked", false);
+                    $('.pump2 :input').val("");
+                    $('.pump2').slideUp(10);
+                    $('.pump3').slideDown();
+                }
+                else {
+                    $('.pump3 :input').val("");
+                    $('.pump3').slideUp();
+                }
+            });
+        });
+    </script>
+}
+<h2 style="width:475px">@TSMC14B.Menu.cancelPM@TSMC14B.Menu.ToolId：@Request["ToolID"]</h2>
+<br />
+<table border="1" class="tb" style="width:500px">
+    <tr>
+        <td style="text-align: right;">
+            <label id="lbl_Type" for="lbl_Type">@TSMC14B.Menu.plaseSelectType：</label>
+        </td>
+        <td colspan="3">
+            <input class="cb_sType" name="sType" id="PM" type="checkbox" value="pm_flag" /><label for="PM">PM</label>
+            <input class="cb_sType" name="sType" id="pumping" type="checkbox" value="pumping_done" /><label for="pumping">Pumping PM</label>
+            <input class="cb_sType" name="sType" id="SEX" type="checkbox" value="sex_done" /><label for="SEX">SEX PM</label>
+            <input class="cb_sType" name="sType" id="TS" type="checkbox" value="ts_flag" /><label for="TS">TS</label><br />
+            <input class="cb_sType" name="sType" id="BK" type="checkbox" value="backup_flag" style="display:none;" /><label for="BK" style="display:none;" >備機</label>
+            <input class="cb_sType" name="sType" id="CMS" type="checkbox" value="cmsError_flag" style="display:none;" /><label for="CMS" style="display:none;" >CMS異常未上線</label>
+            <input class="cb_sType" name="sType" id="Other" type="checkbox" value="other_flag" /><label for="Other">Other</label>
+            <input class="cb_sType" name="sType" id="PT" type="checkbox" value="pt_done" style="display:none;" /><label for="PT" style="display:none;" >PT校正</label>
+            <input class="cb_sType" name="sType" id="TP" type="checkbox" value="TemporaryP_flag" /><label for="TP">@TSMC14B.Menu.TemporaryPFlag</label>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <label id="lbl_memo" for="lbl_memo">@TSMC14B.Menu.memo：</label>
+        </td>
+        <td colspan="3">
+            @Html.TextBox("memo")
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump" style="display: none;">
+                <label id="lbl_Bellow" for="lbl_Bellow">Bellow：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump" style="display: none;">@Html.TextBox("Bellow")</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump" style="display: none;">
+                <label id="lbl_turning" for="lbl_turning">@TSMC14B.Menu.Turning：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump" style="display: none;">@Html.TextBox("Turning")</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump" style="display: none;">
+                <label id="lbl_threeway" for="lbl_threeway">@TSMC14B.Menu.ThreeWay：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump" style="display: none;">@Html.TextBox("ThreeWay")</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump" style="display: none;">
+                <label id="lbl_handvalve" for="lbl_handvalve">@TSMC14B.Menu.HandValve：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump" style="display: none;">@Html.TextBox("HandValve")</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right; display: none;">
+            <div @*class="pump"*@ >
+                <label id="lbl_bshead" for="lbl_bshead">@TSMC14B.Menu.bsHead：</label>
+            </div>
+        </td>
+        <td style="display: none;">
+            <div @*class="pump"*@ style="display: none;">@Html.TextBox("bsHead")</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump" style="display: none;">
+                <label id="lbl_gasvalve" for="lbl_gasvalve">@TSMC14B.Menu.GasValve：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump" style="display: none;">@Html.TextBox("GasValve")</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump" style="display: none;">
+                <label id="lbl_lpipe" for="lbl_lpipe">@TSMC14B.Menu.LPipe：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump" style="display: none;">@Html.TextBox("LPipe")</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump" style="display: none;">
+                <label id="lbl_entry" for="lbl_entry">Entry：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump" style="display: none;">@Html.TextBox("Entry")</div>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump2" style="display: none;">
+                <label id="lbl_inlet" for="lbl_inlet">Inlet：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump2" style="display: none;">@Html.TextBox("Inlet")%</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump2" style="display: none;">
+                <label id="lbl_lbl_mixingbox" for="lbl_mixingbox">Mixing Box：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump2" style="display: none;">@Html.TextBox("MixingBox")%</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump2" style="display: none;">
+                <label id="lbl_reactor" for="lbl_lbl_reactor">Reactor：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump2" style="display: none;">@Html.TextBox("Reactor")%</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump2" style="display: none;">
+                <label id="lbl_lbl_tank" for="lbl_tank">Tank：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump2" style="display: none;">@Html.TextBox("Tank")%</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump2" style="display: none;">
+                <label id="lbl_outlet" for="lbl_outlet">Outlet：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump2" style="display: none;">@Html.TextBox("Outlet")%</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump2" style="display: none;">
+                <label id="lbl_t" for="lbl_t">@TSMC14B.Menu.Tpipe：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump2" style="display: none;">@Html.TextBox("Tpipe")%</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump2" style="display: none;">
+                <label id="lbl_Pmlpipe" for="lbl_Pmlpipe">@TSMC14B.Menu.LPipe：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump2" style="display: none;">@Html.TextBox("Pmlpipe")%</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump2" style="display: none;">
+                <label id="lbl_upturning" for="lbl_upturning">@TSMC14B.Menu.Upturning：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump2" style="display: none;">@Html.TextBox("Upturning")%</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump2" style="display: none;">
+                <label id="lbl_ms" for="lbl_ms">@TSMC14B.Menu.ms：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump2" style="display: none;">@Html.TextBox("ms")%</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump3" style="display: none;">
+                <label id="lbl_inlet_TP" for="lbl_inlet_TP">Inlet：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump3" style="display: none;">@Html.TextBox("Inlet_TP")%</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump3" style="display: none;">
+                <label id="lbl_mixingbox_TP" for="lbl_mixingbox_TP">Mixing Box：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump3" style="display: none;">@Html.TextBox("MixingBox_TP")%</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump3" style="display: none;">
+                <label id="lbl_reactor_TP" for="lbl_reactor_TP">Reactor：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump3" style="display: none;">@Html.TextBox("Reactor_TP")%</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump3" style="display: none;">
+                <label id="lbl_lbl_tank_TP" for="lbl_tank_TP">Tank：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump3" style="display: none;">@Html.TextBox("Tank_TP")%</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump3" style="display: none;">
+                <label id="lbl_outlet_TP" for="lbl_outlet_TP">Outlet：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump3" style="display: none;">@Html.TextBox("Outlet_TP")%</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump3" style="display: none;">
+                <label id="lbl_t_TP" for="lbl_t_TP">@TSMC14B.Menu.Tpipe：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump3" style="display: none;">@Html.TextBox("Tpipe_TP")%</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump3" style="display: none;">
+                <label id="lbl_Pmlpipe_TP" for="lbl_Pmlpipe_TP">@TSMC14B.Menu.LPipe：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump3" style="display: none;">@Html.TextBox("Pmlpipe_TP")%</div>
+        </td>
+        <td style="text-align: right;">
+            <div class="pump3" style="display: none;">
+                <label id="lbl_upturning_TP" for="lbl_upturning_TP">@TSMC14B.Menu.Upturning：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump3" style="display: none;">@Html.TextBox("Upturning_TP")%</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right;">
+            <div class="pump3" style="display: none;">
+                <label id="lbl_ms_TP" for="lbl_ms_TP">@TSMC14B.Menu.ms：</label>
+            </div>
+        </td>
+        <td>
+            <div class="pump3" style="display: none;">@Html.TextBox("ms_TP")%</div>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" colspan="4">
+            <input type="button" id="sbmit" value="@TSMC14B.Menu.Setting" style="width: 80px" />
+        </td>
+    </tr>
+</table>

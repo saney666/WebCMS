@@ -1,0 +1,336 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Session["UserName"] = "web";
+    if (string.IsNullOrEmpty((string)Session["UserName"]))
+    {
+        string url = Request.Url.PathAndQuery;
+        ViewBag.reUrl = Request.Url.PathAndQuery;
+        Response.Redirect("/Main/Login/LoginPage??reUrl==" + url, true);
+    }
+}
+@section head{
+    @RenderSection("JavaScript", required: false)
+    <script>
+        var x = 18000;
+        //countSec();
+        function countSec() {
+            x -= 1;
+            $("#showLeft").html("約" + x + "秒後自動");
+            meter1 = setTimeout("countSec()", 1000);
+            if (x < 1) {
+                clearTimeout(meter1);
+                //update 9/9 不顯示視窗訊息
+                //alert("已被自動登出，請重新登入");
+                location.href = ("/Main/Login/LoginPage??reUrl==" + location.pathname + location.search);
+            }
+        }
+        $('div#menuDemo > ul > li').hover(function () {
+            //effect when the user hovers over the menu
+            //first hide the menu item, since the CSS displays it - then slide it down.
+            $(this).children('ul').hide().slideDown();
+        }, function () {
+            //effect when the user leaves the current menu area - fade out
+            $(this).children('ul').fadeOut();
+        });
+        $(function () {
+            $('.bar' + '@ViewData["bar"]').css('color', 'darkviolet');
+        });
+    </script>
+    <style>
+        ul#menu {
+            border-bottom: 1px #5C87B2 solid;
+            padding: 0 0 2px;
+            position: relative;
+            margin: 0;
+            text-align: left;
+        }
+
+            ul#menu li {
+                display: inline;
+                list-style: none;
+            }
+
+                ul#menu li#greeting {
+                    padding: 10px 20px;
+                    font-weight: bold;
+                    text-decoration: none;
+                    line-height: 2.8em;
+                    color: #fff;
+                }
+
+                ul#menu li a {
+                    padding: 9px 12px; /*調整ToolBar 高度 寬度*/
+                    font-weight: bold;
+                    text-decoration: none;
+                    line-height: 2.5em;
+                    background-color: #BBBAF4;
+                    color: #034af3;
+                    -webkit-border-radius: 4px 4px 0 0;
+                    -moz-border-radius: 4px 4px 0 0;
+                    border-radius: 4px 4px 0 0;
+                }
+
+                    ul#menu li a:hover {
+                        background-color: #fff;
+                        text-decoration: none;
+                    }
+
+                    ul#menu li a:active {
+                        background-color: #a6e2a6;
+                        text-decoration: none;
+                    }
+
+                ul#menu li.selected a {
+                    background-color: #fff;
+                    color: #000;
+                }
+
+                ul#menu li a.c1 {
+                    padding: 10px 15px;
+                    font-weight: bold;
+                    text-decoration: none;
+                    line-height: 2.5em;
+                    background-color: #f00;
+                    color: #000;
+                    -webkit-border-radius: 5px 5px 0 0;
+                    -moz-border-radius: 5px 5px 0 0;
+                    border-radius: 5px 5px 0 0;
+                }
+
+        div#menuDemo {
+            padding: 0 0 2px;
+            position: absolute;
+            margin: 5px 0 0 0;
+            z-index: 2; /*Defaule:1 MAX:99*/
+            width: auto; /*toolbar 寬度*/
+        }
+
+            div#menuDemo ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                background-color: #BBBAF4;
+            }
+
+            div#menuDemo > ul > li {
+                float: left;
+            }
+
+            div#menuDemo ul li {
+                margin-right: 5px;
+                background-color: #BBBAF4;
+                border-radius: 4px 4px 0 0;
+            }
+
+                div#menuDemo ul li#homeMenu {
+                    margin-right: 5px;
+                    background-color: #BBBAF4;
+                }
+
+                div#menuDemo ul li a {
+                    padding: 11px 14px; /*調整ToolBar 高度 寬度*/
+                    font-weight: bold;
+                    text-decoration: none;
+                    line-height: 2.5em;
+                    /*background-color: #BBBAF4;*/
+                    color: #034af3;
+                    -webkit-border-radius: 4px 4px 0 0;
+                    -moz-border-radius: 4px 4px 0 0;
+                    border-radius: 4px 4px 0 0;
+                }
+
+                div#menuDemo ul li ul li a {
+                    width: 75px;
+                    height: 22px;
+                    text-align: center;
+                    display: table;
+                    border-radius: 0 0 0 0;
+                }
+
+            div#menuDemo li a:hover {
+                background-color: #fff;
+                text-decoration: none;
+            }
+
+            div#menuDemo ul li ul li a:hover {
+                background-color: #fff;
+                text-decoration: none;
+            }
+
+            div#menuDemo > ul > li > ul {
+                display: none;
+                background-color: #BBBAF4;
+                margin-right: 0px;
+            }
+
+            div#menuDemo > ul > li:hover > ul {
+                display: block;
+            }
+
+        .PM_li {
+            width: 70px;
+        }
+
+        .PM_a1 {
+            display: table;
+            width: 75px;
+            height: 22px;
+            text-align: center;
+        }
+
+        div#menuDemo ul li ul li a {
+            width: 75px;
+            height: 40px;
+        }
+
+        .Main {
+            display: table;
+            width: 70px;
+            text-align: center;
+        }
+
+        .PMConfig {
+            display: table;
+            width: 70px;
+            text-align: center;
+        }
+
+        .Account, .Emergency {
+            display: table;
+            width: 100px;
+            text-align: center;
+        }
+    </style>
+}
+<div>
+    <table border="0" style="padding: 0px 0px 0px 0px; border-spacing: 0px 0px; border-collapse: collapse; width: 1214px;">
+        <tr>
+            <td>
+                <table border="0" style="padding: 0px 0px 0px 0px; border-spacing: 0px 0px; border-collapse: collapse;">
+                    <tr>
+                        <td style="border-collapse: collapse;background-image: url(
+                            @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN")
+                            {
+                                @Url.Content("~/images/Top_1.zh-CN.gif")
+                            }
+                            else
+                            {
+                                @Url.Content("~/images/Top_1.gif")
+                            }
+                            
+                            ); height: 46px; text-align:right; vertical-align:bottom; width:411px"></td>
+                        <td style="border-collapse:collapse; background-image: url(@Url.Content("~/images/Top_2.gif"));background-repeat: no-repeat; height: 46px; text-align:right; vertical-align:bottom; width:443px;background-color: #5988c7;">
+                            <span style="font-size: 16px;font-weight:bold;background-color:white;">
+                                &nbsp;&nbsp;
+                                <label>hi,@(Session["UserName"] as string)</label>
+                            <label id="showLeft" style="font-size: 14px;font-weight:bold;"></label>
+                            @Html.ActionLink(@TSMC14B.Menu.LogOut, "Logout", "Login",null, new { style="color:#034af3;"}) @(Session["message"] as string)
+                                &nbsp;&nbsp;
+                            </span>
+                        </td>
+                        <td style="border-collapse:collapse; background-image: url(
+                            @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN")
+                            {
+                                 @Url.Content("~/images/Top_3.zh-CN.gif")
+                            }
+                            else
+                            {
+                                @Url.Content("~/images/Top_3.gif")
+                            }
+                            
+                            ); background-position: -35px; width: 360px;"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td >
+                <div id="menuDemo" style="width: 1214px;" >
+                    <ul >
+                        @*<li id="homeMenu">
+               @Html.ActionLink("首頁", "Index", "Home", null, new { @class = "Main" })
+            </li>
+                        *@
+                        @{
+                            //IEnumerable<TSMC14B.Areas.Main.Models.StatusCountModel> codes2 = TSMC14B.Areas.Main.Models.StatusCountModel.IndexAllStatusList();
+                            IEnumerable<TSMC14B.Areas.Main.Models.ListModel> codes2 = TSMC14B.Areas.Main.Models.ListModel.GetDepartmentList();
+                        }
+
+                        @foreach (var item in from c in codes2 select c.Text)
+                        {
+                            <li>
+                                @Html.ActionLink(@item, "PLCCheck2", "MachineGroup", new { vName = item, type = "PUMP" }, new { @class = "bar" + item })
+                            </li>
+                        }
+
+                        @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN" && Session["UserLevel"] != null && (Int16)Session["UserLevel"] >= 500)
+                        { 
+                            <li>
+                                @Html.ActionLink("延後上報", "FDCPM", "Home", null, new { @class = "FDCPM" })
+                            </li>
+                        }
+                        @if (Session["UserLevel"]!=null&&(Int16)Session["UserLevel"] != 100 && Session["UserName"] !=null && (string)Session["UserName"] == "engineer" && 1 == 0)
+                        {
+                            <li>
+                                @Html.ActionLink(@TSMC14B.Menu.PM, "PMConfig", "Home", null, new { @class = "PMConfig" })
+                            </li>
+                            <li>
+                                @*@Html.ActionLink("History", "PMHistory", "Home", null, null)*@
+                                @*   <a href="#" class="PM_a1">PM<img src="../../../../images/arrowdown.png" alt="Arrow" width="16" height="12" /></a>
+                    <ul>
+                        <li class="PM_li">@Html.ActionLink("History", "PMHistory", "Home", null, null)</li>
+                        <li class="PM_li">@Html.ActionLink("Schedule", "Frequency", "Home", null, null)</li>
+                        <li class="PM_li">@Html.ActionLink("Setting", "EditFrequency", "Home", null, null)</li>
+                    </ul>*@
+                            </li>
+                            <li id="AlarmReport">
+                                @Html.ActionLink("Alarm Report", "AlarmDeal", "Home", null, new { @class = "barAlarmReport" })
+                            </li>
+                        }
+                        @*<a href="#" class="PM_a1">PM<img src="../../../../images/arrowdown.png" alt="Arrow" width="16" height="12" /></a>*@
+                        @*<ul>
+                        <li class="PM_li">@Html.ActionLink("History", "PMHistory", "Home", null, null)</li>
+                        <li class="PM_li">@Html.ActionLink("Schedule", "Frequency", "Home", null, null)</li>
+                        <li class="PM_li">@Html.ActionLink("Setting", "EditFrequency", "Home", null, null)</li>
+                        </ul>*@
+                            <li id="Report">
+                                @*@Html.ActionLink("Report", "Report", "Home", null, new { @class = "barReport" })*@
+                                @Html.ActionLink("Alarm Report", "AlarmDeal", "Home", null, new { @class = "barReport" })
+                            </li>
+                            @*<li id="Limit">
+                                <a href="#" class="Limit">Limit</a>
+                                <ul>
+                                    <li class="Limit">@Html.ActionLink("Limit", "AlarmLimit", "Home", null, new { @class = "barAlarmLimit" })</li>
+                                    <li class="Limit">@Html.ActionLink("Type", "TypeValues", "Home", null, new { @class = "barAlarmLimit" })</li>
+                                </ul>
+                            </li>*@
+                            @if (Session["UserLevel"] != null && (Int16)Session["UserLevel"] >= 600)
+                            {
+                                <li class="Limit">@Html.ActionLink("Limit", "AlarmLimit", "Home", null, new { @class = "barAlarmLimit" })</li>
+                            }
+                            @if (Session["UserLevel"] != null && (Int16)Session["UserLevel"] >= 800)
+                            {
+                                <li class="PhoneCall">@Html.ActionLink("ENS Link", "PhoneCall", "Home", null, new { @class = "barPhoneCall" })</li>
+                            }
+                            @*@if (Session["UserLevel"] != null && (Int16)Session["UserLevel"] >= 800)
+                            {
+                                <li id="Setting">
+                                    @Html.ActionLink("Setting", "FDC_Setting", "Home", null, new { @class = "barSetting" })
+                                </li>
+                            }*@
+                            <li id="LoginManage">
+                                @Html.ActionLink(@TSMC14B.Menu.LoginManage, "LoginManage", "Login", null, new { @class = "barAccount" })
+                            </li>
+                        </ul>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <br />
+    
+</div>
+<div>@RenderBody()
+    
+</div>

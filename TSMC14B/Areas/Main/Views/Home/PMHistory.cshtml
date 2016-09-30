@@ -1,0 +1,322 @@
+﻿@model IEnumerable<TSMC14B.Areas.Main.Models.PMModel>
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewBag.Title = "PM History";
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Themes/Shared/ptTimeSelect/jquery.datetimepicker.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.datetimepicker.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('.ul').jqf1();
+            $('.tb').css('font-size', '12px');
+            if ($('#tbxToolid[value*="*"]').length) {
+                $("#toolId option:nth-child(1)").attr("selected", true);
+                $("#toolId option:selected").attr("selected", "");
+                $("#toolId").attr("disabled", true);
+            };
+            $('#tbxToolid').keyup(function (event) {
+                changeIndex($("#tbxToolid").val());
+            });
+            function changeIndex(chkvalue) {
+                var objval; var isFound; var tempval;
+                if ((chkvalue == "")) {
+                    //$("#toolId option:selected").attr("selected", "");
+                    $("#toolId option:nth-child(1)").attr("selected", true);
+                    //$("#toolId").attr("disabled", "");
+                    isFound = false;
+                    return;
+                };
+                if (chkvalue.indexOf("*") >= 0) {
+                    $("#toolId option:nth-child(1)").attr("selected", true);
+                    $("#toolId option:selected").attr("selected", "");
+                    $("#toolId").attr("disabled", true);
+                } else {
+                    if (!isFound) {
+                        $("#toolId").attr("disabled", false);
+
+                        $('#toolId>option[value^=' + chkvalue.toUpperCase() + '],#toolId>option[value^=' + chkvalue + ']').first().attr("selected", true);
+                        isFound = true;
+                    };
+                }; return;
+            };
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+            $('.flexme').flexigrid({
+                //title: 'Alarm Now List',
+                width: 1214,
+                height: "auto",
+                @*url: '@Url.Action("JsonPMHistory")?Vendor="' + $('#Vendor').val() + "&toolId=" + $('#toolId').val() + "&StartDate=" + $('#StartDate').val() + "&EndDate=" + $('#EndDate').val(),*@
+                dataType: 'json',
+                colModel: [
+                    { display: '@TSMC14B.Menu.UpdateDate', name: 'UpdateDate', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: 'pmHistoryID', name: 'pmHistoryID', width: 60, sortable: false, align: 'center', hide: true },
+                    { display: 'plcID', name: 'plcID', width: 60, sortable: false, align: 'center', hide: true },
+                    { display: 'Chamber', name: 'ToolID', width: 120, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Location ID', name: 'LocationID', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '@TSMC14B.Menu.Location', name: 'Location', width: 70, sortable: false, align: 'center', hide: false },
+                    //{ display: 'locSide', name: 'locSide', width: 60, sortable: false, align: 'center', hide: true },
+                    //{ display: 'tName', name: 'tName', width: 60, sortable: false, align: 'center', hide: true },
+                    //{ display: 'VendorID', name: 'VendorID', width: 60, sortable: false, align: 'center', hide: true },
+                    { display: '@TSMC14B.Menu.department_name', name: 'department_name', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: '課別', name: 'gName', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '@TSMC14B.Menu.pmSet', name: 'pmSet', width: 70, sortable: false, align: 'center', hide: false },
+                    { display: '@TSMC14B.Menu.pmUnset', name: 'pmUnset', width: 70, sortable: false, align: 'center', hide: false },
+                    //{ display: 'pm週期(天)', name: 'pmCycle', width: 70, sortable: false, align: 'center', hide: true },
+                    //{ display: '下次pm時間', name: 'pmNextTime', width: 70, sortable: false, align: 'center', hide: true },
+                    //{ display: 'LifeTime(天)', name: 'PMLifeTime', width: 70, sortable: false, align: 'center', hide: true },
+                    { display: '@TSMC14B.Menu.memo', name: 'memo', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: 'PM', name: 'pmFlag', width: 40, sortable: false, align: 'center', hide: false },
+                    { display: 'Trouble<br /> Shooting', name: 'tsFlag', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: '備機', name: 'backupFlag', width: 40, sortable: false, align: 'center', hide: false },
+                    //{ display: 'CMS<br /> 錯誤', name: 'cmsErrorFlag', width: 40, sortable: false, align: 'center', hide: false },
+                    { display: 'Pumping<br />PM', name: 'PumpingDone', width: 55, sortable: false, align: 'center', hide: false },
+                    { display: 'SEX<br />PM', name: 'SEXDone', width: 40, sortable: false, align: 'center', hide: false },
+                    { display: '其他', name: 'otherFlag', width: 40, sortable: false, align: 'center', hide: false },
+                    //{ display: '臨時拉P', name: 'TemporaryPFlag', width: 40, sortable: false, align: 'center', hide: false },
+                    //{ display: 'PT有<br />無校正', name: 'ptDone', width: 40, sortable: false, align: 'center', hide: false },
+                    { display: '@TSMC14B.Menu.Operator', name: '_operator', width: 100, sortable: false, align: 'center', hide: false },
+                    //{ display: 'vendorIntouch', name: 'vendorIntouch', width: 60, sortable: false, align: 'center', hide: true },
+                    //{ display: 'Bellow', name: 'Bellow', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: '轉彎處', name: 'Turning', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: '三通', name: 'ThreeWay', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: '手閥', name: 'HandValve', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: '大小頭', name: 'bsHead', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: '氣動閥', name: 'GasValve', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'L管', name: 'LPipe', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Entry', name: 'Entry', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Inlet%', name: 'Inlet', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'MixingBox%', name: 'MixingBox', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Reactor%', name: 'Reactor', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Tank%', name: 'Tank', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Outlet%', name: 'Outlet', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'T管%', name: 'Tpipe', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'L管%', name: 'Pmlpipe', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Inlet上方彎管%', name: 'Upturning', width: 75, sortable: false, align: 'center', hide: false },
+                    //{ display: '水氣分離盒%', name: 'ms', width: 70, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Inlet%', name: 'Inlet_TP', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'MixingBox%', name: 'MixingBox_TP', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Reactor%', name: 'Reactor_TP', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Tank%', name: 'Tank_TP', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Outlet%', name: 'Outlet_TP', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'T管%', name: 'Tpipe_TP', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'L管%', name: 'Pmlpipe_TP', width: 60, sortable: false, align: 'center', hide: false },
+                    //{ display: 'Inlet上方彎管%', name: 'Upturning_TP', width: 75, sortable: false, align: 'center', hide: false },
+                    //{ display: '水氣分離盒%', name: 'ms_TP', width: 70, sortable: false, align: 'center', hide: false },
+                    { display: '', name: 'edit', width: 10, sortable: false, align: 'left', hide: "@ViewBag.UserLevel" == "部門" ? true : false }
+                ],
+                procmsg: '@TSMC14B.Menu.procmsg',
+                rptext: '@TSMC14B.Menu.rptext',
+                pagestat: '@TSMC14B.Menu.pagestat',
+                pagetext: '@TSMC14B.Menu.pagetext',
+                outof: '@TSMC14B.Menu.outof',
+                nomsg: '@TSMC14B.Menu.nomsg',
+                usepager: true,
+                useRp: true,
+                rp: 100,
+                nowrap: false,
+                singleSelect: true,
+                // onSuccess: function () {
+                //     $('#pumping').each(function () {
+                //         if (this.checked == true) {
+                //             $('.pump').slideDown();
+                //         }
+                //         else {
+                //             $('.flexme > thead > tr > td[abbrr="Bellow"]').append('hidden="" style="display: none;"');
+                //         }
+                //     });
+                //},
+                rpOptions: [5, 10, 15, 20, 30, 50, 100],
+                onSuccess: function () {
+                    $('.flexme > tbody > tr > td[abbrr="edit"] > div').remove();
+
+                    //$('.flexme > tbody > tr > td[abbrr="edit"]').append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="編輯" /></div></a>');
+
+                    $('.flexme > tbody > tr > td[abbrr="edit"]').each(function () {
+                        if ($(this).parent().children(':eq(5)').text() == '@Session["UserdepartmentName"]') {
+
+                            $(this).append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="編輯" /></div></a>');
+                        }
+                    });
+
+                    $('.edit').click(function () {
+                        OpenModelWindow('@Url.Action("EditPMHistroy")?pmHistoryID=' + $(this).parent().parent().children(':eq(1)').text(), { width: 700, height: 500, caption: "編輯", onclose: function () { $('.flexme').flexReload(); } });
+                    });
+                    //if (_Post == "1") {
+                    //    $('.edit:eq(0)').click();
+                    //    _Post = "0";
+                    //}
+                },
+            });
+            $("#Vendor,#device").change(function () {
+                //var selectedValue = $('#Vendor option:selected').val();
+                //if (selectedValue == '') {
+                //    $('#spanDevice').hide();
+                //    $('#spanDevice').val('');
+                //} else {
+                //    $('#spanDevice').show();
+                //}
+                $.post('@Url.Action("PMHistorytid")', [{ name: 'vName', value: $('#Vendor').val() }], function (data) {
+                    $('#toolId').empty();
+                    $('#toolId').append($('<option></option>').val('').text('ALL'));
+                    $.each(data, function (i, item) {
+                        $('#toolId').append($('<option></option>').val(item.Value).text(item.Value));
+                    });
+                }, 'json');
+            });
+            $('#StartDate').datetimepicker();
+            $('#EndDate').datetimepicker({
+                Time59: true
+            });
+            if ($("#StartDate").val().length == 0) {
+                var dt = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
+                $("#StartDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 00:00');
+            };
+            if ($("#EndDate").val().length == 0) {
+                var dt = new Date(Date.now());
+
+                dt.setDate( dt.getDate() + 1);
+
+                $("#EndDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()));
+            };
+            //if (_Post == "1") {
+            //    ChartExport('search');
+            //}
+        });
+        function ChartExport(id) {
+            var _toolid;
+            if ($('#tbxToolid').val().indexOf("*") >= 0)
+            { _toolid = $('#tbxToolid').val();}
+            else
+            { _toolid = $('#toolId').val();}
+            //var _pumping="";
+            //var _sex="";
+            //var _pt="";
+            //$('#pumping').each(function () {
+            //    if (this.checked == true)
+            //        _pumping = 1;
+            //});
+            //$('#SEX').each(function () {
+            //    if (this.checked == true)
+            //        _sex = 1;
+            //});
+            //$('#PT').each(function () {
+            //    if (this.checked == true)
+            //        _pt = 1;
+            //});
+            var sType = '';
+            $('.cb_sType:checked').each(function (e) {
+                sType += $(this).val() + ",";
+            });
+            sType = sType.substring(0, sType.length - 1);
+            $('#message').text($('#message').text().substring(0, $('#message').text().length - 1));
+            var gname = '';
+            if ($('#device').val().length > 0) {
+                gname = $('#device').val();
+            }
+            if (id == 'search') {
+                var urlStr = '@Url.Action("JsonPMHistory")?Vendor="' + $('#Vendor').val() + "&toolId=" + _toolid + "&StartDate=" + $('#StartDate').val() + "&EndDate=" + $('#EndDate').val() + "&selectType=" + sType + "&gname=" + gname + '&page=1&rp=20';
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else {
+                location.href = "@Url.Action("PMHistory")?Vendor=" + $('#Vendor').val() + "&toolId=" + _toolid + "&StartDate=" + $('#StartDate').val() + "&EndDate=" + $('#EndDate').val() + "&output=" + id + "&selectType=" + sType + "&gname=" + gname;
+            }
+        }
+    </script>
+}
+<h2>PM History</h2>
+<div>
+    <table style="width: 950px">
+        <tr>
+            <td>
+                <table border="1" class="tb" style="width: 750px">
+                    <tr>
+                        <td>
+                            <label for="lbl_vendor">@TSMC14B.Menu.plaseSelectDep</label></td>
+                        <td>@Html.DropDownList("Vendor", ViewBag.Vendor as IEnumerable<SelectListItem>, "ALL")
+                            <span id="spanDevice" style="display:none;">
+                                <label id="lbl_device">請選擇課別：</label>
+                            <select id="device" name="device">
+                                <option value="">請選擇</option>
+                                <option value="EE1">EE1</option>
+                                <option value="EE2">EE2</option>
+                                <option value="EE3">EE3</option>
+                                <option value="EE4">EE4</option>
+                                <option value="EE5">EE5</option>
+                                <option value="EE6">EE6</option>
+                            </select>
+                            </span>
+                        </td>
+                        <td>
+                            <label for="lbl_toolid">@TSMC14B.Menu.plaseSelectEQ</label>
+                        </td>
+                        <td>
+                            @*@Html.DropDownList("toolId", ViewBag.ToolID as IEnumerable<SelectListItem>,"ALL")*@
+                            @Html.TextBox("tbxToolid")
+                            <select id="toolId" name="toolId">
+                                <option>ALL</option>
+                                @if (ViewBag.ToolID != null)
+                                {
+                                    foreach (var item in ViewBag.ToolID as IEnumerable<SelectListItem>)
+                                    {
+                                    <option value="@item.Value">@item.Value</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="lbl_StartDate">@TSMC14B.Menu.StartDate</label>
+                        </td>
+                        <td>
+                            @Html.Editor("StartDate")
+                            @*<span id="sd" title="選擇開始日期" style="padding: 0 8px; background: url(@Url.Content("~/Content/Icons/date.png"))  no-repeat 1px 100%;">&nbsp;</span>
+                    <span id="st" title="選擇開始時間" style="padding: 0 8px; background: url(@Url.Content("~/Content/Themes/Shared/ptTimeSelect/images/liveclock.png"))  no-repeat 1px 100%;">&nbsp;</span>*@
+                        </td>
+                        @*</ul>
+                            <ul class="ul">*@
+                        <td>
+                            <label for="lbl_StartDate">@TSMC14B.Menu.EndDate</label>
+                        </td>
+                        <td>
+                            @Html.Editor("EndDate")
+                            @*<span id="ed" title="選擇結束日期" style="padding: 0 8px; background: url(@Url.Content("~/Content/Icons/date.png"))  no-repeat 1px 100%;">&nbsp;</span>
+                    <span id="et" title="選擇結束時間" style="padding: 0 8px; background: url(@Url.Content("~/Content/Themes/Shared/ptTimeSelect/images/liveclock.png"))  no-repeat 1px 100%;">&nbsp;</span>*@
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <label>@TSMC14B.Menu.IsHasPM：</label>
+                            <input class="cb_sType" name="sType" id="PM" type="checkbox" value="pm_flag" /><label for="PM">PM</label>
+                            <input class="cb_sType" name="sType" id="pumping" type="checkbox" value="pumping_done" /><label for="pumping">Pumping PM</label>
+                            <input class="cb_sType" name="sType" id="SEX" type="checkbox" value="sex_done" /><label for="SEX">SEX PM</label>
+                            <input class="cb_sType" name="sType" id="TS" type="checkbox" value="ts_flag" /><label for="TS">TS</label>
+                            <input class="cb_sType" name="sType" id="BK" type="checkbox" value="backup_flag" style="display: none;" /><label for="BK" style="display: none;">備機</label>
+                            <input class="cb_sType" name="sType" id="CMS" type="checkbox" value="cmsError_flag" style="display: none;" /><label for="CMS" style="display: none;">CMS異常未上線</label>
+                            <input class="cb_sType" name="sType" id="Other" type="checkbox" value="other_flag" /><label for="Other">Other</label>
+                            @*<input class="cb_sType" name="sType" id="TP" type="checkbox" value="TemporaryP_flag" /><label for="TP">臨時拉P</label>*@
+                            <label style="display: none;">是否PT校正：</label>
+                            <input class="cb_sType" name="sType" id="PT" type="checkbox" value="pt_done" style="display: none;" /><label for="PT" style="display: none;">PT校正</label>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                @*<input type="button" id="PM_Sch_Search" value="PM Schedule 查詢" style="width: 150px" />
+                <input type="button" id="PM_S_Set" value="PM Schedule 設定" style="width: 150px" />*@
+            </td>
+        </tr>
+    </table>
+    <input type="button" id="sbmit" value="@TSMC14B.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search');" />&nbsp;&nbsp;&nbsp;
+    <input type="button" id="btnExport" value="@TSMC14B.Menu.ChartExport" style="width: 80px" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp;
+    <label id="message" style="display: none;"></label>
+    <label id="message2" style="display: none;"></label>
+</div>
+<table class="flexme">
+</table>

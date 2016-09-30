@@ -1,0 +1,107 @@
+﻿@model TSMC14B.Areas.Main.Models.PMModel 
+@{
+    ViewBag.Title = @TSMC14B.Menu.Edit;
+}
+@section JavaScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            };
+            $(".PD").change(function () {
+                if (this.checked == true) {
+                    $('.pump1').slideDown();
+                }
+                else {
+                    $('.pump1').slideUp();
+                }
+            });
+            $(".PM").change(function () {
+                if (this.checked == true) {
+                    $('#TemporaryPFlag').prop("checked", false);
+                    $('.pump3 :input').val("");
+                }
+                else {
+                    $('.pump2 :input').val("");
+                }
+            });
+            $('.TP').change(function () {
+                if (this.checked == true) {
+                    $("#pmFlag").prop("checked", false);
+                    $('.pump2 :input').val("");
+                }
+                else {
+                    $('.pump3 :input').val("");
+                }
+            });
+        });
+    </script>
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset style="width: 90%; margin: 0 auto;">
+        <legend>@ViewBag.Title</legend>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.ToolID)</li>
+            <li>@Html.HiddenFor(model => model.ToolID)@Html.DisplayFor(model => model.ToolID)</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>@Html.LabelFor(model => model.LocationID)</li>
+            <li>@Html.DisplayFor(model => model.LocationID)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.Location)</li>
+            <li>@Html.DisplayFor(model => model.Location)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.pmSet)</li>
+            <li>@Html.HiddenFor(model => model.pmSet)@Html.DisplayFor(model => model.pmSet, new { style = "width: 110px;" })</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>@Html.LabelFor(model => model.pmUnset)</li>
+            <li>@Html.HiddenFor(model => model.pmUnset)@Html.DisplayFor(model => model.pmUnset, new { style = "width: 110px;" })</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.memo)</li>
+            <li>@Html.TextBoxFor(model => model.memo, new { style = "width: 200px;" })</li>
+        </ul>
+        <ul class="ul">
+            <li class="PM">@Html.LabelFor(model => model.pmFlag)</li>
+            <li>@Html.RadioButtonFor(model => model.pmFlag, "Y") Y</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li class="PM">@Html.RadioButtonFor(model => model.pmFlag, "N") N</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.tsFlag)</li>
+            <li>@Html.RadioButtonFor(model => model.tsFlag, "Y") Y</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>@Html.RadioButtonFor(model => model.tsFlag, "N") N</li>
+        </ul>
+        <ul class="ul">
+            <li class="PD">@Html.LabelFor(model => model.PumpingDone)</li>
+            <li>@Html.RadioButtonFor(model => model.PumpingDone, "Y") Y</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li class="PD">@Html.RadioButtonFor(model => model.PumpingDone, "N") N</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.SEXDone)</li>
+            <li>@Html.RadioButtonFor(model => model.SEXDone, "Y") Y</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>@Html.RadioButtonFor(model => model.SEXDone, "N") N</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.otherFlag)</li>
+            <li>@Html.RadioButtonFor(model => model.otherFlag, "Y") Y</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>@Html.RadioButtonFor(model => model.otherFlag, "N") N</li>
+        </ul>
+        <ul class="ul">
+            <li>
+                <input type="submit" value="@TSMC14B.Menu.confirm" style="width: 80px" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Refill" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Cancel" style="width: 80px" onclick="CloseModelWindow();" /></li>
+        </ul>
+    </fieldset>
+}

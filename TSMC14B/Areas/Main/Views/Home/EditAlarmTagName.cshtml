@@ -1,0 +1,46 @@
+﻿@model TSMC14B.Areas.Main.Models.AlarmTagNameModel
+@{
+    ViewBag.Title = "修改";
+}
+@section JavaScript{
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+
+        });
+    </script>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset style="width: 90%; margin: 0 auto;">
+        <legend>@ViewBag.Title</legend>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.Comment)</li>
+            <li>@Html.HiddenFor(model => model.Comment)@Html.DisplayFor(model => model.Comment)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.Cht_Comment)</li>
+            <li>@Html.HiddenFor(model => model.Cht_Comment)@Html.DisplayFor(model => model.Cht_Comment)<span>-</span>@Html.HiddenFor(model => model.Tag_Name)@Html.DisplayFor(model => model.Tag_Name )</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.TagFullName)</li>
+            <li>@Html.DropDownListFor(model => model.TagFullName , ViewBag.TagList as IEnumerable<SelectListItem>)</li>
+        </ul>
+        <ul class="ul">
+            <li>
+                <input type="submit" value="確定" style="width: 80px" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="重填" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="取消" style="width: 80px" onclick="CloseModelWindow();" /></li>
+        </ul>
+    </fieldset>
+}

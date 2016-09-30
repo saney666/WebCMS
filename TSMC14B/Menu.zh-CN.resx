@@ -1,0 +1,507 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AlarmMessage" xml:space="preserve">
+    <value>Alarm 讯息</value>
+  </data>
+  <data name="AlarmMonth" xml:space="preserve">
+    <value>一周警告</value>
+  </data>
+  <data name="AlarmMonthExport" xml:space="preserve">
+    <value>一周警告汇出</value>
+  </data>
+  <data name="AlarmNow" xml:space="preserve">
+    <value>即时警告</value>
+  </data>
+  <data name="AlarmType" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="AlarmValue" xml:space="preserve">
+    <value>数值</value>
+  </data>
+  <data name="AlarmWeek" xml:space="preserve">
+    <value>24小时警告</value>
+  </data>
+  <data name="AlarmWeekExport" xml:space="preserve">
+    <value>24小时警告汇出</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="alreadySelectValueTag" xml:space="preserve">
+    <value>已选取数值</value>
+  </data>
+  <data name="cancelPM" xml:space="preserve">
+    <value>解隔离</value>
+  </data>
+  <data name="cancelPMing" xml:space="preserve">
+    <value>解隔离中</value>
+  </data>
+  <data name="ChangeParts" xml:space="preserve">
+    <value>零件更换纪录</value>
+  </data>
+  <data name="ChartExport" xml:space="preserve">
+    <value>汇出资料</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>清除選取</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>结案</value>
+  </data>
+  <data name="DealWith" xml:space="preserve">
+    <value>处理状况</value>
+  </data>
+  <data name="department_name" xml:space="preserve">
+    <value>部门</value>
+  </data>
+  <data name="draw" xml:space="preserve">
+    <value>绘制</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="effectDateTime" xml:space="preserve">
+    <value>影响时段及时间</value>
+  </data>
+  <data name="effectOutPut" xml:space="preserve">
+    <value>影响生产</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>选择结束时间</value>
+  </data>
+  <data name="EndTimeNotOverNowTime" xml:space="preserve">
+    <value>结束时间请勿选择超过现在时间</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>输入</value>
+  </data>
+  <data name="EqFdcTable" xml:space="preserve">
+    <value>设备FDC资料表</value>
+  </data>
+  <data name="EqLimitSetting" xml:space="preserve">
+    <value>设备上下限设定</value>
+  </data>
+  <data name="eqValueChart" xml:space="preserve">
+    <value>设备数值资料统计</value>
+  </data>
+  <data name="IsCancelPM" xml:space="preserve">
+    <value>是否解隔离</value>
+  </data>
+  <data name="IsHiEnable" xml:space="preserve">
+    <value>上限</value>
+  </data>
+  <data name="IsLoEnable" xml:space="preserve">
+    <value>下限</value>
+  </data>
+  <data name="IsPM" xml:space="preserve">
+    <value>是否隔离</value>
+  </data>
+  <data name="LastEditUser" xml:space="preserve">
+    <value>最后修改者</value>
+  </data>
+  <data name="LastUpdateTime" xml:space="preserve">
+    <value>最近更新时间</value>
+  </data>
+  <data name="LimitList" xml:space="preserve">
+    <value>上下限清单</value>
+  </data>
+  <data name="Limit_Max" xml:space="preserve">
+    <value>手动上限值</value>
+  </data>
+  <data name="Limit_Max_Setting" xml:space="preserve">
+    <value>目前上限设定</value>
+  </data>
+  <data name="Limit_Min" xml:space="preserve">
+    <value>手动下限值</value>
+  </data>
+  <data name="Limit_Min_Setting" xml:space="preserve">
+    <value>目前下限设定</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>柱位</value>
+  </data>
+  <data name="LoginManage" xml:space="preserve">
+    <value>帐号管理</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>登出</value>
+  </data>
+  <data name="MoreValueTagMoreEq" xml:space="preserve">
+    <value>多数值多设备</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="noSelectValueTag" xml:space="preserve">
+    <value>未选取数值</value>
+  </data>
+  <data name="OneEqMoreValueTag" xml:space="preserve">
+    <value>单一设备多数值</value>
+  </data>
+  <data name="OneValueTagMoreEq" xml:space="preserve">
+    <value>单一数值多设备</value>
+  </data>
+  <data name="plaseSelectDate" xml:space="preserve">
+    <value>请选择日期</value>
+  </data>
+  <data name="plaseSelectDep" xml:space="preserve">
+    <value>请选择部门</value>
+  </data>
+  <data name="plaseSelectEQ" xml:space="preserve">
+    <value>请选择设备</value>
+  </data>
+  <data name="plaseSelectOption" xml:space="preserve">
+    <value>请选择</value>
+  </data>
+  <data name="plaseSelectValueName" xml:space="preserve">
+    <value>请勾选数值名称</value>
+  </data>
+  <data name="plc_name" xml:space="preserve">
+    <value>机号</value>
+  </data>
+  <data name="PM" xml:space="preserve">
+    <value>隔离</value>
+  </data>
+  <data name="PMing" xml:space="preserve">
+    <value>隔离中</value>
+  </data>
+  <data name="Query" xml:space="preserve">
+    <value>查询</value>
+  </data>
+  <data name="QueryString" xml:space="preserve">
+    <value>查询字串</value>
+  </data>
+  <data name="ReceptionName" xml:space="preserve">
+    <value>处理人员</value>
+  </data>
+  <data name="Stack" xml:space="preserve">
+    <value>叠图</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>选择开始时间</value>
+  </data>
+  <data name="status" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="TagName" xml:space="preserve">
+    <value>数值名称</value>
+  </data>
+  <data name="typeName" xml:space="preserve">
+    <value>机型</value>
+  </data>
+  <data name="Weekly" xml:space="preserve">
+    <value>周期</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="_DateTime" xml:space="preserve">
+    <value>日期/时间</value>
+  </data>
+  <data name="AddNewUserName" xml:space="preserve">
+    <value>新增帐号</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="ChangePassward" xml:space="preserve">
+    <value>变更您的密码</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="Competence" xml:space="preserve">
+    <value>权限</value>
+  </data>
+  <data name="confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="IsDelete" xml:space="preserve">
+    <value>是否删除</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>级别</value>
+  </data>
+  <data name="LogInManageSystem" xml:space="preserve">
+    <value>登入帐号管理系统</value>
+  </data>
+  <data name="LogInPage" xml:space="preserve">
+    <value>登入页面</value>
+  </data>
+  <data name="modify" xml:space="preserve">
+    <value>修改</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>新密码</value>
+  </data>
+  <data name="nomsg" xml:space="preserve">
+    <value>没有项目</value>
+  </data>
+  <data name="outof" xml:space="preserve">
+    <value>共</value>
+  </data>
+  <data name="pagestat" xml:space="preserve">
+    <value>显示 第 {from} 项 到 第 {to} 项，总共 {total} 项目</value>
+  </data>
+  <data name="pagetext" xml:space="preserve">
+    <value>页次</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="passwordAtLast" xml:space="preserve">
+    <value>密码最少8个字最长20个字</value>
+  </data>
+  <data name="PasswordEnterError" xml:space="preserve">
+    <value>密码输入错误</value>
+  </data>
+  <data name="PasswordMustSame" xml:space="preserve">
+    <value>密码须相同</value>
+  </data>
+  <data name="PleaseComplete" xml:space="preserve">
+    <value>请填写完整</value>
+  </data>
+  <data name="procmsg" xml:space="preserve">
+    <value>搜寻中, 请稍候 ...</value>
+  </data>
+  <data name="Refill" xml:space="preserve">
+    <value>重填</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>为必填栏位</value>
+  </data>
+  <data name="rptext" xml:space="preserve">
+    <value>每页笔数</value>
+  </data>
+  <data name="title" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="titleLongest" xml:space="preserve">
+    <value>名称最长20个字…</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>登入帐号</value>
+  </data>
+  <data name="UserNameAlreadyExists" xml:space="preserve">
+    <value>帐号已存在</value>
+  </data>
+  <data name="UserNameManage" xml:space="preserve">
+    <value>查询管理所有帐号</value>
+  </data>
+  <data name="UserNameMust" xml:space="preserve">
+    <value>帐号必填</value>
+  </data>
+  <data name="bsHead" xml:space="preserve">
+    <value>大小头</value>
+  </data>
+  <data name="GasValve" xml:space="preserve">
+    <value>气动阀</value>
+  </data>
+  <data name="HandValve" xml:space="preserve">
+    <value>手阀</value>
+  </data>
+  <data name="IsHasPM" xml:space="preserve">
+    <value>是否有实际PM</value>
+  </data>
+  <data name="LPipe" xml:space="preserve">
+    <value>L管</value>
+  </data>
+  <data name="memo" xml:space="preserve">
+    <value>pm事由</value>
+  </data>
+  <data name="ms" xml:space="preserve">
+    <value>水气分离盒</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>操作者</value>
+  </data>
+  <data name="other" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="PendingList" xml:space="preserve">
+    <value>待处理清单</value>
+  </data>
+  <data name="plaseCheckType" xml:space="preserve">
+    <value>请勾选类别</value>
+  </data>
+  <data name="plasePMMemo" xml:space="preserve">
+    <value>请填写PM理由</value>
+  </data>
+  <data name="plaseSelectType" xml:space="preserve">
+    <value>请选择类型</value>
+  </data>
+  <data name="pmCycle" xml:space="preserve">
+    <value>PM周期(天)</value>
+  </data>
+  <data name="PMingList" xml:space="preserve">
+    <value>PM中清单</value>
+  </data>
+  <data name="pmNextTime" xml:space="preserve">
+    <value>下次PM时间</value>
+  </data>
+  <data name="pmSet" xml:space="preserve">
+    <value>设定pm时间</value>
+  </data>
+  <data name="pmUnset" xml:space="preserve">
+    <value>解除pm时间</value>
+  </data>
+  <data name="TemporaryPFlag" xml:space="preserve">
+    <value>临时拉P</value>
+  </data>
+  <data name="ThreeWay" xml:space="preserve">
+    <value>三通</value>
+  </data>
+  <data name="ToolId" xml:space="preserve">
+    <value>机台名称</value>
+  </data>
+  <data name="toolidinput" xml:space="preserve">
+    <value>输入Tool ID后按Enter</value>
+  </data>
+  <data name="Tpipe" xml:space="preserve">
+    <value>T管</value>
+  </data>
+  <data name="Turning" xml:space="preserve">
+    <value>转弯处</value>
+  </data>
+  <data name="UpdateDate" xml:space="preserve">
+    <value>更新日期</value>
+  </data>
+  <data name="Upturning" xml:space="preserve">
+    <value>Inlet上方弯管</value>
+  </data>
+  <data name="Vendor" xml:space="preserve">
+    <value>厂商</value>
+  </data>
+  <data name="Manually" xml:space="preserve">
+    <value>手动</value>
+  </data>
+  <data name="DefaultValue" xml:space="preserve">
+    <value>预设值</value>
+  </data>
+  <data name="PhoneCallNotSend" xml:space="preserve">
+    <value>不发送</value>
+  </data>
+  <data name="PhoneCallSend" xml:space="preserve">
+    <value>发送</value>
+  </data>
+</root>

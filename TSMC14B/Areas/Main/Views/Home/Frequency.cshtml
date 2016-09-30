@@ -1,0 +1,291 @@
+﻿@model IEnumerable<TSMC14B.Areas.Main.Models.PMfrequencySetModel>
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewBag.Title = "PM Schedule";
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main3.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        var temptName;
+        var tempvName;
+        var tempgroupName;
+        var myvar;
+        $(document).ready(function () {
+            temptName="Main"
+            $('.flexme').flexigrid({
+                title: 'PM週期已設定清單',
+                width: 1140,
+                height: "auto",
+                url: '@Url.Action("JsonPMSchedule")',
+                dataType: 'json',
+                colModel: [
+                    { display: '廠 商', name: 'Vendor', width: 40, sortable: false, align: 'center', hide: false },
+                    { display: 'Tool ID', name: 'ToolID', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: 'Location ID', name: 'LocationID', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '上 次 PM 時 間', name: 'PMDate', width: 80, sortable: false, align: 'center', hide: false },
+                    //{ display: 'PM隔離上限天數', name: 'UnSetTooLate', width: 40, sortable: false, align: 'center', hide: false },
+                    { display: 'Frequency', name: 'frequency', width: 50, sortable: false, align: 'center', hide: false },
+                    { display: 'Tolerance', name: 'tolerance', width: 50, sortable: false, align: 'center', hide: false },
+                    { display: 'Plan PM Date', name: 'PlanPMDate', width: 80, sortable: false, align: 'left', hide: false },
+                    { display: 'Tolerance From', name: 'ToleranceFrom', width: 80, sortable: true, align: 'left', hide: false },
+                    { display: 'Tolerance To', name: 'ToleranceTo', width: 80, sortable: false, align: 'left', hide: false },
+                    { display: 'PM History', name: 'PMHistory', width: 80, sortable: false, align: 'left', hide: false },
+                    { display: 'Status', name: 'onoffStatus', width: 60, sortable: false, align: 'left', hide: false },
+                    { display: 'Power On Date', name: 'PowerOnDate', width: 80, sortable: false, align: 'left', hide: false },
+                    { display: '設 定 者', name: 'userlogin', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '時 間', name: 'date', width: 80, sortable: false, align: 'left', hide: false },
+                    { display: 'PM History ALL', name: 'PMHistoryALL', width: 80, sortable: false, align: 'left', hide: true },
+                ],
+                onSuccess: function () {
+                    //setTimeout("$('.flexme').flexReload();", 30000);
+                    myvar = setTimeout("$('.flexme').flexReload();", 30000);
+                    $('.flexme > tbody > tr > td[abbrr="ToolID"] > div ').each(function (i, e) {
+                        $(this).wrap('<div style="width:90px;padding-top: 0px;padding-bottom: 0px;padding-right: 0px;padding-left: 0px; "><spen class="pmhistorytooltip"><spen></spen><b></b></spen></div>');
+                    });
+                    $('.pmhistorytooltip').mouseenter(function () {
+                        $('.flexme > tbody > tr > td[abbrr="ToolID"] > div > spen > b > spen ').remove();
+                        $('.flexme > tbody > tr > td[abbrr="ToolID"] > div > spen > b ').append('<spen><table width="100" style="word-break:break-all"><tr><td>' + $(this).parent().parent().parent().children(':eq(14)').text() + '</td></tr></table></spen>');
+                    });
+                    $('.pmhistorytooltip').mouseleave(function () {
+                        //    //alert($(this).parent().parent().children(':eq(2)').text()); 
+                        $('.flexme > tbody > tr > td[abbrr="ToolID"] > div > spen > b > spen ').remove();
+                        //setTimeout("$('.flexme').flexReload();", 10000);
+                    });
+                    $("tr").removeClass("erow");
+                    $("tr").each(function () {
+                        var Today = new Date();
+                        var pt = $(this).find("td").eq(6).text();
+                        var st = $(this).find("td").eq(7).text();
+                        var tt = $(this).find("td").eq(8).text();
+                        var Today1 = Today.getFullYear() + "/" + (Today.getMonth() + 1) + "/" + Today.getDate()
+                        //if (st != "") {
+                        //alert("今天日期是 " + Today.getFullYear() + " 年 " + (Today.getMonth() + 1) + " 月 " + Today.getDate() + " 日");
+                        //alert(Date.parse('2014/06/13').valueOf());
+                        //   alert(st.substr(0, 10));
+                        //    alert(st.substr(0,10)=="2014/06/13");
+                        //}
+                        if (Date.parse(st).valueOf() > Date.parse(Today1).valueOf() && Date.parse(tt).valueOf() < Date.parse(Today1).valueOf()) { $(this).css("color", "black"); }
+                        else if (Date.parse(st).valueOf() <= Date.parse(Today1).valueOf() && Date.parse(tt).valueOf() >= Date.parse(Today1).valueOf()) { $(this).find("td").eq(1).css("color", "#FF0000"); $(this).find("td").eq(1).css("background-color", "#FFC0CB"); $(this).find("td").eq(6).css("color", "#FF0000"); $(this).find("td").eq(6).css("background-color", "#FFC0CB"); }
+                        else if ((Date.parse(st).valueOf() - 604800000) <= (Date.parse(Today1).valueOf()) && Date.parse(st).valueOf() >= (Date.parse(Today1).valueOf())) { $(this).find("td").eq(1).css("color", "#FF0000"); $(this).find("td").eq(1).css("background-color", "#FFFF00"); $(this).find("td").eq(6).css("color", "#FF0000"); $(this).find("td").eq(6).css("background-color", "#FFFF00"); }
+                        else if ((Date.parse(tt).valueOf()) <= (Date.parse(Today1).valueOf())) { $(this).find("td").eq(1).css("color", "#FFFFFF"); $(this).find("td").eq(1).css("background-color", "#FF0000"); $(this).find("td").eq(6).css("color", "#FFFFFF"); $(this).find("td").eq(6).css("background-color", "#FF0000"); }
+                    });
+                },
+                nowrap: false,
+                usepager: true,
+                useRp: true,
+                rp: 100,
+                singleSelect: true,
+                rpOptions: [5, 10, 15, 20, 30, 50, 100],
+            });
+        });
+        function PreAlarm(vName, groupName) {
+            clearTimeout(myvar);
+            if (vName == 'Main') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp PM Schedule List");
+                var urlStr = '@Url.Action("JsonPMSchedule")'
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'CS250') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp CS250 PM Schedule List");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'CSK') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp CSK PM Schedule List");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'DAS' && groupName == 'ETCH*ME*') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp DAS_ETCH PM Schedule List");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName + '&groupName=' + groupName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'DAS' && groupName == 'EPI*MCE*') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp DAS_EPI PM Schedule List");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName + '&groupName=' + groupName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'Edwards' && groupName == 'ETCH*ME*') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp DAS_ETCH PM Schedule List");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName + '&groupName=' + groupName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'Edwards' && groupName == 'EPI*MCE*') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp DAS_EPI PM Schedule List");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName + '&groupName=' + groupName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'IPI') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp IPI PM Schedule List");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'Kanken') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp Kanken PM Schedule List");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'HJ') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp HJ PM Schedule List");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'WTC') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp WTC PM Schedule List");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == '7PMwarning') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp 七日後將PM提醒清單");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'warningFrequency') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp PM週期提醒清單");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'AfterFrequency') {
+                tempvName = vName;
+                tempgroupName = groupName;
+                $("#gridTitle").html("&nbsp&nbsp 已超過PM週期而未PM提醒清單");
+                var urlStr = '@Url.Action("JsonPMFrequencyDetailList")?vName=' + vName;
+                $(".flexme").flexOptions({ url: urlStr });
+                $('.flexme').flexReload();
+            }
+            else if (vName == 'export') {
+                //if (tempvName != "undefined") {
+                    location.href = "@Url.Action("Frequency")?vName=" + tempvName + "&groupName=" + tempgroupName + "&output=" + vName;
+                //} else if (tempvName == "null") {
+                    //location.href = "@Url.Action("Frequency")?vName=Main&groupName=" + tempvName + "&output=" + vName;
+                //} else if (tempvName == "undefined") {
+                    //alert(tempvName);
+                //}
+            }
+        }
+    </script>
+    <style>
+       input[type="Text"] {
+	        width: 120px;
+        }
+
+       .pmhistorytooltip {
+            
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            .pmhistorytooltip b {
+                position:absolute;
+                display: none;
+            }
+                .pmhistorytooltip b spen table { 
+                    background-color:#000;                  
+                    color: #ffffff;
+                }
+            .pmhistorytooltip:hover {
+                position:absolute;
+                text-decoration: none;
+            }
+                .pmhistorytooltip:hover b {
+                    display: block;
+                    position: absolute;
+                    top: 0px;
+                    left: 75px;
+                    padding: 5px;
+                    font-weight: normal;
+                    color: #000;
+                    width: 100px;
+                    font-size: 12px;
+                    -moz-transform:  translateX(90deg) ;
+                    -ms-transform: inherit;
+                    -o-transform: inherit;
+                    -webkit-transform: inherit;
+                    transform: inherit;
+                }
+
+    </style>
+}
+<div id="gridTitle" style="font-size:11px; font-weight: bold; color:black; background-color:#e0d8d8;height:20px; width:1195px; padding-top: 10px;">&nbsp&nbsp PM Schedule List</div>
+<label id="LBtName"></label>
+<br />
+ <table>
+    <tr>
+        <td>
+            <nav>
+                <ul id="menu">
+                    <li><input id="btn_index" type="button" value="ALL" onclick="javascript: PreAlarm('Main', '');" /></li>
+                    <li><input id="btn_Kanken" type="button" value="Kanken" onclick="javascript: PreAlarm('Kanken', '');"/></li>
+                    <li><input id="btn_DAS_ETCH" type="button" value="DAS_ETCH" onclick="javascript: PreAlarm('DAS', 'ETCH*ME*');" /></li>
+                    <li><input id="btn_DAS_EPI" type="button" value="DAS_EPI" onclick="javascript: PreAlarm('DAS', 'EPI*MCE*');" /></li>
+                    <li><input id="btn_Edwards_ETCH" type="button" value="Edwards_ETCH" onclick="javascript: PreAlarm('Edwards', 'ETCH*ME*');" /></li>
+                    <li><input id="btn_Edwards_EPI" type="button" value="Edwards_EPI" onclick="javascript: PreAlarm('Edwards', 'EPI*MCE*');" /></li>
+                    <li><input id="btn_IPI" type="button" value="IPI" onclick="javascript: PreAlarm('IPI', '');"/></li>
+                    <li><input id="btn_CS250" type="button" value="CS250" onclick="javascript: PreAlarm('CS250', '');" /></li>
+                    <li><input id="btn_CSK" type="button" value="CSK" onclick="javascript: PreAlarm('CSK', '');" /></li>
+                    <li><input id="btn_WTC" type="button" value="WTC" onclick="javascript: PreAlarm('WTC', '');"/></li>
+                    <li><input id="btn_HJ" type="button" value="HJ" onclick="javascript: PreAlarm('HJ', '');"/></li>
+                    <li><input id="btn_7PMwarning" type="button" value="七日後將PM提醒" onclick="javascript: PreAlarm('7PMwarning', '');"/></li>
+                    <li><input id="btn_warningFrequency" type="button" value="PM週期提醒" onclick="javascript: PreAlarm('warningFrequency', '');"/></li>
+                    <li><input id="btn_AfterFrequency" type="button" value="已超過PM週期而未PM提醒" onclick="javascript: PreAlarm('AfterFrequency', '');"/></li>
+                </ul>
+            </nav>
+        </td>
+    </tr>
+</table>
+<br />
+<table class="flexme">
+    <tbody id="test" >
+        <tr>
+
+        </tr>
+    </tbody>
+</table>
+<br />
+ <input type="button" id="btnExport" value="匯出" style="width: 80px" onclick="javascript: PreAlarm('export');" />
+
+           
+
+

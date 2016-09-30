@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@TSMC14B.Menu.LogInPage</title>
+    <script src="/Scripts/jquery-1.9.1.min.js"></script>
+    <script>
+        $(function () {
+            if (location.search.length > 0 && location.search.indexOf('reUrl=') > 0) {
+                var reUrl = location.search.split('??')[1].split('==')[1];
+                $('#reUrl').val(reUrl);
+            }
+        });
+        //$(document).ready(function () {
+        //    $('#LoginButton').click();
+        //});
+    </script>
+</head>
+<body style="padding: 0px; margin: 0px;">
+    <span id="LB"></span>
+    <form action="@Url.Action("LoginPage")" method="post" enctype="multipart/form-data">
+        <div>
+            <table border="0" style="padding: 0px 0px 0px 0px; border-spacing: 0px 0px; border-collapse: collapse;">
+                <tr>
+                    <td>
+                        <table border="0" style="padding: 0px 0px 0px 0px; border-spacing: 0px 0px; border-collapse: collapse;">
+                            <tr>
+                                <td style="border-collapse: collapse;background-image: url(
+
+                                    @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN")
+                                    {
+                                @Url.Content("~/images/Top_1.zh-CN.gif")
+                                    }
+                                    else
+                                    {
+                                @Url.Content("~/images/Top_1.gif")
+                                    }
+                                    
+                                    ); height: 46px; text-align:right; vertical-align:bottom; width:411px">
+                                    @*<img height="46" src="../../../../images/Top_1.gif" width="411" alt="" />*@
+                                </td>
+                                <td style="border-collapse:collapse; background-image: url(
+                                    
+                                    @Url.Content("~/images/Top_2.gif")
+                                    
+                                    ); height: 46px; text-align:right; vertical-align:bottom; width:380px">
+                                    @*<a id="HL0" href="#" style="background-color: #5987c6; color: white; font-size: 10px;" target="mainFrame1">Login Manage</a>
+                                        <a id="HL4" href="#" style="background-color: #5987c6; color: white; font-size: 10px;" target="analysis">統計報表</a>
+                                        <a id="HL5" href="#" style="background-color: #5987c6; color: white; font-size: 10px;" target="docs">文件下載</a>
+                                        <label> hi,@(Session["UserName"] as string)</label> @Html.ActionLink("登出", "Logout", "Login") @(Session["message"] as string)*@
+                                </td>
+                                <td style="border-collapse:collapse; background-image: url(
+
+                             @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString()=="zh-CN")
+                            {
+                                 @Url.Content("~/images/Top_3.zh-CN.gif")
+                            }
+                            else
+                            {
+                                @Url.Content("~/images/Top_3.gif")
+                            }
+
+                                    ); background-position: -35px; width: 360px;">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div align="center">
+            <div style="height: 100px"></div>
+            <input type="hidden" id="reUrl" name="reUrl" value="" />
+            <table cellspacing="0" cellpadding="3" border="0" id="Login1" style="background-color: #F7F6F3; border-color: #E6E2D8; border-width: 3px; border-style: Solid; border-collapse: collapse;">
+                <tbody>
+                    <tr>
+                        <td>
+                            <table cellpadding="0" border="0" style="color: #333333; font-family: Verdana; font-size: 0.8em;">
+                                <tbody>
+                                    <tr>
+                                        <td align="center" colspan="2" style="color: White; background-color: #CC0000; font-size: 0.9em; font-weight: bold;">Log In</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">
+                                            <label for="UserName">User Name:</label>
+                                        </td>
+                                        <td>
+                                            <input name="UserName" type="text" id="UserName" style="font-size: 0.8em; width: 150px;" ><span id="UserNameRequired" title="User Name is required." style="color: Red; visibility: hidden;">*</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">
+                                            <label for="Password">Password:</label>
+                                        </td>
+                                        <td>
+                                            <input name="Password" type="password" id="Password" style="font-size: 0.8em; width: 150px;" ><span id="PasswordRequired" title="Password is required." style="color: Red; visibility: hidden;">*</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" colspan="2">
+                                            <input type="submit" name="LoginButton" value="Log In" id="LoginButton" style="color: #284775; background-color: #FFFBFF; border-color: #CCCCCC; border-width: 1px; border-style: Solid; font-family: Verdana; font-size: 0.8em;">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <label>@ViewBag.Message</label>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,1687 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="UMC12_P5" Class="tsmc14BDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=192.168.1.217;Initial Catalog=UMC12_P5;Persist Security Info=False;User ID=web;MultipleActiveResultSets=True;Connect Timeout=60;Load Balance Timeout=60" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="UMC12_P5ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.AccessoryChangeHistory" Member="AccessoryChangeHistory">
+    <Type Name="AccessoryChangeHistory">
+      <Column Name="chamberName" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="plc_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="old_plc_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="build_date" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vendor_info" Member="vendor_info">
+    <Type Name="vendor_info">
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="vendor_Intouch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="display_order" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="vendor_Code" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AckCompute" Member="AckCompute">
+    <Type Name="AckCompute">
+      <Column Name="AlarmID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Acknowledge" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.alarm_comment" Member="alarm_comment">
+    <Type Name="alarm_comment">
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Tag_Name" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Eng_Comment" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Cht_Comment" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Tag_FDC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DataType" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="InitialValue" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmState" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmPri" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DConversion" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="KepAddress" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="KepType" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="KepAccess" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="AlarmID" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.alarm_deal_info" Member="alarm_deal_info">
+    <Type Name="alarm_deal_info">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="alarm_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="system" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="affect" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="affect_time" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="deal_with" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="alarm_cause" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="parts_change" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="pm_date" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="pm_cycle" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="case_close" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="deal_with_user" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AlarmCode" Member="AlarmCode">
+    <Type Name="AlarmCode">
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AlarmCode" Member="AlarmCode1" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AlaemMessage" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AlarmDelayTag" Member="AlarmDelayTag">
+    <Type Name="AlarmDelayTag">
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TagName" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AlarmNow" Member="AlarmNow">
+    <Type Name="AlarmNow">
+      <Column Name="Tagname" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="server_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AlarmTagName" Member="AlarmTagName">
+    <Type Name="AlarmTagName">
+      <Column Name="SeqNO" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Tag_Name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.analog_comment" Member="analog_comment">
+    <Type Name="analog_comment">
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Tag_Name" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Eng_Comment" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Cht_Comment" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Tag_FDC" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DataType" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="IsFDCTag" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_HiHi" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_Max" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_Min" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_LoLo" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="DeadBand" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="DelayTime" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Unit" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="KepAddress" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="KepType" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="KepAccess" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Raw_Low" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Raw_High" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Scaled_Low" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Scaled_High" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AppUser_LoginInfo" Member="AppUser_LoginInfo">
+    <Type Name="AppUser_LoginInfo">
+      <Column Name="Login_Name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Login_PW" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Display_Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.c_CycleInfo" Member="c_CycleInfo">
+    <Type Name="c_CycleInfo">
+      <Column Name="Week" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Exe_Work" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ChamberSVID" Member="ChamberSVID">
+    <Type Name="ChamberSVID">
+      <Column Name="ChamberID" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ChamberSVID" Member="ChamberSVID1" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CompareTable" Member="CompareTable">
+    <Type Name="CompareTable">
+      <Column Name="TagName" Type="System.String" DbType="VarChar(250) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="plc_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CallOut" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FDC_CallOut" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CompareTableTT" Member="CompareTableTT">
+    <Type Name="CompareTableTT">
+      <Column Name="TagIndex" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TypeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Tagname" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="VoiceText" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="CallOut" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Token1" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Token2" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Token3" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Token4" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="KeepTime" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.department_info" Member="department_info">
+    <Type Name="department_info">
+      <Column Name="department_id" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="display_order" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.eq_PM_frequency" Member="eq_PM_frequency">
+    <Type Name="eq_PM_frequency">
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="freq_id" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="PM_frequency_set" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="PM_tolerance_set" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FDC_Reload" Member="FDC_Reload">
+    <Type Name="FDC_Reload">
+      <Column Name="item" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UpdateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdateFlag" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FDCPMHistory" Member="FDCPMHistory">
+    <Type Name="FDCPMHistory">
+      <Column Name="plc_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="builtdate" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PMsetDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.flame_info" Member="flame_info">
+    <Type Name="flame_info">
+      <Column Name="aa" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="tool_id" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Temp1" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Temp2" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Temp3" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Temp4" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.group_rule_info" Member="group_rule_info">
+    <Type Name="group_rule_info">
+      <Column Name="rule_id" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Area" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ToolINIT" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.HJStationInfo" Member="HJStationInfo">
+    <Type Name="HJStationInfo">
+      <Column Name="No" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StartNo" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="EndNo" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="ChamberType" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="ToolID" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.HN2_Info" Member="HN2_Info">
+    <Type Name="HN2_Info">
+      <Column Name="plc_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Count" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Limit_history" Member="Limit_history">
+    <Type Name="Limit_history">
+      <Column Name="TagName" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="builddate" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FDC_Tag" Type="System.String" DbType="VarChar(123)" CanBeNull="true" />
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_HiHi" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_Max_Setting" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_Max" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_Min_Setting" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_Min" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_LoLo" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="IsHiHiEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsHiEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsLoEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsLoLoEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="delayTime" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="delayTimeEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Limit_Info" Member="Limit_Info">
+    <Type Name="Limit_Info">
+      <Column Name="No" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TagName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_HiHi" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_Max" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_Min" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_LoLo" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="IsHiHiEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsHiEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsLoEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsLoLoEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DeadBand" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="server_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Limit_Trigger" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="delayTime" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="delayTimeEnable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Limit_Set" Member="Limit_Set">
+    <Type Name="Limit_Set">
+      <Column Name="LimitFlag" Type="System.Boolean" DbType="Bit NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.login_info" Member="login_info">
+    <Type Name="login_info">
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="login_pwd" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="level_id" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="update_date" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="built_date" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="department_id" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Association Name="login_level_login_info" Member="login_level" ThisKey="level_id" OtherKey="level_id" Type="login_level" IsForeignKey="true" DeleteRule="SET DEFAULT" />
+    </Type>
+  </Table>
+  <Table Name="dbo.login_level" Member="login_level">
+    <Type Name="login_level">
+      <Column Name="level_id" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="login_level" Member="login_level1" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="level_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="login_level_login_info" Member="login_info" ThisKey="level_id" OtherKey="level_id" Type="login_info" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LotContext_info" Member="LotContext_info">
+    <Type Name="LotContext_info">
+      <Column Name="Toolid" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ChamberTag" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RecipeId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LotId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CarrierId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SlotId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="WaferId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UpdateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MobileLogin" Member="MobileLogin">
+    <Type Name="MobileLogin">
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="login_Time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ParameterSVID" Member="ParameterSVID">
+    <Type Name="ParameterSVID">
+      <Column Name="tagName" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Parameter_SVID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.phonecall_history" Member="phonecall_history">
+    <Type Name="phonecall_history">
+      <Column Name="plc_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="frequency" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="phonecalldate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.phonecall_status" Member="phonecall_status">
+    <Type Name="phonecall_status">
+      <Column Name="server_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="status_now" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PhoneCallCompanyInfo" Member="PhoneCallCompanyInfo">
+    <Type Name="PhoneCallCompanyInfo">
+      <Column Name="ComID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ComName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ComShortName" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PhoneCallLog" Member="PhoneCallLog">
+    <Type Name="PhoneCallLog">
+      <Column Name="LogIndex" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LogDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="SendContent" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="isErrorMsg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PhoneCallSrttingHistory" Member="PhoneCallSrttingHistory">
+    <Type Name="PhoneCallSrttingHistory">
+      <Column Name="FullTagName" Type="System.String" DbType="VarChar(200) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="data_Tag" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="plc_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="sensorID" Type="System.String" DbType="VarChar(71) NOT NULL" CanBeNull="false" />
+      <Column Name="Callout" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="builtdate" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PhoneCallUserInfo" Member="PhoneCallUserInfo">
+    <Type Name="PhoneCallUserInfo">
+      <Column Name="UserID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ChineseName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ComID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsApproved" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ChangeDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="LastLoginDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PhoneGroup" Member="PhoneGroup">
+    <Type Name="PhoneGroup">
+      <Column Name="SendTo" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PhoneGroup_PM" Member="PhoneGroup_PM">
+    <Type Name="PhoneGroup_PM">
+      <Column Name="SendTo" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Exe_Work" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.plc_info" Member="plc_info">
+    <Type Name="plc_info">
+      <Column Name="plc_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="process_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="group_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="EQID" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="chamber" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="location_id" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="location_side" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="load_flag" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="built_date" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="StartNo" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="EndNo" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="PM_LifeTime" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="channel_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="IOG_Port" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="VMB" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PW_Source" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ProcessType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="onoffStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PowerOnDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="UnSetTooLate" Type="System.Decimal" DbType="Decimal(3,0)" CanBeNull="true" />
+      <Column Name="ChamberTag" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="SensorTag" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="LinkProcessData" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="PeriodicReportInterval" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="ColdDown" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="LastCaptureTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="plc_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LastColdDownTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="FDCPMTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ChamberSVIDID" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="isFDCBuild" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.plc_status" Member="plc_status">
+    <Type Name="plc_status">
+      <Column Name="plc_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="built_date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PM_frequency_info" Member="PM_frequency_info">
+    <Type Name="PM_frequency_info">
+      <Column Name="freq_id" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="PM_frequency" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PM_tolerance" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PM_Schedule" Member="PM_Schedule">
+    <Type Name="PM_Schedule">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="plc_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="freq_id" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="frequency" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="tolerance" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="userlogin" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PM_Set" Member="PM_Set">
+    <Type Name="PM_Set">
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="pmFlag" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.pm_setting_history" Member="pm_setting_history">
+    <Type Name="pm_setting_history">
+      <Column Name="pmHistoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="plc_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="pm_set" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="pm_unset" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="memo" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="operator" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="pm_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ts_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="backup_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="cmsError_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="other_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="update_date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="pm_memo" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="ts_memo" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_done" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="sex_done" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="pt_done" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="pumping_bellow" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_turning" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_threeway" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_handvalve" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_bshead" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_gasvalve" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_lpipe" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_entry" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_Next_Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PM_Cycle" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="pm_inlet" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_mixingbox" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_reactor" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_tank" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_outlet" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_tpipe" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_lpipe" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_upturning" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_ms" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="TemporaryP_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="pm_inlet_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_mixingbox_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_reactor_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_tank_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_outlet_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_tpipe_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_lpipe_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_upturning_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_ms_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="phonecalldate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.process_info" Member="process_info">
+    <Type Name="process_info">
+      <Column Name="process_id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="process_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="department_id" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SenSorTag_info" Member="SenSorTag_info">
+    <Type Name="SenSorTag_info">
+      <Column Name="SensorID" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ChamberTag" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="SensorTag" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="LinkProcessData" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ColdDown" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SentAlarmId" Member="SentAlarmId">
+    <Type Name="SentAlarmId">
+      <Column Name="AlarmId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TagName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SentPhoneCallAlarmId" Member="SentPhoneCallAlarmId">
+    <Type Name="SentPhoneCallAlarmId">
+      <Column Name="AlarmId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TagName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Server_Info" Member="Server_Info">
+    <Type Name="Server_Info">
+      <Column Name="server_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="server_name" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Status_Info" Member="Status_Info">
+    <Type Name="Status_Info">
+      <Column Name="status_id" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="status_desc" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="status_priority" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="status_color" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="mac_priority" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SystemPM" Member="SystemPM">
+    <Type Name="SystemPM">
+      <Column Name="PMStatus" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SystemTag" Member="SystemTag">
+    <Type Name="SystemTag">
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TagName" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Tag_info" Member="Tag_info">
+    <Type Name="Tag_info">
+      <Column Name="Intouch_Tag" Type="System.String" DbType="VarChar(132) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FDC_Tag" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="MES_Tag" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Test273" Member="Test273">
+    <Type Name="Test273">
+      <Column Name="TagName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Value" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Cht_Comment" Type="System.String" DbType="NChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.type_info" Member="type_info">
+    <Type Name="type_info">
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="type_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="server_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="type_code" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="FDC_code" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="SamplingRate" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="WEB_code" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.typeLimit_history" Member="typeLimit_history">
+    <Type Name="typeLimit_history">
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Tag_Name" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="builddate" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_HiHi" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_Max" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_Min" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_LoLo" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="IsHiHiEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsHiEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsLoEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsLoLoEnable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DelayTime" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_AlarmCodeTag_info" Member="vw_AlarmCodeTag_info">
+    <Type Name="vw_AlarmCodeTag_info">
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Tag_Name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Eng_Comment" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Cht_Comment" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Tag_FDC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DataType" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_type_parameter" Member="vw_type_parameter">
+    <Type Name="vw_type_parameter">
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="type_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="server_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="type_code" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="FDC_code" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="SamplingRate" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Tag_Name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Eng_Comment" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Cht_Comment" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Tag_FDC" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Parameter_SVID" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="KepAddress" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_AlarmDealInfo" Member="vw_AlarmDealInfo">
+    <Type Name="vw_AlarmDealInfo">
+      <Column Name="AlarmId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmWeek" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+      <Column Name="AlarmTime_Begin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EventType" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="AlarmState" Type="System.String" DbType="NVarChar(9)" CanBeNull="true" />
+      <Column Name="TagName" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="toolID" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="type_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="department_id" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ALMGroup" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="AlarmMsg" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="ValueString" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="TriggerLimit" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="AlarmLevel" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Operator" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="AckOperator" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="system" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="affect" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="affTime" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="dealWith" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="almCause" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="parts" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="pmDate" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="pmCycle" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="caseClose" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="dealUser" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PhoneCallAlarmID" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_AlarmHistory" Member="vw_AlarmHistory">
+    <Type Name="vw_AlarmHistory">
+      <Column Name="AlarmWeek" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+      <Column Name="AlarmId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmTime_Begin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmGuid" Type="System.String" DbType="Char(32) NOT NULL" CanBeNull="false" />
+      <Column Name="EventType" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="AlarmState" Type="System.String" DbType="NVarChar(9)" CanBeNull="true" />
+      <Column Name="AlarmType" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="TagName" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="toolID" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="type_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="department_id" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ALMGroup" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="AlarmMsg" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="ValueString" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="TriggerLimit" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="AlarmLevel" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Operator" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="AckOperator" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_AlarmHistory_DPM" Member="vw_AlarmHistory_DPM">
+    <Type Name="vw_AlarmHistory_DPM">
+      <Column Name="AlarmWeek" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+      <Column Name="AlarmId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmTime_Begin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_AlarmAck" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_SystemAck" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_UnAckRtn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_Rtn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EventType" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="AlarmState" Type="System.String" DbType="NVarChar(9)" CanBeNull="true" />
+      <Column Name="AlarmType" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="UnAckDuration" Type="System.String" DbType="NVarChar(17)" CanBeNull="true" />
+      <Column Name="AlarmDuration" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="TagName" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="toolID" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="location_id" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="group_name" Type="System.String" DbType="VarChar(42)" CanBeNull="true" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="type_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ALMGroup" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="AlarmMsg" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="ValueString" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="TriggerLimit" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="AlarmLevel" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Operator" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="AckOperator" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_AlarmHistoryOnceADay" Member="vw_AlarmHistoryOnceADay">
+    <Type Name="vw_AlarmHistoryOnceADay">
+      <Column Name="AlarmWeek" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+      <Column Name="AlarmDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="AlarmId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmTime_Begin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_AlarmAck" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_SystemAck" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_UnAckRtn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_Rtn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EventType" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="AlarmState" Type="System.String" DbType="NVarChar(9)" CanBeNull="true" />
+      <Column Name="UnAckDuration" Type="System.String" DbType="NVarChar(17)" CanBeNull="true" />
+      <Column Name="AlarmDuration" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="TagName" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="toolID" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="type_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ALMGroup" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="AlarmMsg" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="ValueString" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="TriggerLimit" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="AlarmLevel" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Operator" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="AckOperator" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_AlarmReport_AlarmCount" Member="vw_AlarmReport_AlarmCount">
+    <Type Name="vw_AlarmReport_AlarmCount">
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="alarmCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_AlarmTag_info" Member="vw_AlarmTag_info">
+    <Type Name="vw_AlarmTag_info">
+      <Column Name="FullTagName" Type="System.String" DbType="VarChar(94)" CanBeNull="true" />
+      <Column Name="FDC_Tag" Type="System.String" DbType="VarChar(123) NOT NULL" CanBeNull="false" />
+      <Column Name="plc_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="sensorID" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="data_Tag" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="AlarmID" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_analog_comment_intouch" Member="vw_analog_comment_intouch">
+    <Type Name="vw_analog_comment_intouch">
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Tag_Name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Eng_Comment" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Cht_Comment" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Tag_FDC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DataType" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Unit" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_dpm_status" Member="vw_dpm_status">
+    <Type Name="vw_dpm_status">
+      <Column Name="pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="toolid" Type="System.String" DbType="VarChar(41) NOT NULL" CanBeNull="false" />
+      <Column Name="lid" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="loc" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="typeid" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vid" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="tName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="vName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Area" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="ToolINIT" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="gname" Type="System.String" DbType="VarChar(42)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_alarmnow" Member="vw_eq_alarmnow">
+    <Type Name="vw_eq_alarmnow">
+      <Column Name="AlarmId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="toolID" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="ServerID" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="tName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmMsg" Type="System.String" DbType="NVarChar(1256)" CanBeNull="true" />
+      <Column Name="AlarmLevel" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmGroup" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="TagName" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="TagType" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmType" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="CheckValue" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="AlarmValue" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_alarmnow_inTouch" Member="vw_eq_alarmnow_inTouch">
+    <Type Name="vw_eq_alarmnow_inTouch">
+      <Column Name="plc_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EventStamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="toolID" Type="System.String" DbType="VarChar(41)" CanBeNull="true" />
+      <Column Name="chamberName" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="TagName" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="ShortTag" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(1256)" CanBeNull="true" />
+      <Column Name="AlarmGroup" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="Type" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="CheckValue" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="Priority" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="TagType" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="ServerID" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="TypeID" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Department" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Process" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="TypeCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="AlarmType" Type="System.String" DbType="VarChar(1011)" CanBeNull="true" />
+      <Column Name="delayTime" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_alarmnow_inTouch_Simple" Member="vw_eq_alarmnow_inTouch_Simple">
+    <Type Name="vw_eq_alarmnow_inTouch_Simple">
+      <Column Name="plc_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EventStamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="toolID" Type="System.String" DbType="VarChar(41)" CanBeNull="true" />
+      <Column Name="chamberName" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="TagName" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmGroup" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="Type" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="CheckValue" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="Priority" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="TagType" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="ServerID" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="TypeID" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Department" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Process" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="TypeCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_area" Member="vw_eq_area">
+    <Type Name="vw_eq_area">
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Area" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="ToolINIT" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_area_DPM" Member="vw_eq_area_DPM">
+    <Type Name="vw_eq_area_DPM">
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Area" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="ToolINIT" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_areaStatus" Member="vw_eq_areaStatus">
+    <Type Name="vw_eq_areaStatus">
+      <Column Name="eqFloor" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="locArea" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="Area" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Highlight" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_disconnected" Member="vw_eq_disconnected">
+    <Type Name="vw_eq_disconnected">
+      <Column Name="AlarmTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="toolID" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="location_id" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="locSide" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="tName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="VMB" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PW_Source" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="locArea" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="locFloor" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_flametags" Member="vw_eq_flametags">
+    <Type Name="vw_eq_flametags">
+      <Column Name="pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="toolid" Type="System.String" DbType="VarChar(41)" CanBeNull="true" />
+      <Column Name="Eng_Comment" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Cht_Comment" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
+      <Column Name="FullTagName" Type="System.String" DbType="VarChar(49)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_limit" Member="vw_eq_limit">
+    <Type Name="vw_eq_limit">
+      <Column Name="No" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="server_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="FullTagName" Type="System.String" DbType="VarChar(94)" CanBeNull="true" />
+      <Column Name="FDC_Tag" Type="System.String" DbType="NVarChar(123) NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_HiHi_Setting" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_Max_Setting" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_Max" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="IsHiEnable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_LoLo_Setting" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_Min_Setting" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_Min" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="IsLoEnable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DeadBand" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Limit_Trigger" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_Max_Type" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_Min_Type" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="delayTime_Setting" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="delayTime" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="delayTimeEnable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="delayTime_Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_Load" Member="vw_eq_Load">
+    <Type Name="vw_eq_Load">
+      <Column Name="pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="plc_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="department_id" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="groupName" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="toolid" Type="System.String" DbType="VarChar(41)" CanBeNull="true" />
+      <Column Name="chamberName" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="process_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="process_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="EQID" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="chamber" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="chamberID" Type="System.String" DbType="VarChar(61)" CanBeNull="true" />
+      <Column Name="loc" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="load_flag" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="channel_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="IOG_Port" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="typeid" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="server_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vid" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="tName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="sid" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="statusdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="sColor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="locFloor" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="vendor_Code" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="type_code" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="FDC_code" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="WEB_code" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="built_date" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="SensorTag" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="ChamberTag" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="LinkProcessData" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="SamplingRate" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="ColdDown" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="PeriodicReportInterval" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="LastCaptureTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastColdDownTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="RecipeId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LotId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CarrierId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SlotId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="WaferId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FDCPMTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ChamberSVIDID" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_status" Member="vw_eq_status">
+    <Type Name="vw_eq_status">
+      <Column Name="pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="plc_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="department_id" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="groupName" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="toolid" Type="System.String" DbType="VarChar(41)" CanBeNull="true" />
+      <Column Name="chamberName" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="process_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="process_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="EQID" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="chamber" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="chamberID" Type="System.String" DbType="VarChar(61)" CanBeNull="true" />
+      <Column Name="loc" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="load_flag" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="channel_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="IOG_Port" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="typeid" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="server_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vid" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="tName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="sid" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="statusdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="sColor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="locFloor" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="vendor_Code" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="type_code" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="FDC_code" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="WEB_code" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="built_date" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="SensorTag" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="ChamberTag" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="LinkProcessData" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="SamplingRate" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="ColdDown" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="PeriodicReportInterval" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="LastCaptureTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastColdDownTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="RecipeId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LotId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CarrierId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SlotId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="WaferId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FDCPMTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ChamberSVIDID" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_typeLimit" Member="vw_eq_typeLimit">
+    <Type Name="vw_eq_typeLimit">
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="type_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Tag_Name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_Max" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_Min" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Eng_Comment" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="delayTime" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_typeValues" Member="vw_eq_typeValues">
+    <Type Name="vw_eq_typeValues">
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="type_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Tag_Name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Limit_Max" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Limit_Min" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Eng_Comment" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_valueName" Member="vw_eq_valueName">
+    <Type Name="vw_eq_valueName">
+      <Column Name="pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="toolid" Type="System.String" DbType="VarChar(41)" CanBeNull="true" />
+      <Column Name="Cht_Comment" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FullTagName" Type="System.String" DbType="VarChar(94)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_valuenow" Member="vw_eq_valuenow">
+    <Type Name="vw_eq_valuenow">
+      <Column Name="pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TagName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="DateTime" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="Value" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Eng_Comment" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Cht_Comment" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Unit" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_eq_valuenow_DPM" Member="vw_eq_valuenow_DPM">
+    <Type Name="vw_eq_valuenow_DPM">
+      <Column Name="pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="tid" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vid" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="gname" Type="System.String" DbType="VarChar(42)" CanBeNull="true" />
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(41) NOT NULL" CanBeNull="false" />
+      <Column Name="location_id" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="typeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TagName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="ValueComment" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
+      <Column Name="DataTime" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="Value" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Unit" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Eng_Comment" Type="System.String" DbType="VarChar(12) NOT NULL" CanBeNull="false" />
+      <Column Name="Cht_Comment" Type="System.String" DbType="VarChar(4) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_EQID_status" Member="vw_EQID_status">
+    <Type Name="vw_EQID_status">
+      <Column Name="process_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="EQID" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="IsAlarm" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_FDC_KEP_Tag" Member="vw_FDC_KEP_Tag">
+    <Type Name="vw_FDC_KEP_Tag">
+      <Column Name="tagname" Type="System.String" DbType="NVarChar(104)" CanBeNull="true" />
+      <Column Name="KEP_address" Type="System.String" DbType="VarChar(11)" CanBeNull="true" />
+      <Column Name="channel_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="toolid" Type="System.String" DbType="VarChar(41)" CanBeNull="true" />
+      <Column Name="ChamberID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Eng_Comment" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="chamberName" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="process_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="EQID" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="chamber" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="loc" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="load_flag" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="iog_port" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="typeid" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="tName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="sid" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="statusdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="sColor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="locFloor" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="vendor_Code" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="type_code" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="FDC_code" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="WEB_code" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="built_date" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ChamberSVIDID" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="type_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Expr1" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Expr2" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="Expr3" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Expr4" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Tag_Name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Cht_Comment" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Tag_FDC" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Parameter_SVID" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ChamberSVID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_HJStation_InfoData" Member="vw_HJStation_InfoData">
+    <Type Name="vw_HJStation_InfoData">
+      <Column Name="StartNo" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="EndNo" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="chamberName" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="toolid" Type="System.String" DbType="VarChar(41)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_login_info" Member="vw_login_info">
+    <Type Name="vw_login_info">
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="login_pwd" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="login_level" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="level_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="update_date" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="built_date" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_PhoneCallSetting" Member="vw_PhoneCallSetting">
+    <Type Name="vw_PhoneCallSetting">
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="FullTagName" Type="System.String" DbType="VarChar(94)" CanBeNull="true" />
+      <Column Name="data_Tag" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="plc_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="sensorID" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="CallOut" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Alarmid" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_plc_info" Member="vw_plc_info">
+    <Type Name="vw_plc_info">
+      <Column Name="plc_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="group_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="location_id" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="location_side" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="flame_num1" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Temp1" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Temp2" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Temp3" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Temp4" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="load_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="built_date" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_pm_history" Member="vw_pm_history">
+    <Type Name="vw_pm_history">
+      <Column Name="pmHistoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="plc_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="pm_set" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="pm_unset" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="memo" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="operator" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="pm_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ts_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="backup_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="cmsError_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="other_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="update_date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="pm_memo" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="ts_memo" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_done" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="sex_done" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="pt_done" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="pumping_bellow" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_turning" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_threeway" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_handvalve" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_bshead" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_gasvalve" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_lpipe" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_entry" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_Next_Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PM_Cycle" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="pm_inlet" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_mixingbox" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_reactor" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_tank" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_outlet" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_tpipe" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_lpipe" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_upturning" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_ms" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="TemporaryP_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="pm_inlet_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_mixingbox_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_reactor_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_tank_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_outlet_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_tpipe_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_lpipe_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_upturning_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pm_ms_TP" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="phonecalldate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="loc" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="tName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vid" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_pm_history_CL" Member="vw_pm_history_CL">
+    <Type Name="vw_pm_history_CL">
+      <Column Name="PM_Cycle" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="pmHistoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="plc_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="pm_set" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="pm_unset" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="memo" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="operator" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="pm_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ts_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="backup_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="cmsError_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="other_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="TemporaryP_flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="update_date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="pm_memo" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="ts_memo" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="pumping_done" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="sex_done" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="pt_done" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="loc" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="tName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vid" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="department_id" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_pm_schedule_control" Member="vw_pm_schedule_control">
+    <Type Name="vw_pm_schedule_control">
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="lid" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="PMDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="onoffStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PowerOnDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="PM_frequency" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="PM_tolerance" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="PlanPMDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ToleranceFrom" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ToleranceTo" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PMHistory" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_pm_trigger" Member="vw_pm_trigger">
+    <Type Name="vw_pm_trigger">
+      <Column Name="PMTrigger" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_SensorTag_info" Member="vw_SensorTag_info">
+    <Type Name="vw_SensorTag_info">
+      <Column Name="plc_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Sensor" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="Tool" Type="System.String" DbType="VarChar(41)" CanBeNull="true" />
+      <Column Name="ToolType" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="chamber" Type="System.String" DbType="VarChar(61)" CanBeNull="true" />
+      <Column Name="chamberTag" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="PeriodicReportInterval" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="sensorTag" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="LinkProcessData" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_Tag_info" Member="vw_Tag_info">
+    <Type Name="vw_Tag_info">
+      <Column Name="FullTagName" Type="System.String" DbType="VarChar(94)" CanBeNull="true" />
+      <Column Name="FDC_Tag" Type="System.String" DbType="NVarChar(123) NOT NULL" CanBeNull="false" />
+      <Column Name="sensorID" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="data_Tag" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="built_date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_FDCPM" Member="vw_FDCPM">
+    <Type Name="vw_FDCPM">
+      <Column Name="pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="chamberName" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="FDCPMTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="builtdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="memo" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="IsFDCPM" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_FDCPMHistory" Member="vw_FDCPMHistory">
+    <Type Name="vw_FDCPMHistory">
+      <Column Name="pid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="department_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="chamberName" Type="System.String" DbType="VarChar(71)" CanBeNull="true" />
+      <Column Name="FDCPMTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="builtdate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="memo" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="IsFDCPM" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Function Name="dbo.uSP_Change_Alarm" Method="uSP_Change_Alarm">
+    <Parameter Name="action" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="Tagname" Parameter="tagname" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="server_id" Type="System.Int16" DbType="SmallInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_UserLogin" Method="uSP_UserLogin">
+    <Parameter Name="login_name" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="login_pwd" Type="System.String" DbType="VarChar(50)" />
+    <ElementType Name="uSP_UserLoginResult">
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="login_level" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="level_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Change_AlarmDeal" Method="uSP_Change_AlarmDeal">
+    <Parameter Name="aid" Type="System.Int32" DbType="Int" />
+    <Parameter Name="system" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="toolID" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="affect" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="affTime" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="dealWith" Type="System.String" DbType="VarChar(500)" />
+    <Parameter Name="almCause" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="parts" Type="System.String" DbType="VarChar(500)" />
+    <Parameter Name="pmDate" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="pmCycle" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="caseClose" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="dealUser" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Change_CompareTable" Method="uSP_Change_CompareTable">
+    <Parameter Name="action" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="TagIndex" Parameter="tagIndex" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Tagname" Parameter="tagname" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="Comment" Parameter="comment" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="SendBody" Parameter="sendBody" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="VoiceText" Parameter="voiceText" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="SendTo" Parameter="sendTo" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="PriLo" Parameter="priLo" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PriHi" Parameter="priHi" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ISO" Parameter="iSO" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CallOut" Parameter="callOut" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Vendor" Parameter="vendor" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="MachineType" Parameter="machineType" Type="System.String" DbType="NVarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Change_LoginInfo" Method="uSP_Change_LoginInfo">
+    <Parameter Name="action" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="login_name" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="login_pwd" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="level_id" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="username" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Change_LoginLevel" Method="uSP_Change_LoginLevel">
+    <Parameter Name="action" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="login_level" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="level_name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="level_id" Type="System.Byte" DbType="TinyInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Change_PhoneCallStatus" Method="uSP_Change_PhoneCallStatus">
+    <Parameter Name="statusNow" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Change_PhoneCallUserInfo" Method="uSP_Change_PhoneCallUserInfo">
+    <Parameter Name="action" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="UserID" Parameter="userID" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="Password" Parameter="password" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="ChineseName" Parameter="chineseName" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="ComID" Parameter="comID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IsApproved" Parameter="isApproved" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="ChangeDate" Parameter="changeDate" Type="System.DateTime" DbType="SmallDateTime" />
+    <Parameter Name="LastLoginDate" Parameter="lastLoginDate" Type="System.DateTime" DbType="SmallDateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Change_PMHistory" Method="uSP_Change_PMHistory">
+    <Parameter Name="pid" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="tid" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="pm" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="memo" Type="System.String" DbType="VarChar(200)" />
+    <Parameter Name="op" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="pm_flag" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="ts_flag" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="backup_flag" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="cmsError_flag" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="other_flag" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Change_PMTrigger" Method="uSP_Change_PMTrigger">
+    <Parameter Name="action" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="toolID" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="pmFlag" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Select_AlarmDeal" Method="uSP_Select_AlarmDeal">
+    <Parameter Name="system" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="toolID" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="alarmMsg" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="caseClose" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="almFromTime" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="almToTime" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="alarmID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Select_AlarmHistory" Method="uSP_Select_AlarmHistory">
+    <Parameter Name="fromDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="toDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="toolID" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="vid" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="gname" Type="System.String" DbType="VarChar(20)" />
+    <ElementType Name="uSP_Select_AlarmHistoryResult">
+      <Column Name="AlarmWeek" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+      <Column Name="AlarmId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmTime_Begin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_AlarmAck" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_SystemAck" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_UnAckRtn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AlarmTime_Rtn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EventType" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="AlarmState" Type="System.String" DbType="NVarChar(9)" CanBeNull="true" />
+      <Column Name="AlarmType" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="UnAckDuration" Type="System.String" DbType="NVarChar(17)" CanBeNull="true" />
+      <Column Name="AlarmDuration" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="TagName" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="toolID" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="location_id" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="location_side" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="group_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="type_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="type_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_id" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ALMGroup" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="AlarmMsg" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="ValueString" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="TriggerLimit" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="AlarmLevel" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Operator" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+      <Column Name="AckOperator" Type="System.String" DbType="NVarChar(131)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_AlarmNow" Method="uSP_Select_AlarmNow">
+    <ElementType Name="uSP_Select_AlarmNowResult">
+      <Column Name="AlarmId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="toolID" Type="System.String" DbType="NVarChar(132)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="location_id" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="vendor_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="AlarmMsg" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="AlarmLevel" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_CompareTable" Method="uSP_Select_CompareTable">
+    <Parameter Name="Tagname" Parameter="tagname" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="Vendor" Parameter="vendor" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="MachineType" Parameter="machineType" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="GetDropdownItem" Parameter="getDropdownItem" Type="System.Boolean" DbType="Bit" />
+    <ElementType Name="uSP_Select_CompareTableResult">
+      <Column Name="TagIndex" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Tagname" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="SendBody" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="VoiceText" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="SendTo" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PriLo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PriHi" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ISO" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CallOut" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Vendor" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MachineType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_CompareTag" Method="uSP_Select_CompareTag">
+    <Parameter Name="Tagname" Parameter="tagname" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="Comment" Parameter="comment" Type="System.String" DbType="VarChar(200)" />
+    <ElementType Name="uSP_Select_CompareTagResult">
+      <Column Name="SendTo" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SendBody" Type="System.String" DbType="NVarChar(394)" CanBeNull="true" />
+      <Column Name="VoiceText" Type="System.String" DbType="NVarChar(251)" CanBeNull="true" />
+      <Column Name="SendType" Type="System.String" DbType="VarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(3) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_EQ_List" Method="uSP_Select_EQ_List">
+    <Parameter Name="vid" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="gname" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="gonly" Type="System.Boolean" DbType="Bit" />
+    <ElementType Name="uSP_Select_EQ_ListResult">
+      <Column Name="gname" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_EQ_StatusCount" Method="uSP_Select_EQ_StatusCount">
+    <Parameter Name="vid" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="sid" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="gFlag" Type="System.Boolean" DbType="Bit" />
+    <ElementType Name="uSP_Select_EQ_StatusCountResult">
+      <Column Name="vName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="eqCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="normalCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="troubleCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="pmCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="otherCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_EQ_Type" Method="uSP_Select_EQ_Type">
+    <Parameter Name="vid" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="gname" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="tid" Type="System.Int16" DbType="SmallInt" />
+    <ElementType Name="uSP_Select_EQ_TypeResult">
+      <Column Name="vid" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="vName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="typeid" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="tName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_LoginInfo" Method="uSP_Select_LoginInfo">
+    <ElementType Name="uSP_Select_LoginInfoResult">
+      <Column Name="login_name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="login_pwd" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="login_level" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="level_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="update_date" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="built_date" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_LoginLevel" Method="uSP_Select_LoginLevel">
+    <ElementType Name="uSP_Select_LoginLevelResult">
+      <Column Name="level_id" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="login_level" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="level_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_PhoneCallCompanyInfo_All" Method="uSP_Select_PhoneCallCompanyInfo_All">
+    <ElementType Name="uSP_Select_PhoneCallCompanyInfo_AllResult">
+      <Column Name="ComID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ComName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ComShortName" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_PhoneCallStatus" Method="uSP_Select_PhoneCallStatus">
+    <ElementType Name="uSP_Select_PhoneCallStatusResult">
+      <Column Name="status_now" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_PhoneCallUserInfo" Method="uSP_Select_PhoneCallUserInfo">
+    <Parameter Name="UserID" Parameter="userID" Type="System.String" DbType="VarChar(50)" />
+    <ElementType Name="uSP_Select_PhoneCallUserInfoResult">
+      <Column Name="UserID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ChineseName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ComID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsApproved" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ChangeDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="LastLoginDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="ComID1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ComName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ComShortName" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_PMHistory" Method="uSP_Select_PMHistory">
+    <Parameter Name="fromDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="toDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="vid" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pid" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="toolID" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="pm_flag" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="ts_flag" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="backup_flag" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="cmsError_flag" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="other_flag" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Select_PMTrigger" Method="uSP_Select_PMTrigger">
+    <Parameter Name="pmFlag" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="vid" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="group" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="toolID" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="uSP_Select_PMTriggerResult">
+      <Column Name="tool_id" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="pmFlag" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="vendor_Intouch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_ValueHistory_BestFit" Method="uSP_Select_ValueHistory_BestFit">
+    <Parameter Name="pid" Type="System.Int32" DbType="Int" />
+    <Parameter Name="valueTags" Type="System.String" DbType="NVarChar(MAX)" />
+    <Parameter Name="StartDate" Parameter="startDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="EndDate" Parameter="endDate" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Select_ValueHistory_BestFit_EQType" Method="uSP_Select_ValueHistory_BestFit_EQType">
+    <Parameter Name="pids" Type="System.String" DbType="NVarChar(1000)" />
+    <Parameter Name="valueTags" Type="System.String" DbType="NVarChar(MAX)" />
+    <Parameter Name="StartDate" Parameter="startDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="EndDate" Parameter="endDate" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Select_ValueHistory_Cyclic" Method="uSP_Select_ValueHistory_Cyclic">
+    <Parameter Name="pid" Type="System.Int32" DbType="Int" />
+    <Parameter Name="valueTags" Type="System.String" DbType="NVarChar(MAX)" />
+    <Parameter Name="StartDate" Parameter="startDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="EndDate" Parameter="endDate" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Select_ValueHistory_Delta" Method="uSP_Select_ValueHistory_Delta">
+    <Parameter Name="pid" Type="System.Int32" DbType="Int" />
+    <Parameter Name="valueTags" Type="System.String" DbType="NVarChar(MAX)" />
+    <Parameter Name="StartDate" Parameter="startDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="EndDate" Parameter="endDate" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Select_ValueNames" Method="uSP_Select_ValueNames">
+    <Parameter Name="pid" Type="System.Int32" DbType="Int" />
+    <ElementType Name="uSP_Select_ValueNamesResult">
+      <Column Name="Cht_Comment" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FullTagName" Type="System.String" DbType="VarChar(47)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.uSP_Select_ValueNow" Method="uSP_Select_ValueNow">
+    <Parameter Name="vid" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="gname" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="pid" Type="System.Int16" DbType="SmallInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.uSP_Change_TypeValues" Method="uSP_Change_TypeValues">
+    <Parameter Name="type_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Tag_Name" Parameter="tag_Name" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="Limit_Max" Parameter="limit_Max" Type="System.Double" DbType="Float" />
+    <Parameter Name="Limit_Min" Parameter="limit_Min" Type="System.Double" DbType="Float" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>

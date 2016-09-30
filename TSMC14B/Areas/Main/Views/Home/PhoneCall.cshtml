@@ -1,0 +1,228 @@
+﻿@{
+    ViewBag.Title = "PhoneCall";
+    Layout = "~/Areas/Main/Views/Shared/_Layout.cshtml";
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.flexme').flexigrid({
+                title: 'ENS Link',
+                width: 1000,
+                height: "auto",
+                //url: '@Url.Action("JsonPhoneCall")',
+                dataType: 'json',
+                colModel: [
+                { display: '@TSMC14B.Menu.department_name', name: 'department_name', width: 50, sortable: false, align: 'center', hide: false },
+                { display: '', name: 'FullTagName', width: 70, sortable: false, align: 'center', hide: true },
+                
+                        @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN")
+                        { 
+                         @: { display: 'AlarmID', name: 'AlarmID', width: 70, sortable: false, align: 'left', hide: false },
+                        }else
+	                    {
+                          @: { display: 'AlarmID', name: 'AlarmID', width: 70, sortable: false, align: 'left', hide: true },
+	                    }
+                { display: 'DataTag', name: 'data_Tag', width: 250, sortable: false, align: 'left', hide: false },
+                { display: 'pid', name: 'plc_id', width: 70, sortable: false, align: 'center', hide: true },
+                { display: 'ChamberName', name: 'sensorID', width: 70, sortable: false, align: 'center', hide: true },
+                { display: 'PhoneCallSend', name: 'CallOut', width: 90, sortable: false, align: 'center', hide: true },
+                { display: 'Setting', name: 'CallOutCheck', width: 60, sortable: false, align: 'center', hide: false },
+                { display: '@TSMC14B.Menu.LastEditUser', name: 'login_name', width: 60, sortable: false, align: 'center', hide: false },
+
+                { display: '', name: 'edit', width: 60, sortable: false, align: 'center', hide: true }
+                ],
+                procmsg: '@TSMC14B.Menu.procmsg',
+                rptext: '@TSMC14B.Menu.rptext',
+                pagestat: '@TSMC14B.Menu.pagestat',
+                pagetext: '@TSMC14B.Menu.pagetext',
+                outof: '@TSMC14B.Menu.outof',
+                nomsg: '@TSMC14B.Menu.nomsg',
+                usepager: true,
+                useRp: true,
+                rp: 50,
+                nowrap: false,
+                onSuccess: function () {
+                    $('.flexme > tbody > tr > td[abbrr="edit"] > div').remove();
+                    $('.flexme > tbody > tr > td[abbrr="edit"]').each(function () {
+                        if ($(this).parent().children(':eq(0)').text() == '@Session["UserdepartmentName"]' || parseInt('@Session["UserLevel"]') > 900) {
+                            $(this).append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@TSMC14B.Menu.Edit" /></div></a>');
+                        }
+                    });
+                    $('.flexme > tbody > tr > td[abbrr="CallOutCheck"] > div').empty();
+                    $('.flexme > tbody > tr > td[abbrr="CallOutCheck"] > div').each(function () {
+                        var FullTagName = $(this).parent().parent().children(':eq(1)').text();
+                        console.log($(this).parent().parent().children(':eq(0)').text())
+                        var checked = '';
+                        var disabled = 'disabled';
+                        if ($(this).parent().parent().children(':eq(6)').text() == 'true') {
+                            checked = 'checked="checked"';
+                        }
+                        if ($(this).parent().parent().children(':eq(0)').text() == '@Session["UserdepartmentName"]' || parseInt('@Session["UserLevel"]') > 900) {
+                            disabled = '';
+                            $('#setting').css('display', '');
+                            $('#AllCheck').css('display', '');
+                            $('#lblAllCheck').css('display', '');
+                        } else {
+                            $('#setting').css('display', 'none');
+                            $('#AllCheck').css('display', 'none');
+                            $('#lblAllCheck').css('display', 'none');
+                        }
+                        $(this).append('<input type="checkbox" id="phonecallCheck_' + FullTagName + '" value="' + FullTagName + '" ' + checked + '  ' + disabled + ' />');
+                        @*if ($(this).parent().children(':eq(0)').text() == '@Session["UserdepartmentName"]' || parseInt('@Session["UserLevel"]') > 900) {
+                            $(this).append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@TSMC14B.Menu.Edit" /></div></a>');
+                        }*@
+                    });
+                    $('.edit').click(function () {
+                        OpenModelWindow('@Url.Action("EditPhoneCall")?TagName=' + $(this).parent().parent().children(':eq(1)').text(), { width: 700, height: 400, caption: "@TSMC14B.Menu.Edit", onclose: function () { $('.flexme').flexReload(); } });
+
+                    });
+
+                    $('.flexme > tbody > tr > td[abbrr="login_name"] > div').each(function () {
+                        if ($(this).text().trim() != '') {
+                            var tagname = $(this).parent().parent().children(':eq(1)').text();
+                            //console.log(tagname);
+                            $(this).html('<a href="#" class="history" >' + $(this).text() + '</a>');
+                        }
+                    });
+
+                    $('.history').click(function () {
+                        OpenModelWindow('@Url.Action("PhoneCallHistory")?TagName=' + $(this).parent().parent().parent().children(':eq(1)').text(), { width: 750, height: 500, caption: "SettingHistory", onclose: function () { } });
+                        });
+                },
+                singleSelect: true,
+                rpOptions: [5, 10, 15, 20, 30, 50,100,500,1000],
+            });
+
+            $('#department_name').change(function () {
+                $.post('@Url.Action("JsonTool")', { "dName": this.value }, function (data) {
+                    $('#Tools').empty();
+                    $('#Tools').append('<option value="">' + '@TSMC14B.Menu.plaseSelectOption' + '</option>');
+                    for (var i in data) {
+                        $('#Tools').append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                    }
+                }, "json");
+            });
+
+            $('#Tools').change(function () {
+                console.log($('#AllCheck').attr('checked'));
+                $('#AllCheck').attr('checked', false);
+                $('.flexme > tbody').empty();
+            })
+
+            $('#SelectAll').click(function () {
+                $('.flexme > tbody > tr > td[abbrr="CallOutCheck"] > div > input').attr('checked', 'checked');
+            });
+            $('#CancelAll').click(function () {
+                $('.flexme > tbody > tr > td[abbrr="CallOutCheck"] > div > input').attr('checked', false);
+            });
+
+            $('#AllCheck').change(function () {
+                if ($(this).attr('checked')) {
+                    $('.flexme > tbody > tr > td[abbrr="CallOutCheck"] > div > input').attr('checked', 'checked');
+                } else {
+                    $('.flexme > tbody > tr > td[abbrr="CallOutCheck"] > div > input').attr('checked', false);
+                }
+            });
+
+            $('#setting').click(function () {
+                var result = 'Setting OK';
+                var CallOutCheckString = '';
+                $('.flexme > tbody > tr > td[abbrr="CallOutCheck"] > div > input').each(function (i,e) {
+                    //console.log($(e) + ' ' + ($(this).attr('checked') == 'checked'));
+                    //console.log($(this));
+                    CallOutCheckString += $(this).val() + ':' + ($(this).attr('checked') == 'checked') + ',';
+                });
+                CallOutCheckString = CallOutCheckString.substr(0, CallOutCheckString.length - 1);
+
+                $.post('@Url.Action("JsonPhoneCallSetting")', { "fulltagnames": CallOutCheckString }, function (data) {
+                    alert(data.message);
+                }, "json");
+                $('.flexme').flexReload();
+            });
+        });
+        function ChartExport(id) {
+            if ($('#Tools').val().length>0) {
+                if (id == 'search') {
+                    var urlStr = '@Url.Action("JsonPhoneCall")?tool=' + $('#Tools').val() + '&phoneCallType=' + $('#phoneCallType').val() + '&page=1&rp=20';
+                     $(".flexme").flexOptions({ url: urlStr });
+                     $('.flexme').flexReload();
+                 } else if (id == 'AllSend') {
+                     $.post('@Url.Action("JsonPhoneCallAllSwitch")', { "tool": $('#Tools').val(), "Switch": true }, function (data) {
+                        alert(data.Message);
+                        var urlStr = '@Url.Action("JsonPhoneCall")?tool=' + $('#Tools').val() + '&page=1&rp=20';
+                        $(".flexme").flexOptions({ url: urlStr });
+                        $('.flexme').flexReload();
+                    }, "json");
+                } else if (id == 'AllClose') {
+                    $.post('@Url.Action("JsonPhoneCallAllSwitch")', { "tool": $('#Tools').val(), "Switch": false }, function (data) {
+                        alert(data.Message);
+                        var urlStr = '@Url.Action("JsonPhoneCall")?tool=' + $('#Tools').val() + '&page=1&rp=20';
+                        $(".flexme").flexOptions({ url: urlStr });
+                        $('.flexme').flexReload();
+                    }, "json");
+                } else {
+                    location.href = '@Url.Action("PhoneCall")?tool=' + $('#Tools').val() + '&phoneCallType=' + $('#phoneCallType').val() + "&output=" + id;;
+                }
+            } else {
+                alert("plase select Tool");
+            }
+        }
+    </script>
+}
+<h2>ENS Link</h2>
+<div align="left">
+    <div>
+        <table border="1" class="tb" style="width: 600px">
+            <tr>
+                <td style="text-align: left;">
+                    <label for="lbl_department_name">@TSMC14B.Menu.plaseSelectDep</label>
+                    <select id="department_name">
+                        @foreach (var item in ViewBag.department_name as IEnumerable<SelectListItem>)
+                        {
+                            <option  value="@item.Value"
+                                
+                                @if (item.Selected)
+                                {
+		                            @:selected="selected"
+	                            }
+                                >@item.Text</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <label for="lbl_chamberName">@TSMC14B.Menu.plaseSelectEQ</label>
+                    <select id="Tools">
+                        <option value="">@TSMC14B.Menu.plaseSelectOption</option>
+                        @foreach (var item in ViewBag.Tool)
+                        {
+                            <option  value="@item.Value" >@item.Text</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <label for="lbl_phoneCallType">phoneCallType</label>
+                    <select id="phoneCallType">
+                        <option  value="All" >All</option>
+                        <option  value="Alarm" >Alarm</option>
+                        <option  value="PreAlarm" >PreAlarm</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;"></td>
+                <td style="text-align: right;"></td>
+            </tr>
+        </table>
+        <input type="button" id="sbmit" value="@TSMC14B.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search');" />
+        <input type="button" id="SelectAll" value="SelectAll" style="width: 80px;display:none;"   />
+        <input type="button" id="CancelAll" value="CancelAll" style="width: 80px;display:none;"  />
+        <input type="button" id="btnExport" value="@TSMC14B.Menu.ChartExport" style="width: 80px;" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp; 
+        <input type="button" id="setting" value="Setting" style="width: 80px;display:none;"  />
+        
+        <input type="checkbox" id="AllCheck"  style="display:none;"  /><label id="lblAllCheck" style="display:none;" for="AllCheck" >全選</label>
+        
+    </div>
+    <table class="flexme"></table>
+</div>

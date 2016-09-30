@@ -1,0 +1,483 @@
+﻿@*@model IEnumerable<TSMC14B.Areas.Main.Models.StatusCountModel>*@
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewBag.Title = "UMC 12 P5 Accessory CMS";
+}
+
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    @*<script src="@Url.Content("~/Scripts/jquery-freeze-1.0.js")" type="text/javascript"></script>*@
+    <script type="text/javascript">
+        vendorName = 'Main';
+        meter2 = setTimeout("PreAlarm('');", 30000);
+        meter3 = setTimeout("vendorStatus()", 30000);
+        meter4 = setTimeout("phoneCallStatus()", 30000);
+        vendorStatus();
+        $(document).ready(function () {
+        
+        if ("@Session["UserName"]" == '') { //5/28 呼叫後端
+            location.href = ("/Main/Login/LoginPage");
+        }
+        if ("@Session["UserName"]" == 'bb') { //5/28 呼叫後端
+            location.href = ("/Main/MachineGroup/PLCCheck2?vName=DF1");
+        }
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+            }
+            return "";
+        };
+        function setAcknowledge(tr) {
+            var d = new Date();
+            var alarmTime = $(tr).children(':eq(0)').text();
+            var toolidd = $(tr).children(':eq(1)').text();
+            ackTime = (d.getFullYear() + "/" + getDouble((d.getMonth() + 1).toString()) + "/" + getDouble((d.getDate()).toString()) + " " + getDouble((d.getHours()).toString()) + ":" + getDouble((d.getMinutes()).toString()) + ":" + getDouble((d.getSeconds()).toString()));
+            cookieValue = escape(toolidd) + alarmTime + "=" + ackTime + ";";
+            document.cookie = cookieValue;
+        };
+        function setMute(tr) {
+            var d = new Date();
+            var alarmTime = $(tr).children(':eq(0)').text();
+            var toolidd = $(tr).children(':eq(1)').text();
+            ackTime = (d.getFullYear() + "/" + getDouble((d.getMonth() + 1).toString()) + "/" + getDouble((d.getDate()).toString()) + " " + getDouble((d.getHours()).toString()) + ":" + getDouble((d.getMinutes()).toString()) + ":" + getDouble((d.getSeconds()).toString()));
+            cookieValue = escape(toolidd) + alarmTime + "M=" + ackTime + ";";
+            document.cookie = cookieValue;
+        };
+        function getDouble(dV) {
+            if (dV.length == 1) {
+                dV = ("0" + dV);
+            }
+            return dV;
+        };
+        $('.flexme').flexigrid({
+            //title: 'Alarm Now List',
+            width: 1195,
+            height: "auto",
+            url: '@Url.Action("JsonIndex")',
+            dataType: 'json',
+            buttons: [
+                //{ name: '靜音', bclass: 'MuteALL', onpress: function () { $('#mediaPlayer').get(0).stop(); } },
+                // { name: 'Ack ALL', bclass: 'AckALL', onpress: function (r) { $.post('@Url.Action("Ack")', [{ name: 'ack', value: 'ackall' }], null, 'json'); location.reload(); } }
+            ],
+            colModel: [
+                    { display: '日期/時間', name: '_DateTime', width: 150, sortable: false, align: 'center', hide: false },
+                    { display: 'Tool ID', name: 'ToolID', width: 120, sortable: false, align: 'center', hide: false },
+                    { display: '柱位', name: 'Location', width: 70, sortable: false, align: 'center', hide: false },
+                    { display: 'Location ID', name: 'LocationID', width: 120, sortable: false, align: 'center', hide: false },
+                    { display: '部門', name: 'Vendor', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '數值', name: 'AlarmValue', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '狀態', name: 'AlarmType', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: 'Alarm 訊息', name: 'AlarmMessage', width: 250, sortable: false, align: 'center', hide: false },
+                    { display: 'Alarm Level', name: 'AlarmLevel', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: 'Acknowledge', name: 'Acknowledge', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '', name: 'Mute', width: 10, sortable: false, align: 'center', hide: true }
+            ],
+            onSuccess: function () {
+            
+                $('.flexme > tbody > tr > td[abbrr="Acknowledge"] > div').text('');
+                $('.flexme > tbody > tr > td[abbrr="Mute"] > div').text('');
+                $('.flexme > tbody > tr > td[abbrr="Acknowledge"]').append('<a href="#" style="text-align: center;" class="Acknowledge" ><div style=" width: 100px;">Acknowledge</div></a>')
+                    .each(function (i, e) {
+                        var alarmTime = $(this).parent().children(':eq(0)').text();
+                        var toolidd = $(this).parent().children(':eq(1)').text();
+                        var ackTime = getCookie(escape(toolidd) + alarmTime);
+                        if (ackTime != '') {
+                            $(this).children().remove();
+                            $(this).append('<div style=" width: 100px;"><label style="text-align:center;" class="Acknowledged" >' + getCookie(escape(toolidd) + alarmTime) + '</label></div>')
+                        }
+                    });
+                $('.flexme > tbody > tr > td[abbrr="Mute"]').append('<a href="#" style="text-align: center;" class="Mute" ><div style=" width: 100px;">Mute</div></a>')
+                    .each(function (i, e) {
+                        var alarmTime = $(this).parent().children(':eq(0)').text();
+                        var toolidd = $(this).parent().children(':eq(1)').text();
+                        var ackTime = getCookie(escape(toolidd) + alarmTime + 'M');
+                        if (ackTime != '') {
+                            $(this).children().remove();
+                            $(this).append('<div style=" width: 100px;"><label style="text-align:center;" class="Muted" >' + getCookie(escape(toolidd) + alarmTime + 'M') + '</label></div>')
+                        }
+                    });
+                $('.flexme > tbody > tr > td[abbrr="ToolID"] > div').each(function (i, e) {
+                    //$(this).wrap('<a href=# class="SingleAlarm"></a>');
+                });
+                $(".Acknowledge").click(function () {
+                    //var alarmTime = $(this).parent().parent().children(':eq(0)').text();
+                    //var toolidd = $(this).parent().parent().children(':eq(1)').text();
+                    setAcknowledge($(this).parent().parent());
+                    $('.flexme').flexReload();
+                });
+                if (vendorName == 'Main') {
+                    //$('.flexme > tbody > tr > td[abbrr="AlarmMessage"] > div').each(function (i, e) {
+                    //    $(this).wrap('<a href=# class="AlarmMsg"></a>');
+                    //});
+                    @*$(".AlarmMsg").click(function () {
+                        var toolidd = $(this).parents('tr').children('[abbrr="ToolID"]').text();
+                        var Alarm = $(this).parents('tr').children('[abbrr="AlarmMessage"]').text();
+                        $.post('@Url.Action("AlarmTagList")', [{ name: 'Comment', value: Alarm }],
+                            function (data) {
+                                var temp2 = '';
+                                var Startdate = new Date(Date.now() - 7 * 24 * 3600 * 1000);
+                                var Enddate = new Date;
+                                var dataCount = 0;
+                                var Startday = Startdate.getFullYear() + "-" + (Startdate.getMonth() + 1) + "-" + Startdate.getDate() + " " + Startdate.getHours() + ":" + Startdate.getMinutes() + ":" + Startdate.getSeconds();
+                                var Endday = Enddate.getFullYear() + "-" + (Enddate.getMonth() + 1) + "-" + Enddate.getDate() + " " + Enddate.getHours() + ":" + Enddate.getMinutes() + ":" + Enddate.getSeconds();
+                                $.each(data, function (i, item) {
+                                    temp2 = temp2 + 'P5_' + toolidd + item.Value + ',';
+                                    dataCount += 1;
+                                });
+                                if (dataCount > 0) {
+                                    OpenModelWindow('@Url.Action("../MachineGroup/MyChart")?toolId=' + toolidd + '&TagName=' + temp2 + '&StartDate=' + Startday + '&EndDate=' + Endday + '&flag=' + 3, { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
+                                }
+                                else {
+                                    alert('Alarm 訊息:' + Alarm + ' 未設定對應數值!!');
+                                }
+                            }, 'json');
+                    });*@
+                }
+                $('.SingleAlarm').click(function () {
+                    @*OpenModelWindow('@Url.Action("EditAlarmReport")?AlarmId=0000&toolid=' + $(this).parents('tr').children('[abbrr="ToolID"]').text() + '&vName=' + $(this).parents('tr').children('[abbrr="Vendor"]').text() + '&Sys=' + $(this).parents('tr').children('[abbrr="Vendor"]').text() + '&AlarmTime=' + $(this).parents('tr').children('[abbrr="_DateTime"]').text(), { width: 700, height: 600, caption: "編輯", onclose: function () {  $('.flexme').flexReload(); } });*@
+                    @*OpenModelWindow('@Url.Action("EditAlarmReport")?AlarmId=0000&vName=' + $(this).parents('tr').children('[abbrr="Vendor"]').text() + '&Sys=' + $(this).parents('tr').children('[abbrr="Vendor"]').text() + '&toolid=' + $(this).parents('tr').children('[abbrr="ToolID"]').text() + '&AlarmTime=' + $(this).parents('tr').children('[abbrr="_DateTime"]').text(), { width: 700, height: 600, caption: "編輯", onclose: function () { $('.flexme').flexReload(); } });
+                    setAcknowledge($(this).parent().parent());*@
+                    location.href = "@Url.Action("AlarmDeal")?StartDate=" + $(this).parents('tr').children('[abbrr="_DateTime"]').text() + ".000" + "&EndDate=" + $(this).parents('tr').children('[abbrr="_DateTime"]').text() + ".999" + "&ToolID=" + $(this).parents('tr').children('[abbrr="ToolID"]').text() + "&AlarmMsg=" + $(this).parents('tr').children('[abbrr="AlarmMessage"]').text() + "&Closed=&Vendor=" + $(this).parents('tr').children('[abbrr="Vendor"]').text() + "&Post=1";
+                });
+                //if ($('.Acknowledge').size() == 0 || $('.Mute').size() == 0) {
+                //    $('#mediaPlayer').get(0).stop();
+                //}
+                //else {
+                //    $('#mediaPlayer').get(0).Play();
+                //}
+                @*//if ($('.Acknowledge').size() == 0) { $('#mediaPlayer').remove();}*@
+                $('.AckALL').click(function () {
+                    $('.Acknowledge').each(function (i, e) {
+                        @*//var alarmTime = $(this).parent().parent().children(':eq(0)').text();*@
+                        @*//var toolidd = $(this).parent().parent().children(':eq(1)').text();*@
+                        setAcknowledge($(this).parent().parent());
+                    });
+                    $('.flexme').flexReload();
+                });
+                $('.MuteALL').click(function () {
+                    $('.Mute').each(function (i, e) {
+                        @*//var alarmTime = $(this).parent().parent().children(':eq(0)').text();*@
+                        @*//var toolidd = $(this).parent().parent().children(':eq(1)').text();*@
+                        setMute($(this).parent().parent());
+                    });
+                    $('.flexme').flexReload();
+                });
+                @* if ('@Session["vendorName"]' == "" || '@Session["vendorName"]' == "Main") {
+                        $("#gridTitle").html("&nbsp&nbsp " + '@Session["vendorName"]' + " PreAlarm List");
+                    }
+                    else {
+                        $("#gridTitle").html("&nbsp&nbsp Alarm Now List");
+                    }
+                //$('#btn_index').click(function () {
+                //    $('.flexme td:nth-child(4)').hide();
+                //});*@
+            },
+            usepager: true,
+            useRp: true,
+            rp: 20,
+            nowrap: false,
+            singleSelect: true,
+            rpOptions: [5, 10, 15, 20, 30, 50],
+        });
+        $('.ul').jqf1();
+        if ("@ViewBag.Message" != "") {
+            parent.hiAlert("@ViewBag.Message");
+            CloseModelWindow();
+        }
+        meter2 = setTimeout("PreAlarm('');", 30000);
+        PreAlarm(vendorName);
+    });
+    phoneCallStatus();
+    function phoneCallStatus() {
+        getPhoneCallStatus();
+        meter4 = setTimeout("phoneCallStatus()", 30000);
+    }
+    //PhoneCallStatus 燈號
+    function getPhoneCallStatus() {
+        $.post('@Url.Action("JsonPhoneCall")', null,
+            function (data) {
+                var htmlstr = '';
+                $('.PhoneCall').empty();
+                if (data[0].Value == '1' && data[1].Value == '1') {
+                    htmlstr += '<img style="height: 30px; width: 30px; margin:0px 0px 0px 0px" alt="正常" src="../../../../images/light_green.gif" />'
+                }
+                else {
+                    htmlstr += '<img style="height: 30px; width: 30px;" alt="異常" src="../../../../images/light_gray.gif" />'
+                }
+                if (data[0].Text == 'CUP RunTime' && data[0].Value == '0' && data[1].Text == 'KT RunTime' && data[1].Value == '0') {
+                    htmlstr += '<span> CUP Close / 1F Close</span>'
+                }
+                else if (data[0].Text == 'CUP RunTime' && data[0].Value == '1' && data[1].Text == 'KT RunTime' && data[1].Value == '0') {
+                    htmlstr += '<span> 1F Close</span>'
+                }
+                else if (data[0].Text == 'CUP RunTime' && data[0].Value == '0' && data[1].Text == 'KT RunTime' && data[1].Value == '1') {
+                    htmlstr += '<span> CUP Close</span>'
+                }
+                @*//$.each(data, function (i, item) {
+                //if (item.Text == "CUP RunTime" && item.Value == "1") {
+                //    htmlstr += '<span> CUP Open</span>'
+                //}
+                //if (item.Text == "CUP RunTime" && item.Value == "0") {
+                //htmlstr += '<span> CUP Close</span>'
+                //}
+                //else if (item.Text == "KT RunTime" && item.Value == "1") {
+                //    htmlstr += '<span>/ 1F Open</span>'
+                //}
+                //else if (item.Text == "KT RunTime" && item.Value == "0") {
+                //htmlstr += '<span>/ 1F Close</span>'
+                //}
+                //});*@
+                htmlstr += '</span>';
+                $('.PhoneCall').append(htmlstr);
+            }, 'json');
+    }
+    //廠商燈號
+    function vendorStatus() {
+        getVendorStatus();
+        meter3 = setTimeout("vendorStatus()", 30000);
+    }
+    function AckAll() {
+        $('.Acknowledge').each(function (i, e) {
+            setAcknowledge($(this).parent().parent());
+        });
+        $('.flexme').flexReload();
+    }
+    function getVendorStatus() {
+        $.post('@Url.Action("JsonVendorStatus")', null,
+                function (data) {
+                    $.each(data, function (i, item) {
+                        if (item.troubleCount > 0) {
+                            $("." + item.vName + ".oneLight").attr("src", "../../../../images/light_red.gif").attr("alt", "異常");
+                        }
+                        else if (item.normalCount == 0) {
+                            $("." + item.vName + ".oneLight").attr("src", "../../../../images/light_gray.gif");
+                        }
+                        else {
+                            $("." + item.vName + ".oneLight").attr("src", "../../../../images/light_green.gif").attr("alt", "正常");
+                        }
+
+                        if (item.pmCount == 0 && item.otherCount == 0) {
+                            $("." + item.vName + ".twoLight").attr("src", "../../../../images/light_green.gif").attr("alt", "正常運轉");
+                        }
+                        else {
+                            $("." + item.vName + ".twoLight").attr("src", "../../../../images/light_yellow.gif").attr("alt", "PM數&其他狀態數");
+                        }
+                        $("." + item.vName + ".eqCount").empty().append(item.eqCount);
+                        $("." + item.vName + ".normalCount").empty().append(item.normalCount);
+                        $("." + item.vName + ".troubleCount").empty().append(item.troubleCount);
+                        $("." + item.vName + ".pmCount").empty().append(item.pmCount);
+                        $("." + item.vName + ".otherCount").empty().append(item.otherCount);
+                        $("." + item.vName + ".serviceCount").empty().append(item.serviceCount);
+
+                    });
+                }, 'json'
+        );
+    }
+    function PreAlarm(tempvn) {
+        clearTimeout(meter2);
+        clearTimeout(meter3);
+        clearTimeout(meter4);
+        var urlStr = '';
+        if (tempvn == 'PreAlarm') {
+            $("#gridTitle").html("&nbsp&nbsp PreAlarm List");
+            urlStr = '@Url.Action("JsonPerWarning")';
+        }
+        else if (tempvn == 'Main') {
+            $("#gridTitle").html("&nbsp&nbsp Alarm Now List");
+            urlStr = "@Url.Action("JsonIndex")";
+        }
+        else if (tempvn == 'IPIPreAlarm') {
+            $("#gridTitle").html("&nbsp&nbsp IPI PreAlarm List");
+            urlStr = "@Url.Action("JsonIPIPerWarning")?vendor=5"
+        }
+        else if (tempvn == 'DryPump') {
+            $("#gridTitle").html("&nbsp&nbsp Dry Pump List");
+            urlStr = "@Url.Action("JsonDryPumpWarning")";
+        }
+        $(".flexme").flexOptions({ url: urlStr });
+        $('.flexme').flexReload();
+        meter2 = setTimeout("PreAlarm('" + tempvn + "');", 30000);
+        vendorStatus();
+        phoneCallStatus();
+    }
+    </script>
+    <style>
+        .btnPreWarning {
+            -moz-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            -webkit-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            box-shadow: inset 0px 0px 0px 0px #bee2f9;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
+            background: -moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: -ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf',GradientType=0);
+            background-color: #63b8ee;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            border: 1px solid #3866a3;
+            display: inline-block;
+            cursor: pointer;
+            color: #14396a;
+            font-family: arial;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 4px 8px;
+            text-decoration: none;
+            text-shadow: 0px 1px 1px #7cacde;
+        }
+
+            .btnPreWarning:hover {
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
+                background: -moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: -ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+                background: linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee',GradientType=0);
+                background-color: #468ccf;
+            }
+
+            .btnPreWarning:active {
+                position: relative;
+                top: 1px;
+            }
+    </style>
+}
+<h2>首頁</h2>
+<input type="hidden" id="vendorName" />
+<input type="hidden" name="hiddenId" value="">
+<table border="0" style="padding: 0px 0px 0px 0px; border-spacing: 0px 0px; width: 1214px;">
+    <tr>
+        <td colspan="10" style="height: 10px; background-image: url('../../../../images/GroupArea_TopBG.gif')"></td>
+    </tr>
+    <tr>
+        @foreach (var item in ViewBag.eqCount)
+        {
+            <td style="vertical-align: top;">
+                <div>
+                    <table style="width: 134px; border-spacing: 0px 0px; padding: 0px 0px 0px 0px;" border="0">
+                        <tr>
+                            <td style="height: 25px; vertical-align: top; text-align: center;" colspan="2">
+                                <span>@item.vName</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 35px; text-align: center; vertical-align: top; height: 34px;">
+                                <img style="height: 34px; width: 34px;" class= "@item.vName oneLight" />
+                            </td>
+                            <td style="width: 115px; vertical-align: top; height: 240px;" rowspan="2">
+                                <ul class="ul">
+                                    <li style="font-size: 12px; color: #999999; line-height: 22px;">總共設備數：<span class="@item.vName eqCount"></span> </li>
+                                </ul>
+                                <ul class="ul">
+                                    <li style="font-size: 12px; color: #339900; line-height: 22px;">正常設備數：<span class="@item.vName normalCount"></span></li>
+                                </ul>
+                                <ul class="ul">
+                                    <li style="font-size: 12px; color: #FF0000; line-height: 22px;">警告/異常數：<span class="@item.vName troubleCount"></span></li>
+                                </ul>
+                                <ul class="ul">
+                                    <a href="/Main/Home/GroupElseStatus?vName=@item.vName&Status=PM" target="_blank">
+                                        <li style="font-size: 12px; line-height: 22px;">PM 隔離：<span class="@item.vName pmCount"></span></li>
+                                    </a>
+                                </ul>
+                                <ul class="ul">
+                                    <a href="/Main/Home/GroupElseStatus?vName=@item.vName&Status=others" target="_blank">
+                                        <li style="font-size: 12px; line-height: 22px;">其他狀態數：<span class="@item.vName otherCount"></span></li>
+                                    </a>
+                                </ul>
+                                @if (item.vName == "DAS")
+                                {
+                                    <ul class="ul">
+                                        <a href="/Main/Home/GroupElseStatus?vName=@item.vName&Status=Service" target="_blank">
+                                            <li style="font-size: 12px; line-height: 22px;">Service數：<span class="@item.vName serviceCount"></span></li>
+                                        </a>
+                                    </ul>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 34px; text-align: center; vertical-align: top; height: 34px;">
+                                <img style="height: 34px; width: 34px;" class="@item.vName twoLight"  />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp; </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        }
+    </tr>
+</table>
+<div>
+    <table border="0" style="padding: 0px 0px 0px 0px; border-spacing: 0px 0px; border-collapse: collapse;">
+        @{
+            IEnumerable<TSMC14B.Areas.Main.Models.StatusCountModel> codes = TSMC14B.Areas.Main.Models.StatusCountModel.IndexAllStatusList();
+        }
+        <tr>
+            <td style="width: 800px">
+                <input id="btn_index" type="button" value="Main" class="btnPreWarning" onclick="javascript: PreAlarm('Main');" />
+                @*@foreach (var item in from c in codes select c.vName)
+                        <li><input id="btn_vendor" type="button" value="@item" onclick="javascript: PreAlarm(this.value);"/></li>
+                    }*@
+                <input id="btn_PreAlarm" type="button" value="Pre-Alarm" class="btnPreWarning" onclick="javascript: PreAlarm('PreAlarm');" />
+                @*<input id="btn_IPIPreAlarm" type="button" value="IPI Pre-Alarm" class="btnPreWarning" onclick="javascript: PreAlarm('IPIPreAlarm');" />
+                <input id="btn_DryPump" type="button" value="Dry Pump" class="btnPreWarning" onclick="javascript: PreAlarm('DryPump');" />*@
+                <input id="btn_AckAll" type="button" value="AckAll" class="btnPreWarning AckALL"  onclick="javascript: AckAll();" />
+            </td>
+            <td style="font-size: small; text-align: right; width: 400px">
+                <span>Phone Call Status:</span>
+                <span class="PhoneCall"></span>
+            </td>
+        </tr>
+    </table>
+</div>
+@*@if (!ViewBag.phoneCallStatus)
+    {
+        <div style="font-size: medium; font-weight: bold; color: white; background-color: red; width: 1195px">Intouch PhoneCall 異常</div>
+    }*@
+<div id="gridTitle" style="font-size: 11px; font-weight: bold; color: black; background-color: #e0d8d8; height: 20px; width: 1195px; padding-top: 10px;">&nbsp&nbsp Alarm Now List</div>
+<table class="flexme">
+    @*<thead>
+            <tr>
+                <th style="display: none; width: 150px; text-align: center;">日期/時間</th>
+                <th style="display: none; width: 120px; text-align: center;">Tool ID</th>
+                <th style="display: none; width: 70px; text-align: center;">柱位</th>
+                <th style="display: none; width: 100px; text-align: center;">Location ID</th>
+                <th style="display: none; width: 60px; text-align: center;">廠商</th>
+                <th style="display: none; width: 250px; text-align: center;">Alarm訊息</th>
+                <th style="display: none; width: 80px; text-align: center;">Alarm Level</th>
+                <th style="display: none; width: 90px; text-align: center;">解除警報音</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (ViewBag.List != null)
+            {
+            foreach (var item in ViewBag.List)
+            {
+                <tr>
+                    <td style="display: none; width: 150px; text-align: center;">@item._DateTime</td>
+                    <td style="display: none; width: 120px; text-align: center;">@item.ToolID</td>
+                    <td style="display: none; width: 70px; text-align: center;">@item.Location</td>
+                    <td style="display: none; width: 100px; text-align: center;">@item.LocationID</td>
+                    <td style="display: none; width: 60px; text-align: center;">@item.Vendor</td>
+                    <td style="display: none; width: 250px; text-align: center;">@item.AlarmMessage</td>
+                    <td style="display: none; width: 80px; text-align: center;">@item.AlarmLevel</td>
+                    <td style="display: none; width: 90px; text-align: center;"><a href="javascript:hiConfirm('是否解除？', '確認',function(r){ $.post('@Url.Action("Ack")', [{ name: 'idd', value: '@item.ToolID'}], null, 'json'); location.reload(); });">Acknowledge</a></td>
+                </tr>
+            }
+            }
+        </tbody>*@
+</table>
+@if (ViewBag.List != null)
+{
+    <embed hidden="true" loop="true" id="mediaPlayer" src="@Url.Content("~/Content/Media/ALARM.WAV")" autostart="false" width="200" />
+}

@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Setting";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Themes/Shared/ptTimeSelect/jquery.datetimepicker.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.datetimepicker.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        
+    </script>
+}
+<h2>FTP_Setting</h2>
+<table border="1" class="tb" style="width: 550px">
+    <tr>
+        <td>
+            <label for="lbl_SearchTag">FTP IP:</label>
+        </td>
+        <td>
+            <input type="text" id="tbx_SearchTag" value="10.10.160.199" />
+            
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="lbl_SearchTag">FTP 帳號:</label>
+        </td>
+        <td>
+            <input type="text" id="tbx_UserName" value="ftpuser" />
+            
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="lbl_SearchTag">FTP 密碼:</label>
+        </td>
+        <td>
+            <input type="password" id="tbx_Password"  value="FTPuser.123" />
+        </td>
+    </tr>
+</table>
+<input type="button" id="sbmit" value="設定" style="width: 80px" />
+<table class="flexme"></table>

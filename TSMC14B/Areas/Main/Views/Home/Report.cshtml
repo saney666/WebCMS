@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Report";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<style>
+       
+</style>
+<h2>Report</h2>
+<div id="menuDemo">
+    <ul>
+        <li id="AlarmReport">
+            @Html.ActionLink("Alarm Report", "AlarmDeal", "Home", null, new { @class = "AlarmReport" })
+        </li>
+        <li id="PMHistory">
+            @Html.ActionLink("PMHistory", "PMHistory", "Home", null, new { @class = "PMHistory" })
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,730 @@
+﻿@model IEnumerable<TSMC14B.Areas.Main.Models.PMModel>
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewBag.Title = @TSMC14B.Menu.PM;
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('.ul').jqf1();
+            $('.tb').css('font-size', '12px');
+            $('#toolidinput').keypress(function (e) {
+                if (e.keyCode == 13) {
+                    var pmFlag = null;
+                    $('.rbn:checked').each(function (e) {
+                        pmFlag = $(this).val();
+                    });
+                    $.post('@Url.Action("PMtid")', [{ name: 'Vendor', value: $('#Vendor').val() }, { name: 'Device', value: $('#device').val() }, { name: 'toolId', value: $('#toolidinput').val() }, { name: 'pmFlag', value: pmFlag }],
+                    function (data) {
+                        $('#td').empty();
+                        //$('#cb_vName').append($('<option></option>').val('').text('ALL'));
+                        $('#td').append('<table><tr>');
+                        $.each(data, function (i, item) {
+                            $('#td').append($('<td><input type="checkbox" id="' + item.Value + '" name="' + item.Value + '" value="' + item.Value + '" class="cb_vName" /><label for="' + item.Value + '" style="font-size:10px" >' + item.Value + '</label></td>'));
+                            if ((i + 1) % 3 == 0) {
+                                $('#td').append('</tr><tr>');
+                            }
+                        });
+                        $('#td').append('</tr></table>');
+                    }, 'json');
+                    @*location.href = "@Url.Action("PMConfig")?toolId=" + $('#toolidinput').val() + "&pmFlag=" + pmFlag;*@
+                }
+            });
+            $('#sbmit').click(function () {
+                $('#message').text('');
+                $('.cb_vName:checked').each(function (e) {
+                    $('#message').append($(this).val() + ",");
+                });
+                $('#message2').text('');
+                $('.rbn:checked').each(function (e) {
+                    $('#message2').append($(this).val());
+                });
+                var sType = "";
+                $('.cb_sType:checked').each(function (e) {
+                    sType += $(this).val() + ",";
+                });
+                sType = sType.substring(0, sType.length - 1);
+                $('#message').text($('#message').text().substring(0, $('#message').text().length - 1));
+                var toolidd = $('#message').text();
+                var pmFlagg = $('#message2').text();
+                if (toolidd.length > 0) {
+                    if (pmFlagg == 0) {
+                        if (sType.length > 0) {
+                            if ($('#memo').val().length > 0) {
+                                hiConfirm('@TSMC14B.Menu.IsCancelPM？', '@TSMC14B.Menu.confirm', function (r) { if (r) { $.post('@Url.Action("CancelPM")', [{ name: 'toolId', value: toolidd }, { name: 'selectType', value: sType }, { name: 'pmFlag', value: pmFlagg }, { name: 'memo', value: $('#memo').val() }, { name: 'bellow', value: $('#Bellow').val() }, { name: 'turning', value: $('#Turning').val() }, { name: 'threeway', value: $('#ThreeWay').val() }, { name: 'handvalve', value: $('#HandValve').val() }, { name: 'bshead', value: $('#bsHead').val() }, { name: 'gasvalve', value: $('#GasValve').val() }, { name: 'lpipe', value: $('#LPipe').val() }, { name: 'entry', value: $('#Entry').val() }, { name: 'inlet', value: $('#Inlet').val() }, { name: 'mixingbox', value: $('#MixingBox').val() }, { name: 'reactor', value: $('#Reactor').val() }, { name: 'tank', value: $('#Tank').val() }, { name: 'outlet', value: $('#Outlet').val() }, { name: 'tpipe', value: $('#Tpipe').val() }, { name: 'pmlpipe', value: $('#Pmlpipe').val() }, { name: 'upturning', value: $('#Upturning').val() }, { name: 'ms', value: $('#ms').val() }, { name: 'inlet_TP', value: $('#Inlet_TP').val() }, { name: 'mixingbox_TP', value: $('#MixingBox_TP').val() }, { name: 'reactor_TP', value: $('#Reactor_TP').val() }, { name: 'tank_TP', value: $('#Tank_TP').val() }, { name: 'outlet_TP', value: $('#Outlet_TP').val() }, { name: 'tpipe_TP', value: $('#Tpipe_TP').val() }, { name: 'pmlpipe_TP', value: $('#Pmlpipe_TP').val() }, { name: 'upturning_TP', value: $('#Upturning_TP').val() }, { name: 'ms_TP', value: $('#ms_TP').val() }], function (data) { alert(data.Msg); setTimeout("location.reload();", 5000); }, 'json'); } });
+                            }
+                            else {
+                                alert('@TSMC14B.Menu.plasePMMemo');
+                            }
+                        }
+                        else {
+                            alert('@TSMC14B.Menu.plaseCheckType');
+                        }
+                    }
+                    else
+                        hiConfirm('@TSMC14B.Menu.IsPM？', '@TSMC14B.Menu.confirm', function (r) { if (r) { $.post('@Url.Action("CancelPM")', [{ name: 'toolId', value: toolidd }, { name: 'pmFlag', value: pmFlagg }, { name: 'memo', value: '' }], function (data) { alert(data.Msg); setTimeout("location.reload();", 5000); }, 'json'); } });
+                }
+                else {
+                    alert('@TSMC14B.Menu.plaseSelectEQ');
+                }
+                @*$.post('@Url.Action("CancelPM")', [{ name: 'toolId', value: '@item.ToolID' }, { name: 'pmFlag', value: '0' }], function () { location.reload(); }, 'json');*@
+            @*location.href = "@Url.Action("PMConfig")?ToolID=" + $('#message').text() + "&pmFlag=" + $('#message2').text() + "&output=search";;*@
+            });
+            var _pmFlag = window.location.search;
+            var _intpmFlag = window.location.search.indexOf("pmFlag");
+            _pmFlag = _pmFlag.substring(_intpmFlag, _intpmFlag + 8);
+
+            if (_pmFlag.substring(_pmFlag.length - 1, _pmFlag.length) == "1") {
+                $('#rbnT1').attr("checked", "checked");
+            }
+            else if (_pmFlag.substring(_pmFlag.length - 1, _pmFlag.length) == "0") {
+                $('#rbnT2').attr("checked", "checked");
+            }
+            if ($("#Vendor").val().length == 0) {
+                $('#spanDevice').hide();
+            } else {
+                $('#spanDevice').show();
+            }
+            $("#Vendor").change(function () {
+                var pmFlag = null;
+                var vName = null;
+                var device = null;
+                $('.rbn:checked').each(function (e) {
+                    pmFlag = $(this).val();
+                })
+                $('#Vendor').each(function (e) {
+                    vName = $(this).val();
+                })
+                $('#device').each(function (e) {
+                    device = $(this).val();
+                })
+                if ($(this).val().length == 0) {
+                    $('#spanDevice').hide();
+                } else {
+                    $('#spanDevice').show();
+                }
+                $.post('@Url.Action("PMgName")', [{ name: 'Vendor', value: vName }],
+                    function (data) {
+                        $('#device').empty();
+                        $('#device').append($('<option></option>').val('').text('@TSMC14B.Menu.plaseSelectOption'));
+                        $.each(data, function (i, item) {
+                            $('#device').append($('<option></option>').val(item.Key).text(item.Value));
+                        });
+                        $.post('@Url.Action("PMtid")', [{ name: 'Vendor', value: vName }, { name: 'Device', value: device == "@TSMC14B.Menu.plaseSelectOption" ? "" : device },
+                                                                        { name: 'pmFlag', value: pmFlag }],
+                                            function (data) {
+                                                $('#td').empty();
+                                                //$('#cb_vName').append($('<option></option>').val('').text('ALL'));
+                                                $('#td').append($('<table><tr>'));
+                                                $.each(data, function (i, item) {
+                                                    $('#td').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Key + '" value="' + item.Value + '" class="cb_vName" /><label for="' + item.Key + '" style="font-size:10px" >' + item.Value + '</label></td>'));
+                                                    if ((i + 1) % 3 == 0) {
+                                                        $('#td').append($('</tr><tr>'));
+                                                    }
+                                                });
+                                                $('#td').append($('</tr></table>'));
+                                            }, 'json');
+                    }, 'json');
+                @*location.href = "@Url.Action("PMConfig")?Vendor=" + vName + "&Device=" + device + "&pmFlag=" + pmFlag;;*@
+            });
+            $("#device").change(function () {
+                var pmFlag = null;
+                var vName = null;
+                var device = null;
+                $('.rbn:checked').each(function (e) {
+                    pmFlag = $(this).val();
+                });
+                $('#Vendor').each(function (e) {
+                    vName = $(this).val();
+                });
+                $('#device').each(function (e) {
+                    device = $(this).val();
+                });
+                $.post('@Url.Action("PMtid")', [{ name: 'Vendor', value: vName }, { name: 'Device', value: device }, { name: 'pmFlag', value: pmFlag }],
+                    function (data) {
+                        $('#td').empty();
+                        @*//$('#cb_vName').append($('<option></option>').val('').text('ALL'));*@
+                        $('#td').append($('<table><tr>'));
+                        $.each(data, function (i, item) {
+                            $('#td').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Key + '" value="' + item.Value + '" class="cb_vName" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
+                            if ((i + 1) % 3 == 0) {
+                                $('#td').append($('</tr><tr>'));
+                            }
+                        });
+                        $('#td').append($('</tr></table>'));
+                    }, 'json');
+                @*location.href = "@Url.Action("PMConfig")?Vendor=" + vName + "&Device=" + device + "&pmFlag=" + pmFlag;;*@
+            });
+            var pmFlag = null;
+            $('.rbn:checked').each(function (e) {
+                pmFlag = $(this).val();
+            })
+            if (pmFlag == 0) {
+                //alert(pmFlag);
+                $('.ttrr').slideDown();
+            }
+            else if (pmFlag == 1) {
+                //alert(pmFlag);
+                $('.ttrr').slideUp();
+            }
+            $("#pumping").change(function () {
+                $('#pumping').each(function () {
+                    if (this.checked == true) {
+                        $('.pump').slideDown();
+                    }
+                    else {
+                        $('.pump').slideUp();
+                    }
+
+                });
+            });
+            $("#PM").change(function () {
+                $('#PM').each(function () {
+                    if (this.checked == true) {
+                        $('#TP').prop("checked", false);
+                        $('.pump3 :input').val("");
+                        $('.pump3').slideUp(10);
+                        $('.pump2').slideDown();
+                    }
+                    else {
+                        $('.pump2 :input').val("");
+                        $('.pump2').slideUp();
+                    }
+
+                });
+            });
+            $("#TP").change(function () {
+                if (this.checked == true) {
+                    $('#PM').prop("checked", false);
+                    $('.pump2 :input').val("");
+                    $('.pump2').slideUp(10);
+                    $('.pump3').slideDown();
+                }
+                else {
+                    $('.pump3 :input').val("");
+                    $('.pump3').slideUp();
+                }
+            });
+            $(".rbn").change(function () {
+                var pmFlag = null;
+                var vName = null;
+                var device = null;
+                $('.rbn:checked').each(function (e) {
+                    pmFlag = $(this).val();
+                })
+                $('#Vendor').each(function (e) {
+                    vName = $(this).val();
+                });
+                $('#device').each(function (e) {
+                    device = $(this).val();
+                });
+                $.post('@Url.Action("PMtid")', [{ name: 'Vendor', value: vName }, { name: 'Device', value: device == "@TSMC14B.Menu.plaseSelectOption" ? "" : device }, { name: 'pmFlag', value: pmFlag }],
+                    function (data) {
+                        $('#td').empty();
+                        @*//$('#cb_vName').append($('<option></option>').val('').text('ALL'));*@
+                        $('#td').append($('<table><tr>'));
+                        $.each(data, function (i, item) {
+                            $('#td').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Key + '" value="' + item.Value + '" class="cb_vName" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
+                            if ((i + 1) % 3 == 0) {
+                                $('#td').append($('</tr><tr>'));
+                            }
+                        });
+                        $('#td').append($('</tr></table>'));
+                    }, 'json');
+                @*location.href = "@Url.Action("PMConfig")?Vendor=" + vName + "&Device=" + device + "&pmFlag=" + pmFlag;;*@
+                if (pmFlag == 0) {
+                    //alert(pmFlag);
+                    $('.ttrr').slideDown();
+                }
+                else if (pmFlag == 1) {
+                    //alert(pmFlag);
+                    $('.ttrr').slideUp();
+                }
+            });
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+            $('.flexme').flexigrid({
+                title: '@TSMC14B.Menu.PMingList',
+                width: 600,
+                height: "auto",
+                url: '@Url.Action("JsonPMConfig")',
+                dataType: 'json',
+                colModel: [
+                    { display: '@TSMC14B.Menu._DateTime', name: '_DateTime', width: 130, sortable: false, align: 'center', hide: false },
+                    { display: 'GroupName', name: 'GroupName', width: 60, sortable: false, align: 'center', hide: true },
+                    { display: 'Tool ID', name: 'ToolID', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: 'Location ID', name: 'LocationID', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: '@TSMC14B.Menu.Location', name: 'Location', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '@TSMC14B.Menu.department_name', name: 'Vendor', width: 50, sortable: false, align: 'center', hide: false },
+                    { display: '@TSMC14B.Menu.status', name: 'Status', width: 30, sortable: false, align: 'left', hide: false },
+                    { display: '', name: 'stop', width: 50, sortable: false, align: 'left', hide: "@ViewBag.UserLevel" == "部門" ? true : false },
+                ],
+                onSuccess: function () {
+                    setTimeout("$('.flexme').flexReload();", 30000);
+                    $('.flexme > tbody > tr > td[abbrr="stop"] > div').remove();
+                    $('.flexme > tbody > tr > td[abbrr="stop"]').append('<a href="#" class="stop" ><div style="width:50px;"><img src="@Url.Content("~/images/stop.png")" alt="@TSMC14B.Menu.Edit" /></div></a>');
+                    $('.stop').click(function () {
+                        var toolidd = $(this).parent().parent().children(':eq(2)').text();
+                        var sType = "";
+                        $('.cb_sType:checked').each(function (e) {
+                            sType += $(this).val() + ",";
+                        })
+                        sType = sType.substring(0, sType.length - 1);
+                        @*if (sType.length > 0) {
+                            if ($('#memo').val().length > 0) {
+                                hiConfirm('是否解除 ' + $(this).parent().parent().children(':eq(2)').text() + '？', '確認', function (r) { if (r) { $.post('@Url.Action("CancelPM")', [{ name: 'toolId', value: toolidd }, { name: 'selectType', value: sType }, { name: 'pmFlag', value: '0' }, { name: 'memo', value: $('#memo').val() }], function (data) { alert(data.Msg); location.reload(); $('.flexme').flexReload(); }, 'json'); } });
+                            }
+                            else {
+                                alert('請填寫PM理由');
+                            }
+                        }
+                        else {
+                            alert('請勾選類別');
+                        }*@
+                        var tid = $(this).parent().parent().children(':eq(2)').text();
+                        OpenModelWindow('@Url.Action("EditPM")?ToolID=' + tid, { width: 520, height: 400, caption: "@TSMC14B.Menu.Setting", onclose: function () { setTimeout("location.reload();", 5000); } });
+                    });
+                },
+                procmsg: '@TSMC14B.Menu.procmsg',
+                rptext: '@TSMC14B.Menu.rptext',
+                pagestat: '@TSMC14B.Menu.pagestat',
+                pagetext: '@TSMC14B.Menu.pagetext',
+                outof: '@TSMC14B.Menu.outof',
+                nomsg: '@TSMC14B.Menu.nomsg',
+                nowrap: false,
+                usepager: true,
+                useRp: true,
+                rp: 100,
+                singleSelect: true,
+                rpOptions: [5, 10, 15, 20, 30, 50, 100],
+            });
+            $('.flexme1').flexigrid({
+                title: '@TSMC14B.Menu.PendingList',
+                width: 150,
+                height: "auto",
+                url: '@Url.Action("JsonPMWait")',
+                dataType: 'json',
+                colModel: [
+                    { display: '@TSMC14B.Menu.department_name', name: 'Vendor', width: 50, sortable: false, align: 'center', hide: true },
+                    { display: 'Tool ID', name: 'ToolID', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: '@TSMC14B.Menu.status', name: 'Status', width: 40, sortable: false, align: 'left', hide: false },
+                ],
+                procmsg: '@TSMC14B.Menu.procmsg',
+                rptext: '@TSMC14B.Menu.rptext',
+                pagestat: '@TSMC14B.Menu.pagestat',
+                pagetext: '@TSMC14B.Menu.pagetext',
+                outof: '@TSMC14B.Menu.outof',
+                nomsg: '@TSMC14B.Menu.nomsg',
+                onSuccess: function () {
+                    setTimeout("$('.flexme1').flexReload();", 5000);
+                },
+            });
+        });
+    </script>
+    <style>
+        input[type="Text"] {
+            width: 120px;
+        }
+    </style>
+}
+<h2>@TSMC14B.Menu.PM / @TSMC14B.Menu.cancelPM</h2>
+<table>
+    <tr>
+        <td>
+            <div>
+                <table border="1" class="tb" style="width: 600px">
+                    <tr>
+                        <td style="text-align: right; width: 20%;">
+                            <label for="lbl_vendor">@TSMC14B.Menu.plaseSelectDep：</label>
+                        </td>
+                        <td colspan="3">
+                            @if ((string)Session["UserLevel"] == "系統管理者" || (string)Session["UserLevel"] == "帳號管理者" || (string)Session["UserLevel"] == "工程師")
+                            {
+                                @Html.DropDownList("Vendor", ViewBag.Vendor as IEnumerable<SelectListItem>, TSMC14B.Menu.plaseSelectOption)
+                            }
+                            else
+                            {
+                                <select id="Vendor" name="Vendor">
+                                    <option value="">@TSMC14B.Menu.plaseSelectOption</option>
+                                    @if (ViewBag.PMVendor != null)
+                                    {
+                                        foreach (var item in ViewBag.PMVendor as IEnumerable<SelectListItem>)
+                                        {
+                                        <option value="@item.Value">@item.Value</option>
+                                        }
+                                    }
+                                </select>
+                            }
+                            <span id="spanDevice">
+                                <label id="lbl_device">請選擇課別：</label>
+                                <select id="device" name="device">
+                                    <option>@TSMC14B.Menu.plaseSelectOption</option>
+                                    @if (ViewBag.Device != null)
+                                    {
+                                        foreach (var item in ViewBag.Device as IEnumerable<SelectListItem>)
+                                        {
+                                        <option value="@item.Value">@item.Value</option>
+                                        }
+                                    }
+                                </select>
+                            </span>
+                            <input type='text' placeholder='@TSMC14B.Menu.toolidinput' id="toolidinput" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <label for="lbl_Select">@TSMC14B.Menu.plaseSelectOption @TSMC14B.Menu.Setting/@TSMC14B.Menu.cancelPM：</label>
+                        </td>
+                        <td colspan="3">
+                            <input type="radio" name="group1" class="rbn" value="1" id="rbnT1" checked="checked" />
+                            <label for="rbnT1">@TSMC14B.Menu.PM</label>
+                            <input type="radio" name="group1" class="rbn" value="0" id="rbnT2" />
+                            <label for="rbnT2">@TSMC14B.Menu.cancelPM</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <label for="lbl_Set">@TSMC14B.Menu.plaseSelectEQ：</label>
+                        </td>
+                        <td colspan="3">
+                            <div id="td">
+                                <input class="cb_vName" name="vName" type="checkbox" style="display: none;" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="ttrr" style="display: none;">
+                                <label id="lbl_Type" for="lbl_Type">@TSMC14B.Menu.plaseCheckType：</label>
+                            </div>
+                        </td>
+                        <td colspan="3">
+                            <div class="ttrr" style="display: none;">
+                                <input class="cb_sType" name="sType" id="PM" type="checkbox" value="pm_flag" /><label for="PM">PM</label>
+                                <input class="cb_sType" name="sType" id="pumping" type="checkbox" value="pumping_done" /><label for="pumping">Pumping PM</label>
+                                <input class="cb_sType" name="sType" id="SEX" type="checkbox" value="sex_done" /><label for="SEX">SEX PM</label>
+                                <input class="cb_sType" name="sType" id="TS" type="checkbox" value="ts_flag" /><label for="TS">TS</label><br />
+                                <input class="cb_sType" name="sType" id="BK" type="checkbox" value="backup_flag" style="display: none;" /><label for="BK" style="display: none;">備機</label>
+                                <input class="cb_sType" name="sType" id="CMS" type="checkbox" value="cmsError_flag" style="display: none;" /><label for="CMS" style="display: none;">CMS異常未上線</label>
+                                <input class="cb_sType" name="sType" id="Other" type="checkbox" value="other_flag" /><label for="Other">Other</label>
+                                <input class="cb_sType" name="sType" id="PT" type="checkbox" value="pt_done" style="display: none;" /><label for="PT" style="display: none;">PT校正</label>
+                                <input class="cb_sType" name="sType" id="TP" type="checkbox" value="TemporaryP_flag" /><label for="TP">臨時拉P</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="ttrr" style="display: none;">
+                                <label id="lbl_memo" for="lbl_memo">@TSMC14B.Menu.memo：</label>
+                            </div>
+                        </td>
+                        <td colspan="3">
+                            <div class="ttrr" style="display: none;">@Html.TextBox("memo")</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump" style="display: none;">
+                                <label id="lbl_Bellow" for="lbl_Bellow">Bellow：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump" style="display: none;">@Html.TextBox("Bellow")</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump" style="display: none;">
+                                <label id="lbl_turning" for="lbl_turning">@TSMC14B.Menu.Turning：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump" style="display: none;">@Html.TextBox("Turning")</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump" style="display: none;">
+                                <label id="lbl_threeway" for="lbl_threeway">@TSMC14B.Menu.ThreeWay：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump" style="display: none;">@Html.TextBox("ThreeWay")</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump" style="display: none;">
+                                <label id="lbl_handvalve" for="lbl_handvalve">@TSMC14B.Menu.HandValve：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump" style="display: none;">@Html.TextBox("HandValve")</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; display: none;">
+                            <div @*class="pump"*@">
+                                <label id="lbl_bshead" for="lbl_bshead">@TSMC14B.Menu.bsHead：</label>
+                            </div>
+                        </td>
+                        <td style="display: none;">
+                            <div @*class="pump"*@ style="display: none;">@Html.TextBox("bsHead")</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump" style="display: none;">
+                                <label id="lbl_gasvalve" for="lbl_gasvalve">@TSMC14B.Menu.GasValve：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump" style="display: none;">@Html.TextBox("GasValve")</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump" style="display: none;">
+                                <label id="lbl_lpipe" for="lbl_lpipe">@TSMC14B.Menu.LPipe：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump" style="display: none;">@Html.TextBox("LPipe")</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump" style="display: none;">
+                                <label id="lbl_entry" for="lbl_entry">Entry：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump" style="display: none;">@Html.TextBox("Entry")</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump2" style="display: none;">
+                                <label id="lbl_inlet" for="lbl_inlet">Inlet：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump2" style="display: none;">@Html.TextBox("Inlet")%</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump2" style="display: none;">
+                                <label id="lbl_mixingbox" for="lbl_mixingbox">Mixing Box：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump2" style="display: none;">@Html.TextBox("MixingBox")%</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump2" style="display: none;">
+                                <label id="lbl_reactor" for="lbl_lbl_reactor">Reactor：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump2" style="display: none;">@Html.TextBox("Reactor")%</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump2" style="display: none;">
+                                <label id="lbl_lbl_tank" for="lbl_tank">Tank：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump2" style="display: none;">@Html.TextBox("Tank")%</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump2" style="display: none;">
+                                <label id="lbl_outlet" for="lbl_outlet">Outlet：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump2" style="display: none;">@Html.TextBox("Outlet")%</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump2" style="display: none;">
+                                <label id="lbl_t" for="lbl_t">@TSMC14B.Menu.Tpipe：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump2" style="display: none;">@Html.TextBox("Tpipe")%</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump2" style="display: none;">
+                                <label id="lbl_Pmlpipe" for="lbl_Pmlpipe">@TSMC14B.Menu.LPipe：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump2" style="display: none;">@Html.TextBox("Pmlpipe")%</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump2" style="display: none;">
+                                <label id="lbl_upturning" for="lbl_upturning">@TSMC14B.Menu.Upturning：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump2" style="display: none;">@Html.TextBox("Upturning")%</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump2" style="display: none;">
+                                <label id="lbl_ms" for="lbl_ms">@TSMC14B.Menu.ms：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump2" style="display: none;">@Html.TextBox("ms")%</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump3" style="display: none;">
+                                <label id="lbl_inlet_TP" for="lbl_inlet_TP">Inlet：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump3" style="display: none;">@Html.TextBox("Inlet_TP")%</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump3" style="display: none;">
+                                <label id="lbl_mixingbox_TP" for="lbl_mixingbox_TP">Mixing Box：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump3" style="display: none;">@Html.TextBox("MixingBox_TP")%</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump3" style="display: none;">
+                                <label id="lbl_reactor_TP" for="lbl_reactor_TP">Reactor：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump3" style="display: none;">@Html.TextBox("Reactor_TP")%</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump3" style="display: none;">
+                                <label id="lbl_lbl_tank_TP" for="lbl_tank_TP">Tank：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump3" style="display: none;">@Html.TextBox("Tank_TP")%</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump3" style="display: none;">
+                                <label id="lbl_outlet_TP" for="lbl_outlet_TP">Outlet：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump3" style="display: none;">@Html.TextBox("Outlet_TP")%</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump3" style="display: none;">
+                                <label id="lbl_t_TP" for="lbl_t_TP">@TSMC14B.Menu.Tpipe：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump3" style="display: none;">@Html.TextBox("Tpipe_TP")%</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump3" style="display: none;">
+                                <label id="lbl_Pmlpipe_TP" for="lbl_Pmlpipe_TP">@TSMC14B.Menu.LPipe：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump3" style="display: none;">@Html.TextBox("Pmlpipe_TP")%</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="pump3" style="display: none;">
+                                <label id="lbl_upturning_TP" for="lbl_upturning_TP">@TSMC14B.Menu.Upturning：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump3" style="display: none;">@Html.TextBox("Upturning_TP")%</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <div class="pump3" style="display: none;">
+                                <label id="lbl_ms_TP" for="lbl_ms_TP">@TSMC14B.Menu.ms：</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pump3" style="display: none;">@Html.TextBox("ms_TP")%</div>
+                        </td>
+                    </tr>
+
+                </table>
+                <input type="button" id="sbmit" value="@TSMC14B.Menu.Setting" style="width: 80px" />&nbsp;&nbsp;&nbsp;
+                <label id="message" style="display: none;"></label>
+                <label id="message2" style="display: none;"></label>
+            </div>
+            <br />
+            <table class="flexme">
+                @* <thead>
+                    <tr>
+                        <th style="width: 120px; text-align: center; display: none">時間</th>
+                        <th style="width: 130px; text-align: center; display: none">課別名稱</th>
+                        <th style="width: 50px; text-align: center; display: none">Tool ID</th>
+                        <th style="width: 50px; text-align: center; display: none">Location ID</th>
+                        <th style="width: 50px; text-align: center; display: none">柱位</th>
+                        <th style="width: 60px; text-align: center; display: none">廠商</th>
+                        <th style="width: 50px; text-align: center; display: none">狀態</th>
+                        <th style="width: 20px; text-align: center; display: none"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model){
+            <tr>
+                <td style="width: 120px; text-align: center; display: none;">@item._DateTime</td>
+                <td style="width: 40px; text-align: center; display: none;">@item.GroupName</td>
+                <td style="width: 130px; text-align: center; display: none;">@item.ToolID</td>
+                <td style="width: 50px; text-align: center; display: none;">@item.LocationID</td>
+                <td style="width: 50px; text-align: center; display: none;">@item.Location</td>
+                <td style="width: 60px; text-align: center; display: none;">@item.Vendor</td>
+                <td style="width: 50px; text-align: center; display: none;">@item.Status</td>
+                <td style="width: 90px; text-align: center; display: none;"></td>
+            </tr>
+        }
+                </tbody>*@
+            </table>
+        </td>
+        <td>&nbsp;&nbsp;</td>
+        <td style="vertical-align: top;">
+            @if (ViewBag.List != null)
+            {
+                <table class="flexme1">
+                    @*<thead>
+                    <tr>
+                        <th style="width: 120px; text-align: center; display: none">廠商</th>
+                        <th style="width: 50px; text-align: center; display: none">Tool ID</th>
+                        <th style="width: 50px; text-align: center; display: none">狀態</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.List)
+                    {
+                        <tr>
+                            <td style="width: 60px; text-align: center; display: none;">@item.Vendor</td>
+                            <td style="width: 130px; text-align: center; display: none;">@item.ToolID</td>
+                            <td style="width: 50px; text-align: center; display: none;">@item.Status</td>
+                        </tr>
+                    }
+                </tbody>*@
+                </table>
+            }
+        </td>
+    </tr>
+</table>

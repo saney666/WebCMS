@@ -1,0 +1,1361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="analog_comment" EntityType="Model.Store.analog_comment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompareTable" EntityType="Model.Store.CompareTable" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PhoneCallCompanyInfo" EntityType="Model.Store.PhoneCallCompanyInfo" store:Type="Tables" store:Schema="dbo" store:Name="PhoneCallCompanyInfo">
+            <DefiningQuery>SELECT 
+      [PhoneCallCompanyInfo].[ComID] AS [ComID], 
+      [PhoneCallCompanyInfo].[ComName] AS [ComName], 
+      [PhoneCallCompanyInfo].[ComShortName] AS [ComShortName]
+      FROM [dbo].[PhoneCallCompanyInfo] AS [PhoneCallCompanyInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PhoneCallUserInfo" EntityType="Model.Store.PhoneCallUserInfo" store:Type="Tables" store:Schema="dbo" store:Name="PhoneCallUserInfo">
+            <DefiningQuery>SELECT 
+      [PhoneCallUserInfo].[UserID] AS [UserID], 
+      [PhoneCallUserInfo].[Password] AS [Password], 
+      [PhoneCallUserInfo].[ChineseName] AS [ChineseName], 
+      [PhoneCallUserInfo].[ComID] AS [ComID], 
+      [PhoneCallUserInfo].[IsApproved] AS [IsApproved], 
+      [PhoneCallUserInfo].[CreateDate] AS [CreateDate], 
+      [PhoneCallUserInfo].[ChangeDate] AS [ChangeDate], 
+      [PhoneCallUserInfo].[LastLoginDate] AS [LastLoginDate]
+      FROM [dbo].[PhoneCallUserInfo] AS [PhoneCallUserInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_AlarmDealInfo" EntityType="Model.Store.vw_AlarmDealInfo" store:Type="Views" store:Schema="dbo" store:Name="vw_AlarmDealInfo">
+            <DefiningQuery>SELECT 
+      [vw_AlarmDealInfo].[AlarmId] AS [AlarmId], 
+      [vw_AlarmDealInfo].[AlarmWeek] AS [AlarmWeek], 
+      [vw_AlarmDealInfo].[AlarmTime_Begin] AS [AlarmTime_Begin], 
+      [vw_AlarmDealInfo].[AlarmTime_AlarmAck] AS [AlarmTime_AlarmAck], 
+      [vw_AlarmDealInfo].[AlarmTime_SystemAck] AS [AlarmTime_SystemAck], 
+      [vw_AlarmDealInfo].[AlarmTime_UnAckRtn] AS [AlarmTime_UnAckRtn], 
+      [vw_AlarmDealInfo].[AlarmTime_Rtn] AS [AlarmTime_Rtn], 
+      [vw_AlarmDealInfo].[EventType] AS [EventType], 
+      [vw_AlarmDealInfo].[AlarmState] AS [AlarmState], 
+      [vw_AlarmDealInfo].[UnAckDuration] AS [UnAckDuration], 
+      [vw_AlarmDealInfo].[AlarmDuration] AS [AlarmDuration], 
+      [vw_AlarmDealInfo].[TagName] AS [TagName], 
+      [vw_AlarmDealInfo].[toolID] AS [toolID], 
+      [vw_AlarmDealInfo].[location_id] AS [location_id], 
+      [vw_AlarmDealInfo].[location] AS [location], 
+      [vw_AlarmDealInfo].[location_side] AS [location_side], 
+      [vw_AlarmDealInfo].[group_name] AS [group_name], 
+      [vw_AlarmDealInfo].[type_id] AS [type_id], 
+      [vw_AlarmDealInfo].[type_name] AS [type_name], 
+      [vw_AlarmDealInfo].[vendor_id] AS [vendor_id], 
+      [vw_AlarmDealInfo].[vendor_name] AS [vendor_name], 
+      [vw_AlarmDealInfo].[ALMGroup] AS [ALMGroup], 
+      [vw_AlarmDealInfo].[AlarmMsg] AS [AlarmMsg], 
+      [vw_AlarmDealInfo].[ValueString] AS [ValueString], 
+      [vw_AlarmDealInfo].[Value] AS [Value], 
+      [vw_AlarmDealInfo].[TriggerLimit] AS [TriggerLimit], 
+      [vw_AlarmDealInfo].[AlarmLevel] AS [AlarmLevel], 
+      [vw_AlarmDealInfo].[Operator] AS [Operator], 
+      [vw_AlarmDealInfo].[AckOperator] AS [AckOperator], 
+      [vw_AlarmDealInfo].[system] AS [system], 
+      [vw_AlarmDealInfo].[affect] AS [affect], 
+      [vw_AlarmDealInfo].[affTime] AS [affTime], 
+      [vw_AlarmDealInfo].[dealWith] AS [dealWith], 
+      [vw_AlarmDealInfo].[almCause] AS [almCause], 
+      [vw_AlarmDealInfo].[parts] AS [parts], 
+      [vw_AlarmDealInfo].[pmDate] AS [pmDate], 
+      [vw_AlarmDealInfo].[pmCycle] AS [pmCycle], 
+      [vw_AlarmDealInfo].[caseClose] AS [caseClose], 
+      [vw_AlarmDealInfo].[dealUser] AS [dealUser]
+      FROM [dbo].[vw_AlarmDealInfo] AS [vw_AlarmDealInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_eq_status" EntityType="Model.Store.vw_eq_status" store:Type="Views" store:Schema="dbo" store:Name="vw_eq_status">
+            <DefiningQuery>SELECT 
+      [vw_eq_status].[pid] AS [pid], 
+      [vw_eq_status].[gname] AS [gname], 
+      [vw_eq_status].[toolid] AS [toolid], 
+      [vw_eq_status].[lid] AS [lid], 
+      [vw_eq_status].[loc] AS [loc], 
+      [vw_eq_status].[locSide] AS [locSide], 
+      [vw_eq_status].[typeid] AS [typeid], 
+      [vw_eq_status].[vid] AS [vid], 
+      [vw_eq_status].[tName] AS [tName], 
+      [vw_eq_status].[vName] AS [vName], 
+      [vw_eq_status].[vendor_Intouch] AS [vendor_Intouch], 
+      [vw_eq_status].[sid] AS [sid], 
+      [vw_eq_status].[status] AS [status], 
+      [vw_eq_status].[statusdate] AS [statusdate]
+      FROM [dbo].[vw_eq_status] AS [vw_eq_status]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_pm_history" EntityType="Model.Store.vw_pm_history" store:Type="Views" store:Schema="dbo" store:Name="vw_pm_history">
+            <DefiningQuery>SELECT 
+      [vw_pm_history].[pmHistoryID] AS [pmHistoryID], 
+      [vw_pm_history].[plc_id] AS [plc_id], 
+      [vw_pm_history].[tool_id] AS [tool_id], 
+      [vw_pm_history].[pm_set] AS [pm_set], 
+      [vw_pm_history].[pm_unset] AS [pm_unset], 
+      [vw_pm_history].[memo] AS [memo], 
+      [vw_pm_history].[operator] AS [operator], 
+      [vw_pm_history].[pm_flag] AS [pm_flag], 
+      [vw_pm_history].[ts_flag] AS [ts_flag], 
+      [vw_pm_history].[backup_flag] AS [backup_flag], 
+      [vw_pm_history].[cmsError_flag] AS [cmsError_flag], 
+      [vw_pm_history].[other_flag] AS [other_flag], 
+      [vw_pm_history].[update_date] AS [update_date], 
+      [vw_pm_history].[gname] AS [gname], 
+      [vw_pm_history].[lid] AS [lid], 
+      [vw_pm_history].[loc] AS [loc], 
+      [vw_pm_history].[locSide] AS [locSide], 
+      [vw_pm_history].[tName] AS [tName], 
+      [vw_pm_history].[vid] AS [vid], 
+      [vw_pm_history].[vName] AS [vName], 
+      [vw_pm_history].[vendor_Intouch] AS [vendor_Intouch]
+      FROM [dbo].[vw_pm_history] AS [vw_pm_history]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_pm_trigger" EntityType="Model.Store.vw_pm_trigger" store:Type="Views" store:Schema="dbo" store:Name="vw_pm_trigger">
+            <DefiningQuery>SELECT 
+      [vw_pm_trigger].[PMTrigger] AS [PMTrigger]
+      FROM [dbo].[vw_pm_trigger] AS [vw_pm_trigger]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+        <EntityType Name="analog_comment">
+          <Key>
+            <PropertyRef Name="type_id" />
+            <PropertyRef Name="Tag_Name" />
+          </Key>
+          <Property Name="type_id" Type="smallint" Nullable="false" />
+          <Property Name="Tag_Name" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="Eng_Comment" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="Cht_Comment" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CompareTable">
+          <Key>
+            <PropertyRef Name="Tagname" />
+            <PropertyRef Name="Vendor" />
+            <PropertyRef Name="MachineType" />
+          </Key>
+          <Property Name="TagIndex" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Tagname" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="Comment" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="SendBody" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="VoiceText" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="SendTo" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="PriLo" Type="int" Nullable="false" />
+          <Property Name="PriHi" Type="int" Nullable="false" />
+          <Property Name="ISO" Type="int" Nullable="false" />
+          <Property Name="CallOut" Type="bit" Nullable="false" />
+          <Property Name="Vendor" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="MachineType" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+      警告 6002: 資料表/檢視 'tsmc14_p6-Intouch.dbo.PhoneCallCompanyInfo' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。
+      -->
+        <EntityType Name="PhoneCallCompanyInfo">
+          <Key>
+            <PropertyRef Name="ComID" />
+            <PropertyRef Name="ComName" />
+            <PropertyRef Name="ComShortName" />
+          </Key>
+          <Property Name="ComID" Type="int" Nullable="false" />
+          <Property Name="ComName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="ComShortName" Type="nvarchar" Nullable="false" MaxLength="10" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+      警告 6002: 資料表/檢視 'tsmc14_p6-Intouch.dbo.PhoneCallUserInfo' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。
+      -->
+        <EntityType Name="PhoneCallUserInfo">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="ComID" />
+            <PropertyRef Name="IsApproved" />
+            <PropertyRef Name="CreateDate" />
+          </Key>
+          <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="ChineseName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ComID" Type="int" Nullable="false" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="CreateDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="ChangeDate" Type="smalldatetime" />
+          <Property Name="LastLoginDate" Type="smalldatetime" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+      警告 6002: 資料表/檢視 'tsmc14_p6-Intouch.dbo.vw_AlarmDealInfo' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。
+      -->
+        <EntityType Name="vw_AlarmDealInfo">
+          <Key>
+            <PropertyRef Name="AlarmId" />
+            <PropertyRef Name="type_id" />
+            <PropertyRef Name="type_name" />
+            <PropertyRef Name="vendor_id" />
+            <PropertyRef Name="AlarmLevel" />
+          </Key>
+          <Property Name="AlarmId" Type="int" Nullable="false" />
+          <Property Name="AlarmWeek" Type="varchar" MaxLength="6" />
+          <Property Name="AlarmTime_Begin" Type="datetime" />
+          <Property Name="AlarmTime_AlarmAck" Type="datetime" />
+          <Property Name="AlarmTime_SystemAck" Type="datetime" />
+          <Property Name="AlarmTime_UnAckRtn" Type="datetime" />
+          <Property Name="AlarmTime_Rtn" Type="datetime" />
+          <Property Name="EventType" Type="nvarchar" MaxLength="3" />
+          <Property Name="AlarmState" Type="nvarchar" MaxLength="9" />
+          <Property Name="UnAckDuration" Type="nvarchar" MaxLength="17" />
+          <Property Name="AlarmDuration" Type="varchar" MaxLength="15" />
+          <Property Name="TagName" Type="nvarchar" MaxLength="132" />
+          <Property Name="toolID" Type="nvarchar" MaxLength="132" />
+          <Property Name="location_id" Type="varchar" MaxLength="20" />
+          <Property Name="location" Type="varchar" MaxLength="20" />
+          <Property Name="location_side" Type="char" MaxLength="1" />
+          <Property Name="group_name" Type="varchar" MaxLength="20" />
+          <Property Name="type_id" Type="smallint" Nullable="false" />
+          <Property Name="type_name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="vendor_id" Type="smallint" Nullable="false" />
+          <Property Name="vendor_name" Type="varchar" MaxLength="50" />
+          <Property Name="ALMGroup" Type="nvarchar" MaxLength="32" />
+          <Property Name="AlarmMsg" Type="nvarchar" MaxLength="255" />
+          <Property Name="ValueString" Type="nvarchar" MaxLength="131" />
+          <Property Name="Value" Type="nvarchar" MaxLength="131" />
+          <Property Name="TriggerLimit" Type="nvarchar" MaxLength="131" />
+          <Property Name="AlarmLevel" Type="smallint" Nullable="false" />
+          <Property Name="Operator" Type="nvarchar" MaxLength="131" />
+          <Property Name="AckOperator" Type="nvarchar" MaxLength="131" />
+          <Property Name="system" Type="varchar" MaxLength="50" />
+          <Property Name="affect" Type="bit" />
+          <Property Name="affTime" Type="varchar" MaxLength="50" />
+          <Property Name="dealWith" Type="varchar" MaxLength="500" />
+          <Property Name="almCause" Type="varchar" MaxLength="50" />
+          <Property Name="parts" Type="varchar" MaxLength="500" />
+          <Property Name="pmDate" Type="varchar" MaxLength="100" />
+          <Property Name="pmCycle" Type="varchar" MaxLength="50" />
+          <Property Name="caseClose" Type="bit" />
+          <Property Name="dealUser" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+      警告 6002: 資料表/檢視 'tsmc14_p6-Intouch.dbo.vw_eq_status' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。
+      -->
+        <EntityType Name="vw_eq_status">
+          <Key>
+            <PropertyRef Name="pid" />
+            <PropertyRef Name="typeid" />
+            <PropertyRef Name="tName" />
+            <PropertyRef Name="sid" />
+            <PropertyRef Name="status" />
+          </Key>
+          <Property Name="pid" Type="smallint" Nullable="false" />
+          <Property Name="gname" Type="varchar" MaxLength="20" />
+          <Property Name="toolid" Type="varchar" MaxLength="20" />
+          <Property Name="lid" Type="varchar" MaxLength="20" />
+          <Property Name="loc" Type="varchar" MaxLength="20" />
+          <Property Name="locSide" Type="char" MaxLength="1" />
+          <Property Name="typeid" Type="smallint" Nullable="false" />
+          <Property Name="vid" Type="smallint" />
+          <Property Name="tName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="vName" Type="varchar" MaxLength="50" />
+          <Property Name="vendor_Intouch" Type="varchar" MaxLength="50" />
+          <Property Name="sid" Type="tinyint" Nullable="false" />
+          <Property Name="status" Type="varchar" Nullable="false" MaxLength="250" />
+          <Property Name="statusdate" Type="datetime" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+      警告 6002: 資料表/檢視 'tsmc14_p6-Intouch.dbo.vw_pm_history' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。
+      -->
+        <EntityType Name="vw_pm_history">
+          <Key>
+            <PropertyRef Name="pmHistoryID" />
+            <PropertyRef Name="plc_id" />
+            <PropertyRef Name="tool_id" />
+            <PropertyRef Name="pm_set" />
+            <PropertyRef Name="operator" />
+            <PropertyRef Name="update_date" />
+            <PropertyRef Name="tName" />
+          </Key>
+          <Property Name="pmHistoryID" Type="int" Nullable="false" />
+          <Property Name="plc_id" Type="smallint" Nullable="false" />
+          <Property Name="tool_id" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="pm_set" Type="datetime" Nullable="false" />
+          <Property Name="pm_unset" Type="datetime" />
+          <Property Name="memo" Type="varchar" MaxLength="200" />
+          <Property Name="operator" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="pm_flag" Type="bit" />
+          <Property Name="ts_flag" Type="bit" />
+          <Property Name="backup_flag" Type="bit" />
+          <Property Name="cmsError_flag" Type="bit" />
+          <Property Name="other_flag" Type="bit" />
+          <Property Name="update_date" Type="datetime" Nullable="false" />
+          <Property Name="gname" Type="varchar" MaxLength="20" />
+          <Property Name="lid" Type="varchar" MaxLength="20" />
+          <Property Name="loc" Type="varchar" MaxLength="20" />
+          <Property Name="locSide" Type="char" MaxLength="1" />
+          <Property Name="tName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="vid" Type="smallint" />
+          <Property Name="vName" Type="varchar" MaxLength="50" />
+          <Property Name="vendor_Intouch" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+      警告 6002: 資料表/檢視 'tsmc14_p6-Intouch.dbo.vw_pm_trigger' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。
+      -->
+        <EntityType Name="vw_pm_trigger">
+          <Key>
+            <PropertyRef Name="PMTrigger" />
+          </Key>
+          <Property Name="PMTrigger" Type="int" Nullable="false" />
+        </EntityType>
+        <Function Name="uSP_Change_Alarm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="action" Type="tinyint" Mode="In" />
+          <Parameter Name="Tagname" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="uSP_Change_AlarmDeal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="aid" Type="int" Mode="In" />
+          <Parameter Name="system" Type="varchar" Mode="In" />
+          <Parameter Name="toolID" Type="varchar" Mode="In" />
+          <Parameter Name="affect" Type="bit" Mode="In" />
+          <Parameter Name="affTime" Type="varchar" Mode="In" />
+          <Parameter Name="dealWith" Type="varchar" Mode="In" />
+          <Parameter Name="almCause" Type="varchar" Mode="In" />
+          <Parameter Name="parts" Type="varchar" Mode="In" />
+          <Parameter Name="pmDate" Type="varchar" Mode="In" />
+          <Parameter Name="pmCycle" Type="varchar" Mode="In" />
+          <Parameter Name="caseClose" Type="bit" Mode="In" />
+          <Parameter Name="dealUser" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="uSP_Change_CompareTable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="action" Type="tinyint" Mode="In" />
+          <Parameter Name="TagIndex" Type="int" Mode="In" />
+          <Parameter Name="Tagname" Type="varchar" Mode="In" />
+          <Parameter Name="Comment" Type="nvarchar" Mode="In" />
+          <Parameter Name="SendBody" Type="nvarchar" Mode="In" />
+          <Parameter Name="VoiceText" Type="nvarchar" Mode="In" />
+          <Parameter Name="SendTo" Type="nvarchar" Mode="In" />
+          <Parameter Name="PriLo" Type="int" Mode="In" />
+          <Parameter Name="PriHi" Type="int" Mode="In" />
+          <Parameter Name="ISO" Type="int" Mode="In" />
+          <Parameter Name="CallOut" Type="bit" Mode="In" />
+          <Parameter Name="Vendor" Type="nvarchar" Mode="In" />
+          <Parameter Name="MachineType" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="uSP_Change_LoginInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="action" Type="tinyint" Mode="In" />
+          <Parameter Name="login_name" Type="varchar" Mode="In" />
+          <Parameter Name="login_pwd" Type="varchar" Mode="In" />
+          <Parameter Name="level_id" Type="tinyint" Mode="In" />
+          <Parameter Name="username" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="uSP_Change_LoginLevel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="action" Type="tinyint" Mode="In" />
+          <Parameter Name="login_level" Type="smallint" Mode="In" />
+          <Parameter Name="level_name" Type="varchar" Mode="In" />
+          <Parameter Name="level_id" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="uSP_Change_PhoneCallStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="statusNow" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="uSP_Change_PhoneCallUserInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="action" Type="tinyint" Mode="In" />
+          <Parameter Name="UserID" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="ChineseName" Type="nvarchar" Mode="In" />
+          <Parameter Name="ComID" Type="int" Mode="In" />
+          <Parameter Name="IsApproved" Type="bit" Mode="In" />
+          <Parameter Name="ChangeDate" Type="smalldatetime" Mode="In" />
+          <Parameter Name="LastLoginDate" Type="smalldatetime" Mode="In" />
+        </Function>
+        <Function Name="uSP_Change_PMHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pid" Type="smallint" Mode="In" />
+          <Parameter Name="tid" Type="varchar" Mode="In" />
+          <Parameter Name="pm" Type="bit" Mode="In" />
+          <Parameter Name="memo" Type="varchar" Mode="In" />
+          <Parameter Name="op" Type="varchar" Mode="In" />
+          <Parameter Name="pm_flag" Type="bit" Mode="In" />
+          <Parameter Name="ts_flag" Type="bit" Mode="In" />
+          <Parameter Name="backup_flag" Type="bit" Mode="In" />
+          <Parameter Name="cmsError_flag" Type="bit" Mode="In" />
+          <Parameter Name="other_flag" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="uSP_Change_PMTrigger" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="action" Type="bit" Mode="In" />
+          <Parameter Name="toolID" Type="varchar" Mode="In" />
+          <Parameter Name="pmFlag" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_AlarmDeal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="system" Type="nvarchar" Mode="In" />
+          <Parameter Name="toolID" Type="nvarchar" Mode="In" />
+          <Parameter Name="alarmMsg" Type="nvarchar" Mode="In" />
+          <Parameter Name="caseClose" Type="bit" Mode="In" />
+          <Parameter Name="almFromTime" Type="datetime" Mode="In" />
+          <Parameter Name="almToTime" Type="datetime" Mode="In" />
+          <Parameter Name="alarmID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_AlarmHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fromDate" Type="datetime" Mode="In" />
+          <Parameter Name="toDate" Type="datetime" Mode="In" />
+          <Parameter Name="toolID" Type="varchar" Mode="In" />
+          <Parameter Name="vid" Type="smallint" Mode="In" />
+          <Parameter Name="gname" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_AlarmNow" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="uSP_Select_CompareTable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Tagname" Type="varchar" Mode="In" />
+          <Parameter Name="Vendor" Type="nvarchar" Mode="In" />
+          <Parameter Name="MachineType" Type="nvarchar" Mode="In" />
+          <Parameter Name="GetDropdownItem" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_CompareTag" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Tagname" Type="varchar" Mode="In" />
+          <Parameter Name="Comment" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_EQ_List" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vid" Type="smallint" Mode="In" />
+          <Parameter Name="gname" Type="varchar" Mode="In" />
+          <Parameter Name="gonly" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_EQ_StatusCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vid" Type="smallint" Mode="In" />
+          <Parameter Name="sid" Type="tinyint" Mode="In" />
+          <Parameter Name="gFlag" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_EQ_Type" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vid" Type="smallint" Mode="In" />
+          <Parameter Name="gname" Type="varchar" Mode="In" />
+          <Parameter Name="tid" Type="smallint" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_LoginInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="uSP_Select_LoginLevel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="uSP_Select_PhoneCallCompanyInfo_All" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="uSP_Select_PhoneCallStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="uSP_Select_PhoneCallUserInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_PMHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fromDate" Type="datetime" Mode="In" />
+          <Parameter Name="toDate" Type="datetime" Mode="In" />
+          <Parameter Name="vid" Type="smallint" Mode="In" />
+          <Parameter Name="pid" Type="smallint" Mode="In" />
+          <Parameter Name="toolID" Type="nvarchar" Mode="In" />
+          <Parameter Name="pm_flag" Type="bit" Mode="In" />
+          <Parameter Name="ts_flag" Type="bit" Mode="In" />
+          <Parameter Name="backup_flag" Type="bit" Mode="In" />
+          <Parameter Name="cmsError_flag" Type="bit" Mode="In" />
+          <Parameter Name="other_flag" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_PMTrigger" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pmFlag" Type="bit" Mode="In" />
+          <Parameter Name="vid" Type="smallint" Mode="In" />
+          <Parameter Name="group" Type="nvarchar" Mode="In" />
+          <Parameter Name="toolID" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_ValueHistory_BestFit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pid" Type="int" Mode="In" />
+          <Parameter Name="valueTags" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="StartDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_ValueHistory_BestFit_EQType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pids" Type="nvarchar" Mode="In" />
+          <Parameter Name="valueTags" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="StartDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_ValueHistory_Cyclic" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pid" Type="int" Mode="In" />
+          <Parameter Name="valueTags" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="StartDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_ValueHistory_Delta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pid" Type="int" Mode="In" />
+          <Parameter Name="valueTags" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="StartDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_ValueNames" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="uSP_Select_ValueNow" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vid" Type="smallint" Mode="In" />
+          <Parameter Name="gname" Type="varchar" Mode="In" />
+          <Parameter Name="pid" Type="smallint" Mode="In" />
+        </Function>
+        <Function Name="uSP_UserLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="login_name" Type="varchar" Mode="In" />
+          <Parameter Name="login_pwd" Type="varchar" Mode="In" />
+        </Function>
+        <!--產生期間發現錯誤:
+      警告 6013: 資料表/檢視 'tsmc14_p6-Intouch.dbo.vw_eq_valuenow' 未定義主索引鍵，也無法推斷有效的主索引鍵。此資料表/檢視已被排除。如果要使用此實體，您必須檢閱您的結構描述，加入正確的索引鍵，並將它取消註解。
+      
+      <EntityType Name="vw_eq_valuenow">
+        <Property Name="pid" Type="smallint" />
+        <Property Name="tid" Type="smallint" />
+        <Property Name="vid" Type="smallint" />
+        <Property Name="gname" Type="varchar" MaxLength="20" />
+        <Property Name="tool_id" Type="varchar" MaxLength="20" />
+        <Property Name="location_id" Type="varchar" MaxLength="20" />
+        <Property Name="location" Type="varchar" MaxLength="20" />
+        <Property Name="location_side" Type="char" MaxLength="1" />
+        <Property Name="typeName" Type="varchar" MaxLength="50" />
+        <Property Name="vendor_name" Type="varchar" MaxLength="50" />
+        <Property Name="vendor_Intouch" Type="varchar" MaxLength="50" />
+        <Property Name="TagName" Type="nvarchar" MaxLength="256" />
+        <Property Name="ValueAcro" Type="nvarchar" MaxLength="256" />
+        <Property Name="ValueComment" Type="nvarchar" MaxLength="512" />
+        <Property Name="DataTime" Type="nvarchar" MaxLength="30" />
+        <Property Name="Value" Type="float" />
+        <Property Name="Unit" Type="varchar" MaxLength="20" />
+        <Property Name="Eng_Comment" Type="varchar" MaxLength="100" />
+        <Property Name="Cht_Comment" Type="nvarchar" MaxLength="50" />
+      </EntityType>-->
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="analog_comment" EntityType="Model.analog_comment" />
+          <EntitySet Name="CompareTable" EntityType="Model.CompareTable" />
+          <EntitySet Name="PhoneCallCompanyInfo" EntityType="Model.PhoneCallCompanyInfo" />
+          <EntitySet Name="PhoneCallUserInfo" EntityType="Model.PhoneCallUserInfo" />
+          <EntitySet Name="vw_AlarmDealInfo" EntityType="Model.vw_AlarmDealInfo" />
+          <EntitySet Name="vw_eq_status" EntityType="Model.vw_eq_status" />
+          <EntitySet Name="vw_pm_history" EntityType="Model.vw_pm_history" />
+          <EntitySet Name="vw_pm_trigger" EntityType="Model.vw_pm_trigger" />
+          <FunctionImport Name="uSP_Change_Alarm">
+            <Parameter Name="action" Mode="In" Type="Byte" />
+            <Parameter Name="Tagname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Change_AlarmDeal">
+            <Parameter Name="aid" Mode="In" Type="Int32" />
+            <Parameter Name="system" Mode="In" Type="String" />
+            <Parameter Name="toolID" Mode="In" Type="String" />
+            <Parameter Name="affect" Mode="In" Type="Boolean" />
+            <Parameter Name="affTime" Mode="In" Type="String" />
+            <Parameter Name="dealWith" Mode="In" Type="String" />
+            <Parameter Name="almCause" Mode="In" Type="String" />
+            <Parameter Name="parts" Mode="In" Type="String" />
+            <Parameter Name="pmDate" Mode="In" Type="String" />
+            <Parameter Name="pmCycle" Mode="In" Type="String" />
+            <Parameter Name="caseClose" Mode="In" Type="Boolean" />
+            <Parameter Name="dealUser" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Change_CompareTable">
+            <Parameter Name="action" Mode="In" Type="Byte" />
+            <Parameter Name="TagIndex" Mode="In" Type="Int32" />
+            <Parameter Name="Tagname" Mode="In" Type="String" />
+            <Parameter Name="Comment" Mode="In" Type="String" />
+            <Parameter Name="SendBody" Mode="In" Type="String" />
+            <Parameter Name="VoiceText" Mode="In" Type="String" />
+            <Parameter Name="SendTo" Mode="In" Type="String" />
+            <Parameter Name="PriLo" Mode="In" Type="Int32" />
+            <Parameter Name="PriHi" Mode="In" Type="Int32" />
+            <Parameter Name="ISO" Mode="In" Type="Int32" />
+            <Parameter Name="CallOut" Mode="In" Type="Boolean" />
+            <Parameter Name="Vendor" Mode="In" Type="String" />
+            <Parameter Name="MachineType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Change_LoginInfo">
+            <Parameter Name="action" Mode="In" Type="Byte" />
+            <Parameter Name="login_name" Mode="In" Type="String" />
+            <Parameter Name="login_pwd" Mode="In" Type="String" />
+            <Parameter Name="level_id" Mode="In" Type="Byte" />
+            <Parameter Name="username" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Change_LoginLevel">
+            <Parameter Name="action" Mode="In" Type="Byte" />
+            <Parameter Name="login_level" Mode="In" Type="Int16" />
+            <Parameter Name="level_name" Mode="In" Type="String" />
+            <Parameter Name="level_id" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Change_PhoneCallStatus">
+            <Parameter Name="statusNow" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Change_PhoneCallUserInfo">
+            <Parameter Name="action" Mode="In" Type="Byte" />
+            <Parameter Name="UserID" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="ChineseName" Mode="In" Type="String" />
+            <Parameter Name="ComID" Mode="In" Type="Int32" />
+            <Parameter Name="IsApproved" Mode="In" Type="Boolean" />
+            <Parameter Name="ChangeDate" Mode="In" Type="DateTime" />
+            <Parameter Name="LastLoginDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Change_PMHistory">
+            <Parameter Name="pid" Mode="In" Type="Int16" />
+            <Parameter Name="tid" Mode="In" Type="String" />
+            <Parameter Name="pm" Mode="In" Type="Boolean" />
+            <Parameter Name="memo" Mode="In" Type="String" />
+            <Parameter Name="op" Mode="In" Type="String" />
+            <Parameter Name="pm_flag" Mode="In" Type="Boolean" />
+            <Parameter Name="ts_flag" Mode="In" Type="Boolean" />
+            <Parameter Name="backup_flag" Mode="In" Type="Boolean" />
+            <Parameter Name="cmsError_flag" Mode="In" Type="Boolean" />
+            <Parameter Name="other_flag" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Change_PMTrigger">
+            <Parameter Name="action" Mode="In" Type="Boolean" />
+            <Parameter Name="toolID" Mode="In" Type="String" />
+            <Parameter Name="pmFlag" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_AlarmDeal">
+            <Parameter Name="system" Mode="In" Type="String" />
+            <Parameter Name="toolID" Mode="In" Type="String" />
+            <Parameter Name="alarmMsg" Mode="In" Type="String" />
+            <Parameter Name="caseClose" Mode="In" Type="Boolean" />
+            <Parameter Name="almFromTime" Mode="In" Type="DateTime" />
+            <Parameter Name="almToTime" Mode="In" Type="DateTime" />
+            <Parameter Name="alarmID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_AlarmHistory" ReturnType="Collection(Model.uSP_Select_AlarmHistory_Result)">
+            <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="toDate" Mode="In" Type="DateTime" />
+            <Parameter Name="toolID" Mode="In" Type="String" />
+            <Parameter Name="vid" Mode="In" Type="Int16" />
+            <Parameter Name="gname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_AlarmNow" ReturnType="Collection(Model.uSP_Select_AlarmNow_Result)" />
+          <FunctionImport Name="uSP_Select_CompareTable" ReturnType="Collection(Model.uSP_Select_CompareTable_Result)">
+            <Parameter Name="Tagname" Mode="In" Type="String" />
+            <Parameter Name="Vendor" Mode="In" Type="String" />
+            <Parameter Name="MachineType" Mode="In" Type="String" />
+            <Parameter Name="GetDropdownItem" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_CompareTag" ReturnType="Collection(Model.uSP_Select_CompareTag_Result)">
+            <Parameter Name="Tagname" Mode="In" Type="String" />
+            <Parameter Name="Comment" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_EQ_List" ReturnType="Collection(String)">
+            <Parameter Name="vid" Mode="In" Type="Int16" />
+            <Parameter Name="gname" Mode="In" Type="String" />
+            <Parameter Name="gonly" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_EQ_StatusCount" ReturnType="Collection(Model.uSP_Select_EQ_StatusCount_Result)">
+            <Parameter Name="vid" Mode="In" Type="Int16" />
+            <Parameter Name="sid" Mode="In" Type="Byte" />
+            <Parameter Name="gFlag" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_EQ_Type" ReturnType="Collection(Model.uSP_Select_EQ_Type_Result)">
+            <Parameter Name="vid" Mode="In" Type="Int16" />
+            <Parameter Name="gname" Mode="In" Type="String" />
+            <Parameter Name="tid" Mode="In" Type="Int16" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_LoginInfo" ReturnType="Collection(Model.uSP_Select_LoginInfo_Result)" />
+          <FunctionImport Name="uSP_Select_LoginLevel" ReturnType="Collection(Model.uSP_Select_LoginLevel_Result)" />
+          <FunctionImport Name="uSP_Select_PhoneCallCompanyInfo_All" ReturnType="Collection(Model.uSP_Select_PhoneCallCompanyInfo_All_Result)" />
+          <FunctionImport Name="uSP_Select_PhoneCallStatus" ReturnType="Collection(Boolean)" />
+          <FunctionImport Name="uSP_Select_PhoneCallUserInfo" ReturnType="Collection(Model.uSP_Select_PhoneCallUserInfo_Result)">
+            <Parameter Name="UserID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_PMHistory">
+            <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="toDate" Mode="In" Type="DateTime" />
+            <Parameter Name="vid" Mode="In" Type="Int16" />
+            <Parameter Name="pid" Mode="In" Type="Int16" />
+            <Parameter Name="toolID" Mode="In" Type="String" />
+            <Parameter Name="pm_flag" Mode="In" Type="Boolean" />
+            <Parameter Name="ts_flag" Mode="In" Type="Boolean" />
+            <Parameter Name="backup_flag" Mode="In" Type="Boolean" />
+            <Parameter Name="cmsError_flag" Mode="In" Type="Boolean" />
+            <Parameter Name="other_flag" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_PMTrigger" ReturnType="Collection(Model.uSP_Select_PMTrigger_Result)">
+            <Parameter Name="pmFlag" Mode="In" Type="Boolean" />
+            <Parameter Name="vid" Mode="In" Type="Int16" />
+            <Parameter Name="group" Mode="In" Type="String" />
+            <Parameter Name="toolID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_ValueHistory_BestFit">
+            <Parameter Name="pid" Mode="In" Type="Int32" />
+            <Parameter Name="valueTags" Mode="In" Type="String" />
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_ValueHistory_BestFit_EQType">
+            <Parameter Name="pids" Mode="In" Type="String" />
+            <Parameter Name="valueTags" Mode="In" Type="String" />
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_ValueHistory_Cyclic">
+            <Parameter Name="pid" Mode="In" Type="Int32" />
+            <Parameter Name="valueTags" Mode="In" Type="String" />
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_ValueHistory_Delta">
+            <Parameter Name="pid" Mode="In" Type="Int32" />
+            <Parameter Name="valueTags" Mode="In" Type="String" />
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_ValueNames" ReturnType="Collection(Model.uSP_Select_ValueNames_Result)">
+            <Parameter Name="pid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_Select_ValueNow">
+            <Parameter Name="vid" Mode="In" Type="Int16" />
+            <Parameter Name="gname" Mode="In" Type="String" />
+            <Parameter Name="pid" Mode="In" Type="Int16" />
+          </FunctionImport>
+          <FunctionImport Name="uSP_UserLogin" ReturnType="Collection(Model.uSP_UserLogin_Result)">
+            <Parameter Name="login_name" Mode="In" Type="String" />
+            <Parameter Name="login_pwd" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="analog_comment">
+          <Key>
+            <PropertyRef Name="type_id" />
+            <PropertyRef Name="Tag_Name" />
+          </Key>
+          <Property Name="type_id" Type="Int16" Nullable="false" />
+          <Property Name="Tag_Name" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="Eng_Comment" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="Cht_Comment" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="CompareTable">
+          <Key>
+            <PropertyRef Name="Tagname" />
+            <PropertyRef Name="Vendor" />
+            <PropertyRef Name="MachineType" />
+          </Key>
+          <Property Name="TagIndex" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tagname" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="Comment" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="SendBody" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="VoiceText" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="SendTo" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="PriLo" Type="Int32" Nullable="false" />
+          <Property Name="PriHi" Type="Int32" Nullable="false" />
+          <Property Name="ISO" Type="Int32" Nullable="false" />
+          <Property Name="CallOut" Type="Boolean" Nullable="false" />
+          <Property Name="Vendor" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MachineType" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="PhoneCallCompanyInfo">
+          <Key>
+            <PropertyRef Name="ComID" />
+            <PropertyRef Name="ComName" />
+            <PropertyRef Name="ComShortName" />
+          </Key>
+          <Property Name="ComID" Type="Int32" Nullable="false" />
+          <Property Name="ComName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ComShortName" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="PhoneCallUserInfo">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="ComID" />
+            <PropertyRef Name="IsApproved" />
+            <PropertyRef Name="CreateDate" />
+          </Key>
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Password" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ChineseName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ComID" Type="Int32" Nullable="false" />
+          <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ChangeDate" Type="DateTime" Precision="0" />
+          <Property Name="LastLoginDate" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="vw_AlarmDealInfo">
+          <Key>
+            <PropertyRef Name="AlarmId" />
+            <PropertyRef Name="type_id" />
+            <PropertyRef Name="type_name" />
+            <PropertyRef Name="vendor_id" />
+            <PropertyRef Name="AlarmLevel" />
+          </Key>
+          <Property Name="AlarmId" Type="Int32" Nullable="false" />
+          <Property Name="AlarmWeek" Type="String" MaxLength="6" Unicode="false" FixedLength="false" />
+          <Property Name="AlarmTime_Begin" Type="DateTime" Precision="3" />
+          <Property Name="AlarmTime_AlarmAck" Type="DateTime" Precision="3" />
+          <Property Name="AlarmTime_SystemAck" Type="DateTime" Precision="3" />
+          <Property Name="AlarmTime_UnAckRtn" Type="DateTime" Precision="3" />
+          <Property Name="AlarmTime_Rtn" Type="DateTime" Precision="3" />
+          <Property Name="EventType" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+          <Property Name="AlarmState" Type="String" MaxLength="9" Unicode="true" FixedLength="false" />
+          <Property Name="UnAckDuration" Type="String" MaxLength="17" Unicode="true" FixedLength="false" />
+          <Property Name="AlarmDuration" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="TagName" Type="String" MaxLength="132" Unicode="true" FixedLength="false" />
+          <Property Name="toolID" Type="String" MaxLength="132" Unicode="true" FixedLength="false" />
+          <Property Name="location_id" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="location" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="location_side" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="group_name" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="type_id" Type="Int16" Nullable="false" />
+          <Property Name="type_name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="vendor_id" Type="Int16" Nullable="false" />
+          <Property Name="vendor_name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ALMGroup" Type="String" MaxLength="32" Unicode="true" FixedLength="false" />
+          <Property Name="AlarmMsg" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="ValueString" Type="String" MaxLength="131" Unicode="true" FixedLength="false" />
+          <Property Name="Value" Type="String" MaxLength="131" Unicode="true" FixedLength="false" />
+          <Property Name="TriggerLimit" Type="String" MaxLength="131" Unicode="true" FixedLength="false" />
+          <Property Name="AlarmLevel" Type="Int16" Nullable="false" />
+          <Property Name="Operator" Type="String" MaxLength="131" Unicode="true" FixedLength="false" />
+          <Property Name="AckOperator" Type="String" MaxLength="131" Unicode="true" FixedLength="false" />
+          <Property Name="system" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="affect" Type="Boolean" />
+          <Property Name="affTime" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="dealWith" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="almCause" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="parts" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="pmDate" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="pmCycle" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="caseClose" Type="Boolean" />
+          <Property Name="dealUser" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="vw_eq_status">
+          <Key>
+            <PropertyRef Name="pid" />
+            <PropertyRef Name="typeid" />
+            <PropertyRef Name="tName" />
+            <PropertyRef Name="sid" />
+            <PropertyRef Name="status" />
+          </Key>
+          <Property Name="pid" Type="Int16" Nullable="false" />
+          <Property Name="gname" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="toolid" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="lid" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="loc" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="locSide" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="typeid" Type="Int16" Nullable="false" />
+          <Property Name="vid" Type="Int16" />
+          <Property Name="tName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="vName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="vendor_Intouch" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="sid" Type="Byte" Nullable="false" />
+          <Property Name="status" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
+          <Property Name="statusdate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="vw_pm_history">
+          <Key>
+            <PropertyRef Name="pmHistoryID" />
+            <PropertyRef Name="plc_id" />
+            <PropertyRef Name="tool_id" />
+            <PropertyRef Name="pm_set" />
+            <PropertyRef Name="operator" />
+            <PropertyRef Name="update_date" />
+            <PropertyRef Name="tName" />
+          </Key>
+          <Property Name="pmHistoryID" Type="Int32" Nullable="false" />
+          <Property Name="plc_id" Type="Int16" Nullable="false" />
+          <Property Name="tool_id" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="pm_set" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="pm_unset" Type="DateTime" Precision="3" />
+          <Property Name="memo" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="operator" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="pm_flag" Type="Boolean" />
+          <Property Name="ts_flag" Type="Boolean" />
+          <Property Name="backup_flag" Type="Boolean" />
+          <Property Name="cmsError_flag" Type="Boolean" />
+          <Property Name="other_flag" Type="Boolean" />
+          <Property Name="update_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="gname" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="lid" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="loc" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="locSide" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="tName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="vid" Type="Int16" />
+          <Property Name="vName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="vendor_Intouch" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="vw_pm_trigger">
+          <Key>
+            <PropertyRef Name="PMTrigger" />
+          </Key>
+          <Property Name="PMTrigger" Type="Int32" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="uSP_Select_AlarmHistory_Result">
+          <Property Type="String" Name="AlarmWeek" Nullable="true" MaxLength="6" />
+          <Property Type="Int32" Name="AlarmId" Nullable="false" />
+          <Property Type="DateTime" Name="AlarmTime_Begin" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="AlarmTime_AlarmAck" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="AlarmTime_SystemAck" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="AlarmTime_UnAckRtn" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="AlarmTime_Rtn" Nullable="true" Precision="23" />
+          <Property Type="String" Name="EventType" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="AlarmState" Nullable="true" MaxLength="9" />
+          <Property Type="String" Name="AlarmType" Nullable="true" MaxLength="6" />
+          <Property Type="String" Name="UnAckDuration" Nullable="true" MaxLength="17" />
+          <Property Type="String" Name="AlarmDuration" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="TagName" Nullable="true" MaxLength="132" />
+          <Property Type="String" Name="toolID" Nullable="true" MaxLength="132" />
+          <Property Type="String" Name="location_id" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="location" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="location_side" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="group_name" Nullable="true" MaxLength="20" />
+          <Property Type="Int16" Name="type_id" Nullable="false" />
+          <Property Type="String" Name="type_name" Nullable="false" MaxLength="50" />
+          <Property Type="Int16" Name="vendor_id" Nullable="false" />
+          <Property Type="String" Name="vendor_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ALMGroup" Nullable="true" MaxLength="32" />
+          <Property Type="String" Name="AlarmMsg" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="ValueString" Nullable="true" MaxLength="131" />
+          <Property Type="String" Name="Value" Nullable="true" MaxLength="131" />
+          <Property Type="String" Name="TriggerLimit" Nullable="true" MaxLength="131" />
+          <Property Type="Int16" Name="AlarmLevel" Nullable="false" />
+          <Property Type="String" Name="Operator" Nullable="true" MaxLength="131" />
+          <Property Type="String" Name="AckOperator" Nullable="true" MaxLength="131" />
+        </ComplexType>
+        <ComplexType Name="uSP_Select_AlarmNow_Result">
+          <Property Type="Int32" Name="AlarmId" Nullable="false" />
+          <Property Type="DateTime" Name="AlarmTime" Nullable="true" Precision="23" />
+          <Property Type="String" Name="toolID" Nullable="true" MaxLength="132" />
+          <Property Type="String" Name="location" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="location_id" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="vendor_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AlarmMsg" Nullable="true" MaxLength="255" />
+          <Property Type="Int16" Name="AlarmLevel" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="uSP_Select_CompareTable_Result">
+          <Property Type="Int32" Name="TagIndex" Nullable="false" />
+          <Property Type="String" Name="Tagname" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Comment" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="SendBody" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="VoiceText" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="SendTo" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="PriLo" Nullable="false" />
+          <Property Type="Int32" Name="PriHi" Nullable="false" />
+          <Property Type="Int32" Name="ISO" Nullable="false" />
+          <Property Type="Boolean" Name="CallOut" Nullable="false" />
+          <Property Type="String" Name="Vendor" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="MachineType" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="uSP_Select_CompareTag_Result">
+          <Property Type="String" Name="SendTo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="SendBody" Nullable="true" MaxLength="293" />
+          <Property Type="String" Name="VoiceText" Nullable="true" MaxLength="251" />
+          <Property Type="String" Name="SendType" Nullable="false" MaxLength="3" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="3" />
+        </ComplexType>
+        <ComplexType Name="uSP_Select_EQ_StatusCount_Result">
+          <Property Type="String" Name="vName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="eqCount" Nullable="true" />
+          <Property Type="Int32" Name="normalCount" Nullable="true" />
+          <Property Type="Int32" Name="troubleCount" Nullable="true" />
+          <Property Type="Int32" Name="pmCount" Nullable="true" />
+          <Property Type="Int32" Name="otherCount" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="uSP_Select_EQ_Type_Result">
+          <Property Type="Int16" Name="vid" Nullable="true" />
+          <Property Type="String" Name="vName" Nullable="true" MaxLength="50" />
+          <Property Type="Int16" Name="typeid" Nullable="false" />
+          <Property Type="String" Name="tName" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="uSP_Select_LoginInfo_Result">
+          <Property Type="String" Name="login_name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="login_pwd" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="username" Nullable="false" MaxLength="50" />
+          <Property Type="Int16" Name="login_level" Nullable="false" />
+          <Property Type="String" Name="level_name" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="update_date" Nullable="false" Precision="16" />
+          <Property Type="DateTime" Name="built_date" Nullable="false" Precision="16" />
+        </ComplexType>
+        <ComplexType Name="uSP_Select_LoginLevel_Result">
+          <Property Type="Byte" Name="level_id" Nullable="false" />
+          <Property Type="Int16" Name="login_level" Nullable="false" />
+          <Property Type="String" Name="level_name" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="uSP_Select_PhoneCallCompanyInfo_All_Result">
+          <Property Type="Int32" Name="ComID" Nullable="false" />
+          <Property Type="String" Name="ComName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ComShortName" Nullable="false" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="uSP_Select_PhoneCallUserInfo_Result">
+          <Property Type="String" Name="UserID" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ChineseName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ComID" Nullable="false" />
+          <Property Type="Boolean" Name="IsApproved" Nullable="false" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="false" Precision="16" />
+          <Property Type="DateTime" Name="ChangeDate" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="LastLoginDate" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="ComID1" Nullable="true" />
+          <Property Type="String" Name="ComName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ComShortName" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="uSP_Select_PMTrigger_Result">
+          <Property Type="String" Name="tool_id" Nullable="false" MaxLength="20" />
+          <Property Type="Boolean" Name="pmFlag" Nullable="false" />
+          <Property Type="String" Name="vendor_Intouch" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="uSP_Select_ValueNames_Result">
+          <Property Type="String" Name="Cht_Comment" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="FullTagName" Nullable="true" MaxLength="47" />
+        </ComplexType>
+        <ComplexType Name="uSP_UserLogin_Result">
+          <Property Type="String" Name="login_name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="username" Nullable="false" MaxLength="50" />
+          <Property Type="Int16" Name="login_level" Nullable="false" />
+          <Property Type="String" Name="level_name" Nullable="false" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="analog_comment">
+            <EntityTypeMapping TypeName="Model.analog_comment">
+              <MappingFragment StoreEntitySet="analog_comment">
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="Tag_Name" ColumnName="Tag_Name" />
+                <ScalarProperty Name="Eng_Comment" ColumnName="Eng_Comment" />
+                <ScalarProperty Name="Cht_Comment" ColumnName="Cht_Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompareTable">
+            <EntityTypeMapping TypeName="Model.CompareTable">
+              <MappingFragment StoreEntitySet="CompareTable">
+                <ScalarProperty Name="TagIndex" ColumnName="TagIndex" />
+                <ScalarProperty Name="Tagname" ColumnName="Tagname" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="SendBody" ColumnName="SendBody" />
+                <ScalarProperty Name="VoiceText" ColumnName="VoiceText" />
+                <ScalarProperty Name="SendTo" ColumnName="SendTo" />
+                <ScalarProperty Name="PriLo" ColumnName="PriLo" />
+                <ScalarProperty Name="PriHi" ColumnName="PriHi" />
+                <ScalarProperty Name="ISO" ColumnName="ISO" />
+                <ScalarProperty Name="CallOut" ColumnName="CallOut" />
+                <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+                <ScalarProperty Name="MachineType" ColumnName="MachineType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhoneCallCompanyInfo">
+            <EntityTypeMapping TypeName="Model.PhoneCallCompanyInfo">
+              <MappingFragment StoreEntitySet="PhoneCallCompanyInfo">
+                <ScalarProperty Name="ComID" ColumnName="ComID" />
+                <ScalarProperty Name="ComName" ColumnName="ComName" />
+                <ScalarProperty Name="ComShortName" ColumnName="ComShortName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhoneCallUserInfo">
+            <EntityTypeMapping TypeName="Model.PhoneCallUserInfo">
+              <MappingFragment StoreEntitySet="PhoneCallUserInfo">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ChineseName" ColumnName="ChineseName" />
+                <ScalarProperty Name="ComID" ColumnName="ComID" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_AlarmDealInfo">
+            <EntityTypeMapping TypeName="Model.vw_AlarmDealInfo">
+              <MappingFragment StoreEntitySet="vw_AlarmDealInfo">
+                <ScalarProperty Name="AlarmId" ColumnName="AlarmId" />
+                <ScalarProperty Name="AlarmWeek" ColumnName="AlarmWeek" />
+                <ScalarProperty Name="AlarmTime_Begin" ColumnName="AlarmTime_Begin" />
+                <ScalarProperty Name="AlarmTime_AlarmAck" ColumnName="AlarmTime_AlarmAck" />
+                <ScalarProperty Name="AlarmTime_SystemAck" ColumnName="AlarmTime_SystemAck" />
+                <ScalarProperty Name="AlarmTime_UnAckRtn" ColumnName="AlarmTime_UnAckRtn" />
+                <ScalarProperty Name="AlarmTime_Rtn" ColumnName="AlarmTime_Rtn" />
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="AlarmState" ColumnName="AlarmState" />
+                <ScalarProperty Name="UnAckDuration" ColumnName="UnAckDuration" />
+                <ScalarProperty Name="AlarmDuration" ColumnName="AlarmDuration" />
+                <ScalarProperty Name="TagName" ColumnName="TagName" />
+                <ScalarProperty Name="toolID" ColumnName="toolID" />
+                <ScalarProperty Name="location_id" ColumnName="location_id" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="location_side" ColumnName="location_side" />
+                <ScalarProperty Name="group_name" ColumnName="group_name" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="type_name" ColumnName="type_name" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="vendor_name" ColumnName="vendor_name" />
+                <ScalarProperty Name="ALMGroup" ColumnName="ALMGroup" />
+                <ScalarProperty Name="AlarmMsg" ColumnName="AlarmMsg" />
+                <ScalarProperty Name="ValueString" ColumnName="ValueString" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="TriggerLimit" ColumnName="TriggerLimit" />
+                <ScalarProperty Name="AlarmLevel" ColumnName="AlarmLevel" />
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
+                <ScalarProperty Name="AckOperator" ColumnName="AckOperator" />
+                <ScalarProperty Name="system" ColumnName="system" />
+                <ScalarProperty Name="affect" ColumnName="affect" />
+                <ScalarProperty Name="affTime" ColumnName="affTime" />
+                <ScalarProperty Name="dealWith" ColumnName="dealWith" />
+                <ScalarProperty Name="almCause" ColumnName="almCause" />
+                <ScalarProperty Name="parts" ColumnName="parts" />
+                <ScalarProperty Name="pmDate" ColumnName="pmDate" />
+                <ScalarProperty Name="pmCycle" ColumnName="pmCycle" />
+                <ScalarProperty Name="caseClose" ColumnName="caseClose" />
+                <ScalarProperty Name="dealUser" ColumnName="dealUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_eq_status">
+            <EntityTypeMapping TypeName="Model.vw_eq_status">
+              <MappingFragment StoreEntitySet="vw_eq_status">
+                <ScalarProperty Name="pid" ColumnName="pid" />
+                <ScalarProperty Name="gname" ColumnName="gname" />
+                <ScalarProperty Name="toolid" ColumnName="toolid" />
+                <ScalarProperty Name="lid" ColumnName="lid" />
+                <ScalarProperty Name="loc" ColumnName="loc" />
+                <ScalarProperty Name="locSide" ColumnName="locSide" />
+                <ScalarProperty Name="typeid" ColumnName="typeid" />
+                <ScalarProperty Name="vid" ColumnName="vid" />
+                <ScalarProperty Name="tName" ColumnName="tName" />
+                <ScalarProperty Name="vName" ColumnName="vName" />
+                <ScalarProperty Name="vendor_Intouch" ColumnName="vendor_Intouch" />
+                <ScalarProperty Name="sid" ColumnName="sid" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="statusdate" ColumnName="statusdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_pm_history">
+            <EntityTypeMapping TypeName="Model.vw_pm_history">
+              <MappingFragment StoreEntitySet="vw_pm_history">
+                <ScalarProperty Name="pmHistoryID" ColumnName="pmHistoryID" />
+                <ScalarProperty Name="plc_id" ColumnName="plc_id" />
+                <ScalarProperty Name="tool_id" ColumnName="tool_id" />
+                <ScalarProperty Name="pm_set" ColumnName="pm_set" />
+                <ScalarProperty Name="pm_unset" ColumnName="pm_unset" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="operator" ColumnName="operator" />
+                <ScalarProperty Name="pm_flag" ColumnName="pm_flag" />
+                <ScalarProperty Name="ts_flag" ColumnName="ts_flag" />
+                <ScalarProperty Name="backup_flag" ColumnName="backup_flag" />
+                <ScalarProperty Name="cmsError_flag" ColumnName="cmsError_flag" />
+                <ScalarProperty Name="other_flag" ColumnName="other_flag" />
+                <ScalarProperty Name="update_date" ColumnName="update_date" />
+                <ScalarProperty Name="gname" ColumnName="gname" />
+                <ScalarProperty Name="lid" ColumnName="lid" />
+                <ScalarProperty Name="loc" ColumnName="loc" />
+                <ScalarProperty Name="locSide" ColumnName="locSide" />
+                <ScalarProperty Name="tName" ColumnName="tName" />
+                <ScalarProperty Name="vid" ColumnName="vid" />
+                <ScalarProperty Name="vName" ColumnName="vName" />
+                <ScalarProperty Name="vendor_Intouch" ColumnName="vendor_Intouch" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_pm_trigger">
+            <EntityTypeMapping TypeName="Model.vw_pm_trigger">
+              <MappingFragment StoreEntitySet="vw_pm_trigger">
+                <ScalarProperty Name="PMTrigger" ColumnName="PMTrigger" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Change_Alarm" FunctionName="Model.Store.uSP_Change_Alarm" />
+          <FunctionImportMapping FunctionImportName="uSP_Change_AlarmDeal" FunctionName="Model.Store.uSP_Change_AlarmDeal" />
+          <FunctionImportMapping FunctionImportName="uSP_Change_CompareTable" FunctionName="Model.Store.uSP_Change_CompareTable" />
+          <FunctionImportMapping FunctionImportName="uSP_Change_LoginInfo" FunctionName="Model.Store.uSP_Change_LoginInfo" />
+          <FunctionImportMapping FunctionImportName="uSP_Change_LoginLevel" FunctionName="Model.Store.uSP_Change_LoginLevel" />
+          <FunctionImportMapping FunctionImportName="uSP_Change_PhoneCallStatus" FunctionName="Model.Store.uSP_Change_PhoneCallStatus" />
+          <FunctionImportMapping FunctionImportName="uSP_Change_PhoneCallUserInfo" FunctionName="Model.Store.uSP_Change_PhoneCallUserInfo" />
+          <FunctionImportMapping FunctionImportName="uSP_Change_PMHistory" FunctionName="Model.Store.uSP_Change_PMHistory" />
+          <FunctionImportMapping FunctionImportName="uSP_Change_PMTrigger" FunctionName="Model.Store.uSP_Change_PMTrigger" />
+          <FunctionImportMapping FunctionImportName="uSP_Select_AlarmDeal" FunctionName="Model.Store.uSP_Select_AlarmDeal" />
+          <FunctionImportMapping FunctionImportName="uSP_Select_AlarmHistory" FunctionName="Model.Store.uSP_Select_AlarmHistory">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_AlarmHistory_Result">
+                <ScalarProperty Name="AlarmWeek" ColumnName="AlarmWeek" />
+                <ScalarProperty Name="AlarmId" ColumnName="AlarmId" />
+                <ScalarProperty Name="AlarmTime_Begin" ColumnName="AlarmTime_Begin" />
+                <ScalarProperty Name="AlarmTime_AlarmAck" ColumnName="AlarmTime_AlarmAck" />
+                <ScalarProperty Name="AlarmTime_SystemAck" ColumnName="AlarmTime_SystemAck" />
+                <ScalarProperty Name="AlarmTime_UnAckRtn" ColumnName="AlarmTime_UnAckRtn" />
+                <ScalarProperty Name="AlarmTime_Rtn" ColumnName="AlarmTime_Rtn" />
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="AlarmState" ColumnName="AlarmState" />
+                <ScalarProperty Name="AlarmType" ColumnName="AlarmType" />
+                <ScalarProperty Name="UnAckDuration" ColumnName="UnAckDuration" />
+                <ScalarProperty Name="AlarmDuration" ColumnName="AlarmDuration" />
+                <ScalarProperty Name="TagName" ColumnName="TagName" />
+                <ScalarProperty Name="toolID" ColumnName="toolID" />
+                <ScalarProperty Name="location_id" ColumnName="location_id" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="location_side" ColumnName="location_side" />
+                <ScalarProperty Name="group_name" ColumnName="group_name" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="type_name" ColumnName="type_name" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="vendor_name" ColumnName="vendor_name" />
+                <ScalarProperty Name="ALMGroup" ColumnName="ALMGroup" />
+                <ScalarProperty Name="AlarmMsg" ColumnName="AlarmMsg" />
+                <ScalarProperty Name="ValueString" ColumnName="ValueString" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="TriggerLimit" ColumnName="TriggerLimit" />
+                <ScalarProperty Name="AlarmLevel" ColumnName="AlarmLevel" />
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
+                <ScalarProperty Name="AckOperator" ColumnName="AckOperator" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_AlarmNow" FunctionName="Model.Store.uSP_Select_AlarmNow">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_AlarmNow_Result">
+                <ScalarProperty Name="AlarmId" ColumnName="AlarmId" />
+                <ScalarProperty Name="AlarmTime" ColumnName="AlarmTime" />
+                <ScalarProperty Name="toolID" ColumnName="toolID" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="location_id" ColumnName="location_id" />
+                <ScalarProperty Name="vendor_name" ColumnName="vendor_name" />
+                <ScalarProperty Name="AlarmMsg" ColumnName="AlarmMsg" />
+                <ScalarProperty Name="AlarmLevel" ColumnName="AlarmLevel" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_CompareTable" FunctionName="Model.Store.uSP_Select_CompareTable">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_CompareTable_Result">
+                <ScalarProperty Name="TagIndex" ColumnName="TagIndex" />
+                <ScalarProperty Name="Tagname" ColumnName="Tagname" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="SendBody" ColumnName="SendBody" />
+                <ScalarProperty Name="VoiceText" ColumnName="VoiceText" />
+                <ScalarProperty Name="SendTo" ColumnName="SendTo" />
+                <ScalarProperty Name="PriLo" ColumnName="PriLo" />
+                <ScalarProperty Name="PriHi" ColumnName="PriHi" />
+                <ScalarProperty Name="ISO" ColumnName="ISO" />
+                <ScalarProperty Name="CallOut" ColumnName="CallOut" />
+                <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+                <ScalarProperty Name="MachineType" ColumnName="MachineType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_CompareTag" FunctionName="Model.Store.uSP_Select_CompareTag">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_CompareTag_Result">
+                <ScalarProperty Name="SendTo" ColumnName="SendTo" />
+                <ScalarProperty Name="SendBody" ColumnName="SendBody" />
+                <ScalarProperty Name="VoiceText" ColumnName="VoiceText" />
+                <ScalarProperty Name="SendType" ColumnName="SendType" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_EQ_List" FunctionName="Model.Store.uSP_Select_EQ_List" />
+          <FunctionImportMapping FunctionImportName="uSP_Select_EQ_StatusCount" FunctionName="Model.Store.uSP_Select_EQ_StatusCount">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_EQ_StatusCount_Result">
+                <ScalarProperty Name="vName" ColumnName="vName" />
+                <ScalarProperty Name="eqCount" ColumnName="eqCount" />
+                <ScalarProperty Name="normalCount" ColumnName="normalCount" />
+                <ScalarProperty Name="troubleCount" ColumnName="troubleCount" />
+                <ScalarProperty Name="pmCount" ColumnName="pmCount" />
+                <ScalarProperty Name="otherCount" ColumnName="otherCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_EQ_Type" FunctionName="Model.Store.uSP_Select_EQ_Type">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_EQ_Type_Result">
+                <ScalarProperty Name="vid" ColumnName="vid" />
+                <ScalarProperty Name="vName" ColumnName="vName" />
+                <ScalarProperty Name="typeid" ColumnName="typeid" />
+                <ScalarProperty Name="tName" ColumnName="tName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_LoginInfo" FunctionName="Model.Store.uSP_Select_LoginInfo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_LoginInfo_Result">
+                <ScalarProperty Name="login_name" ColumnName="login_name" />
+                <ScalarProperty Name="login_pwd" ColumnName="login_pwd" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="login_level" ColumnName="login_level" />
+                <ScalarProperty Name="level_name" ColumnName="level_name" />
+                <ScalarProperty Name="update_date" ColumnName="update_date" />
+                <ScalarProperty Name="built_date" ColumnName="built_date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_LoginLevel" FunctionName="Model.Store.uSP_Select_LoginLevel">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_LoginLevel_Result">
+                <ScalarProperty Name="level_id" ColumnName="level_id" />
+                <ScalarProperty Name="login_level" ColumnName="login_level" />
+                <ScalarProperty Name="level_name" ColumnName="level_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_PhoneCallCompanyInfo_All" FunctionName="Model.Store.uSP_Select_PhoneCallCompanyInfo_All">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_PhoneCallCompanyInfo_All_Result">
+                <ScalarProperty Name="ComID" ColumnName="ComID" />
+                <ScalarProperty Name="ComName" ColumnName="ComName" />
+                <ScalarProperty Name="ComShortName" ColumnName="ComShortName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_PhoneCallStatus" FunctionName="Model.Store.uSP_Select_PhoneCallStatus" />
+          <FunctionImportMapping FunctionImportName="uSP_Select_PhoneCallUserInfo" FunctionName="Model.Store.uSP_Select_PhoneCallUserInfo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_PhoneCallUserInfo_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ChineseName" ColumnName="ChineseName" />
+                <ScalarProperty Name="ComID" ColumnName="ComID" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="ComID1" ColumnName="ComID1" />
+                <ScalarProperty Name="ComName" ColumnName="ComName" />
+                <ScalarProperty Name="ComShortName" ColumnName="ComShortName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_PMHistory" FunctionName="Model.Store.uSP_Select_PMHistory" />
+          <FunctionImportMapping FunctionImportName="uSP_Select_PMTrigger" FunctionName="Model.Store.uSP_Select_PMTrigger">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_PMTrigger_Result">
+                <ScalarProperty Name="tool_id" ColumnName="tool_id" />
+                <ScalarProperty Name="pmFlag" ColumnName="pmFlag" />
+                <ScalarProperty Name="vendor_Intouch" ColumnName="vendor_Intouch" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_ValueHistory_BestFit" FunctionName="Model.Store.uSP_Select_ValueHistory_BestFit" />
+          <FunctionImportMapping FunctionImportName="uSP_Select_ValueHistory_BestFit_EQType" FunctionName="Model.Store.uSP_Select_ValueHistory_BestFit_EQType" />
+          <FunctionImportMapping FunctionImportName="uSP_Select_ValueHistory_Cyclic" FunctionName="Model.Store.uSP_Select_ValueHistory_Cyclic" />
+          <FunctionImportMapping FunctionImportName="uSP_Select_ValueHistory_Delta" FunctionName="Model.Store.uSP_Select_ValueHistory_Delta" />
+          <FunctionImportMapping FunctionImportName="uSP_Select_ValueNames" FunctionName="Model.Store.uSP_Select_ValueNames">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_Select_ValueNames_Result">
+                <ScalarProperty Name="Cht_Comment" ColumnName="Cht_Comment" />
+                <ScalarProperty Name="FullTagName" ColumnName="FullTagName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uSP_Select_ValueNow" FunctionName="Model.Store.uSP_Select_ValueNow" />
+          <FunctionImportMapping FunctionImportName="uSP_UserLogin" FunctionName="Model.Store.uSP_UserLogin">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.uSP_UserLogin_Result">
+                <ScalarProperty Name="login_name" ColumnName="login_name" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="login_level" ColumnName="login_level" />
+                <ScalarProperty Name="level_name" ColumnName="level_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

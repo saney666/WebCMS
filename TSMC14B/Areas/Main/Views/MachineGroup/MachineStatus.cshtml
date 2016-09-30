@@ -1,0 +1,75 @@
+﻿@model List<TSMC14B.Areas.Main.Models.MachineStatusModel>
+    @{
+        Layout = "../Shared/_Layout.cshtml";
+        ViewBag.Title = Request["vName"] + "設備群組狀態顯示";
+    }
+
+    @section JavaScript{
+        <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    }
+    <h2 class="title">@Request["vName"] 設備群組狀態顯示</h2>
+    @Html.Partial("MachineGroupTitle", ViewData["PageName"] = "MachineStatus")
+    <div align="center">
+        @* <table class="mtable">
+                <thead>
+                    <tr>
+                        <th>課別</th>
+                        <th>總共設備數</th>
+                        <th>正常設備數</th>
+                        <th>警告/異常數</th>
+                        <th>PM 隔離</th>
+                        <th>其他狀態數</th>
+                        <th>Service數</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.GroupName</td>
+                            <td>@item.MachineCount</td>
+                            <td>@item.NormlCount</td>
+                            <td>@item.AlarmCount</td>
+                            <td>@item.PMCount</td>
+                            <td>@item.OtherCount</td>
+                            <td>@item.ServiceCount</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>*@
+        <hr />
+        <table width="500px" border="0" cellpadding="2" cellspacing="1" style="width:500px;border-width:0;padding:2px;margin:2px">
+            <tr>
+                <td align="center"><font size="3" color="#666666"><b>設備課別狀態</b></font></td>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <table width="100%" cellspacing="2" border="0" bgcolor="#F5F5F5">
+                            <tbody>
+                                <tr>
+                                    <td align="center" colspan="2" bgcolor="#C0C0C0">
+                                        <a href='@Url.Action("StatusDetail")?vName=@Request["vName"]&gName=@item.GroupName'>
+                                            <span @(item.AlarmCount > 0 ? "style=color:#FF4500;font-size:large;text-decoration-color:#FF4500;" : "style=color:#000000;font-size:large;text-decoration-color:#000000;")>
+                                                <b>@item.GroupName</b>課別
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" width="66%"><font size="2" color="#555555">總共：@item.MachineCount</font></td>
+                                    <td align="left"><font size="2" color="#3CBA00">運轉中：@item.NormlCount</font></td>
+                                </tr>
+                                <tr>
+                                    <td align="left"><font size="2" color="#666600">其他：@item.OtherCount　<font color="#BC8F8F">PM：@item.PMCount</font></font></td>
+                                    <td align="left"><font size="2" color="#FF0000">警告/異常：@item.AlarmCount</font></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
