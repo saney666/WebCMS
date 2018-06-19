@@ -243,16 +243,13 @@
 
                 ddlDevice = "";
                 ddltoolid = "";
-                //alert("0/" + ddlDevice + "/" + ddltoolid + "/" + $("#StartDate").val() + "/" + $("#EndDate").val());
             }
             else if (rbn1 == "0") {
                 ddlDevice = $('#device').val();
                 ddltoolid = $('#toolid').val();
-                //alert("1/" + ddlDevice + "/" + ddltoolid);
             } else if (rbn1 == "1") {
                 ddlDevice = $('#device').val();
                 ddltoolid = "";
-                //alert("2/" + ddlDevice + "/" + ddltoolid);
             }
             $('.rbn2:checked').each(function (e) {
                 rbn2 = $(this).val();
@@ -262,7 +259,7 @@
                 ddltoolid = "";
             if (id == 'search') {
                 var urlStr = '@Url.Action("AlarmCheckList")?vName=@Request["vName"]&toolId=' + ddltoolid + '&Device=' + ddlDevice + '&fromDate=' + $("#StartDate").val() + '&toDate=' + $("#EndDate").val() + '&onceaday=0&output=0&page=1&rp=20';
-                //$('body').append(urlStr);
+             
                 $(".flexme").flexOptions({ url: urlStr });
                 $('.flexme').flexReload();
             }

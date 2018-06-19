@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
-using TSMC14B.Models;
+using WebCMS.Models;
 
-namespace TSMC14B.Areas.Main.Models
+namespace WebCMS.Areas.Main.Models
 {
     public class MachineStatusModel
     {

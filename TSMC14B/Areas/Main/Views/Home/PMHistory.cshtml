@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TSMC14B.Areas.Main.Models.PMModel>
+﻿@model IEnumerable<WebCMS.Areas.Main.Models.PMModel>
 @{
     Layout = "../Shared/_Layout.cshtml";
     ViewBag.Title = "PM History";
@@ -53,23 +53,23 @@
                 @*url: '@Url.Action("JsonPMHistory")?Vendor="' + $('#Vendor').val() + "&toolId=" + $('#toolId').val() + "&StartDate=" + $('#StartDate').val() + "&EndDate=" + $('#EndDate').val(),*@
                 dataType: 'json',
                 colModel: [
-                    { display: '@TSMC14B.Menu.UpdateDate', name: 'UpdateDate', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.UpdateDate', name: 'UpdateDate', width: 100, sortable: false, align: 'center', hide: false },
                     { display: 'pmHistoryID', name: 'pmHistoryID', width: 60, sortable: false, align: 'center', hide: true },
                     { display: 'plcID', name: 'plcID', width: 60, sortable: false, align: 'center', hide: true },
                     { display: 'Chamber', name: 'ToolID', width: 120, sortable: false, align: 'center', hide: false },
                     //{ display: 'Location ID', name: 'LocationID', width: 60, sortable: false, align: 'center', hide: false },
-                    { display: '@TSMC14B.Menu.Location', name: 'Location', width: 70, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.Location', name: 'Location', width: 70, sortable: false, align: 'center', hide: false },
                     //{ display: 'locSide', name: 'locSide', width: 60, sortable: false, align: 'center', hide: true },
                     //{ display: 'tName', name: 'tName', width: 60, sortable: false, align: 'center', hide: true },
                     //{ display: 'VendorID', name: 'VendorID', width: 60, sortable: false, align: 'center', hide: true },
-                    { display: '@TSMC14B.Menu.department_name', name: 'department_name', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.department_name', name: 'department_name', width: 60, sortable: false, align: 'center', hide: false },
                     //{ display: '課別', name: 'gName', width: 60, sortable: false, align: 'center', hide: false },
-                    { display: '@TSMC14B.Menu.pmSet', name: 'pmSet', width: 70, sortable: false, align: 'center', hide: false },
-                    { display: '@TSMC14B.Menu.pmUnset', name: 'pmUnset', width: 70, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.pmSet', name: 'pmSet', width: 70, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.pmUnset', name: 'pmUnset', width: 70, sortable: false, align: 'center', hide: false },
                     //{ display: 'pm週期(天)', name: 'pmCycle', width: 70, sortable: false, align: 'center', hide: true },
                     //{ display: '下次pm時間', name: 'pmNextTime', width: 70, sortable: false, align: 'center', hide: true },
                     //{ display: 'LifeTime(天)', name: 'PMLifeTime', width: 70, sortable: false, align: 'center', hide: true },
-                    { display: '@TSMC14B.Menu.memo', name: 'memo', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.memo', name: 'memo', width: 100, sortable: false, align: 'center', hide: false },
                     { display: 'PM', name: 'pmFlag', width: 40, sortable: false, align: 'center', hide: false },
                     { display: 'Trouble<br /> Shooting', name: 'tsFlag', width: 60, sortable: false, align: 'center', hide: false },
                     //{ display: '備機', name: 'backupFlag', width: 40, sortable: false, align: 'center', hide: false },
@@ -79,7 +79,7 @@
                     { display: '其他', name: 'otherFlag', width: 40, sortable: false, align: 'center', hide: false },
                     //{ display: '臨時拉P', name: 'TemporaryPFlag', width: 40, sortable: false, align: 'center', hide: false },
                     //{ display: 'PT有<br />無校正', name: 'ptDone', width: 40, sortable: false, align: 'center', hide: false },
-                    { display: '@TSMC14B.Menu.Operator', name: '_operator', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.Operator', name: '_operator', width: 100, sortable: false, align: 'center', hide: false },
                     //{ display: 'vendorIntouch', name: 'vendorIntouch', width: 60, sortable: false, align: 'center', hide: true },
                     //{ display: 'Bellow', name: 'Bellow', width: 60, sortable: false, align: 'center', hide: false },
                     //{ display: '轉彎處', name: 'Turning', width: 60, sortable: false, align: 'center', hide: false },
@@ -109,12 +109,12 @@
                     //{ display: '水氣分離盒%', name: 'ms_TP', width: 70, sortable: false, align: 'center', hide: false },
                     { display: '', name: 'edit', width: 10, sortable: false, align: 'left', hide: "@ViewBag.UserLevel" == "部門" ? true : false }
                 ],
-                procmsg: '@TSMC14B.Menu.procmsg',
-                rptext: '@TSMC14B.Menu.rptext',
-                pagestat: '@TSMC14B.Menu.pagestat',
-                pagetext: '@TSMC14B.Menu.pagetext',
-                outof: '@TSMC14B.Menu.outof',
-                nomsg: '@TSMC14B.Menu.nomsg',
+                procmsg: '@WebCMS.Menu.procmsg',
+                rptext: '@WebCMS.Menu.rptext',
+                pagestat: '@WebCMS.Menu.pagestat',
+                pagetext: '@WebCMS.Menu.pagetext',
+                outof: '@WebCMS.Menu.outof',
+                nomsg: '@WebCMS.Menu.nomsg',
                 usepager: true,
                 useRp: true,
                 rp: 100,
@@ -237,7 +237,7 @@
                 <table border="1" class="tb" style="width: 750px">
                     <tr>
                         <td>
-                            <label for="lbl_vendor">@TSMC14B.Menu.plaseSelectDep</label></td>
+                            <label for="lbl_vendor">@WebCMS.Menu.plaseSelectDep</label></td>
                         <td>@Html.DropDownList("Vendor", ViewBag.Vendor as IEnumerable<SelectListItem>, "ALL")
                             <span id="spanDevice" style="display:none;">
                                 <label id="lbl_device">請選擇課別：</label>
@@ -253,7 +253,7 @@
                             </span>
                         </td>
                         <td>
-                            <label for="lbl_toolid">@TSMC14B.Menu.plaseSelectEQ</label>
+                            <label for="lbl_toolid">@WebCMS.Menu.plaseSelectEQ</label>
                         </td>
                         <td>
                             @*@Html.DropDownList("toolId", ViewBag.ToolID as IEnumerable<SelectListItem>,"ALL")*@
@@ -272,7 +272,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="lbl_StartDate">@TSMC14B.Menu.StartDate</label>
+                            <label for="lbl_StartDate">@WebCMS.Menu.StartDate</label>
                         </td>
                         <td>
                             @Html.Editor("StartDate")
@@ -282,7 +282,7 @@
                         @*</ul>
                             <ul class="ul">*@
                         <td>
-                            <label for="lbl_StartDate">@TSMC14B.Menu.EndDate</label>
+                            <label for="lbl_StartDate">@WebCMS.Menu.EndDate</label>
                         </td>
                         <td>
                             @Html.Editor("EndDate")
@@ -292,7 +292,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <label>@TSMC14B.Menu.IsHasPM：</label>
+                            <label>@WebCMS.Menu.IsHasPM：</label>
                             <input class="cb_sType" name="sType" id="PM" type="checkbox" value="pm_flag" /><label for="PM">PM</label>
                             <input class="cb_sType" name="sType" id="pumping" type="checkbox" value="pumping_done" /><label for="pumping">Pumping PM</label>
                             <input class="cb_sType" name="sType" id="SEX" type="checkbox" value="sex_done" /><label for="SEX">SEX PM</label>
@@ -313,8 +313,8 @@
             </td>
         </tr>
     </table>
-    <input type="button" id="sbmit" value="@TSMC14B.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search');" />&nbsp;&nbsp;&nbsp;
-    <input type="button" id="btnExport" value="@TSMC14B.Menu.ChartExport" style="width: 80px" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp;
+    <input type="button" id="sbmit" value="@WebCMS.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search');" />&nbsp;&nbsp;&nbsp;
+    <input type="button" id="btnExport" value="@WebCMS.Menu.ChartExport" style="width: 80px" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp;
     <label id="message" style="display: none;"></label>
     <label id="message2" style="display: none;"></label>
 </div>

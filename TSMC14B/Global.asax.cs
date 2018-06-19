@@ -3,7 +3,7 @@ using System.Data.Entity.Infrastructure;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace TSMC14B
+namespace WebCMS
 {
     // 注意: 如需啟用 IIS6 或 IIS7 傳統模式的說明，
     // 請造訪 http://go.microsoft.com/?LinkId=9394801

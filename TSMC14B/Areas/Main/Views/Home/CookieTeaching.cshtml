@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "CookieTeaching";
+    Layout = "~/Areas/Main/Views/Shared/_Layout.cshtml";
+}
+
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+
+    <style>
+        p{ word-wrap:break-word; word-break:normal; }
+    </style>
+}
+
+<h2>IE Cookie设定教学</h2>
+<br />
+<p>
+    使用Internet Explorer若无法浏览时，请照下方步骤设定<br />
+1.点选 『工具』→『兼容性检视设定(B)』
+</p>
+<img src="/images/IE_Tool.png" />
+<p>
+2.请试着设定以下两种方式<br />
+A. 若原本『在兼容性检视下显示内部网络网站(I) 』及『使用Microsoft兼容性清单(U) 』无勾选的话请勾选『在兼容性检视下显示内部网络网站(I) 』。<br />
+B. 若原本『在兼容性检视下显示内部网络网站(I) 』及『使用Microsoft兼容性清单(U) 』皆有勾选，请将勾选全部取消。<br />
+C.若这组IP : 10.51.10.100 有在[以新增至兼容性的网站]清单中 ，请将他选取之后移除。<br />
+D.若紅色框中有任何設定選項，请将他选取之后移除。
+</p>
+<img src="/images/IE_Setting.png" />

@@ -1,7 +1,7 @@
-﻿@model TSMC14B.Areas.Main.Models.LoginModel
+﻿@model WebCMS.Areas.Main.Models.LoginModel
 @{
     Layout = "../Shared/_Layout.cshtml";
-    ViewBag.Title = @TSMC14B.Menu.LogInManageSystem;
+    ViewBag.Title = @WebCMS.Menu.LogInManageSystem;
 }
 
 @section JavaScript{
@@ -31,34 +31,35 @@
                 url: '@Url.Action("JsonActQuery")',
                 dataType: 'json',
                 colModel: [
-                    { display: '@TSMC14B.Menu.UserName', name: 'UserName', width: 100, sortable: false, align: 'center', hide: false },
-                    { display: '@TSMC14B.Menu.Password', name: 'Password', width: 100, sortable: false, align: 'center', hide: true },
-                    { display: '@TSMC14B.Menu.title', name: 'title', width: 100, sortable: false, align: 'center', hide: false },
-                    { display: '@TSMC14B.Menu.Level', name: 'Level', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.UserName', name: 'UserName', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.Password', name: 'Password', width: 100, sortable: false, align: 'center', hide: true },
+                    { display: '@WebCMS.Menu.title', name: 'title', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.Level', name: 'Level', width: 100, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.department_name', name: 'department_name', width: 50, sortable: false, align: 'center', hide: false },
                     { display: '', name: 'cancel', width: 40, sortable: false, align: 'center', hide: false },
                     { display: '', name: 'edit', width: 40, sortable: false, align: 'center', hide: false },
                 ],
-                procmsg: '@TSMC14B.Menu.procmsg',
-                rptext: '@TSMC14B.Menu.rptext',
-                pagestat: '@TSMC14B.Menu.pagestat',
-                pagetext: '@TSMC14B.Menu.pagetext',
-                outof: '@TSMC14B.Menu.outof',
-                nomsg: '@TSMC14B.Menu.nomsg',
+                procmsg: '@WebCMS.Menu.procmsg',
+                rptext: '@WebCMS.Menu.rptext',
+                pagestat: '@WebCMS.Menu.pagestat',
+                pagetext: '@WebCMS.Menu.pagetext',
+                outof: '@WebCMS.Menu.outof',
+                nomsg: '@WebCMS.Menu.nomsg',
                 usepager: true,
                 useRp: true,
-                rp: 10,
+                rp: 20,
                 nowrap: false,
                 onSuccess: function () {
                     $('.flexme > tbody > tr > td[abbrr="cancel"] > div').remove();
-                    $('.flexme > tbody > tr > td[abbrr="cancel"]').append('<div style="width:40px;"><a href="#" class="cancel" ><img src="@Url.Content("~/Content/Icons/delete.png")" alt="@TSMC14B.Menu.Delete" />@TSMC14B.Menu.Delete</a></div>');
+                    $('.flexme > tbody > tr > td[abbrr="cancel"]').append('<div style="width:40px;"><a href="#" class="cancel" ><img src="@Url.Content("~/Content/Icons/delete.png")" alt="@WebCMS.Menu.Delete" />@WebCMS.Menu.Delete</a></div>');
                     $('.cancel').click(function () {
                         var UsrID = $(this).parent().parent().parent().children(':eq(0)').text();
-                        hiConfirm('@TSMC14B.Menu.IsDelete' + UsrID + '@TSMC14B.Menu.UserName？', '@TSMC14B.Menu.confirm', function (r) { if (r) { $.post('@Url.Action("JsonExecute")', [{ name: 'UserID', value: UsrID }, { name: 'Type', value: 'delete' }], function (data) { alert(data.Msg); $('.flexme').flexReload(); }, 'json') } });
+                        hiConfirm('@WebCMS.Menu.IsDelete' + UsrID + '@WebCMS.Menu.UserName？', '@WebCMS.Menu.confirm', function (r) { if (r) { $.post('@Url.Action("JsonExecute")', [{ name: 'UserID', value: UsrID }, { name: 'Type', value: 'delete' }], function (data) { alert(data.Msg); $('.flexme').flexReload(); }, 'json') } });
                     });
                     $('.flexme > tbody > tr > td[abbrr="edit"] > div').remove();
-                    $('.flexme > tbody > tr > td[abbrr="edit"]').append('<div style="width=40px;"><a href="#" class="edit" ><img src="@Url.Content("~/Content/Icons/edit.png")" alt="@TSMC14B.Menu.Edit" />@TSMC14B.Menu.Edit</a></div>');
+                    $('.flexme > tbody > tr > td[abbrr="edit"]').append('<div style="width=40px;"><a href="#" class="edit" ><img src="@Url.Content("~/Content/Icons/edit.png")" alt="@WebCMS.Menu.Edit" />@WebCMS.Menu.Edit</a></div>');
                     $('.edit').click(function () {
-                        OpenModelWindow('@Url.Action("EditUser")?UsrName=' + $(this).parent().parent().parent().children(':eq(0)').text(), { width: 400, height: 300, caption: "@TSMC14B.Menu.modify", onclose: function () { $('.flexme').flexReload(); } });
+                        OpenModelWindow('@Url.Action("EditUser")?UsrName=' + $(this).parent().parent().parent().children(':eq(0)').text(), { width: 400, height: 300, caption: "@WebCMS.Menu.modify", onclose: function () { $('.flexme').flexReload(); } });
                     });
                 },
                 singleSelect: true,
@@ -106,49 +107,69 @@
                     });
                     if ($('#UsrName').val() != "" && $('#Pwd').val() != "" && $('#Pwd2').val() != "") {
                         if ($('#Pwd').val() != $('#Pwd2').val())
-                        { alert('@TSMC14B.Menu.PasswordEnterError'); }
+                        { alert('@WebCMS.Menu.PasswordEnterError'); }
                         else {
                             $.post('@Url.Action("JsonExecute")', [{ name: 'UserID', value: $('#UsrName').val() }, { name: 'Pwd', value: $('#Pwd').val() }, { name: 'UsrTitle', value: $('#UsrTitle').val() }, { name: 'Level', value: Session }, { name: 'Type', value: 'Insert' }, { name: 'departmentId', value: departmentId }], function (data) { alert(data.Msg); $('.flexme').flexReload(); document.getElementById('UsrName').value = ''; document.getElementById('Pwd').value = ''; document.getElementById('Pwd2').value = ''; document.getElementById('UsrTitle').value = ''; }, 'json');
                         }
                     } else {
-                        alert('@TSMC14B.Menu.PleaseComplete');
+                        alert('@WebCMS.Menu.PleaseComplete');
                     }
                 }
                 else if (select == "3") {
                     if ($('#AdminPwd').val() != "" && $('#AdminPwd2').val() != "") {
                         if ($('#AdminPwd').val() != $('#AdminPwd2').val())
-                        { alert('@TSMC14B.Menu.PasswordEnterError'); }
+                        { alert('@WebCMS.Menu.PasswordEnterError'); }
                         else {
                             $.post('@Url.Action("JsonExecute")', [{ name: 'UserID', value: '@Session["UserID"]' }, { name: 'Pwd', value: $('#AdminPwd').val() }, { name: 'Type', value: 'UpdateAdmin' }], function (data) { alert(data.Msg); $('.flexme').flexReload(); document.getElementById('AdminPwd').value = ''; document.getElementById('AdminPwd2').value = ''; }, 'json');
                         }
                     }
                     else {
-                        alert('@TSMC14B.Menu.PleaseComplete');
+                        alert('@WebCMS.Menu.PleaseComplete');
                     }
                 }
             });
         });
+        function Query() {
+            var ddl_Dept = $('#ddl_Dept').val();
+            var urlStr = '@Url.Action("JsonActQuery")?dept=' + ddl_Dept;
+            $(".flexme").flexOptions({ url: urlStr, newp: 1 }).flexReload();
+            //alert(ddl_Dept);
+        }
     </script>
 }
 
-<h2>@TSMC14B.Menu.LogInManageSystem</h2>
+<h2>@WebCMS.Menu.LogInManageSystem</h2>
 <div>
     <table id="LoginSelecter" border="1" class="tb" style="font-size: 12px;">
         <tr>
             <td>
                 <div class="rbndiv">
                     <input type="radio" name="group1" class="rbn" value="1" id="rbnT1">
-                    <label for="rbnT1">@TSMC14B.Menu.UserNameManage</label>
+                    <label for="rbnT1">@WebCMS.Menu.UserNameManage</label>
                     <input type="radio" name="group1" class="rbn" value="2" id="rbnT2" checked="checked">
-                    <label for="rbnT2">@TSMC14B.Menu.AddNewUserName</label>
+                    <label for="rbnT2">@WebCMS.Menu.AddNewUserName</label>
                     <input type="radio" name="group1" class="rbn" value="3" id="rbnT3">
-                    <label for="rbnT3">@TSMC14B.Menu.ChangePassward</label>
+                    <label for="rbnT3">@WebCMS.Menu.ChangePassward</label>
                 </div>
             </td>
         </tr>
     </table>
     <br />
     <div id="select" style="display: none;">
+        @if (ViewBag.department_info != null)
+        {
+            //@Html.DropDownListFor(model => model.department_id, ViewBag.department_info as IEnumerable<SelectListItem>)
+                            <select id="ddl_Dept" name="ddl_Dept">
+                                            <option value="">ALL</option>
+
+                                            @foreach (SelectListItem item in ViewData["department_info"] as IEnumerable<SelectListItem>)
+                                            {
+                                                <option value="@item.Text">@item.Text</option>
+                                            }
+                                        </select>
+        
+        }
+        <input type="button" value="@WebCMS.Menu.Query" onclick="javascript: Query();" />
         <table class="flexme">
         </table>
     </div>
@@ -157,10 +178,10 @@
         {
             @Html.ValidationSummary(true)
             <fieldset style="width: 500px; text-align: left;">
-                <legend>@TSMC14B.Menu.AddNewUserName</legend>
+                <legend>@WebCMS.Menu.AddNewUserName</legend>
                 <table style="font-size: 12px;">
                     <tr>
-                        <td style="text-align: right; width: 90px;">@TSMC14B.Menu.UserName：
+                        <td style="text-align: right; width: 90px;">@WebCMS.Menu.UserName：
                         </td>
                         <td style="text-align: left;">
                             @*@Html.Editor("UsrName")*@
@@ -169,7 +190,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: right;">@TSMC14B.Menu.Password：
+                        <td style="text-align: right;">@WebCMS.Menu.Password：
                         </td>
                         <td style="text-align: left;">
                             @*@Html.Editor("Pwd")*@
@@ -178,7 +199,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: right;">@TSMC14B.Menu.confirm@TSMC14B.Menu.Password：
+                        <td style="text-align: right;">@WebCMS.Menu.confirm@WebCMS.Menu.Password：
                         </td>
                         <td colspan="2" style="text-align: left;">
                             @*@Html.Editor("Pwd2")*@
@@ -187,7 +208,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: right;">@TSMC14B.Menu.title：
+                        <td style="text-align: right;">@WebCMS.Menu.title：
                         </td>
                         <td colspan="2" style="text-align: left;">
                             @*@Html.Editor("UsrTitle")*@
@@ -196,7 +217,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: right;">@TSMC14B.Menu.department_name：
+                        <td style="text-align: right;">@WebCMS.Menu.department_name：
                         </td>
                         <td colspan="2" style="text-align: left;">
                             @if (ViewBag.department_info != null)
@@ -213,7 +234,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: right;">@TSMC14B.Menu.Competence：
+                        <td style="text-align: right;">@WebCMS.Menu.Competence：
                         </td>
                         <td colspan="2" style="text-align: left;">
                             @if (ViewBag.sessionType != null)
@@ -232,12 +253,12 @@
                 <table style="width: 100%;">
                     <tr>
                         <td style="width: 100px;">
-                            <input type="button" class="sbmit" value="@TSMC14B.Menu.confirm" style="width: 80px" />&nbsp;&nbsp;&nbsp;
+                            <input type="button" class="sbmit" value="@WebCMS.Menu.confirm" style="width: 80px" />&nbsp;&nbsp;&nbsp;
                         </td>
                         <td style="width: 100px;">
-                            <input type="reset" value="@TSMC14B.Menu.Clear" id="clear1" style="width: 80px" />
+                            <input type="reset" value="@WebCMS.Menu.Clear" id="clear1" style="width: 80px" />
                         </td>
-                        <td style="text-align: right; font-size: smaller; color: red;">*@TSMC14B.Menu.RequiredField
+                        <td style="text-align: right; font-size: smaller; color: red;">*@WebCMS.Menu.RequiredField
                         </td>
                     </tr>
                 </table>
@@ -248,12 +269,12 @@
         @using (Html.BeginForm())
         {
             @Html.ValidationSummary(true)
-            <div id="changePwd" style="width: 510px; background-color: aqua;">@TSMC14B.Menu.ChangePassward</div>
+            <div id="changePwd" style="width: 510px; background-color: aqua;">@WebCMS.Menu.ChangePassward</div>
             <fieldset style="width: 500px; text-align: left;">
-                <legend>@TSMC14B.Menu.ChangePassward</legend>
+                <legend>@WebCMS.Menu.ChangePassward</legend>
                 <table style="font-size: 12px;">
                     <tr>
-                        <td style="text-align: right; width: 90px;">@TSMC14B.Menu.Password：
+                        <td style="text-align: right; width: 90px;">@WebCMS.Menu.Password：
                         </td>
                         <td>
                             @*@Html.Editor("AdminPwd")*@
@@ -262,7 +283,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: right;">@TSMC14B.Menu.confirm@TSMC14B.Menu.Password：
+                        <td style="text-align: right;">@WebCMS.Menu.confirm@WebCMS.Menu.Password：
                         </td>
                         <td>
                             @*@Html.Editor("AdminPwd2")*@
@@ -274,12 +295,12 @@
                 <table style="width: 100%;">
                     <tr>
                         <td style="width: 100px;">
-                            <input type="button" class="sbmit" value="@TSMC14B.Menu.confirm" style="width: 80px" />&nbsp;&nbsp;&nbsp;
+                            <input type="button" class="sbmit" value="@WebCMS.Menu.confirm" style="width: 80px" />&nbsp;&nbsp;&nbsp;
                         </td>
                         <td style="width: 100px;">
-                            <input type="reset" value="@TSMC14B.Menu.Clear" id="clear2" style="width: 80px" />
+                            <input type="reset" value="@WebCMS.Menu.Clear" id="clear2" style="width: 80px" />
                         </td>
-                        <td style="text-align: right; font-size: smaller; color: red;">*@TSMC14B.Menu.passwordAtLast
+                        <td style="text-align: right; font-size: smaller; color: red;">*@WebCMS.Menu.passwordAtLast
                         </td>
                     </tr>
                 </table>

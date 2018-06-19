@@ -6,9 +6,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Configuration;
-using TSMC14B.Models;
+using WebCMS.Models;
 
-namespace TSMC14B.Areas.Main.Models
+namespace WebCMS.Areas.Main.Models
 {
     public class PMModel
     {

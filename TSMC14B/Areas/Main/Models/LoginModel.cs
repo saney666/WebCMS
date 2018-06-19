@@ -4,21 +4,21 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Web.Mvc;
-using TSMC14B.Models;
+using WebCMS.Models;
 
-namespace TSMC14B.Areas.Main.Models
+namespace WebCMS.Areas.Main.Models
 {
     public class LoginModel
     {
-        [Display(Name = "UserName", ResourceType = typeof(TSMC14B.Menu))
-            , Required(ErrorMessageResourceName = "UserNameMust", ErrorMessageResourceType = typeof(TSMC14B.Menu))
+        [Display(Name = "UserName", ResourceType = typeof(WebCMS.Menu))
+            , Required(ErrorMessageResourceName = "UserNameMust", ErrorMessageResourceType = typeof(WebCMS.Menu))
             //, StringLength(20, MinimumLength = 8, ErrorMessage = "帳號最長20個字…")
-            , Remote("CheckUserName", "Validate",ErrorMessageResourceName="UserNameAlreadyExists", ErrorMessageResourceType = typeof(TSMC14B.Menu))
+            , Remote("CheckUserName", "Validate",ErrorMessageResourceName="UserNameAlreadyExists", ErrorMessageResourceType = typeof(WebCMS.Menu))
          
         ]
         public string UserName { get; set; }
 
-        [Display(Name = "Password", ResourceType = typeof(TSMC14B.Menu))
+        [Display(Name = "Password", ResourceType = typeof(WebCMS.Menu))
             , Required
             //, StringLength(20, MinimumLength = 6, ErrorMessage = "密碼至少6個字")
             //, RegularExpression("^(?=.*\\d)(?=.*[a-z]).{6,20}$", ErrorMessage = "密碼最少6個字需包括英文大小寫、數字及特殊符號,如:Administr@t0r")
@@ -26,27 +26,27 @@ namespace TSMC14B.Areas.Main.Models
             ]
         public string Password { get; set; }
 
-        [Display(Name = "NewPassword", ResourceType = typeof(TSMC14B.Menu))
+        [Display(Name = "NewPassword", ResourceType = typeof(WebCMS.Menu))
             , Required
-            , Compare("Password", ErrorMessageResourceName = "PasswordMustSame", ErrorMessageResourceType = typeof(TSMC14B.Menu))
+            , Compare("Password", ErrorMessageResourceName = "PasswordMustSame", ErrorMessageResourceType = typeof(WebCMS.Menu))
             //, RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%_^&*()=+[\\]{}''\";:/?.,><`|！·￥…—（）\\-、；：。，》《]).{8,20}$", ErrorMessage = "密碼最少8個字需包括英文大小寫、數字及特殊符號,如:Administr@t0r")
             ]
         public string Password2 { get; set; }
 
-        [Display(Name = "Level", ResourceType = typeof(TSMC14B.Menu))]
+        [Display(Name = "Level", ResourceType = typeof(WebCMS.Menu))]
         public string Level { get; set; }
         public Int16 login_level { get; set; }
         public byte level_id { get; set; }
 
-        [Display(Name = "title", ResourceType = typeof(TSMC14B.Menu))
-            , StringLength(20, ErrorMessageResourceName="titleLongest",ErrorMessageResourceType=typeof(TSMC14B.Menu))]
+        [Display(Name = "title", ResourceType = typeof(WebCMS.Menu))
+            , StringLength(20, ErrorMessageResourceName="titleLongest",ErrorMessageResourceType=typeof(WebCMS.Menu))]
         public string title { get; set; }
 
         [Display(Name = "UpdateDate")]
         public string UpdateDate { get; set; }
         public byte? department_id { get; set; }
 
-        [Display(Name = "department_name", ResourceType = typeof(TSMC14B.Menu))]
+        [Display(Name = "department_name", ResourceType = typeof(WebCMS.Menu))]
         public string department_name { get; set; }
 
         public static bool Login(string UserName, string Password)
@@ -57,15 +57,6 @@ namespace TSMC14B.Areas.Main.Models
             else
                 return false;
         }
-
-        //public static string GetLevel(string UserName)
-        //{
-        //    using (tsmc14BDataContext db = new tsmc14BDataContext())
-        //    {
-        //        DataSet CodeDS = DBConnector.executeQuery("Intouch", "select level_id from login_info where login_name = '" + UserName + "'");
-        //        return (from dept in CodeDS.Tables[0].AsEnumerable() select dept.Field<Byte>("level_id")).FirstOrDefault().ToString();
-        //    }
-        //}
 
         public static LoginModel Get(string UserName)
         {
@@ -133,10 +124,9 @@ namespace TSMC14B.Areas.Main.Models
 
             if (LoginLevel >= 998)
             {
-
                 return from dept in ds.Tables[0].AsEnumerable()
                        where dept.Field<Int16>("login_level") < LoginLevel
-                       orderby dept.Field<Int16>("login_level") descending
+                       orderby dept.Field<Int16>("login_level") descending, dept.Field<string>("department_name")
                        select new LoginModel
                        {
                            UserName = dept.Field<string>("login_name"),
@@ -153,7 +143,7 @@ namespace TSMC14B.Areas.Main.Models
             {
                 return from dept in ds.Tables[0].AsEnumerable()
                        where dept.Field<Int16>("login_level") < LoginLevel && dept.Field<byte?>("department_id") == department_id
-                       orderby dept.Field<Int16>("login_level") descending
+                       orderby dept.Field<Int16>("login_level") descending, dept.Field<string>("department_name")
                        select new LoginModel
                        {
                            UserName = dept.Field<string>("login_name"),

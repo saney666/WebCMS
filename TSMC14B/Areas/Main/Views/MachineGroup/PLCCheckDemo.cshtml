@@ -1,14 +1,29 @@
-﻿@model TSMC14B.Areas.Main.Models.PLCCheckModel
+﻿@model WebCMS.Areas.Main.Models.PLCCheckModel
 @{
     Layout = "../Shared/_Layout.cshtml";
-    ViewBag.Title = Request["vName"] + @TSMC14B.Menu.eqValueChart;
+    ViewBag.Title = Request["vName"] + @WebCMS.Menu.eqValueChart;
 }
 @section JavaScript{
     <link href="@Url.Content("~/Content/Themes/Shared/ptTimeSelect/jquery.datetimepicker.css")" rel="stylesheet" type="text/css" />
     <script src="@Url.Content("~/Scripts/jquery.datetimepicker.js")" type="text/javascript"></script>
     <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
-
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
     <script type="text/javascript">
+        var autoCheckTag = true;
+
+        var strUrl = location.search;
+        var getPara, ParaVal;
+        var aryPara = [];
+        if (strUrl.indexOf("?") != -1) {
+            var getSearch = strUrl.split("?");
+            getPara = getSearch[1].split("&");
+            for (i = 0; i < getPara.length; i++) {
+                ParaVal = getPara[i].split("=");
+                aryPara.push(ParaVal[0]);
+                aryPara[ParaVal[0]] = decodeURI(ParaVal[1]);
+            }
+        }
+
         $(document).ready(function () {
             $('.tb').css('font-size', '12px');
             if ($('#toolidinput[value*="*"]').length) {
@@ -35,14 +50,14 @@
             });
 
             $('#cbxSelectAll').change(function (e) {
-               
+
                 if ($('#cbxSelectAll').attr('checked') == 'checked') {
                     $('.cb_Tag').each(function (i, item) {
                         $(this).attr('checked', 'checked');
                         var _toolid = $("#toolid").val();
                         var _name = $(this).attr('name');
                         var _value = $(this).val();
-                        ToolValueTagADD(_toolid, _name, _value,true);
+                        ToolValueTagADD(_toolid, _name, _value, true);
                     });
                 } else {
                     $('.cb_Tag').each(function (i, item) {
@@ -54,12 +69,12 @@
             });
 
             function GetTag(vName, device, toolid) {
-                $.post('@Url.Action("JsonGetTag")', [{ name: 'Vendor', value: vName }, { name: 'Device', value: device == "@TSMC14B.Menu.plaseSelectOption" ? "" : device }, { name: 'ToolID', value: toolid }],
+                $.post('@Url.Action("JsonGetTag")', [{ name: 'Vendor', value: vName }, { name: 'Device', value: device == "@WebCMS.Menu.plaseSelectOption" ? "" : device }, { name: 'ToolID', value: toolid }],
                          function (data) {
                              $('#td').empty();
                              $('#td').append($('<table><tr>'));
                              $.each(data, function (i, item) {
-                                 $('#td').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Value + '" value="' + item.Key + '" class="cb_Tag" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
+                                 $('#td').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Value + '" value="' + item.Key + '"  class="cb_Tag" /><label for="' + item.Key + '" >' + item.Value + '</label></td>'));
                                  if ((i + 1) % 5 == 0) {
                                      $('#td').append($('</tr><tr>'));
                                  }
@@ -70,9 +85,18 @@
                                  var _name = $(this).attr('name');
                                  var _value = $(this).val();
                                  if ($(this).attr('checked') == 'checked') { ToolValueTagADD(_toolid, _name, _value); } else { ToolValueTagRemove(_value); }
+                                 if ($('.cb_Tag').not(":checked").length == 0) { $('#cbxSelectAll').attr('checked', true); } else { $('#cbxSelectAll').attr('checked', false); }
                              });
+                             if (autoCheckTag && '@Request["Tag"]'.length > 0) {
+                                 var checkItem = $('.cb_Tag[value^="@Request["Tag"]"]');
+                                 if (checkItem) {
+                                     $(checkItem).attr('checked', 'checked');
+                                     ToolValueTagADD($("#toolid").val(), $(checkItem).attr('name'), $(checkItem).val());
+                                 }
+                                 autoCheckTag = false;
+                             }
                          }, 'json');
-            }
+                     }
 
             function changeIndex(chkvalue) {
                 var objval; var isFound; var tempval;
@@ -146,9 +170,9 @@
             $("#device").change(function () {
                 var selectedValue = $('#device option:selected').text();
                 var vendorname = '@Request["vName"]';
-                $.post('@Url.Action("JsonGettid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                $.post('@Url.Action("JsonGettid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@WebCMS.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
                     $('#toolid').empty();
-                    $('#toolid').append($('<option></option>').val('').text('@TSMC14B.Menu.plaseSelectOption'));
+                    $('#toolid').append($('<option></option>').val('').text('@WebCMS.Menu.plaseSelectOption'));
                     $.each(data, function (i, item) {
                         $('#toolid').append($('<option></option>').val(item.Value).text(item.Value));
                     });
@@ -161,7 +185,7 @@
                 var toolid = $('#toolid option:selected').val();
                 $('#cbxSelectAll').attr('checked', false);
                 $('#td').empty();
-                $.post('@Url.Action("JsonGetTag")', [{ name: 'Vendor', value: vName }, { name: 'Device', value: device == "@TSMC14B.Menu.plaseSelectOption" ? "" : device }, { name: 'ToolID', value: toolid }],
+                $.post('@Url.Action("JsonGetTag")', [{ name: 'Vendor', value: vName }, { name: 'Device', value: device == "@WebCMS.Menu.plaseSelectOption" ? "" : device }, { name: 'ToolID', value: toolid }],
                            function (data) {
                                $('#td').append($('<table><tr>'));
                                var allflag = true;
@@ -184,6 +208,8 @@
                                    var _name = $(this).attr('name');
                                    var _value = $(this).val();
                                    if ($(this).attr('checked') == 'checked') { ToolValueTagADD(_toolid, _name, _value); } else { ToolValueTagRemove(_value); }
+
+                                   if ($('.cb_Tag').not(":checked").length == 0) { $('#cbxSelectAll').attr('checked', true); } else { $('#cbxSelectAll').attr('checked', false); }
                                });
                            }, 'json');
             });
@@ -201,9 +227,9 @@
 
                 var selectedValue = $('#Device2 option:selected').val();
                 var vendorname = '@Request["vName"]';
-                $.post('@Url.Action("JsonGetTypeid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                $.post('@Url.Action("JsonGetTypeid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@WebCMS.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
                     $('#Typeid').empty();
-                    $('#Typeid').append($('<option></option>').val('').text('@TSMC14B.Menu.plaseSelectOption'));
+                    $('#Typeid').append($('<option></option>').val('').text('@WebCMS.Menu.plaseSelectOption'));
                     $.each(data, function (i, item) {
                         $('#Typeid').append($('<option></option>').val(item.Value).text(item.Value));
                     });
@@ -223,7 +249,7 @@
                 //});
                 var vendorname = '@Request["vName"]';
                 var selectedValue = $('#Typeid option:selected').val();
-                $.post('@Url.Action("JsonGettid2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }],
+                $.post('@Url.Action("JsonGettid2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@WebCMS.Menu.plaseSelectOption" ? "" : selectedValue }],
                               function (data) {
                                   $('#td2').empty();
                                   $('#td').append($('<table><tr>'));
@@ -235,9 +261,9 @@
                                   });
                                   $('#td').append($('</tr></table>'));
                               }, 'json');
-                $.post('@Url.Action("JsonGetTag2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                $.post('@Url.Action("JsonGetTag2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@WebCMS.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
                     $('#TagName2').empty();
-                    $('#TagName2').append($('<option></option>').val('').text('@TSMC14B.Menu.plaseSelectOption'));
+                    $('#TagName2').append($('<option></option>').val('').text('@WebCMS.Menu.plaseSelectOption'));
                     $.each(data, function (i, item) {
                         $('#TagName2').append($('<option></option>').val(item.Key).text(item.Value));
                     });
@@ -256,9 +282,9 @@
                 });
                 var selectedValue = $('#Device3 option:selected').val();
                 var vendorname = '@Request["vName"]';
-                $.post('@Url.Action("JsonGetTypeid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                $.post('@Url.Action("JsonGetTypeid")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@WebCMS.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
                     $('#Typeid2').empty();
-                    $('#Typeid2').append($('<option></option>').val('').text('@TSMC14B.Menu.plaseSelectOption'));
+                    $('#Typeid2').append($('<option></option>').val('').text('@WebCMS.Menu.plaseSelectOption'));
                     $.each(data, function (i, item) {
                         $('#Typeid2').append($('<option></option>').val(item.Value).text(item.Value));
                     });
@@ -267,7 +293,7 @@
             $("#Typeid2").change(function () {
                 var vendorname = '@Request["vName"]';
                 var selectedValue = $('#Typeid2 option:selected').val();
-                $.post('@Url.Action("JsonGettid2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }],
+                $.post('@Url.Action("JsonGettid2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@WebCMS.Menu.plaseSelectOption" ? "" : selectedValue }],
                           function (data) {
                               $('#td3').empty();
                               $('#td3').append($('<table><tr>'));
@@ -279,7 +305,7 @@
                               });
                               $('#td3').append($('</tr></table>'));
                           }, 'json');
-                $.post('@Url.Action("JsonGetTag2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                $.post('@Url.Action("JsonGetTag2")', [{ name: 'Vendor', value: vendorname }, { name: 'Typeid', value: selectedValue == "@WebCMS.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
                     $('#TagName3').empty();
                     $('#TagName3').append($('<table><tr>'));
                     $.each(data, function (i, item) {
@@ -304,10 +330,14 @@
             $('#EndDate3').datetimepicker({
                 Time59: true
             });
-
+            //-----------
             $("#StartDate").val(aryPara['SD']);
             $("#EndDate").val(aryPara['ED']);
-
+            if ('@Request["IsStack"]' == 1) {
+                $('#IsStack').attr('checked', 'checked');
+            }
+            $('#IsStack').attr('checked', 'checked');
+            //-----------
             if ($("#StartDate").val().length == 0) {
                 var dt = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
                 $("#StartDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 00:00');
@@ -317,39 +347,25 @@
 
                 $("#EndDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()));
             };
-            if ($("#StartDate2").val().length == 0) {
+            if ($("#StartDate2").val() != null && $("#StartDate2").val().length == 0) {
                 var dt = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
                 $("#StartDate2").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 00:00');
             };
-            if ($("#EndDate2").val().length == 0) {
+            if ($("#EndDate2").val() != null && $("#EndDate2").val().length == 0) {
                 var dt = new Date(Date.now());
 
                 $("#EndDate2").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()));
             };
-            if ($("#StartDate3").val().length == 0) {
+            if ($("#StartDate3").val() != null && $("#StartDate3").val().length == 0) {
                 var dt = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
                 $("#StartDate3").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 00:00');
             };
-            if ($("#EndDate3").val().length == 0) {
+            if ($("#EndDate3").val() != null && $("#EndDate3").val().length == 0) {
                 var dt = new Date(Date.now());
                 $("#EndDate3").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()));
             };
 
         });
-
-        var strUrl = location.search;
-        var getPara, ParaVal;
-        var aryPara = [];
-        if (strUrl.indexOf("?") != -1) {
-            var getSearch = strUrl.split("?");
-            getPara = getSearch[1].split("&");
-            for (i = 0; i < getPara.length; i++) {
-                ParaVal = getPara[i].split("=");
-                aryPara.push(ParaVal[0]);
-                aryPara[ParaVal[0]] = decodeURI(ParaVal[1]);
-            }
-        }
-
 
         function ChartExport(id) {
             var action = "4";
@@ -414,6 +430,7 @@
             //        }
             //    }
             //});
+
             var scheight = screen.height;
             var scwidth = screen.width;
             toolid3 = toolid3.substring(0, toolid3.length - 1);
@@ -423,6 +440,9 @@
             var toDate = $("#EndDate").val();
             var vName = '@Request["vName"]';
             var dt = new Date(Date.now());
+
+
+
             if (action == 1) {
                 if (new Date($("#EndDate").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
                     if (tagName.length > 0) {
@@ -434,83 +454,83 @@
                         }
                 }
                 else {
-                    alert('@TSMC14B.Menu.plaseSelectValueName');
+                    alert('@WebCMS.Menu.plaseSelectValueName');
                     }
                 }
                 else {
-                    alert("@TSMC14B.Menu.EndTimeNotOverNowTime");
+                    alert("@WebCMS.Menu.EndTimeNotOverNowTime");
                 }
             } else if (action == 2) {
-                if (new Date($("#EndDate3").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
+                if (new Date($("#EndDate").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
                     if (toolid3.length > 0) {
                         if (id == 'search') {
                             //OpenModelWindow('@Url.Action("MyChart")?toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate3").val() + '&EndDate=' + $("#EndDate3").val() + '&flag=' + action, { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
-                            window.open('@Url.Action("MyChart4")?toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate3").val() + '&EndDate=' + $("#EndDate3").val() + '&flag=' + action + '&Y1Y2=' + Y1Y2 + '&IsStack=True', '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=no,resizable=yes,top=' + (((scheight - 40) / 2) - (690 / 2) < 0 ? 0 : ((scheight - 40) / 2) - (690 / 2)) + ',left=' + ((scwidth / 2) - (840 / 2) < 0 ? 0 : (scwidth / 2) - (840 / 2)) + ',width=825,height=625');
+                            window.open('@Url.Action("MyChart4")?toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action + '&Y1Y2=' + Y1Y2 + '&IsStack=True', '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=no,resizable=yes,top=' + (((scheight - 40) / 2) - (690 / 2) < 0 ? 0 : ((scheight - 40) / 2) - (690 / 2)) + ',left=' + ((scwidth / 2) - (840 / 2) < 0 ? 0 : (scwidth / 2) - (840 / 2)) + ',width=825,height=625');
+                        }
+                        else if (id == 'export') {
+                            location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action + '&output=' + id;
+                        }
+                }
+                else {
+                    alert('@WebCMS.Menu.plaseSelectValueName');
+                    }
+                }
+                else {
+                    alert("@WebCMS.Menu.EndTimeNotOverNowTime");
+                }
+            } else if (action == 3) {
+                if (new Date($("#EndDate").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
+                    if (toolid3.length > 0) {
+                        if (id == 'search') {
+                            OpenModelWindow('@Url.Action("MyChart")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action + '&Y1Y2=' + Y1Y2, { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
+                        }
+                        else if (id == 'export') {
+                            location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate3").val() + '&EndDate=' + $("#EndDate3").val() + '&flag=' + action + '&output=' + id;
+                    }
+            }
+            else {
+                alert('@WebCMS.Menu.plaseSelectOption');
+                    }
+                }
+                else {
+                    alert("@WebCMS.Menu.EndTimeNotOverNowTime");
+                }
+            } else if (action == 4) {
+                if (new Date($("#EndDate").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
+                    if (toolid3.length > 0) {
+                        if (id == 'search') {
+                            //OpenModelWindow('@Url.Action("MyChart")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action, { width: 900, height: 700, caption: "Thend Chart", onclose: function () { } });
+                        window.open('@Url.Action("MyChart5")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action, '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=yes,resizable=yes,top=' + (((scheight - 40) / 2) - (690 / 2) < 0 ? 0 : ((scheight - 40) / 2) - (690 / 2)) + ',left=' + ((scwidth / 2) - (840 / 2) < 0 ? 0 : (scwidth / 2) - (840 / 2)) + ',width=840,height=625');
                     }
                     else if (id == 'export') {
-                        location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate3").val() + '&EndDate=' + $("#EndDate3").val() + '&flag=' + action + '&output=' + id;
-                    }
+                        location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action + '&output=' + id;
+                }
+        }
+        else {
+            alert('@WebCMS.Menu.plaseSelectOption');
+                }
             }
             else {
-                alert('@TSMC14B.Menu.plaseSelectValueName');
-                }
-            }
-            else {
-                alert("@TSMC14B.Menu.EndTimeNotOverNowTime");
-            }
-        } else if (action == 3) {
-            if (new Date($("#EndDate3").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
-                if (toolid3.length > 0) {
-                    if (id == 'search') {
-                        OpenModelWindow('@Url.Action("MyChart")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action + '&Y1Y2=' + Y1Y2, { width: 900, height: 600, caption: "Thend Chart", onclose: function () { } });
-                }
-                else if (id == 'export') {
-                    location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate3").val() + '&EndDate=' + $("#EndDate3").val() + '&flag=' + action + '&output=' + id;
-                }
-        }
-        else {
-            alert('@TSMC14B.Menu.plaseSelectOption');
+                alert("@WebCMS.Menu.EndTimeNotOverNowTime");
             }
         }
-        else {
-            alert("@TSMC14B.Menu.EndTimeNotOverNowTime");
-        }
-    } else if (action == 4) {
-        if (new Date($("#EndDate3").val().replace('-', '/')) <= new Date((dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes()).replace('-', '/'))) {
-            if (toolid3.length > 0) {
-                if (id == 'search') {
-                    //OpenModelWindow('@Url.Action("MyChart")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action, { width: 900, height: 700, caption: "Thend Chart", onclose: function () { } });
-                    window.open('@Url.Action("MyChart5")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action, '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=yes,resizable=yes,top=' + (((scheight - 40) / 2) - (690 / 2) < 0 ? 0 : ((scheight - 40) / 2) - (690 / 2)) + ',left=' + ((scwidth / 2) - (840 / 2) < 0 ? 0 : (scwidth / 2) - (840 / 2)) + ',width=840,height=625');
-                }
-                else if (id == 'export') {
-                    location.href = '@Url.Action("PLCCheck")?vName=' + vName + '&toolId=' + toolid3 + '&TagName=' + tagName3 + '&StartDate=' + $("#StartDate").val() + '&EndDate=' + $("#EndDate").val() + '&flag=' + action + '&output=' + id;
-                }
-        }
-        else {
-            alert('@TSMC14B.Menu.plaseSelectOption');
-            }
-        }
-        else {
-            alert("@TSMC14B.Menu.EndTimeNotOverNowTime");
-        }
-    }
 }
-        function ToolValueTagADD(toolid, name, value, selectAll) {
-            
-            if ($('.ValueTag').length > 14) { return false; }
+
+function ToolValueTagADD(toolid, name, value, selectAll) {
+
+    if ($('.ValueTag').length > 14) { return false; }
 
     if ($('#ValueTag' + value).length == 0) {
         if (selectAll == null) {
             $('#ToolIdValueTag').append('<div id="tempDiv" style="height:100px;" ></div>');
         }
-        
+
         $('#ToolIdValueTag').append('<div id="ValueTag' + value + '" class="ValueTag" name=' + name + ' toolid=' + toolid + ' style="display: none;background-color:#f2ffff;border-style:ridge;border-width:3px;border-color:silver;padding:2px 10px 2px 10px;margin:0px 0px 0px 0px;position:relative;width:100%;"><input type="checkbox" id="cbx' + value + '" style="vertical-align:middle;" checked="checked" /><label for="cbx' + value + '" style="vertical-align:middle;cursor: pointer;">' + toolid + name + '</label>             <input type="radio" name="Y1Y2' + value + '" class="Y1Y2" style="display:none;" id="rbnY1" value="Y1" checked ><label class="lblY1Y2" for="rbnY1" style="display:none;" >Y1</label><input type="radio" style="display:none;" name="Y1Y2' + value + '" class="Y1Y2" id="rbnY2" value="Y2" ><label class="lblY1Y2" style="display:none;" for="rbnY2" >Y2</label>                    <img class="uncheck" style="vertical-align:middle;position:absolute;right:0px;top:5px;cursor: pointer;" src="/images/uncheck.png" /></div>');
-        if (selectAll==null) {
+        if (selectAll == null) {
             $('#tempDiv').slideUp("fast", function () {
                 $('#tempDiv').remove();
             });
         }
-        
         $('#ValueTag' + value).fadeIn("slow");
         CheckIsStack();
 
@@ -536,9 +556,9 @@ function ToolValueTagRemove(value) {
 }
 function ValueTagHeader() {
     if ($('.ValueTag').length == 0) {
-        $('#ValueTagHeader').text('@TSMC14B.Menu.noSelectValueTag');
+        $('#ValueTagHeader').text('@WebCMS.Menu.noSelectValueTag');
     } else {
-        $('#ValueTagHeader').text('@TSMC14B.Menu.alreadySelectValueTag:' + $('.ValueTag').length);
+        $('#ValueTagHeader').text('@WebCMS.Menu.alreadySelectValueTag:' + $('.ValueTag').length);
     }
 }
 function ClearAll() {
@@ -557,17 +577,178 @@ function CheckIsStack() {
     </script>
 }
 
-<h2>@Request["vName"] @TSMC14B.Menu.eqValueChart</h2>
+@if (!string.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings["TCBookEnable"]) && System.Configuration.ConfigurationManager.AppSettings["TCBookEnable"] == "true")
+{ 
+    <script type="text/javascript">
+        $(function () {
+
+            //TCBookMark_info
+            $('.flexme').flexigrid({
+                title: 'Chart BookMark',
+                width: 600,
+                height: "auto",
+                url: '@Url.Action("JsonTCBookList")?page=1&rp=20',
+                dataType: 'json',
+                colModel: [
+                    { display: 'TCBID', name: 'TCBID', width: 60, sortable: false, align: 'center', hide: true },
+                    { display: '@WebCMS.Menu.TCName', name: 'TCName', width: 250, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.buileDate', name: 'builedate', width: 80, sortable: false, align: 'center', hide: true },
+                    { display: '@WebCMS.Menu.Login_name', name: 'Login_name', width: 80, sortable: false, align: 'center', hide: true },
+                    { display: 'tagString', name: 'tagString', width: 80, sortable: false, align: 'center', hide: true },
+                    { display: 'toolidString', name: 'toolidString', width: 80, sortable: false, align: 'center', hide: true },
+                    { display: 'dataTagString', name: 'dataTagString', width: 80, sortable: false, align: 'center', hide: true },
+                    { display: '@WebCMS.Menu.draw', name: 'draw', width: 70, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.Edit', name: 'edit', width: 70, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.Delete', name: 'delete', width: 60, sortable: false, align: 'center', hide: false },
+                ],
+                procmsg: '@WebCMS.Menu.procmsg',
+                rptext: '@WebCMS.Menu.rptext',
+                pagestat: '@WebCMS.Menu.pagestat',
+                pagetext: '@WebCMS.Menu.pagetext',
+                outof: '@WebCMS.Menu.outof',
+                nomsg: '@WebCMS.Menu.nomsg',
+                usepager: true,
+                useRp: true,
+                rp: 50,
+                nowrap: false,
+                onSuccess: function () {
+                    $('.flexme > tbody > tr > td[abbrr="draw"] > div').empty();
+                    $('.flexme > tbody > tr > td[abbrr="draw"] > div').each(function () {
+                        $(this).append('<a href="#" class="draw" ><div style="width:100%;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="draw" /></div></a>');
+                    });
+
+                    $('.draw').click(function () {
+                        var scheight = screen.height;
+                        var scwidth = screen.width;
+                        var vName = '';
+                        var toolid3 = '';
+                        var tagString = $(this).parent().parent().parent().children(':eq(4)').text();
+                        var dtNow = new Date(Date.now());
+                        var dtd7 = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
+                        var StartDate = dtd7.getFullYear() + '-' + ((dtd7.getMonth() + 1) < 10 ? '0' + (dtd7.getMonth() + 1) : (dtd7.getMonth() + 1)) + '-' + (dtd7.getDate() < 10 ? '0' + dtd7.getDate() : dtd7.getDate()) + ' 00:00';
+                        var EndDate = dtNow.getFullYear() + '-' + ((dtNow.getMonth() + 1) < 10 ? '0' + (dtNow.getMonth() + 1) : (dtNow.getMonth() + 1)) + '-' + (dtNow.getDate() < 10 ? '0' + dtNow.getDate() : dtNow.getDate()) + ' ' + (dtNow.getHours() < 10 ? '0' + dtNow.getHours() : dtNow.getHours()) + ':' + (dtNow.getMinutes() < 10 ? '0' + dtNow.getMinutes() : dtNow.getMinutes())
+                        Y1Y2 = '';
+                        for (var i in tagString.split(",")) {
+                            if (Y1Y2 == '') {
+                                Y1Y2 = 'Y1';
+                            } else {
+                                Y1Y2 = Y1Y2 + ',Y1';
+                            }
+                        }
+
+                        window.open('@Url.Action("MyChart4")?toolId=' + toolid3 + '&TagName=' + tagString + '&StartDate=' + StartDate + '&EndDate=' + EndDate + '&flag=' + 2 + '&Y1Y2=' + Y1Y2 + '&IsStack=True', '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=no,resizable=yes,top=' + (((scheight - 40) / 2) - (690 / 2) < 0 ? 0 : ((scheight - 40) / 2) - (690 / 2)) + ',left=' + ((scwidth / 2) - (840 / 2) < 0 ? 0 : (scwidth / 2) - (840 / 2)) + ',width=825,height=625');
+
+                    });
+
+                    $('.flexme > tbody > tr > td[abbrr="edit"] > div').empty();
+                    $('.flexme > tbody > tr > td[abbrr="edit"] > div').each(function () {
+                        $(this).append('<a href="#" class="edit" ><div style="width:100%;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="Edit" /></div></a>');
+                    });
+
+                    $('.edit').click(function () {
+                        var TCBID = $(this).parent().parent().parent().children(':eq(0)').text();
+                        var TCName = $(this).parent().parent().parent().children(':eq(1)').text();
+                        ClearAll();
+                        var tagString = $(this).parent().parent().parent().children(':eq(4)').text().split(',');
+                        var toolidString = $(this).parent().parent().parent().children(':eq(5)').text().split(',');
+                        var dataTagString = $(this).parent().parent().parent().children(':eq(6)').text().split(',');
+                        for (var i in tagString) {
+                            ToolValueTagADD(toolidString[i], dataTagString[i], tagString[i], true);
+                            if ($('#' + tagString[i]).length == 1) { $('#' + tagString[i]).attr('checked', true); }
+                        }
+                        $('#btnEditTCBook,#btnEditTCBookCancel').css('display', '');
+                        $('#btnAddTCBook').css('display', 'none');
+                        $('#btnEditTCBook').data('TCBID', TCBID);
+                        $('#btnEditTCBook').val($('#btnEditTCBook').val().split(' ')[0] +' '+TCName);
+
+                    });
+
+                    $('.flexme > tbody > tr > td[abbrr="delete"] > div').empty();
+                    $('.flexme > tbody > tr > td[abbrr="delete"] > div').each(function () {
+                        $(this).append('<a href="#" class="delete" ><div style="width:100%;"><img src="@Url.Content("~/images/uncheck.png")" alt="delete" /></div></a>');
+                    });
+
+                    $('.delete').click(function () {
+                        var TCBID = $(this).parent().parent().parent().children(':eq(0)').text();
+                        if (confirm('@WebCMS.Menu.confirm@WebCMS.Menu.Delete?')) {
+                            $.post('@Url.Action("JsonTCBookDelete")', { "TCBID": TCBID }, function (data) {
+                                parent.hiAlert(data);
+                                $('.flexme').flexReload();
+                            }, "json");
+                        }
+                    });
+                },
+                singleSelect: true,
+                rpOptions: [5, 10, 15, 20, 30, 50, 100],
+            });
+        });
+
+        function AddTCBook() {
+            var tagName3 = '';
+
+            $('.ValueTag').each(function (e) {
+                if ($('#cbx' + $(this).attr('id').replace('ValueTag', '')).attr('checked') == 'checked') {
+                    var tagName = $(this).attr('id').replace('ValueTag', '');
+                    if (tagName3.indexOf($(this).attr('id').replace('ValueTag', '')) == -1) {
+                        tagName3 = tagName3 + tagName + ",";
+                    }
+                }
+            });
+
+            tagName3 = tagName3.substring(0, tagName3.length - 1);
+            if (tagName3.length > 0) {
+                OpenModelWindow('@Url.Action("AddTCBook")?TagName=' + tagName3 + '&IsStack=True', { width: 800, height: 300, caption: "AddTCBook", onclose: function () { $('.flexme').flexReload(); } });
+            } else {
+                alert("@WebCMS.Menu.PlaseCheck @WebCMS.Menu.TagName");
+            }
+            return;
+        }
+
+        function EditTCBook() {
+            var tagName3 = '';
+            console.log($('#btnEditTCBook').data('TCBID'));
+            TCBID = $('#btnEditTCBook').data('TCBID');
+            if (TCBID) {
+                $('.ValueTag').each(function (e) {
+                    if ($('#cbx' + $(this).attr('id').replace('ValueTag', '')).attr('checked') == 'checked') {
+                        var tagName = $(this).attr('id').replace('ValueTag', '');
+                        if (tagName3.indexOf($(this).attr('id').replace('ValueTag', '')) == -1) {
+                            tagName3 = tagName3 + tagName + ",";
+                        }
+                    }
+                });
+
+                tagName3 = tagName3.substring(0, tagName3.length - 1);
+                if (tagName3.length > 0) {
+                    OpenModelWindow('@Url.Action("EditTCBook")?TCBID=' + TCBID + '&TagName=' + tagName3 + '&IsStack=True', { width: 800, height: 300, caption: "EditTCBook", onclose: function () { $('.flexme').flexReload(); } });
+                } else {
+                    alert("@WebCMS.Menu.PlaseCheck @WebCMS.Menu.TagName");
+                }
+            }
+
+            return;
+        }
+        
+        function EditTCBookCancel() {
+            ClearAll();
+            $('#btnEditTCBook,#btnEditTCBookCancel').css('display', 'none');
+            $('#btnAddTCBook').css('display', '');
+        }
+    </script>
+}
+
+
+<h2>@Request["vName"] @WebCMS.Menu.eqValueChart</h2>
 @*@Html.Partial("MachineGroupTitle", ViewData["PageName"] = "PLCCheck")*@
 <hr />
-<div>
+<div style="height: 180px">
     <div style="font-size: 12px;">
         <input type="radio" name="group1" class="rbn" id="rbnT1" value="1" checked style="display: none;">
-        <label for="rbnT1" style="display: none;">@TSMC14B.Menu.OneEqMoreValueTag</label>
+        <label for="rbnT1" style="display: none;">@WebCMS.Menu.OneEqMoreValueTag</label>
         <input type="radio" name="group1" class="rbn" id="rbnT2" value="2" style="display: none;">
-        <label for="rbnT2" style="display: none;">@TSMC14B.Menu.OneValueTagMoreEq</label>
+        <label for="rbnT2" style="display: none;">@WebCMS.Menu.OneValueTagMoreEq</label>
         <input type="radio" name="group1" class="rbn" id="rbnT3" value="3" style="display: none;">
-        <label for="rbnT3" style="display: none;">@TSMC14B.Menu.MoreValueTagMoreEq</label>
+        <label for="rbnT3" style="display: none;">@WebCMS.Menu.MoreValueTagMoreEq</label>
     </div>
     <table style="width: 1150px">
         <tr>
@@ -575,16 +756,16 @@ function CheckIsStack() {
                 <table border="1" class="tb" id="tb1">
                     <tr>
                         <td style="text-align: right;">
-                            <label id="lbl_device">@TSMC14B.Menu.plaseSelectDep</label>
+                            <label id="lbl_device">@WebCMS.Menu.plaseSelectDep</label>
                         </td>
-                        <td>@Html.DropDownList("device", ViewBag.Device as IEnumerable<SelectListItem>, @TSMC14B.Menu.plaseSelectOption)</td>
+                        <td>@Html.DropDownList("device", ViewBag.Device as IEnumerable<SelectListItem>, @WebCMS.Menu.plaseSelectOption)</td>
                         <td style="text-align: right;">
-                            <label id="lbl_toolid">@TSMC14B.Menu.plaseSelectEQ</label>
+                            <label id="lbl_toolid">@WebCMS.Menu.plaseSelectEQ</label>
                         </td>
                         <td>
-                            <input type='text' placeholder='@TSMC14B.Menu.Enter Tool ID' id="toolidinput" />
+                            <input type='text' placeholder='@WebCMS.Menu.Enter Tool ID' id="toolidinput" />
                             <select id="toolid" name="toolid">
-                                <option>@TSMC14B.Menu.plaseSelectOption</option>
+                                <option>@WebCMS.Menu.plaseSelectOption</option>
                                 @if (ViewBag.ToolID != null)
                                 {
                                     foreach (var item in ViewBag.ToolID as IEnumerable<SelectListItem>)
@@ -597,38 +778,39 @@ function CheckIsStack() {
                     </tr>
                     <tr>
                         <td style="text-align: right;">
-                            <label for="lbl_StartDate">@TSMC14B.Menu.StartDate</label>
+                            <label for="lbl_StartDate">@WebCMS.Menu.StartDate</label>
                         </td>
                         <td>
                             @Html.Editor("StartDate")
                         </td>
                         <td style="text-align: right;">
-                            <label for="lbl_EndDate">@TSMC14B.Menu.EndDate</label>
+                            <label for="lbl_EndDate">@WebCMS.Menu.EndDate</label>
                         </td>
                         <td>
                             @Html.Editor("EndDate")
-                            <input type="checkbox" id="IsStack" /><label for="IsStack">@TSMC14B.Menu.Stack</label>
-                            <input type="checkbox" id="cbxSelectAll" /><label for="cbxSelectAll">@TSMC14B.Menu.SelectAll</label>
+                            <input type="checkbox" id="IsStack" /><label for="IsStack">@WebCMS.Menu.Stack</label>
+                            <input type="checkbox" id="cbxSelectAll" /><label for="cbxSelectAll">@WebCMS.Menu.SelectAll</label>
                         </td>
                     </tr>
                     <tr>
                         <td style="text-align: right; vertical-align: middle;">
-                            <label for="lbl_TagName">@TSMC14B.Menu.TagName</label>
+                            <label for="lbl_TagName">@WebCMS.Menu.TagName</label>
                         </td>
                         <td colspan="3">
-                            <table>
+                            @* <table>
                                 <tr>
-                                    <td>
-                                        <div id="td">
-                                            <input class="cb_vName" name="vName" type="checkbox" style="display: none;" />
-                                        </div>
-                                    </td>
+                                    <td>*@
+                            <div id="td">
+                                <input class="cb_vName" name="vName" type="checkbox" style="display: none;" />
+                            </div>
+                            @*               </td>
                                 </tr>
-                            </table>
+                            </table>*@
                         </td>
                     </tr>
                 </table>
-                <table border="1" class="tb" id="tb2" style="display: none;">
+
+                @*                <table border="1" class="tb" id="tb2" style="display: none;">
                     <tr>
                         <td>
                             <label>請選擇課別</label>
@@ -736,18 +918,31 @@ function CheckIsStack() {
                             @Html.Editor("EndDate3")
                         </td>
                     </tr>
-                </table>
+                </table>*@
                 <br />
-                <input type="button" value="@TSMC14B.Menu.draw Trend Chart" style="width: 120px" onclick="javascript: ChartExport('search');" />&nbsp;&nbsp;&nbsp;
-                <input type="button" value="@TSMC14B.Menu.ChartExport" style="width: 80px" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp;
-                <input type="button" value="@TSMC14B.Menu.ClearAll" style="width: 80px" onclick="javascript: ClearAll();" />&nbsp;&nbsp;&nbsp;
+                <input type="button" value="@WebCMS.Menu.draw Trend Chart" style="width: 120px" onclick="javascript: ChartExport('search');" />&nbsp;&nbsp;
+                <input type="button" value="@WebCMS.Menu.ChartExport" style="width: 80px" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;
+                <input type="button" value="@WebCMS.Menu.ClearAll" style="width: 80px" onclick="javascript: ClearAll();" />&nbsp;&nbsp;
+
+           @if (!string.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings["TCBookEnable"]) && System.Configuration.ConfigurationManager.AppSettings["TCBookEnable"] == "true")
+           {
+               <input type="button" id="btnAddTCBook" value="@WebCMS.Menu.AddTCBook" style="width:80px" onclick="javascript: AddTCBook();" />
+               <input type="button" id="btnEditTCBook" value="@WebCMS.Menu.EditTCBook" style="width:200px;display:none;" onclick="javascript: EditTCBook();" />
+               <input type="button" id="btnEditTCBookCancel" value="@WebCMS.Menu.Cancel" style="width:100px;display:none;" onclick="javascript: EditTCBookCancel();" />
+           }
+
             </td>
             <td style="width: 390px">
                 <h2 style="border-style: ridge; font-weight: bold; width: 100%;">
-                    <label id="ValueTagHeader">@TSMC14B.Menu.noSelectValueTag</label>
+                    <label id="ValueTagHeader">@WebCMS.Menu.noSelectValueTag</label>
                 </h2>
                 <div id="ToolIdValueTag"></div>
             </td>
         </tr>
     </table>
 </div>
+@if (!string.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings["TCBookEnable"]) && System.Configuration.ConfigurationManager.AppSettings["TCBookEnable"] == "true")
+{
+    
+    <table class="flexme" />
+}

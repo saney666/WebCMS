@@ -1,4 +1,4 @@
-﻿@model TSMC14B.Areas.Main.Models.AlarmReportModel
+﻿@model WebCMS.Areas.Main.Models.AlarmReportModel
 @{
     Layout = "../Shared/_Layout.cshtml";
     ViewBag.Title = "Alarm Reaport";
@@ -13,7 +13,6 @@
 
     <script type="text/javascript">
         $(function () {
-            //$('.ul').jqf1();
             $('.tb').css('font-size', '12px');
             var _closed = window.location.search;
             var _intClosed = window.location.search.indexOf("Closed");
@@ -46,13 +45,6 @@
             var _intPost = window.location.search.indexOf("Post");
             _Post = _Post.substring(_intPost + 5, _Post.length);
 
-            //for (i = 0; i < _vendor.split(",").length; i++) {
-
-            //    if ($('.cb_vName').val().indexOf(_vendor.split(",")[i].substring(1, _vendor.split(",")[i].length - 1))) {
-            //        //alert(_vendor.split(",")[i].substring(1, _vendor.split(",")[i].length - 1));
-            //        $('.cb_vName').attr("checked", "checked");
-            //    }
-            //}
             if ("@ViewBag.Message" != "") {
                 parent.hiAlert("@ViewBag.Message");
                 CloseModelWindow();
@@ -68,9 +60,7 @@
             });
 
             $('#message').text($('#message').text().substring(0, $('#message').text().length - 1));
-
             $('.flexme').flexigrid({
-                //title: 'Alarm Now List',
                 width: 1214,
                 height: "auto",
                 @*url: '@Url.Action("JsonAlarmDeal")?StartDate=" ' + $('#StartDate').val() + "&EndDate=" + $('#EndDate').val() + "&ToolID=" + $('#ToolID').val() + "&AlarmMsg=" + $('#AlarmMsg').val() + "&Closed=" + $('#message2').text() + "&Vendor=" + $('#message').text(),*@
@@ -78,79 +68,54 @@
                 colModel: [
                     { display: 'ID', name: 'AlarmID', width: 60, sortable: false, align: 'center', hide: true },
                     { display: 'System', name: 'System', width: 60, sortable: false, align: 'center', hide: true },
-                    { display: '@TSMC14B.Menu.Weekly', name: 'Weekly', width: 35, sortable: false, align: 'center', hide: true },
-                    { display: '@TSMC14B.Menu._DateTime', name: '_DateTime', width: 140, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.Weekly', name: 'Weekly', width: 35, sortable: false, align: 'center', hide: true },
+                    { display: '@WebCMS.Menu._DateTime', name: '_DateTime', width: 140, sortable: false, align: 'center', hide: false },
                     { display: 'Chamber ID', name: 'ToolID', width: 150, sortable: false, align: 'center', hide: false },
-                    { display: '@TSMC14B.Menu.Location', name: 'Location', width: 60, sortable: false, align: 'center', hide: true },
-                    //{ display: 'Location ID', name: 'LocationID', width: 60, sortable: false, align: 'center', hide: false },
-                    { display: '@TSMC14B.Menu.department_name', name: 'Vendor', width: 50, sortable: false, align: 'center', hide: true },
+                    { display: '@WebCMS.Menu.Location', name: 'Location', width: 60, sortable: false, align: 'center', hide: true },
+                    { display: '@WebCMS.Menu.department_name', name: 'Vendor', width: 50, sortable: false, align: 'center', hide: true },
                     { display: 'TagName', name: 'TagName', width: 60, sortable: false, align: 'center', hide: true },
-                    { display: '@TSMC14B.Menu.AlarmValue', name: 'AlarmValue', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.AlarmValue', name: 'AlarmValue', width: 60, sortable: false, align: 'center', hide: false },
                     { display: 'Limit Setting', name: 'TriggerLimit', width: 70, sortable: false, align: 'center', hide: false },
-                    { display: '@TSMC14B.Menu.AlarmMessage', name: 'AlarmMsg', width: 250, sortable: false, align: 'left', hide: false },
-                    //{ display: 'Alarm Type', name: 'AlarmType', width: 50, sortable: false, align: 'center', hide: true },
+                    { display: '@WebCMS.Menu.AlarmMessage', name: 'AlarmMsg', width: 250, sortable: false, align: 'left', hide: false },
                     { display: 'Alarm<br /> Level', name: 'AlarmLevel', width: 35, sortable: false, align: 'center', hide: true },
-                    //{ display: '@TSMC14B.Menu.effectOutPut', name: 'effectOutPut', width: 50, sortable: false, align: 'center', hide: false },
-                    //{ display: '@TSMC14B.Menu.effectDateTime', name: 'effectDateTime', width: 90, sortable: false, align: 'center', hide: false },
-                    //{ display: '@TSMC14B.Menu.DealWith', name: 'Status', width: 90, sortable: false, align: 'center', hide: false },
-                    //{ display: 'Alarm Cause', name: 'AlarmCause', width: 90, sortable: false, align: 'center', hide: false },
-                    //{ display: '@TSMC14B.Menu.ChangeParts', name: 'ChangeParts', width: 90, sortable: false, align: 'center', hide: false },
-                    //{ display: 'PM週期(天)', name: 'pmCycle', width: 60, sortable: false, align: 'center', hide: true },
-                    //{ display: '上次PM時間', name: 'pmDate', width: 60, sortable: false, align: 'center', hide: false },
-                    //{ display: 'LifeTime(天)', name: 'PMLifeTime', width: 70, sortable: false, align: 'center', hide: true },
-                    //{ display: '@TSMC14B.Menu.Closed', name: 'Closed', width: 30, sortable: false, align: 'center', hide: false },
-                    //{ display: '@TSMC14B.Menu.ReceptionName', name: 'ReceptionName', width: 60, sortable: false, align: 'center', hide: false },
+                    @*
                         @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN")
                         { 
                          @: { display: 'AlarmID', name: 'PhoneCallAlarmID', width: 70, sortable: false, align: 'left', hide: false },
-                        }else
-	                    {
+                        }
+                        else
+                        {
                           @: { display: 'AlarmID', name: 'PhoneCallAlarmID', width: 70, sortable: false, align: 'left', hide: true },
 	                    }
-
+                    *@
                     { display: '', name: 'SOP', width: 10, sortable: false, align: 'left', hide: true },
-                    { display: 'TrendChart', name: 'edit', width: 70, sortable: false, align: 'center', hide: false }
+                    { display: 'DataLog', name: 'edit', width: 70, sortable: false, align: 'center', hide: false },
+
+                    @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN")
+                    {
+                       @: { display: 'DataLink', name: 'edit2', width: 70, sortable: false, align: 'center', hide: false }
+                    }
                 ],
-                procmsg: '@TSMC14B.Menu.procmsg',
-                rptext: '@TSMC14B.Menu.rptext',
-                pagestat: '@TSMC14B.Menu.pagestat',
-                pagetext: '@TSMC14B.Menu.pagetext',
-                outof: '@TSMC14B.Menu.outof',
-                nomsg: '@TSMC14B.Menu.nomsg',
+                procmsg: '@WebCMS.Menu.procmsg',
+                rptext: '@WebCMS.Menu.rptext',
+                pagestat: '@WebCMS.Menu.pagestat',
+                pagetext: '@WebCMS.Menu.pagetext',
+                outof: '@WebCMS.Menu.outof',
+                nomsg: '@WebCMS.Menu.nomsg',
                 usepager: true,
                 useRp: true,
                 rp: 20,
                 nowrap: false,
                 onSuccess: function () {
-                    //$('.flexme > tbody > tr > td[abbrr="SOP"] > div').remove();
-                    //$('.flexme > tbody > tr > td[abbrr="SOP"]').append('<a href="@Url.Content("~/Content/SOP/")' + $(this).parent().children(':eq(8)').text() + '" target="_blank" ><div style="width:10px;"><img src="@Url.Content("../../../../images/SOP.png")" alt="SOP" style="height: 15px; width: 15px;" /></div></a>');
-
                     $('.flexme > tbody > tr > td[abbrr="SOP"]').append('')
-                        //.each(function (i, e) {
-                        //    var alarmTime = $(this).parent().children(':eq(8)').text() + ".txt";
-                        //    alarmTime = alarmTime.replace(":", "");
-                        //    alarmTime = alarmTime.replace("*", "");
-                        //    alarmTime = alarmTime.replace("?", "");
-                        //    alarmTime = alarmTime.replace("<", "");
-                        //    alarmTime = alarmTime.replace(">", "");
-                        //    alarmTime = alarmTime.replace("|", "");
-                        //    alarmTime = alarmTime.replace("/", "");
-                        //    alarmTime = alarmTime.replace("\\", "");
-                        //    $(this).children().remove();
-                        //    $(this).append('<a href="@Url.Content("~/Content/SOP/")' + alarmTime + '" target="_blank" ><div style="width:10px;"><img src="@Url.Content("../../../../images/SOP.png")" alt="SOP" style="height: 15px; width: 15px;" /></div></a>')
-                        //});
-
-                    //$('.flexme > tbody > tr > td[abbrr="edit"] > div').remove();
-                    $('.flexme > tbody > tr > td[abbrr="edit"] > div').text('');
-                    //$('.flexme > tbody > tr > td[abbrr="edit"]').append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="編輯" /></div></a>');
+                    $('.flexme > tbody > tr > td[abbrr="edit"] > div').empty();
                     $('.flexme > tbody > tr > td[abbrr="edit"] > div').each(function () {
-                        if ($(this).parent().parent().children(':eq(11)').text() != '800' ) {
+                        if ($(this).parent().parent().children(':eq(11)').text() != '800' && parseInt($(this).parent().parent().children(':eq(11)').text()) < 500) {
                             $(this).parent().parent().children(':eq(8)').children('div').text('');
                         }
                         var value = $(this).parent().parent().children(':eq(8)').text();
                         var Tag_Name = $(this).parent().parent().children(':eq(7)').text();
-                        
-                        if (Tag_Name.length>0) {
+                        if (Tag_Name.length > 0) {
                             if ((parseFloat(value) || value == '0') && $(this).parent().parent().children(':eq(11)').text() == '800' && $(this).parent().parent().children(':eq(9)').text() != 'Comm Error') {
                                 $(this).append('<a href="#" class="edit" ><div style="width:100%;"><img src="@Url.Content("~/images/tt2.jpg")" alt="編輯" /></div></a>');
                             }
@@ -163,9 +128,36 @@
                         var toolid = $(this).parent().parent().parent().children(':eq(4)').text();
                         var StartDate = new Date(time - (1000 * 60 * 60 * 12));
                         var EndDate = new Date(time.setHours(time.getHours() + 12));
-                        //OpenModelWindow('@Url.Action("EditAlarmReport")?AlarmId=' + $(this).parent().parent().children(':eq(0)').text() + '&vName=' + $(this).parent().parent().children(':eq(6)').text() + '&Sys=' + $(this).parent().parent().children(':eq(1)').text(), { width: 700, height: 630, caption: "@TSMC14B.Menu.Edit", onclose: function () { $('.flexme').flexReload(); } });
-                        //OpenModelWindow('@Url.Action("MyChart3","MachineGroup")?toolId=' + toolid + '&TagName=' + Tag_Name + '&StartDate=' + StartDate.getFullYear() + '-' + ((StartDate.getMonth() + 1) < 10 ? '0' + (StartDate.getMonth() + 1) : (StartDate.getMonth() + 1)) + '-' + (StartDate.getDate() < 10 ? '0' + StartDate.getDate() : StartDate.getDate()) + ' ' + (StartDate.getHours() < 10 ? '0' + StartDate.getHours() : StartDate.getHours()) + ':' + (StartDate.getMinutes() < 10 ? '0' + StartDate.getMinutes() : StartDate.getMinutes()) + '&EndDate=' + EndDate.getFullYear() + '-' + ((EndDate.getMonth() + 1) < 10 ? '0' + (EndDate.getMonth() + 1) : (EndDate.getMonth() + 1)) + '-' + (EndDate.getDate() < 10 ? '0' + EndDate.getDate() : EndDate.getDate()) + ' ' + (EndDate.getHours() < 10 ? '0' + EndDate.getHours() : EndDate.getHours()) + ':' + (EndDate.getMinutes() < 10 ? '0' + EndDate.getMinutes() : EndDate.getMinutes()) + '&flag=3&Y1Y2=Y1', { width: 900, height: 650, caption: "Thend Chart", onclose: function () { } });
-                        window.open('@Url.Action("MyChart4","MachineGroup")?toolId=' + toolid + '&TagName=' + Tag_Name + '&StartDate=' + StartDate.getFullYear() + '-' + ((StartDate.getMonth() + 1) < 10 ? '0' + (StartDate.getMonth() + 1) : (StartDate.getMonth() + 1)) + '-' + (StartDate.getDate() < 10 ? '0' + StartDate.getDate() : StartDate.getDate()) + ' ' + (StartDate.getHours() < 10 ? '0' + StartDate.getHours() : StartDate.getHours()) + ':' + (StartDate.getMinutes() < 10 ? '0' + StartDate.getMinutes() : StartDate.getMinutes()) + '&EndDate=' + EndDate.getFullYear() + '-' + ((EndDate.getMonth() + 1) < 10 ? '0' + (EndDate.getMonth() + 1) : (EndDate.getMonth() + 1)) + '-' + (EndDate.getDate() < 10 ? '0' + EndDate.getDate() : EndDate.getDate()) + ' ' + (EndDate.getHours() < 10 ? '0' + EndDate.getHours() : EndDate.getHours()) + ':' + (EndDate.getMinutes() < 10 ? '0' + EndDate.getMinutes() : EndDate.getMinutes()) + '&flag=3&Y1Y2=Y1', '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=yes,resizable=yes,top=25,left=200,width=825,height=625');
+                        window.open('@Url.Action("MyChart4", "MachineGroup")?toolId=' + toolid + '&TagName=' + Tag_Name + '&StartDate=' + StartDate.getFullYear() + '-' + ((StartDate.getMonth() + 1) < 10 ? '0' + (StartDate.getMonth() + 1) : (StartDate.getMonth() + 1)) + '-' + (StartDate.getDate() < 10 ? '0' + StartDate.getDate() : StartDate.getDate()) + ' ' + (StartDate.getHours() < 10 ? '0' + StartDate.getHours() : StartDate.getHours()) + ':' + (StartDate.getMinutes() < 10 ? '0' + StartDate.getMinutes() : StartDate.getMinutes()) + '&EndDate=' + EndDate.getFullYear() + '-' + ((EndDate.getMonth() + 1) < 10 ? '0' + (EndDate.getMonth() + 1) : (EndDate.getMonth() + 1)) + '-' + (EndDate.getDate() < 10 ? '0' + EndDate.getDate() : EndDate.getDate()) + ' ' + (EndDate.getHours() < 10 ? '0' + EndDate.getHours() : EndDate.getHours()) + ':' + (EndDate.getMinutes() < 10 ? '0' + EndDate.getMinutes() : EndDate.getMinutes()) + '&flag=3&Y1Y2=Y1', '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=yes,resizable=yes,top=25,left=200,width=825,height=625');
+                    });
+
+                    $('.flexme > tbody > tr > td[abbrr="edit2"] > div').empty();
+
+                    $('.flexme > tbody > tr > td[abbrr="edit2"] > div').each(function () {
+                        if ($(this).parent().parent().children(':eq(11)').text() != '800' && parseInt($(this).parent().parent().children(':eq(11)').text()) < 500) {
+                            $(this).parent().parent().children(':eq(8)').children('div').text('');
+                        }
+                        var value = $(this).parent().parent().children(':eq(8)').text();
+                        var Tag_Name = $(this).parent().parent().children(':eq(7)').text();
+
+                        if (Tag_Name.length > 0) {
+                            if ((parseFloat(value) || value == '0' || value == '') && ($(this).parent().parent().children(':eq(11)').text() == '800' || $(this).parent().parent().children(':eq(11)').text() == '500' || $(this).parent().parent().children(':eq(11)').text() == '400') && $(this).parent().parent().children(':eq(9)').text() != 'Comm Error') {
+                                //$(this).append('<a href="#" class="edit" ><div style="width:100%;"><img src="@Url.Content("~/images/tt2.jpg")" alt="編輯" /></div></a>');
+                                var time = new Date($(this).parent().parent().children(':eq(3)').text());
+                                var Tag_Name = $(this).parent().parent().children(':eq(7)').text();
+                                var toolid = $(this).parent().parent().children(':eq(4)').text();
+                                var StartDate = new Date(time - (1000 * 60 * 60 * 12));
+                                var EndDate = new Date(time.setHours(time.getHours() + 12));
+
+                                //$(this).append('<a href="@Url.Action("MyChart4", "MachineGroup")?toolId=' + toolid + '&TagName=' + Tag_Name + '&StartDate=' + StartDate.getFullYear() + '-' + ((StartDate.getMonth() + 1) < 10 ? '0' + (StartDate.getMonth() + 1) : (StartDate.getMonth() + 1)) + '-' + (StartDate.getDate() < 10 ? '0' + StartDate.getDate() : StartDate.getDate()) + ' ' + (StartDate.getHours() < 10 ? '0' + StartDate.getHours() : StartDate.getHours()) + ':' + (StartDate.getMinutes() < 10 ? '0' + StartDate.getMinutes() : StartDate.getMinutes()) + '&EndDate=' + EndDate.getFullYear() + '-' + ((EndDate.getMonth() + 1) < 10 ? '0' + (EndDate.getMonth() + 1) : (EndDate.getMonth() + 1)) + '-' + (EndDate.getDate() < 10 ? '0' + EndDate.getDate() : EndDate.getDate()) + ' ' + (EndDate.getHours() < 10 ? '0' + EndDate.getHours() : EndDate.getHours()) + ':' + (EndDate.getMinutes() < 10 ? '0' + EndDate.getMinutes() : EndDate.getMinutes()) + '&flag=3&Y1Y2=Y1" target="_blank" class="edit" ><div style="width:100%;"><img src="@Url.Content("~/images/tt2.jpg")" alt="編輯" /></div></a>');
+
+                                if (value == '' && $(this).parent().parent().children(':eq(11)').text() == '400') {
+                                    $(this).append('<a href="@Url.Action("PLCCheckDemo", "MachineGroup")?toolId=' + toolid + '&SD=' + StartDate.getFullYear() + '-' + ((StartDate.getMonth() + 1) < 10 ? '0' + (StartDate.getMonth() + 1) : (StartDate.getMonth() + 1)) + '-' + (StartDate.getDate() < 10 ? '0' + StartDate.getDate() : StartDate.getDate()) + ' ' + (StartDate.getHours() < 10 ? '0' + StartDate.getHours() : StartDate.getHours()) + ':' + (StartDate.getMinutes() < 10 ? '0' + StartDate.getMinutes() : StartDate.getMinutes()) + '&ED=' + EndDate.getFullYear() + '-' + ((EndDate.getMonth() + 1) < 10 ? '0' + (EndDate.getMonth() + 1) : (EndDate.getMonth() + 1)) + '-' + (EndDate.getDate() < 10 ? '0' + EndDate.getDate() : EndDate.getDate()) + ' ' + (EndDate.getHours() < 10 ? '0' + EndDate.getHours() : EndDate.getHours()) + ':' + (EndDate.getMinutes() < 10 ? '0' + EndDate.getMinutes() : EndDate.getMinutes()) + '&IsStack=1" target="_blank" class="edit" ><div style="width:100%;"><img src="@Url.Content("~/images/tt2.jpg")" alt="編輯" /></div></a>');
+                                } else {
+                                    $(this).append('<a href="@Url.Action("PLCCheckDemo", "MachineGroup")?toolId=' + toolid + '&Tag=' + Tag_Name + '&SD=' + StartDate.getFullYear() + '-' + ((StartDate.getMonth() + 1) < 10 ? '0' + (StartDate.getMonth() + 1) : (StartDate.getMonth() + 1)) + '-' + (StartDate.getDate() < 10 ? '0' + StartDate.getDate() : StartDate.getDate()) + ' ' + (StartDate.getHours() < 10 ? '0' + StartDate.getHours() : StartDate.getHours()) + ':' + (StartDate.getMinutes() < 10 ? '0' + StartDate.getMinutes() : StartDate.getMinutes()) + '&ED=' + EndDate.getFullYear() + '-' + ((EndDate.getMonth() + 1) < 10 ? '0' + (EndDate.getMonth() + 1) : (EndDate.getMonth() + 1)) + '-' + (EndDate.getDate() < 10 ? '0' + EndDate.getDate() : EndDate.getDate()) + ' ' + (EndDate.getHours() < 10 ? '0' + EndDate.getHours() : EndDate.getHours()) + ':' + (EndDate.getMinutes() < 10 ? '0' + EndDate.getMinutes() : EndDate.getMinutes()) + '&IsStack=1" target="_blank" class="edit" ><div style="width:100%;"><img src="@Url.Content("~/images/tt2.jpg")" alt="編輯" /></div></a>');
+                                }
+                            }
+                        }
                     });
 
                     if (_Post == "1") {
@@ -176,92 +168,12 @@
                 singleSelect: true,
                 rpOptions: [5, 10, 15, 20, 30, 50, 100],
             });
-            @*<img src="' + @Url.Content("~/Content/Icons/Item.Edit.gif") +'" alt="編輯" />*@
-            @*href="javascript:;" title="編輯"><img src="' +@Url.Content("~/Content/Icons/Item.Edit.gif") +'" alt="編輯"*@
-
+       
             $('#StartDate').datetimepicker();
             $('#EndDate').datetimepicker({
                 Time59: true
             });
-            //// 預約開始時間的行為
-            //$("#StartDate").attr("readonly", true);
-            //$("#StartDate").change(function () {
-            //    var start = new Date($("#StartDate").val().replace("-", "/"));
-            //    var end = new Date($("#EndDate").val().replace("-", "/"));
-            //    //if (DateDiff("n", start, end) <= 0)
-            //    //    $("#EndDate").val(dateFormat.call(DateAdd("n", 15, start), i18n.datepicker.dateformat.fulldayvalue + " HH:mm "));
-
-            //    $(this).focus();
-            //});
-            //$("#sd").datepicker({
-            //    picker: "#sd,#StartDate", showtarget: $("#StartDate"),
-            //    onReturn: function (r) {
-            //        var sdt = $("#StartDate").val().split(" ");
-            //        if (sdt[0].indexOf("-") != -1)
-            //            sdt[0] = dateFormat.call(r, i18n.datepicker.dateformat.fulldayvalue);
-            //        else
-            //            sdt.splice(0, 0, dateFormat.call(r, i18n.datepicker.dateformat.fulldayvalue));
-            //        $("#StartDate").val(sdt.join(" "));
-            //        $("#StartDate").trigger("change");
-            //    }
-            //});
-            //$('#st').ptTimeSelect({
-            //    setButtonLabel: "設定",
-            //    containerWidth: "300px",
-            //    //minutesList: ["00", "15", "30", "45"],
-            //    onClose: function (time) {
-            //        var sdt = $("#StartDate").val().split(" ");
-            //        if (sdt[0].indexOf("-") != -1)
-            //            $("#StartDate").val(sdt[0] + " " + $(time).val());
-            //        else
-            //            $("#StartDate").val($(time).val());
-            //        $("#StartDate").trigger("change");
-            //    }
-            //});
-            //// 預約結束時間的行為
-            //$("#EndDate").attr("readonly", true);
-            //$("#EndDate").change(function () {
-            //    var start = new Date($("#StartDate").val().replace("-", "/"));
-            //    var end = new Date($("#EndDate").val().replace("-", "/"));
-            //    //if (DateDiff("n", start, end) <= 0)
-            //    //    $("#StartDate").val(dateFormat.call(DateAdd("n", -15, end), i18n.datepicker.dateformat.fulldayvalue + " HH:mm "));
-
-            //    $(this).focus();
-            //});
-            //$("#ed").datepicker({
-            //    picker: "#ed,#EndDate", showtarget: $("#EndDate"),
-            //    onReturn: function (r) {
-            //        var sdt = $("#EndDate").val().split(" ");
-            //        if (sdt[0].indexOf("-") != -1)
-            //            sdt[0] = dateFormat.call(r, i18n.datepicker.dateformat.fulldayvalue);
-            //        else
-            //            sdt.splice(0, 0, dateFormat.call(r, i18n.datepicker.dateformat.fulldayvalue));
-            //        $("#EndDate").val(sdt.join(" "));
-            //        $("#EndDate").trigger("change");
-            //    }
-            //});
-            //$('#et').ptTimeSelect({
-            //    setButtonLabel: "設定",
-            //    containerWidth: "300px",
-            //    //minutesList: ["00", "15", "30", "45"],
-            //    onClose: function (time) {
-            //        var sdt = $("#EndDate").val().split(" ");
-            //        if (sdt[0].indexOf("-") != -1)
-            //            $("#EndDate").val(sdt[0] + " " + $(time).val());
-            //        else
-            //            $("#EndDate").val($(time).val());
-            //        $("#EndDate").trigger("change");
-            //    }
-            //});
-            //$('#ddl_Dept').change(function () {
-            //    //console.log($(this).val() + '' + $('#device').val());
-            //    if ($(this).val().length == 0) {
-            //        $('#device').val('');
-            //        $('#spanDevice').hide();
-            //    } else {
-            //        $('#spanDevice').show();
-            //    }
-            //});
+          
             if ($("#StartDate").val().length == 0) {
                 var dt = new Date(Date.now() - (2 * (1000 * 60 * 60 * 24)));
                 $("#StartDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 00:00');
@@ -271,9 +183,7 @@
 
                 $("#EndDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()));
             }
-            //var _Post = window.location.search;
-            //var _intPost = window.location.search.indexOf("Post");
-            //_Post = _Post.substring(_intPost + 5, _Post.length);
+
             if (_Post == "1") {
                 ChartExport('search');
             }
@@ -284,12 +194,18 @@
 
                 dt = new Date(Date.now() - (7 * (1000 * 60 * 60 * 24)));
                 $("#StartDate").val(dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' 07:30');
-                
+
                 $('#ddl_Dept').val($(this).data('department_name'));
                 $('#AlarmMsg').val('');
                 $('#ToolID').val('');
                 $('#sbmit').click();
             });
+
+            $('#ddl_Dept').val('@Request["Vendor"]');
+
+            if ('@Request["search"]' == '1') {
+                ChartExport('search');
+            }
         });
 
         function ChartExport(id) {
@@ -309,27 +225,25 @@
                 $('#message2').append($(this).val());
             });
             $('#message').text($('#message').text().substring(0, $('#message').text().length - 1));
-            //console($('#message').text());
             var groupName = '';
-            if ($('#device').val().length > 0) {
-                groupName = "'" + $('#device').val() + "'";
-            }
+
             if ($('#StartDate').val() != null && $('#StartDate').val().length > 0 && $('#EndDate').val() != null && $('#EndDate').val().length > 0) {
                 if ($('#message').text().length > 0) {
-                    @*alert("@Url.Action("AlarmDeal")?StartDate=" + $('#StartDate').val() + "&EndDate=" + $('#EndDate').val() + "&ToolID=" + $('#ToolID').val() + "&AlarmMsg=" + $('#AlarmMsg').val() + "&Closed=" + $('#message2').text() + "&Vendor=" + $('#message').text() + "&output=" + id);*@
                     if (id == 'search') {
                         $('.flexme > tbody').empty();
                         var urlStr = '@Url.Action("JsonAlarmDeal")?StartDate="' + $('#StartDate').val() + "&EndDate=" + $('#EndDate').val() + "&ToolID=" + $('#ToolID').val() + "&AlarmMsg=" + $('#AlarmMsg').val() + "&Closed=" + $('#message2').text() + "&Vendor=" + $('#message').text() + "&gname=" + groupName + '&page=1&rp=20';
-                        $(".flexme").flexOptions({ url: urlStr,newp:1 }).flexReload();
+                        $(".flexme").flexOptions({ url: urlStr, newp: 1 }).flexReload();
+                    } else if (id == 'alarmCount') {
+                        open("@Url.Action("AlarmCountByDept")", "_blank", "", false);
                     }
                     else {
                         location.href = "@Url.Action("AlarmDeal")?StartDate=" + $('#StartDate').val() + "&EndDate=" + $('#EndDate').val() + "&ToolID=" + $('#ToolID').val() + "&AlarmMsg=" + $('#AlarmMsg').val() + "&Closed=" + $('#message2').text() + "&Vendor=" + $('#message').text() + "&gname=" + groupName + "&output=" + id;;
                     }
-                }
-                else { alert('@TSMC14B.Menu.plaseSelectDep'); }
+            }
+            else { alert('@WebCMS.Menu.plaseSelectDep'); }
             }
             else {
-                alert('@TSMC14B.Menu.plaseSelectDate');
+                alert('@WebCMS.Menu.plaseSelectDate');
             }
         }
     </script>
@@ -339,29 +253,28 @@
     <tr>
         <td>
             <div>
-                
                 <table>
                     <tr>
                         <td>
                             <table border="1" class="tb" style="width: 550px;">
                                 <tr>
-                                    <td style="text-align: right;display:none;">@Html.LabelFor(model => model.Type)</td>
-                                    <td style="display:none;">
+                                    <td style="text-align: right; display: none;">@Html.LabelFor(model => model.Type)</td>
+                                    <td style="display: none;">
                                         <input type="radio" name="group1" class="rbn" value="1" id="rbnT1">
-                                        <label for="rbnT1">@TSMC14B.Menu.Yes</label>
+                                        <label for="rbnT1">@WebCMS.Menu.Yes</label>
                                         <input type="radio" name="group1" class="rbn" value="0" id="rbnT2">
-                                        <label for="rbnT2">@TSMC14B.Menu.No</label>
+                                        <label for="rbnT2">@WebCMS.Menu.No</label>
                                         <input type="radio" name="group1" class="rbn" value="" id="rbnT3" checked="checked">
-                                        <label for="rbnT3">@TSMC14B.Menu.All</label>
+                                        <label for="rbnT3">@WebCMS.Menu.All</label>
                                     </td>
                                     <td style="text-align: right;">
-                                        <label for="lbl_vendor">@TSMC14B.Menu.plaseSelectDep</label>
+                                        <label for="lbl_vendor">@WebCMS.Menu.plaseSelectDep</label>
                                     </td>
                                     <td>
                                         <select id="ddl_Dept" name="ddl_Dept">
-                                            <option value="">@TSMC14B.Menu.plaseSelectOption</option>
+                                            <option value="">@WebCMS.Menu.plaseSelectOption</option>
 
-                                            @foreach (TSMC14B.Areas.Main.Models.ListModel item in ViewData["DepartmentList"] as IEnumerable<TSMC14B.Areas.Main.Models.ListModel>)
+                                            @foreach (WebCMS.Areas.Main.Models.ListModel item in ViewData["DepartmentList"] as IEnumerable<WebCMS.Areas.Main.Models.ListModel>)
                                             {
                                                 <option value="@item.Text">@item.Text</option>
                                             }
@@ -374,61 +287,34 @@
                                     </td>
                                     <td>
                                         @Html.EditorFor(model => model.StartDate)
-                                        @*<span id="sd" title="選擇開始日期" style="padding: 0 8px; background: url(@Url.Content("~/Content/Icons/date.png"))  no-repeat 1px 100%;">&nbsp;</span>
-                            <span id="st" title="選擇開始時間" style="padding: 0 8px; background: url(@Url.Content("~/Content/Themes/Shared/ptTimeSelect/images/liveclock.png"))  no-repeat 1px 100%;">&nbsp;</span>*@
+
                                     </td>
-                                    @*</tr>
-                    <tr >*@
+                    
                                     <td style="text-align: right;">
                                         @Html.LabelFor(model => model.EndDate)
                                     </td>
                                     <td>
                                         @Html.EditorFor(model => model.EndDate)
-                                        @*<span id="ed" title="選擇結束日期" style="padding: 0 8px; background: url(@Url.Content("~/Content/Icons/date.png"))  no-repeat 1px 100%;">&nbsp;</span>
-                            <span id="et" title="選擇結束時間" style="padding: 0 8px; background: url(@Url.Content("~/Content/Themes/Shared/ptTimeSelect/images/liveclock.png"))  no-repeat 1px 100%;">&nbsp;</span>*@
+                               
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align: right;">@Html.LabelFor(model => model.AlarmMsg)</td>
-                                    <td>@Html.EditorFor(model => model.AlarmMsg)</td>
-                                    @*</tr>
-                    <tr >*@
                                     <td style="text-align: right;">@Html.LabelFor(model => model.ToolID)</td>
                                     <td>@Html.EditorFor(model => model.ToolID)</td>
+                                    <td style="text-align: right;">@Html.LabelFor(model => model.AlarmMsg)</td>
+                                    <td>@Html.EditorFor(model => model.AlarmMsg)</td>
                                 </tr>
-                                @*<tr>
-                    <td style="text-align: right;">@Html.LabelFor(model => model.Vendor)</td>
-                    <td colspan="3">
-                    @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.CBL)
-                    {
-                        <input class="cb_vName" name="vName" type="checkbox" value="@item.Value" id="@item.Text" /><label for="@item.Text">@item.Text</label>
-                    }</td>
-                    </tr>*@
+                            
                             </table>
                         </td>
                         <td>
-                            <table style="width: 600px;border: #000000 1px solid;font-size:18px;height:75px">
-                                <tr>
-                                        <td style="border: #000000 1px solid;text-align:center;" colspan="11"><lable>Data collection time：@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd 07:30")~@DateTime.Now.ToString("yyyy-MM-dd 07:30")</lable></td>
-                                </tr>
-                                <tr>
-                                    @foreach (var item in ViewData["AlarmCount"] as List<TSMC14B.Areas.Main.Models.vw_AlarmReport_AlarmCount>)
-                                    {
-                                        <td style="border: #000000 1px solid;text-align:center;">@item.department_name</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    @foreach (var item in ViewData["AlarmCount"] as List<TSMC14B.Areas.Main.Models.vw_AlarmReport_AlarmCount>)
-                                    {
-                                        <td style="border: #000000 1px solid;text-align:center;"><a  class="alarmCount" data-department_name="@item.department_name" href="#" >@item.alarmCount</a></td>
-                                    }
-                                </tr>
-                            </table>
+                           
                         </td>
                     </tr>
                 </table>
-                <input type="button" id="sbmit" value="@TSMC14B.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search');" />&nbsp;&nbsp;&nbsp;
-                <input type="button" id="btnExport" value="@TSMC14B.Menu.ChartExport" style="width: 80px;" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp;    
+                <input type="button" id="sbmit" value="@WebCMS.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search');" />&nbsp;&nbsp;&nbsp;
+                <input type="button" id="btnExport" value="@WebCMS.Menu.ChartExport" style="width: 80px;" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp;    
+                <input type="button" id="btnAlarmCount" value="SPC Chart" style="width: 80px;" onclick="javascript: ChartExport('alarmCount');" />&nbsp;&nbsp;&nbsp;    
                 <label id="message" style="display: none;"></label>
                 <label id="message2" style="display: none;"></label>
             </div>
@@ -440,7 +326,7 @@
     </tr>
     <tr>
         <td>
-            <table class="flexme"/>
+            <table class="flexme" />
         </td>
     </tr>
 </table>

@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@TSMC14B.Menu.LogInPage</title>
+    <title>@WebCMS.Menu.LogInPage</title>
     <script src="/Scripts/jquery-1.9.1.min.js"></script>
     <script>
         $(function () {
@@ -20,7 +20,7 @@
 <body style="padding: 0px; margin: 0px;">
     <span id="LB"></span>
     <form action="@Url.Action("LoginPage")" method="post" enctype="multipart/form-data">
-        <div>
+        <div style="width:1151px;">
             <table border="0" style="padding: 0px 0px 0px 0px; border-spacing: 0px 0px; border-collapse: collapse;">
                 <tr>
                     <td>
@@ -28,17 +28,25 @@
                             <tr>
                                 <td style="border-collapse: collapse;background-image: url(
 
-                                    @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN")
+                                    @if (System.Configuration.ConfigurationManager.AppSettings["DB"] == "Module")
                                     {
-                                @Url.Content("~/images/Top_1.zh-CN.gif")
-                                    }
-                                    else
-                                    {
-                                @Url.Content("~/images/Top_1.gif")
-                                    }
+                                        @Url.Content("~/images/Top_2.gif")
                                     
-                                    ); height: 46px; text-align:right; vertical-align:bottom; width:411px">
-                                    @*<img height="46" src="../../../../images/Top_1.gif" width="411" alt="" />*@
+                                    }else
+	                                {
+                                        if (System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN")
+                                        {
+                                            @Url.Content("~/images/Top_1.zh-CN.gif")
+                                        }
+                                        else
+                                        {
+                                            @Url.Content("~/images/Top_1.gif")
+                                        }
+                                    }
+
+                                    ); height: 46px; text-align:center; vertical-align:middle; width:411px">
+                                    <span style="font-size:x-large;font-weight:bold;letter-spacing: 2px;">UMC8F</span>
+                                    
                                 </td>
                                 <td style="border-collapse:collapse; background-image: url(
                                     
@@ -52,14 +60,14 @@
                                 </td>
                                 <td style="border-collapse:collapse; background-image: url(
 
-                             @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString()=="zh-CN")
-                            {
+                             @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN")
+                             {
                                  @Url.Content("~/images/Top_3.zh-CN.gif")
-                            }
-                            else
-                            {
+                             }
+                             else
+                             {
                                 @Url.Content("~/images/Top_3.gif")
-                            }
+                             }
 
                                     ); background-position: -35px; width: 360px;">
                                     &nbsp;
@@ -70,8 +78,8 @@
                 </tr>
             </table>
         </div>
-        <div align="center">
-            <div style="height: 100px"></div>
+        <div align="center" style="width:1151px;">
+            <div style="height: 100px;"></div>
             <input type="hidden" id="reUrl" name="reUrl" value="" />
             <table cellspacing="0" cellpadding="3" border="0" id="Login1" style="background-color: #F7F6F3; border-color: #E6E2D8; border-width: 3px; border-style: Solid; border-collapse: collapse;">
                 <tbody>

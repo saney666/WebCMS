@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "LoginPage";
+    Layout = "~/Views/Shared/_MobilLayout.cshtml";
+}
+<form data-ajax="false" action="@Url.Action("LoginPage")" method="post" >
+        <label for="UserName">UserName:</label><input id="UserName" name="UserName" placeholder="UserName" type="text" data-clear-btn="true"/>
+        <label for="Password">Password:</label><input id="Password" name="Password" placeholder="Password" type="password" data-clear-btn="true" />
+        <input type="submit" value="LogIn" />
+        <label style="color:red;">@ViewBag.Message</label>
+</form>

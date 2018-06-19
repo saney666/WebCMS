@@ -1,4 +1,4 @@
-﻿@*@model IEnumerable<TSMC14B.Areas.Main.Models.StatusCountModel>*@
+﻿@*@model IEnumerable<WebCMS.Areas.Main.Models.StatusCountModel>*@
 @{
     Layout = "../Shared/_Layout.cshtml";
     ViewBag.Title = "UMC 12 P5 Accessory CMS";
@@ -419,7 +419,7 @@
 <div>
     <table border="0" style="padding: 0px 0px 0px 0px; border-spacing: 0px 0px; border-collapse: collapse;">
         @{
-            IEnumerable<TSMC14B.Areas.Main.Models.StatusCountModel> codes = TSMC14B.Areas.Main.Models.StatusCountModel.IndexAllStatusList();
+            IEnumerable<WebCMS.Areas.Main.Models.StatusCountModel> codes = WebCMS.Areas.Main.Models.StatusCountModel.IndexAllStatusList();
         }
         <tr>
             <td style="width: 800px">

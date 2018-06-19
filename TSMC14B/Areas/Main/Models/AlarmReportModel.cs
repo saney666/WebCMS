@@ -8,9 +8,9 @@ using System.Data.OleDb;
 using System.Data.Odbc;
 using System.Linq;
 using System.Web.Configuration;
-using TSMC14B.Models;
+using WebCMS.Models;
 
-namespace TSMC14B.Areas.Main.Models
+namespace WebCMS.Areas.Main.Models
 {
     public class AlarmReportModel
     {
@@ -42,6 +42,8 @@ namespace TSMC14B.Areas.Main.Models
         [Display(Name = "Chamber ID")]
         public string ToolID { get; set; }
 
+        public string process_name { get; set; }
+
         [Display(Name = "department_name", ResourceType = typeof(Menu))]
         public string Vendor { get; set; }
 
@@ -51,7 +53,7 @@ namespace TSMC14B.Areas.Main.Models
         [Display(Name = "Weekly", ResourceType = typeof(Menu))]
         public string Weekly { get; set; }
 
-        [Display(Name = "_DateTime",ResourceType=typeof(Menu))]
+        [Display(Name = "_DateTime", ResourceType = typeof(Menu))]
         public string _DateTime { get; set; }
 
         [Display(Name = "Location", ResourceType = typeof(Menu))]
@@ -140,7 +142,7 @@ namespace TSMC14B.Areas.Main.Models
             };
         }
 
-        public static IEnumerable<AlarmReportModel> ReportList(string _StartDate, string _EndDate, string ToolID, string AlarmMsg, string _Closed, string Vendor, string gname, string alarmlevel)
+        public static IEnumerable<AlarmReportModel> ReportList(string _StartDate, string _EndDate, string ToolID, string process_name, string AlarmMsg, string _Closed, string Vendor, string gname, string alarmlevel)
         {
             _StartDate = _StartDate.Replace("\\", string.Empty).Replace("\"", string.Empty);
             if (string.IsNullOrEmpty(_StartDate))
@@ -193,6 +195,12 @@ namespace TSMC14B.Areas.Main.Models
             //{
             //    gname = "NULL";
             //}
+
+            if (!Vendor.Contains("'"))
+            {
+                Vendor = "'" + Vendor + "'";
+            }
+
             if (string.IsNullOrEmpty(Vendor))
             {
                 sqlStr = "SELECT department_id FROM department_info --where department_name in (" + Vendor + ")";
@@ -207,13 +215,14 @@ namespace TSMC14B.Areas.Main.Models
             {
                 VendorID += ds.Tables[0].Rows[i][0].ToString() + ",";
             }
-            if (VendorID != null) {
+            if (VendorID != null)
+            {
                 VendorID = VendorID.Substring(0, VendorID.Length - 1);
             }
-            
+
             //string sqlStr = null;
             //    sqlStr = "EXEC [dbo].[uSP_Select_AlarmDeal] '" + VendorID + "','" + ToolID + "','" + AlarmMsg + "'," + _Closed + ",'" + _StartDate + "','" + _EndDate + "'";
-            DataSet DeptDS = DBConnector.executeQuery("Intouch", "EXEC [dbo].[uSP_Select_AlarmDeal] '" + VendorID + "','" + ToolID + "','" + AlarmMsg + "'," + _Closed + ",'" + _StartDate + "','" + _EndDate + "',NULL,'" + alarmlevel + "'");
+            DataSet DeptDS = DBConnector.executeQuery("Intouch", "EXEC [dbo].[uSP_Select_AlarmDeal] '" + VendorID + "','" + ToolID + "','" + process_name + "','" + AlarmMsg + "'," + _Closed + ",'" + _StartDate + "','" + _EndDate + "',NULL,'" + alarmlevel + "'");
             //fncARList( _StartDate,  _EndDate,  ToolID,  AlarmMsg,  _Closed,  Vendor);
 
             return from dept in DeptDS.Tables[0].AsEnumerable()
@@ -223,10 +232,11 @@ namespace TSMC14B.Areas.Main.Models
                        Weekly = "W" + (dept.IsNull("AlarmWeek") ? "000" : dept.Field<string>("AlarmWeek")),
                        _DateTime = dept.IsNull("AlarmTime") ? string.Empty : dept.Field<DateTime>("AlarmTime").ToString("yyyy/MM/dd HH:mm:ss"),
                        ToolID = dept.IsNull("toolID") ? string.Empty : dept.Field<string>("toolID"),
+                       process_name = dept.IsNull("process_name") ? string.Empty : dept.Field<string>("process_name"),
                        Location = dept.IsNull("location") ? string.Empty : dept.Field<string>("location"),
-                       //LocationID = dept.IsNull("location_id") ? string.Empty : dept.Field<string>("location_id"),
+                       
                        Vendor = dept.IsNull("department_name") ? string.Empty : dept.Field<string>("department_name"),
-                       //GroupName = dept.IsNull("group_name") ? string.Empty : dept.Field<string>("group_name"),
+                       
                        TagName = dept.IsNull("TagName") ? string.Empty : dept.Field<string>("TagName"),
                        AlarmValue = dept.IsNull("Value") ? string.Empty : dept.Field<string>("Value"),
                        TriggerLimit = dept.IsNull("TriggerLimit") ? string.Empty : dept.Field<string>("TriggerLimit"),
@@ -237,13 +247,12 @@ namespace TSMC14B.Areas.Main.Models
                        Status = dept.IsNull("dealWith") ? string.Empty : dept.Field<string>("dealWith"),
                        AlarmCause = dept.IsNull("almCause") ? string.Empty : dept.Field<string>("almCause"),
                        ChangeParts = dept.IsNull("parts") ? string.Empty : dept.Field<string>("parts"),
-                       //pmCycle = dept.IsNull("pmCycle") ? string.Empty : dept.Field<string>("pmCycle"),
-                       //pmDate = dept.IsNull("pmDate") ? string.Empty : dept.Field<string>("pmDate") == string.Empty ? string.Empty : dept.Field<string>("pmDate").Substring(0, 19),
-                       //PMLifeTime = dept.IsNull("PM_LifeTime") ? string.Empty : dept.Field<Int16>("PM_LifeTime").ToString(),
+                       
                        Closed = dept.IsNull("CaseClose") ? string.Empty : dept.Field<bool>("CaseClose") ? "Y" : "N",
                        ReceptionName = dept.IsNull("dealUser") ? string.Empty : dept.Field<string>("dealUser"),
                        System = dept.IsNull("system") ? string.Empty : dept.Field<string>("system"),
                        PhoneCallAlarmID = dept.IsNull("PhoneCallAlarmID") ? string.Empty : dept.Field<string>("PhoneCallAlarmID"),
+
                    };
         }
 
@@ -324,6 +333,34 @@ namespace TSMC14B.Areas.Main.Models
             return dt;
         }
 
+        public static DataTable dtAlarmCountByDept(DateTime startdate, DateTime enddate)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection())
+            {
+                IDbCommand DBCmd = null;
+                DBCmd = new SqlCommand("EXEC uSP_Select_AlarmCountByDept @startdate='" + startdate.ToString("yyyy-MM-dd") + "',@enddate='" + enddate.ToString("yyyy-MM-dd") + "'", new SqlConnection(WebConfigurationManager.ConnectionStrings["Intouch"].ConnectionString));
+                DBCmd.CommandTimeout = 30000;
+                DBCmd.Connection.Open();
+                dt.Load(DBCmd.ExecuteReader());
+            }
+            return dt;
+        }
+
+        public static DataTable dtAlarmCountByModule(DateTime startdate, DateTime enddate, string dept)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection())
+            {
+                IDbCommand DBCmd = null;
+                DBCmd = new SqlCommand("EXEC uSP_Select_AlarmCountByModule @startdate='" + startdate.ToString("yyyy-MM-dd") + "',@enddate='" + enddate.ToString("yyyy-MM-dd") + "',@dept='" + dept + "'", new SqlConnection(WebConfigurationManager.ConnectionStrings["Intouch"].ConnectionString));
+                DBCmd.CommandTimeout = 30000;
+                DBCmd.Connection.Open();
+                dt.Load(DBCmd.ExecuteReader());
+            }
+            return dt;
+        }
+
         public string Update(string UsrName)
         {
             try
@@ -349,28 +386,29 @@ namespace TSMC14B.Areas.Main.Models
             return null;
         }
 
-        public static byte[] GetAlarmDealFile(string StartDate, string EndDate, string ToolID, string AlarmMsg, string Closed, string Vendor, string gname, string alarmlevel)
+        public static byte[] GetAlarmDealFile(string StartDate, string EndDate, string ToolID, string process_name, string AlarmMsg, string Closed, string Vendor, string gname, string alarmlevel,string FABIP)
         {
             //DataTable dt = AlarmReportModel.dtReportList(StartDate, EndDate, ToolID, AlarmMsg, Closed, Vendor, gname, alarmlevel);
-            IEnumerable<AlarmReportModel> dt = AlarmReportModel.ReportList(StartDate, EndDate, ToolID, AlarmMsg, Closed, Vendor, gname, alarmlevel);
+            IEnumerable<AlarmReportModel> dt = AlarmReportModel.ReportList(StartDate, EndDate, ToolID, process_name, AlarmMsg, Closed, Vendor, gname, alarmlevel);
             ExcelPackage ep = new ExcelPackage();
             ep.Workbook.Worksheets.Add("MySheet");
             ExcelWorksheet sheet1 = ep.Workbook.Worksheets["MySheet"];
 
             sheet1.Cells["A1"].Value = "AlarmId";
             //sheet1.Cells["B1"].Value = "週期";
-            sheet1.Cells["B1"].Value = "時間";
+            sheet1.Cells["B1"].Value = "DateTime";
             sheet1.Cells["C1"].Value = "ToolID";
-            sheet1.Cells["D1"].Value = "數值";
-            sheet1.Cells["E1"].Value = "Limit Setting";
+            sheet1.Cells["D1"].Value = "process_name";
+            sheet1.Cells["E1"].Value = "Value";
+            sheet1.Cells["F1"].Value = "Limit Setting";
             //sheet1.Cells["E1"].Value = "柱位";
             //sheet1.Cells["F1"].Value = "Alarm Type";
             //sheet1.Cells["F1"].Value = "LocationID";
             //sheet1.Cells["F1"].Value = "部門名稱";
             //sheet1.Cells["H1"].Value = "課別名稱";
-            sheet1.Cells["F1"].Value = "Alarm 訊息";
-            sheet1.Cells["G1"].Value = "AlarmID";
-            //sheet1.Cells["H1"].Value = "Link";
+            sheet1.Cells["G1"].Value = "Alarm Message";
+            sheet1.Cells["H1"].Value = "AlarmID";
+            sheet1.Cells["I1"].Value = "Link";
             //sheet1.Cells["K1"].Value = "廠牌";
             //sheet1.Cells["I1"].Value = "影響生產";
             //sheet1.Cells["J1"].Value = "影響時段";
@@ -391,19 +429,22 @@ namespace TSMC14B.Areas.Main.Models
                 foreach (var item in dt)
                 {
                     //sheet1.Cells[i + 1, 3].Style.Numberformat.Format = "yyyy-mm-dd HH:mm:ss"
-                    sheet1.Cells["A" + i ].Value = item.AlarmID;//"AlarmId"
+                    sheet1.Cells["A" + i].Value = item.AlarmID;//"AlarmId"
                     //sheet1.Cells["B" + i ].Value = item.Weekly;//"週期"
-                    sheet1.Cells["B" + i ].Value = item._DateTime;//"時間"
-                    sheet1.Cells["C" + i ].Value = item.ToolID;//"ToolID"
-                    sheet1.Cells["D" + i].Value = item.AlarmValue;//"數值"
-                    sheet1.Cells["E" + i].Value = item.TriggerLimit;//"Limit Setting"
+                    sheet1.Cells["B" + i].Value = item._DateTime;//"時間"
+                    sheet1.Cells["C" + i].Value = item.ToolID;//"ToolID"
+                    sheet1.Cells["D" + i].Value = item.process_name;//"ToolID"
+                    sheet1.Cells["E" + i].Value = item.AlarmValue;//"數值"
+                    sheet1.Cells["F" + i].Value = item.TriggerLimit;//"Limit Setting"
                     //sheet1.Cells["E" + i ].Value = item.Location;//"柱位"
                     //sheet1.Cells["F" + (i + 2)].Value = item.LocationID;//"LocationID"
                     //sheet1.Cells["F" + i ].Value = item.Vendor;//"部門名稱"
-                    sheet1.Cells["F" + i].Value = item.AlarmMsg;//"Alarm 訊息"
-                    sheet1.Cells["G" + i].Value = item.PhoneCallAlarmID;//"Alarm Level"
-                    //sheet1.Cells["H" + i].Value = "TrendChart";
-                    //sheet1.Cells["H" + i].Hyperlink = new Uri("http://10.12.9.213/Main/MachineGroup/MyChart3?toolId=" + item.ToolID + "&TagName=" + item.TagName + "&StartDate=" + DateTime.Parse(item._DateTime).AddHours(-12).ToString("yyyy-MM-dd HH:mm:ss") + "&EndDate=" + DateTime.Parse(item._DateTime).AddHours(12).ToString("yyyy-MM-dd HH:mm:ss") + "&flag=3&Y1Y2=Y1&_=1472028498994");//"Alarm 訊息"
+                    sheet1.Cells["G" + i].Value = item.AlarmMsg;//"Alarm 訊息"
+                    sheet1.Cells["H" + i].Value = item.PhoneCallAlarmID;//"Alarm Level"
+
+                    sheet1.Cells["I" + i].Value = "TrendChart";
+                    sheet1.Cells["I" + i].Hyperlink = new Uri("http://"+FABIP+"/Main/MachineGroup/MyChart4?toolId=" + item.ToolID + "&TagName=" + item.TagName + "&StartDate=" + DateTime.Parse(item._DateTime).AddHours(-12).ToString("yyyy-MM-dd HH:mm:ss") + "&EndDate=" + DateTime.Parse(item._DateTime).AddHours(12).ToString("yyyy-MM-dd HH:mm:ss") + "&flag=4&Y1Y2=Y1&_=1472028498994");//"Chart Link"    
+
                     //sheet1.Cells["H" + i].Value = item.AlarmLevel;//"Alarm Level"
                     //sheet1.Cells["I" + i].Value = item.effectOutPut;//"影響生產"
                     //sheet1.Cells["K" + (i + 2)].Value = item.System;//"廠牌"
@@ -422,6 +463,80 @@ namespace TSMC14B.Areas.Main.Models
 
                 sheet1.Cells.AutoFitColumns();
                 sheet1.Column(1).Width = 0;
+            }
+
+            return ep.GetAsByteArray();
+        }
+
+        internal static byte[] GetAlarmCountByDeptFile(DateTime sDate, DateTime eDate)
+        {
+            DataTable dt = dtAlarmCountByDept(sDate, eDate);
+
+            ExcelPackage ep = new ExcelPackage();
+            ep.Workbook.Worksheets.Add("AlarmCountByDept");
+            ExcelWorksheet sheet1 = ep.Workbook.Worksheets["AlarmCountByDept"];
+
+            if (dt.Rows.Count > 0)
+            {
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    sheet1.Cells[1, j + 1].Value = dt.Columns[j].ColumnName;
+                }
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        if (j == 0)
+                        {
+                            sheet1.Cells[i + 2, j + 1].Value = dt.Rows[i][j] + " ~ " + DateTime.Parse(dt.Rows[i][j].ToString()).AddDays(6).ToString("yyyy-MM-dd");
+                        }
+                        else
+                        {
+                            sheet1.Cells[i + 2, j + 1].Value = dt.Rows[i][j];
+                        }
+
+                    }
+                }
+
+                sheet1.Cells.AutoFitColumns();
+            }
+
+            return ep.GetAsByteArray();
+        }
+
+        internal static byte[] GetAlarmCountByModuleFile(DateTime sDate, DateTime eDate, string dept)
+        {
+            DataTable dt = dtAlarmCountByModule(sDate, eDate, dept);
+
+            ExcelPackage ep = new ExcelPackage();
+            ep.Workbook.Worksheets.Add(dept);
+            ExcelWorksheet sheet1 = ep.Workbook.Worksheets[dept];
+
+            if (dt.Rows.Count > 0)
+            {
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    sheet1.Cells[1, j + 1].Value = dt.Columns[j].ColumnName;
+                }
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        if (j == 0)
+                        {
+                            sheet1.Cells[i + 2, j + 1].Value = dt.Rows[i][j] + " ~ " + DateTime.Parse(dt.Rows[i][j].ToString()).AddDays(6).ToString("yyyy-MM-dd");
+                        }
+                        else
+                        {
+                            sheet1.Cells[i + 2, j + 1].Value = dt.Rows[i][j];
+                        }
+
+                    }
+                }
+
+                sheet1.Cells.AutoFitColumns();
             }
 
             return ep.GetAsByteArray();

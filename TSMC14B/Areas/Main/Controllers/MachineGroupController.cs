@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using System.Data;
-using TSMC14B.Models;
-using TSMC14B.Areas.Main.Models;
+using WebCMS.Models;
+using WebCMS.Areas.Main.Models;
 using System.Web.UI.DataVisualization.Charting;
 
-namespace TSMC14B.Areas.Main.Controllers
+namespace WebCMS.Areas.Main.Controllers
 {
     public class MachineGroupController : Controller
     {
@@ -100,7 +100,6 @@ namespace TSMC14B.Areas.Main.Controllers
         {
             List<KeyValuePair<string, string>> items = new List<KeyValuePair<string, string>>();
 
-            //var tid = ListModel.GetToolIDList(Vendor == null ? Request["vName"] : Vendor, Device == null ? null : Device);
             var tid = ListModel.GetToolIDList(Vendor == null ? Request["vName"] : Device, null);
 
             if (tid.Count() > 0)
@@ -124,7 +123,6 @@ namespace TSMC14B.Areas.Main.Controllers
 
             var tid = ListModel.GetToolidByType(Vendor == null ? Request["vName"] : Vendor, Typeid);
 
-
             if (tid.Count() > 0)
             {
                 foreach (var product in tid)
@@ -145,7 +143,6 @@ namespace TSMC14B.Areas.Main.Controllers
             List<KeyValuePair<string, string>> items = new List<KeyValuePair<string, string>>();
 
             var tid = ListModel.GetTagNameList(Vendor, ToolID == null ? null : ToolID);
-
 
             if (tid.Count() > 0)
             {
@@ -168,7 +165,6 @@ namespace TSMC14B.Areas.Main.Controllers
 
             var tid = ListModel.GetTypeByVname(Vendor == null ? Request["vName"] : Vendor, Device == null ? null : Device);
 
-
             if (tid.Count() > 0)
             {
                 foreach (var product in tid)
@@ -189,7 +185,6 @@ namespace TSMC14B.Areas.Main.Controllers
             List<KeyValuePair<string, string>> items = new List<KeyValuePair<string, string>>();
 
             var tid = ListModel.GetTagByType(Vendor == null ? Request["vName"] : Vendor, Typeid);
-
 
             if (tid.Count() > 0)
             {
@@ -231,7 +226,6 @@ namespace TSMC14B.Areas.Main.Controllers
             chart.SaveImage(ms, ChartImageFormat.Png);
             ms.Seek(0, SeekOrigin.Begin);
 
-
             return File(ms, "image/png");
         }
 
@@ -246,9 +240,12 @@ namespace TSMC14B.Areas.Main.Controllers
             //chartXMax= chartXMax.AddDays();
             //chartXMin= chartXMin.AddDays(((Chart)sender).ChartAreas[0].AxisX.Minimum);
 
-            Session["chartXMax"] = chartXMax.ToString("yyyy/MM/dd HH:mm:ss");
-            Session["chartXMin"] = chartXMin.ToString("yyyy/MM/dd HH:mm:ss");
+            Session["chartXMax"] = chartXMax.ToString("yyyy/MM/dd HH:mm:ss.ffff");
+            Session["chartXMin"] = chartXMin.ToString("yyyy/MM/dd HH:mm:ss.ffff");
             Session["chartPositionX"] = ((Chart)sender).ChartAreas[0].InnerPlotPosition.X;
+            Session["chartPositionY"] = ((Chart)sender).ChartAreas[0].InnerPlotPosition.Y;
+            Session["chartPositionBottom"] = ((Chart)sender).ChartAreas[0].InnerPlotPosition.Bottom;
+            Session["chartPositionRight"] = ((Chart)sender).ChartAreas[0].InnerPlotPosition.Right;
         }
 
         public ActionResult MyChart2(string vName, string toolId, string TagName, string StartDate, string EndDate, string flag, string Y1Y2)
@@ -270,8 +267,6 @@ namespace TSMC14B.Areas.Main.Controllers
                 return String.Format(img, encoded);
             }
         }
-
-        
 
         public ActionResult MyChart3(string vName, string toolId, string TagName, string StartDate, string EndDate, string flag, string Y1Y2, bool isLimit = false, bool isStack = false)
         {
@@ -351,11 +346,15 @@ namespace TSMC14B.Areas.Main.Controllers
             return Json(new
             {
                 ImgCode = imgCode,
+                ImageMap = ImageMap,
                 YMax = Session["chartYMax"],
                 YMin = Session["chartYMin"],
                 XMax = Session["chartXMax"],
                 XMin = Session["chartXMin"],
                 PositionX = Session["chartPositionX"],
+                PositionY = Session["chartPositionY"],
+                PositionBottom = Session["chartPositionBottom"],
+                PositionRight = Session["chartPositionRight"],
             }, JsonRequestBehavior.AllowGet);
         }
         #endregion
@@ -380,9 +379,6 @@ namespace TSMC14B.Areas.Main.Controllers
                                      Value = c.Value,
                                      Text = c.Text
                                  };
-
-                //ViewBag.List = from c in AlarmCheckModel1.GetAlarmList(vName, fromdate == null ? DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd HH:mm") : fromdate, todate == null ? DateTime.Now.ToString("yyyy-MM-dd HH:mm") : Convert.ToDateTime(todate).AddDays(1).ToString("yyyy-MM-dd HH:mm"), ToolID == null ? "*" : ToolID, onceadayFlag == null ? "0" : onceadayFlag).Take(1)
-                //               select c;
 
                 return View();
             }
@@ -481,7 +477,6 @@ namespace TSMC14B.Areas.Main.Controllers
             if (!string.IsNullOrEmpty((string)Session["UserName"]))
             {
                 IEnumerable<AlarmCheckModel> al = null;
-                //= AlarmCheckModel.GetAlarmList(vName, fromDate, toDate, toolId, Device, onceaday);
 
                 return Json(new
                 {
@@ -506,8 +501,6 @@ namespace TSMC14B.Areas.Main.Controllers
         public ActionResult StatusDetail(string vName, string gName)
         {
             IEnumerable<ListModel> codes2 = ListModel.GetToolIDList(vName == null ? "CS250" : vName, gName);
-
-            //codes2.Insert(0, new ListModel("請選擇", string.Empty));
 
             ViewBag.ToolID = from c in codes2
                              select new SelectListItem
@@ -581,14 +574,7 @@ namespace TSMC14B.Areas.Main.Controllers
                                  Value = c.Value,
                                  Text = c.Text
                              };
-            //IEnumerable<ListModel> codes4 = ListModel.GetValueStyle();
-            //ViewBag.ValueStyle = from c in codes4
-            //                     select new SelectListItem
-            //                     {
-            //                         Value = c.Value,
-            //                         Text = c.Text,
-            //                         Selected = c.Value.Equals(ValueStyle)
-            //                     }; 
+
             if (output == "search")
             {
                 if (vName == "DAS" && ValueStyle == string.Empty && Toolid == string.Empty)
@@ -693,16 +679,6 @@ namespace TSMC14B.Areas.Main.Controllers
                                   Text = c.TagText
                               };
 
-            //if (output == "search")
-            //{
-
-            //    ViewBag.dtMachineValue = MachineValueModel.GetNowMachineValue(vName == null ? Request["vName"] : vName, Device, Toolid == "請選擇" ? string.Empty : Toolid);
-            //}
-            //else if (output == "export")
-            //{
-            //    byte[] file = MachineValueModel.GetNowMachineValueFile(vName == null ? Request["vName"] : vName, Device, Toolid);
-            //    return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Server.UrlPathEncode("設備數值資料_" + vName + "_" + DateTime.Now.ToShortDateString() + ".xlsx"));
-            //}
             return View();
         }
 
@@ -755,7 +731,6 @@ namespace TSMC14B.Areas.Main.Controllers
             List<KeyValuePair<string, string>> items = new List<KeyValuePair<string, string>>();
 
             var tid = ListModel.GetToolIDList(Vendor == null ? Request["vName"] : Vendor, Device == null ? null : Device);
-
 
             if (tid.Count() > 0)
             {
@@ -1021,6 +996,7 @@ namespace TSMC14B.Areas.Main.Controllers
                     ViewBag.tName = codes2.tName;
                     ViewBag.IOGNO = codes2.channel_name;
                     ViewBag.chamber = codes2.chamber;
+
                     //ViewBag.LastFDCUploadTime = codes2.LastCaptureTime.ToString("yyyy-MM-dd HH:mm");
                     ViewBag.nextFDCUploadTime = codes2.LastCaptureTime > DateTime.Now.AddMinutes(2) ? "下次資料收集時間延至:" + codes2.LastCaptureTime.ToString("yyyy-MM-dd HH:mm") : "";
                     List<vw_eq_status> OtherAccessory = (from row in db.vw_eq_status where row.department_name == codes2.department_name && row.chamber == codes2.chamber && row.toolid == codes2.toolid && row.pid != pid select row).ToList();
@@ -1074,7 +1050,7 @@ namespace TSMC14B.Areas.Main.Controllers
 
                     if (r != null)
                     {
-                        string SQL = "exec uSP_Change_FDCPM @plc_id=" + pid + ",@PMsetDateTime='" + delayFDCUploadTime.ToString("yyyy-MM-dd HH:mm:ss") + "',@login_name='" + (string)Session["UserName"] + "',@SetFlag=" + SetFlag + ",@memo='" + memo + "'";
+                        string SQL = "exec uSP_Change_FDCPM @plc_id=" + pid + ",@PMsetDateTime='" + delayFDCUploadTime.ToString("yyyy-MM-dd HH:mm:ss") + "',@login_name='" + (string)Session["UserName"] + "',@SetFlag=" + SetFlag + ",@memo=N'" + memo + "'";
                         try
                         {
                             db.ExecuteCommand(SQL);
@@ -1119,13 +1095,11 @@ namespace TSMC14B.Areas.Main.Controllers
 
         public ActionResult PLCCheckDemo(string vName, string Device, string ToolID, string TagName, string Typeid, string StartDate, string EndDate, string flag, string output)
         {
-
             if (output != "export")
             {
                 try
                 {
-
-                    IEnumerable<ListModel> codes2 = ListModel.GetDepartmentList();
+                    IEnumerable<ListModel> codes2 = ListModel.GetDepartmentTitleList();
                     ViewBag.Device = from c in codes2
                                      select new SelectListItem
                                      {
@@ -1139,16 +1113,6 @@ namespace TSMC14B.Areas.Main.Controllers
                                          Value = c.Value,
                                          Text = c.Text,
                                      };
-                    //if (!string.IsNullOrEmpty(ToolID))
-                    //{
-                    //    IEnumerable<ListModel> codes4 = ListModel.GetTagNameList(vName, ToolID == null ? null : ToolID);
-                    //    ViewBag.TagName = from c in codes4
-                    //                      select new SelectListItem
-                    //                      {
-                    //                          Value = c.Value,
-                    //                          Text = c.Text
-                    //                      };
-                    //}
 
                     if (vName != "DPM")
                     {
@@ -1217,7 +1181,6 @@ namespace TSMC14B.Areas.Main.Controllers
                     //string sqlStr = "SELECT  TagName,round(Value,2,1) as Value,Cht_Comment,Unit,eqs.sid,eqs.status  FROM vw_eq_valuenow eqv join vw_eq_status eqs on eqv.pid=eqs.pid where eqs.pid=1 order by TagName";
                     //DataSet DeptDS = DBConnector.executeQuery("Intouch", sqlStr);
 
-
                     var EQValueNow = (from row in db.vw_eq_valuenow.AsParallel() join SS in db.vw_eq_status.AsParallel() on row.pid equals SS.pid where row.pid == pid orderby row.TagName select new { TagName = row.TagName, Cht_Comment = row.Cht_Comment, Value = Math.Round(row.Value != null ? row.Value.Value : 0, 2, MidpointRounding.AwayFromZero), StatusId = SS.sid, Status = SS.status, sColor = SS.sColor, Unit = row.Unit }).ToList();
                     //var EQValueNow = (from dept in DeptDS.Tables[0].AsEnumerable()
                     //          select new 
@@ -1283,6 +1246,236 @@ namespace TSMC14B.Areas.Main.Controllers
                 }
             }
         }
+
+        #endregion
+
+        #region TCBookMark
+
+        public JsonResult JsonTCBookList(int page, int rp)
+        {
+            if (!string.IsNullOrEmpty((string)Session["UserID"]))
+            {
+                using (tsmc14BDataContext db = new tsmc14BDataContext())
+                {
+                    var al = db.vw_TCBook_info.Where(x => x.Login_name == (string)Session["UserID"]).Select(x => new
+                    {
+                        TCBID = x.TCBID.ToString(),
+                        TCName = x.TCName,
+                        builedate = DateTime.Parse(x.builedate.ToString()).ToString("yyyy-MM-dd"),
+                        Login_name = x.Login_name,
+                        tagString = x.tagString,
+                        toolidString = x.toolidString,
+                        dataTagString = x.dataTagString
+                    }).ToList();
+
+                    return Json(new
+                    {
+                        page = page,
+                        total = al.Count(),
+                        rows = from c in al.Skip((page - 1) * rp).Take(rp)
+                               select c
+                    });
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public JsonResult JsonTCBookDelete(int TCBID)
+        {
+            string s = string.Empty;
+
+            if (!string.IsNullOrEmpty((string)Session["UserID"]))
+            {
+                try
+                {
+                    using (tsmc14BDataContext db = new tsmc14BDataContext())
+                    {
+                        var r = db.TCBook_info.Where(x => x.TCBID == TCBID).SingleOrDefault();
+                        if (r != null)
+                        {
+                            db.TCBook_info.DeleteOnSubmit(r);
+                            var rr = db.TCTag_info.Where(x => x.TCBID == TCBID).ToList();
+
+                            if (rr != null)
+                            {
+                                db.TCTag_info.DeleteAllOnSubmit(rr);
+                            }
+
+                            db.SubmitChanges();
+                            s = WebCMS.Menu.Delete + "ok";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    s = ex.Message;
+                }
+            }
+            return Json(s);
+        }
+
+        public ActionResult AddTCBook(string tagName)
+        {
+            ViewBag.Title = WebCMS.Menu.AddTCBook;
+            using (tsmc14BDataContext db = new tsmc14BDataContext())
+            {
+                string[] S = tagName.Split(',');
+
+                var rr = db.vw_Tag_info.Where(x => S.Contains(x.FullTagName)).ToList();
+                ViewData["tagName"] = tagName;
+
+                ViewData["SensorTagName"] = rr;
+            }
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddTCBook(string tagName, string TCBookName)
+        {
+            ViewBag.Title = WebCMS.Menu.AddTCBook;
+            if (!string.IsNullOrEmpty((string)Session["UserID"]))
+            {
+                try
+                {
+
+
+                    using (tsmc14BDataContext db = new tsmc14BDataContext())
+                    {
+                        if (tagName.Length > 0 && TCBookName.Length > 0)
+                        {
+
+                            string[] S = tagName.Split(',');
+
+                            var rr = db.vw_Tag_info.Where(x => S.Contains(x.FullTagName)).ToList();
+                            ViewData["tagName"] = tagName;
+
+                            ViewData["SensorTagName"] = rr;
+
+                            DateTime dateNow = DateTime.Now;
+
+                            TCBook_info TCB = new TCBook_info();
+
+                            TCB.TCName = TCBookName;
+                            TCB.Login_name = (string)Session["UserID"];
+                            TCB.builedate = dateNow;
+
+                            foreach (string Tag in S)
+                            {
+                                TCTag_info TCT = new TCTag_info();
+                                TCT.FullTagName = Tag;
+                                TCT.toolid = rr.Where(x => x.FullTagName == Tag).SingleOrDefault().sensorID;
+                                TCB.TCTag_info.Add(TCT);
+
+                            }
+                            db.TCBook_info.InsertOnSubmit(TCB);
+                            db.SubmitChanges();
+                            ViewBag.Message = WebCMS.Menu.Add + "ok";
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                }
+            }
+            else
+            {
+                ViewBag.MessageType = "警告";
+                ViewBag.Message = "您無權限使用本功能或長時間未使用已自動登出，請重新登入，如有疑問請洽管理員，謝謝…";
+                return View("Message");
+            }
+
+            return View();
+        }
+
+        public ActionResult EditTCBook(string TCBID, string tagName)
+        {
+            ViewBag.Title = WebCMS.Menu.EditTCBook;
+            using (tsmc14BDataContext db = new tsmc14BDataContext())
+            {
+                string[] S = tagName.Split(',');
+
+                var rr = db.vw_Tag_info.Where(x => S.Contains(x.FullTagName)).ToList();
+                ViewData["tagName"] = tagName;
+
+                ViewData["SensorTagName"] = rr;
+
+                ViewData["TCName"] = db.TCBook_info.Where(x => x.TCBID.ToString() == TCBID).SingleOrDefault().TCName;
+
+            }
+
+            return View("AddTCBook");
+        }
+        [HttpPost]
+        public ActionResult EditTCBook(string TCBID, string tagName, string TCBookName)
+        {
+            ViewBag.Title = WebCMS.Menu.AddTCBook;
+            if (!string.IsNullOrEmpty((string)Session["UserID"]))
+            {
+                try
+                {
+                    using (tsmc14BDataContext db = new tsmc14BDataContext())
+                    {
+                        if (tagName.Length > 0 && TCBookName.Length > 0 && TCBID.Length > 0)
+                        {
+
+                            string[] S = tagName.Split(',');
+
+                            var rr = db.vw_Tag_info.Where(x => S.Contains(x.FullTagName)).ToList();
+                            ViewData["tagName"] = tagName;
+
+                            ViewData["SensorTagName"] = rr;
+
+                            DateTime dateNow = DateTime.Now;
+
+                            TCBook_info TCB = db.TCBook_info.Where(x => x.TCBID.ToString() == TCBID).SingleOrDefault();
+
+                            TCB.TCName = TCBookName;
+                            TCB.builedate = dateNow;
+
+                            var TCTList = TCB.TCTag_info.ToList();
+                            if (TCTList != null && TCTList.Count > 0)
+                            {
+                                db.TCTag_info.DeleteAllOnSubmit(TCTList);
+
+                                db.SubmitChanges();
+                            }
+
+                            foreach (string Tag in S)
+                            {
+                                TCTag_info TCT = new TCTag_info();
+                                TCT.FullTagName = Tag;
+                                TCT.toolid = rr.Where(x => x.FullTagName == Tag).SingleOrDefault().sensorID;
+                                TCB.TCTag_info.Add(TCT);
+
+                            }
+
+                            db.SubmitChanges();
+                            ViewBag.Message = WebCMS.Menu.Edit + "ok";
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                }
+            }
+            else
+            {
+                ViewBag.MessageType = "警告";
+                ViewBag.Message = "您無權限使用本功能或長時間未使用已自動登出，請重新登入，如有疑問請洽管理員，謝謝…";
+                return View("Message");
+            }
+
+            return View("AddTCBook");
+        }
+
+
         #endregion
     }
 }

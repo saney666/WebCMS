@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Web.Mvc;
-using TSMC14B.Models;
+using WebCMS.Models;
 
-namespace TSMC14B.Areas.Main.Models
+namespace WebCMS.Areas.Main.Models
 {
     public class AlarmTagNameModel
     {
@@ -64,19 +64,6 @@ namespace TSMC14B.Areas.Main.Models
                        TagFullName = dept.Field<Int16>("Type_id").ToString() + "," + dept.Field<String>("Tag_Name").ToString(),
                    };
         }
-
-        //public static IEnumerable<LoginModel> SessionLevel()
-        //{
-        //    DataSet ds = DBConnector.executeQuery("Intouch", "SELECT * FROM analog_comment");
-
-        //    return from dept in ds.Tables[0].AsEnumerable()
-        //           orderby dept.Field<Byte>("level_id")
-        //           select new LoginModel
-        //           {
-        //               Level = dept.Field<string>("level_name").ToString(),
-        //               Levelid = dept.Field<Byte>("level_id"),
-        //           };
-        //}
 
         public static AlarmTagNameModel Get(int SeqNO)
         {

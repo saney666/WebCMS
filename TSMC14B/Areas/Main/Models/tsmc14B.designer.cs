@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TSMC14B.Areas.Main.Models
+namespace WebCMS.Areas.Main.Models
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -22,7 +22,7 @@ namespace TSMC14B.Areas.Main.Models
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="UMC12_P5")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="UMC12_P5_KH")]
 	public partial class tsmc14BDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -183,6 +183,21 @@ namespace TSMC14B.Areas.Main.Models
     partial void InserttypeLimit_history(typeLimit_history instance);
     partial void UpdatetypeLimit_history(typeLimit_history instance);
     partial void DeletetypeLimit_history(typeLimit_history instance);
+    partial void InsertExtraSensor_info(ExtraSensor_info instance);
+    partial void UpdateExtraSensor_info(ExtraSensor_info instance);
+    partial void DeleteExtraSensor_info(ExtraSensor_info instance);
+    partial void InsertATSchedule_info(ATSchedule_info instance);
+    partial void UpdateATSchedule_info(ATSchedule_info instance);
+    partial void DeleteATSchedule_info(ATSchedule_info instance);
+    partial void InsertTCBook_info(TCBook_info instance);
+    partial void UpdateTCBook_info(TCBook_info instance);
+    partial void DeleteTCBook_info(TCBook_info instance);
+    partial void InsertTCTag_info(TCTag_info instance);
+    partial void UpdateTCTag_info(TCTag_info instance);
+    partial void DeleteTCTag_info(TCTag_info instance);
+    partial void InsertATC_info(ATC_info instance);
+    partial void UpdateATC_info(ATC_info instance);
+    partial void DeleteATC_info(ATC_info instance);
     #endregion
 		
 		public tsmc14BDataContext() : 
@@ -679,14 +694,6 @@ namespace TSMC14B.Areas.Main.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<vw_type_parameter> vw_type_parameter
-		{
-			get
-			{
-				return this.GetTable<vw_type_parameter>();
-			}
-		}
-		
 		public System.Data.Linq.Table<vw_AlarmDealInfo> vw_AlarmDealInfo
 		{
 			get
@@ -887,14 +894,6 @@ namespace TSMC14B.Areas.Main.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<vw_FDC_KEP_Tag> vw_FDC_KEP_Tag
-		{
-			get
-			{
-				return this.GetTable<vw_FDC_KEP_Tag>();
-			}
-		}
-		
 		public System.Data.Linq.Table<vw_HJStation_InfoData> vw_HJStation_InfoData
 		{
 			get
@@ -967,14 +966,6 @@ namespace TSMC14B.Areas.Main.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<vw_Tag_info> vw_Tag_info
-		{
-			get
-			{
-				return this.GetTable<vw_Tag_info>();
-			}
-		}
-		
 		public System.Data.Linq.Table<vw_FDCPM> vw_FDCPM
 		{
 			get
@@ -988,6 +979,94 @@ namespace TSMC14B.Areas.Main.Models
 			get
 			{
 				return this.GetTable<vw_FDCPMHistory>();
+			}
+		}
+		
+		public System.Data.Linq.Table<vw_type_parameter> vw_type_parameter
+		{
+			get
+			{
+				return this.GetTable<vw_type_parameter>();
+			}
+		}
+		
+		public System.Data.Linq.Table<vw_FDC_KEP_Tag_load> vw_FDC_KEP_Tag_load
+		{
+			get
+			{
+				return this.GetTable<vw_FDC_KEP_Tag_load>();
+			}
+		}
+		
+		public System.Data.Linq.Table<vw_FDC_KEP_Tag> vw_FDC_KEP_Tag
+		{
+			get
+			{
+				return this.GetTable<vw_FDC_KEP_Tag>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ExtraSensor_info> ExtraSensor_info
+		{
+			get
+			{
+				return this.GetTable<ExtraSensor_info>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ATSchedule_info> ATSchedule_info
+		{
+			get
+			{
+				return this.GetTable<ATSchedule_info>();
+			}
+		}
+		
+		public System.Data.Linq.Table<vw_Tag_info> vw_Tag_info
+		{
+			get
+			{
+				return this.GetTable<vw_Tag_info>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TCBook_info> TCBook_info
+		{
+			get
+			{
+				return this.GetTable<TCBook_info>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TCTag_info> TCTag_info
+		{
+			get
+			{
+				return this.GetTable<TCTag_info>();
+			}
+		}
+		
+		public System.Data.Linq.Table<vw_TCBook_info> vw_TCBook_info
+		{
+			get
+			{
+				return this.GetTable<vw_TCBook_info>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ATC_info> ATC_info
+		{
+			get
+			{
+				return this.GetTable<ATC_info>();
+			}
+		}
+		
+		public System.Data.Linq.Table<vw_ATScheduleLastHistory> vw_ATScheduleLastHistory
+		{
+			get
+			{
+				return this.GetTable<vw_ATScheduleLastHistory>();
 			}
 		}
 		
@@ -11770,249 +11849,6 @@ namespace TSMC14B.Areas.Main.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_type_parameter")]
-	public partial class vw_type_parameter
-	{
-		
-		private short _type_id;
-		
-		private string _type_name;
-		
-		private System.Nullable<short> _vendor_id;
-		
-		private System.Nullable<short> _server_id;
-		
-		private string _type_code;
-		
-		private string _FDC_code;
-		
-		private double _SamplingRate;
-		
-		private string _Tag_Name;
-		
-		private string _Eng_Comment;
-		
-		private string _Cht_Comment;
-		
-		private string _Tag_FDC;
-		
-		private string _Parameter_SVID;
-		
-		private string _KepAddress;
-		
-		public vw_type_parameter()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_id", DbType="SmallInt NOT NULL")]
-		public short type_id
-		{
-			get
-			{
-				return this._type_id;
-			}
-			set
-			{
-				if ((this._type_id != value))
-				{
-					this._type_id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string type_name
-		{
-			get
-			{
-				return this._type_name;
-			}
-			set
-			{
-				if ((this._type_name != value))
-				{
-					this._type_name = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vendor_id", DbType="SmallInt")]
-		public System.Nullable<short> vendor_id
-		{
-			get
-			{
-				return this._vendor_id;
-			}
-			set
-			{
-				if ((this._vendor_id != value))
-				{
-					this._vendor_id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_server_id", DbType="SmallInt")]
-		public System.Nullable<short> server_id
-		{
-			get
-			{
-				return this._server_id;
-			}
-			set
-			{
-				if ((this._server_id != value))
-				{
-					this._server_id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_code", DbType="VarChar(5)")]
-		public string type_code
-		{
-			get
-			{
-				return this._type_code;
-			}
-			set
-			{
-				if ((this._type_code != value))
-				{
-					this._type_code = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FDC_code", DbType="VarChar(10)")]
-		public string FDC_code
-		{
-			get
-			{
-				return this._FDC_code;
-			}
-			set
-			{
-				if ((this._FDC_code != value))
-				{
-					this._FDC_code = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SamplingRate", DbType="Float NOT NULL")]
-		public double SamplingRate
-		{
-			get
-			{
-				return this._SamplingRate;
-			}
-			set
-			{
-				if ((this._SamplingRate != value))
-				{
-					this._SamplingRate = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tag_Name", DbType="VarChar(20)")]
-		public string Tag_Name
-		{
-			get
-			{
-				return this._Tag_Name;
-			}
-			set
-			{
-				if ((this._Tag_Name != value))
-				{
-					this._Tag_Name = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Eng_Comment", DbType="VarChar(100)")]
-		public string Eng_Comment
-		{
-			get
-			{
-				return this._Eng_Comment;
-			}
-			set
-			{
-				if ((this._Eng_Comment != value))
-				{
-					this._Eng_Comment = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Cht_Comment", DbType="NVarChar(50)")]
-		public string Cht_Comment
-		{
-			get
-			{
-				return this._Cht_Comment;
-			}
-			set
-			{
-				if ((this._Cht_Comment != value))
-				{
-					this._Cht_Comment = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tag_FDC", DbType="NVarChar(50)")]
-		public string Tag_FDC
-		{
-			get
-			{
-				return this._Tag_FDC;
-			}
-			set
-			{
-				if ((this._Tag_FDC != value))
-				{
-					this._Tag_FDC = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Parameter_SVID", DbType="VarChar(50)")]
-		public string Parameter_SVID
-		{
-			get
-			{
-				return this._Parameter_SVID;
-			}
-			set
-			{
-				if ((this._Parameter_SVID != value))
-				{
-					this._Parameter_SVID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KepAddress", DbType="VarChar(6)")]
-		public string KepAddress
-		{
-			get
-			{
-				return this._KepAddress;
-			}
-			set
-			{
-				if ((this._KepAddress != value))
-				{
-					this._KepAddress = value;
-				}
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_AlarmDealInfo")]
 	public partial class vw_AlarmDealInfo
 	{
@@ -19186,735 +19022,6 @@ namespace TSMC14B.Areas.Main.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_FDC_KEP_Tag")]
-	public partial class vw_FDC_KEP_Tag
-	{
-		
-		private string _tagname;
-		
-		private string _KEP_address;
-		
-		private string _channel_name;
-		
-		private string _toolid;
-		
-		private string _ChamberID;
-		
-		private string _Eng_Comment;
-		
-		private string _department_name;
-		
-		private string _chamberName;
-		
-		private string _process_name;
-		
-		private string _EQID;
-		
-		private string _chamber;
-		
-		private string _loc;
-		
-		private bool _load_flag;
-		
-		private System.Nullable<byte> _iog_port;
-		
-		private short _typeid;
-		
-		private string _tName;
-		
-		private string _vName;
-		
-		private byte _sid;
-		
-		private string _status;
-		
-		private System.Nullable<System.DateTime> _statusdate;
-		
-		private string _sColor;
-		
-		private string _locFloor;
-		
-		private string _vendor_Code;
-		
-		private string _type_code;
-		
-		private string _FDC_code;
-		
-		private string _WEB_code;
-		
-		private System.DateTime _built_date;
-		
-		private string _ChamberSVIDID;
-		
-		private short _type_id;
-		
-		private string _type_name;
-		
-		private System.Nullable<short> _vendor_id;
-		
-		private System.Nullable<short> _Expr1;
-		
-		private string _Expr2;
-		
-		private string _Expr3;
-		
-		private double _Expr4;
-		
-		private string _Tag_Name;
-		
-		private string _Cht_Comment;
-		
-		private string _Tag_FDC;
-		
-		private string _Parameter_SVID;
-		
-		private string _ChamberSVID;
-		
-		public vw_FDC_KEP_Tag()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tagname", DbType="NVarChar(104)")]
-		public string tagname
-		{
-			get
-			{
-				return this._tagname;
-			}
-			set
-			{
-				if ((this._tagname != value))
-				{
-					this._tagname = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KEP_address", DbType="VarChar(11)")]
-		public string KEP_address
-		{
-			get
-			{
-				return this._KEP_address;
-			}
-			set
-			{
-				if ((this._KEP_address != value))
-				{
-					this._KEP_address = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_channel_name", DbType="VarChar(20)")]
-		public string channel_name
-		{
-			get
-			{
-				return this._channel_name;
-			}
-			set
-			{
-				if ((this._channel_name != value))
-				{
-					this._channel_name = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_toolid", DbType="VarChar(41)")]
-		public string toolid
-		{
-			get
-			{
-				return this._toolid;
-			}
-			set
-			{
-				if ((this._toolid != value))
-				{
-					this._toolid = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChamberID", DbType="NVarChar(50)")]
-		public string ChamberID
-		{
-			get
-			{
-				return this._ChamberID;
-			}
-			set
-			{
-				if ((this._ChamberID != value))
-				{
-					this._ChamberID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Eng_Comment", DbType="VarChar(100)")]
-		public string Eng_Comment
-		{
-			get
-			{
-				return this._Eng_Comment;
-			}
-			set
-			{
-				if ((this._Eng_Comment != value))
-				{
-					this._Eng_Comment = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_department_name", DbType="VarChar(20)")]
-		public string department_name
-		{
-			get
-			{
-				return this._department_name;
-			}
-			set
-			{
-				if ((this._department_name != value))
-				{
-					this._department_name = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_chamberName", DbType="VarChar(71)")]
-		public string chamberName
-		{
-			get
-			{
-				return this._chamberName;
-			}
-			set
-			{
-				if ((this._chamberName != value))
-				{
-					this._chamberName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_process_name", DbType="VarChar(20)")]
-		public string process_name
-		{
-			get
-			{
-				return this._process_name;
-			}
-			set
-			{
-				if ((this._process_name != value))
-				{
-					this._process_name = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EQID", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string EQID
-		{
-			get
-			{
-				return this._EQID;
-			}
-			set
-			{
-				if ((this._EQID != value))
-				{
-					this._EQID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_chamber", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string chamber
-		{
-			get
-			{
-				return this._chamber;
-			}
-			set
-			{
-				if ((this._chamber != value))
-				{
-					this._chamber = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_loc", DbType="VarChar(20)")]
-		public string loc
-		{
-			get
-			{
-				return this._loc;
-			}
-			set
-			{
-				if ((this._loc != value))
-				{
-					this._loc = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_load_flag", DbType="Bit NOT NULL")]
-		public bool load_flag
-		{
-			get
-			{
-				return this._load_flag;
-			}
-			set
-			{
-				if ((this._load_flag != value))
-				{
-					this._load_flag = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_iog_port", DbType="TinyInt")]
-		public System.Nullable<byte> iog_port
-		{
-			get
-			{
-				return this._iog_port;
-			}
-			set
-			{
-				if ((this._iog_port != value))
-				{
-					this._iog_port = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_typeid", DbType="SmallInt NOT NULL")]
-		public short typeid
-		{
-			get
-			{
-				return this._typeid;
-			}
-			set
-			{
-				if ((this._typeid != value))
-				{
-					this._typeid = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string tName
-		{
-			get
-			{
-				return this._tName;
-			}
-			set
-			{
-				if ((this._tName != value))
-				{
-					this._tName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vName", DbType="VarChar(50)")]
-		public string vName
-		{
-			get
-			{
-				return this._vName;
-			}
-			set
-			{
-				if ((this._vName != value))
-				{
-					this._vName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sid", DbType="TinyInt NOT NULL")]
-		public byte sid
-		{
-			get
-			{
-				return this._sid;
-			}
-			set
-			{
-				if ((this._sid != value))
-				{
-					this._sid = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
-		public string status
-		{
-			get
-			{
-				return this._status;
-			}
-			set
-			{
-				if ((this._status != value))
-				{
-					this._status = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_statusdate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> statusdate
-		{
-			get
-			{
-				return this._statusdate;
-			}
-			set
-			{
-				if ((this._statusdate != value))
-				{
-					this._statusdate = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sColor", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string sColor
-		{
-			get
-			{
-				return this._sColor;
-			}
-			set
-			{
-				if ((this._sColor != value))
-				{
-					this._sColor = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_locFloor", DbType="VarChar(4)")]
-		public string locFloor
-		{
-			get
-			{
-				return this._locFloor;
-			}
-			set
-			{
-				if ((this._locFloor != value))
-				{
-					this._locFloor = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vendor_Code", DbType="VarChar(5)")]
-		public string vendor_Code
-		{
-			get
-			{
-				return this._vendor_Code;
-			}
-			set
-			{
-				if ((this._vendor_Code != value))
-				{
-					this._vendor_Code = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_code", DbType="VarChar(5)")]
-		public string type_code
-		{
-			get
-			{
-				return this._type_code;
-			}
-			set
-			{
-				if ((this._type_code != value))
-				{
-					this._type_code = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FDC_code", DbType="VarChar(10)")]
-		public string FDC_code
-		{
-			get
-			{
-				return this._FDC_code;
-			}
-			set
-			{
-				if ((this._FDC_code != value))
-				{
-					this._FDC_code = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WEB_code", DbType="VarChar(10)")]
-		public string WEB_code
-		{
-			get
-			{
-				return this._WEB_code;
-			}
-			set
-			{
-				if ((this._WEB_code != value))
-				{
-					this._WEB_code = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_built_date", DbType="SmallDateTime NOT NULL")]
-		public System.DateTime built_date
-		{
-			get
-			{
-				return this._built_date;
-			}
-			set
-			{
-				if ((this._built_date != value))
-				{
-					this._built_date = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChamberSVIDID", DbType="VarChar(20)")]
-		public string ChamberSVIDID
-		{
-			get
-			{
-				return this._ChamberSVIDID;
-			}
-			set
-			{
-				if ((this._ChamberSVIDID != value))
-				{
-					this._ChamberSVIDID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_id", DbType="SmallInt NOT NULL")]
-		public short type_id
-		{
-			get
-			{
-				return this._type_id;
-			}
-			set
-			{
-				if ((this._type_id != value))
-				{
-					this._type_id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string type_name
-		{
-			get
-			{
-				return this._type_name;
-			}
-			set
-			{
-				if ((this._type_name != value))
-				{
-					this._type_name = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vendor_id", DbType="SmallInt")]
-		public System.Nullable<short> vendor_id
-		{
-			get
-			{
-				return this._vendor_id;
-			}
-			set
-			{
-				if ((this._vendor_id != value))
-				{
-					this._vendor_id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr1", DbType="SmallInt")]
-		public System.Nullable<short> Expr1
-		{
-			get
-			{
-				return this._Expr1;
-			}
-			set
-			{
-				if ((this._Expr1 != value))
-				{
-					this._Expr1 = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr2", DbType="VarChar(5)")]
-		public string Expr2
-		{
-			get
-			{
-				return this._Expr2;
-			}
-			set
-			{
-				if ((this._Expr2 != value))
-				{
-					this._Expr2 = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr3", DbType="VarChar(10)")]
-		public string Expr3
-		{
-			get
-			{
-				return this._Expr3;
-			}
-			set
-			{
-				if ((this._Expr3 != value))
-				{
-					this._Expr3 = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr4", DbType="Float NOT NULL")]
-		public double Expr4
-		{
-			get
-			{
-				return this._Expr4;
-			}
-			set
-			{
-				if ((this._Expr4 != value))
-				{
-					this._Expr4 = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tag_Name", DbType="VarChar(20)")]
-		public string Tag_Name
-		{
-			get
-			{
-				return this._Tag_Name;
-			}
-			set
-			{
-				if ((this._Tag_Name != value))
-				{
-					this._Tag_Name = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Cht_Comment", DbType="NVarChar(50)")]
-		public string Cht_Comment
-		{
-			get
-			{
-				return this._Cht_Comment;
-			}
-			set
-			{
-				if ((this._Cht_Comment != value))
-				{
-					this._Cht_Comment = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tag_FDC", DbType="NVarChar(50)")]
-		public string Tag_FDC
-		{
-			get
-			{
-				return this._Tag_FDC;
-			}
-			set
-			{
-				if ((this._Tag_FDC != value))
-				{
-					this._Tag_FDC = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Parameter_SVID", DbType="VarChar(50)")]
-		public string Parameter_SVID
-		{
-			get
-			{
-				return this._Parameter_SVID;
-			}
-			set
-			{
-				if ((this._Parameter_SVID != value))
-				{
-					this._Parameter_SVID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChamberSVID", DbType="NVarChar(50)")]
-		public string ChamberSVID
-		{
-			get
-			{
-				return this._ChamberSVID;
-			}
-			set
-			{
-				if ((this._ChamberSVID != value))
-				{
-					this._ChamberSVID = value;
-				}
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_HJStation_InfoData")]
 	public partial class vw_HJStation_InfoData
 	{
@@ -22408,123 +21515,6 @@ namespace TSMC14B.Areas.Main.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_Tag_info")]
-	public partial class vw_Tag_info
-	{
-		
-		private string _FullTagName;
-		
-		private string _FDC_Tag;
-		
-		private string _sensorID;
-		
-		private string _data_Tag;
-		
-		private byte _status;
-		
-		private System.DateTime _built_date;
-		
-		public vw_Tag_info()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullTagName", DbType="VarChar(94)")]
-		public string FullTagName
-		{
-			get
-			{
-				return this._FullTagName;
-			}
-			set
-			{
-				if ((this._FullTagName != value))
-				{
-					this._FullTagName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FDC_Tag", DbType="NVarChar(123) NOT NULL", CanBeNull=false)]
-		public string FDC_Tag
-		{
-			get
-			{
-				return this._FDC_Tag;
-			}
-			set
-			{
-				if ((this._FDC_Tag != value))
-				{
-					this._FDC_Tag = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sensorID", DbType="VarChar(71)")]
-		public string sensorID
-		{
-			get
-			{
-				return this._sensorID;
-			}
-			set
-			{
-				if ((this._sensorID != value))
-				{
-					this._sensorID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_data_Tag", DbType="NVarChar(50)")]
-		public string data_Tag
-		{
-			get
-			{
-				return this._data_Tag;
-			}
-			set
-			{
-				if ((this._data_Tag != value))
-				{
-					this._data_Tag = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="TinyInt NOT NULL")]
-		public byte status
-		{
-			get
-			{
-				return this._status;
-			}
-			set
-			{
-				if ((this._status != value))
-				{
-					this._status = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_built_date", DbType="DateTime NOT NULL")]
-		public System.DateTime built_date
-		{
-			get
-			{
-				return this._built_date;
-			}
-			set
-			{
-				if ((this._built_date != value))
-				{
-					this._built_date = value;
-				}
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_FDCPM")]
 	public partial class vw_FDCPM
 	{
@@ -22826,6 +21816,3619 @@ namespace TSMC14B.Areas.Main.Models
 				if ((this._login_name != value))
 				{
 					this._login_name = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_type_parameter")]
+	public partial class vw_type_parameter
+	{
+		
+		private short _type_id;
+		
+		private string _type_name;
+		
+		private System.Nullable<short> _vendor_id;
+		
+		private System.Nullable<short> _server_id;
+		
+		private string _type_code;
+		
+		private string _FDC_code;
+		
+		private double _SamplingRate;
+		
+		private string _Tag_Name;
+		
+		private string _Eng_Comment;
+		
+		private string _Cht_Comment;
+		
+		private string _Tag_FDC;
+		
+		private string _Parameter_SVID;
+		
+		private string _KepAddress;
+		
+		private string _FDC_Number;
+		
+		private string _KepType;
+		
+		private string _KepAccess;
+		
+		private System.Nullable<double> _Raw_Low;
+		
+		private System.Nullable<double> _Raw_High;
+		
+		private System.Nullable<double> _Scaled_Low;
+		
+		private System.Nullable<double> _Scaled_High;
+		
+		public vw_type_parameter()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_id", DbType="SmallInt NOT NULL")]
+		public short type_id
+		{
+			get
+			{
+				return this._type_id;
+			}
+			set
+			{
+				if ((this._type_id != value))
+				{
+					this._type_id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string type_name
+		{
+			get
+			{
+				return this._type_name;
+			}
+			set
+			{
+				if ((this._type_name != value))
+				{
+					this._type_name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vendor_id", DbType="SmallInt")]
+		public System.Nullable<short> vendor_id
+		{
+			get
+			{
+				return this._vendor_id;
+			}
+			set
+			{
+				if ((this._vendor_id != value))
+				{
+					this._vendor_id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_server_id", DbType="SmallInt")]
+		public System.Nullable<short> server_id
+		{
+			get
+			{
+				return this._server_id;
+			}
+			set
+			{
+				if ((this._server_id != value))
+				{
+					this._server_id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_code", DbType="VarChar(5)")]
+		public string type_code
+		{
+			get
+			{
+				return this._type_code;
+			}
+			set
+			{
+				if ((this._type_code != value))
+				{
+					this._type_code = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FDC_code", DbType="VarChar(10)")]
+		public string FDC_code
+		{
+			get
+			{
+				return this._FDC_code;
+			}
+			set
+			{
+				if ((this._FDC_code != value))
+				{
+					this._FDC_code = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SamplingRate", DbType="Float NOT NULL")]
+		public double SamplingRate
+		{
+			get
+			{
+				return this._SamplingRate;
+			}
+			set
+			{
+				if ((this._SamplingRate != value))
+				{
+					this._SamplingRate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tag_Name", DbType="VarChar(20)")]
+		public string Tag_Name
+		{
+			get
+			{
+				return this._Tag_Name;
+			}
+			set
+			{
+				if ((this._Tag_Name != value))
+				{
+					this._Tag_Name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Eng_Comment", DbType="VarChar(100)")]
+		public string Eng_Comment
+		{
+			get
+			{
+				return this._Eng_Comment;
+			}
+			set
+			{
+				if ((this._Eng_Comment != value))
+				{
+					this._Eng_Comment = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Cht_Comment", DbType="NVarChar(50)")]
+		public string Cht_Comment
+		{
+			get
+			{
+				return this._Cht_Comment;
+			}
+			set
+			{
+				if ((this._Cht_Comment != value))
+				{
+					this._Cht_Comment = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tag_FDC", DbType="NVarChar(50)")]
+		public string Tag_FDC
+		{
+			get
+			{
+				return this._Tag_FDC;
+			}
+			set
+			{
+				if ((this._Tag_FDC != value))
+				{
+					this._Tag_FDC = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Parameter_SVID", DbType="VarChar(50)")]
+		public string Parameter_SVID
+		{
+			get
+			{
+				return this._Parameter_SVID;
+			}
+			set
+			{
+				if ((this._Parameter_SVID != value))
+				{
+					this._Parameter_SVID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KepAddress", DbType="VarChar(6)")]
+		public string KepAddress
+		{
+			get
+			{
+				return this._KepAddress;
+			}
+			set
+			{
+				if ((this._KepAddress != value))
+				{
+					this._KepAddress = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FDC_Number", DbType="VarChar(5)")]
+		public string FDC_Number
+		{
+			get
+			{
+				return this._FDC_Number;
+			}
+			set
+			{
+				if ((this._FDC_Number != value))
+				{
+					this._FDC_Number = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KepType", DbType="VarChar(20)")]
+		public string KepType
+		{
+			get
+			{
+				return this._KepType;
+			}
+			set
+			{
+				if ((this._KepType != value))
+				{
+					this._KepType = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KepAccess", DbType="VarChar(20)")]
+		public string KepAccess
+		{
+			get
+			{
+				return this._KepAccess;
+			}
+			set
+			{
+				if ((this._KepAccess != value))
+				{
+					this._KepAccess = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Raw_Low", DbType="Float")]
+		public System.Nullable<double> Raw_Low
+		{
+			get
+			{
+				return this._Raw_Low;
+			}
+			set
+			{
+				if ((this._Raw_Low != value))
+				{
+					this._Raw_Low = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Raw_High", DbType="Float")]
+		public System.Nullable<double> Raw_High
+		{
+			get
+			{
+				return this._Raw_High;
+			}
+			set
+			{
+				if ((this._Raw_High != value))
+				{
+					this._Raw_High = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Scaled_Low", DbType="Float")]
+		public System.Nullable<double> Scaled_Low
+		{
+			get
+			{
+				return this._Scaled_Low;
+			}
+			set
+			{
+				if ((this._Scaled_Low != value))
+				{
+					this._Scaled_Low = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Scaled_High", DbType="Float")]
+		public System.Nullable<double> Scaled_High
+		{
+			get
+			{
+				return this._Scaled_High;
+			}
+			set
+			{
+				if ((this._Scaled_High != value))
+				{
+					this._Scaled_High = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_FDC_KEP_Tag_load")]
+	public partial class vw_FDC_KEP_Tag_load
+	{
+		
+		private string _tagname;
+		
+		private string _KEP_address;
+		
+		private string _channel_name;
+		
+		private string _toolid;
+		
+		private string _ChamberID;
+		
+		private string _Eng_Comment;
+		
+		private string _department_name;
+		
+		private string _chamberName;
+		
+		private string _process_name;
+		
+		private string _EQID;
+		
+		private string _chamber;
+		
+		private string _loc;
+		
+		private bool _load_flag;
+		
+		private System.Nullable<byte> _iog_port;
+		
+		private short _typeid;
+		
+		private string _tName;
+		
+		private string _vName;
+		
+		private byte _sid;
+		
+		private string _status;
+		
+		private System.Nullable<System.DateTime> _statusdate;
+		
+		private string _sColor;
+		
+		private string _locFloor;
+		
+		private string _vendor_Code;
+		
+		private string _type_code;
+		
+		private string _FDC_code;
+		
+		private string _WEB_code;
+		
+		private System.DateTime _built_date;
+		
+		private string _ChamberSVIDID;
+		
+		private short _type_id;
+		
+		private string _type_name;
+		
+		private System.Nullable<short> _vendor_id;
+		
+		private System.Nullable<short> _Expr1;
+		
+		private string _Expr2;
+		
+		private string _Expr3;
+		
+		private double _Expr4;
+		
+		private string _Tag_Name;
+		
+		private string _Cht_Comment;
+		
+		private string _Tag_FDC;
+		
+		private string _Parameter_SVID;
+		
+		private string _ChamberSVID;
+		
+		private string _KepType;
+		
+		private string _KepAccess;
+		
+		private System.Nullable<double> _Raw_Low;
+		
+		private System.Nullable<double> _Raw_High;
+		
+		private System.Nullable<double> _Scaled_Low;
+		
+		private System.Nullable<double> _Scaled_High;
+		
+		public vw_FDC_KEP_Tag_load()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tagname", DbType="NVarChar(105)")]
+		public string tagname
+		{
+			get
+			{
+				return this._tagname;
+			}
+			set
+			{
+				if ((this._tagname != value))
+				{
+					this._tagname = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KEP_address", DbType="VarChar(11)")]
+		public string KEP_address
+		{
+			get
+			{
+				return this._KEP_address;
+			}
+			set
+			{
+				if ((this._KEP_address != value))
+				{
+					this._KEP_address = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_channel_name", DbType="VarChar(20)")]
+		public string channel_name
+		{
+			get
+			{
+				return this._channel_name;
+			}
+			set
+			{
+				if ((this._channel_name != value))
+				{
+					this._channel_name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_toolid", DbType="VarChar(41)")]
+		public string toolid
+		{
+			get
+			{
+				return this._toolid;
+			}
+			set
+			{
+				if ((this._toolid != value))
+				{
+					this._toolid = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChamberID", DbType="NVarChar(50)")]
+		public string ChamberID
+		{
+			get
+			{
+				return this._ChamberID;
+			}
+			set
+			{
+				if ((this._ChamberID != value))
+				{
+					this._ChamberID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Eng_Comment", DbType="VarChar(100)")]
+		public string Eng_Comment
+		{
+			get
+			{
+				return this._Eng_Comment;
+			}
+			set
+			{
+				if ((this._Eng_Comment != value))
+				{
+					this._Eng_Comment = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_department_name", DbType="VarChar(20)")]
+		public string department_name
+		{
+			get
+			{
+				return this._department_name;
+			}
+			set
+			{
+				if ((this._department_name != value))
+				{
+					this._department_name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_chamberName", DbType="VarChar(71)")]
+		public string chamberName
+		{
+			get
+			{
+				return this._chamberName;
+			}
+			set
+			{
+				if ((this._chamberName != value))
+				{
+					this._chamberName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_process_name", DbType="VarChar(20)")]
+		public string process_name
+		{
+			get
+			{
+				return this._process_name;
+			}
+			set
+			{
+				if ((this._process_name != value))
+				{
+					this._process_name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EQID", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string EQID
+		{
+			get
+			{
+				return this._EQID;
+			}
+			set
+			{
+				if ((this._EQID != value))
+				{
+					this._EQID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_chamber", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string chamber
+		{
+			get
+			{
+				return this._chamber;
+			}
+			set
+			{
+				if ((this._chamber != value))
+				{
+					this._chamber = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_loc", DbType="VarChar(20)")]
+		public string loc
+		{
+			get
+			{
+				return this._loc;
+			}
+			set
+			{
+				if ((this._loc != value))
+				{
+					this._loc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_load_flag", DbType="Bit NOT NULL")]
+		public bool load_flag
+		{
+			get
+			{
+				return this._load_flag;
+			}
+			set
+			{
+				if ((this._load_flag != value))
+				{
+					this._load_flag = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_iog_port", DbType="TinyInt")]
+		public System.Nullable<byte> iog_port
+		{
+			get
+			{
+				return this._iog_port;
+			}
+			set
+			{
+				if ((this._iog_port != value))
+				{
+					this._iog_port = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_typeid", DbType="SmallInt NOT NULL")]
+		public short typeid
+		{
+			get
+			{
+				return this._typeid;
+			}
+			set
+			{
+				if ((this._typeid != value))
+				{
+					this._typeid = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string tName
+		{
+			get
+			{
+				return this._tName;
+			}
+			set
+			{
+				if ((this._tName != value))
+				{
+					this._tName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vName", DbType="VarChar(50)")]
+		public string vName
+		{
+			get
+			{
+				return this._vName;
+			}
+			set
+			{
+				if ((this._vName != value))
+				{
+					this._vName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sid", DbType="TinyInt NOT NULL")]
+		public byte sid
+		{
+			get
+			{
+				return this._sid;
+			}
+			set
+			{
+				if ((this._sid != value))
+				{
+					this._sid = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
+		public string status
+		{
+			get
+			{
+				return this._status;
+			}
+			set
+			{
+				if ((this._status != value))
+				{
+					this._status = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_statusdate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> statusdate
+		{
+			get
+			{
+				return this._statusdate;
+			}
+			set
+			{
+				if ((this._statusdate != value))
+				{
+					this._statusdate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sColor", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string sColor
+		{
+			get
+			{
+				return this._sColor;
+			}
+			set
+			{
+				if ((this._sColor != value))
+				{
+					this._sColor = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_locFloor", DbType="VarChar(4)")]
+		public string locFloor
+		{
+			get
+			{
+				return this._locFloor;
+			}
+			set
+			{
+				if ((this._locFloor != value))
+				{
+					this._locFloor = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vendor_Code", DbType="VarChar(5)")]
+		public string vendor_Code
+		{
+			get
+			{
+				return this._vendor_Code;
+			}
+			set
+			{
+				if ((this._vendor_Code != value))
+				{
+					this._vendor_Code = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_code", DbType="VarChar(5)")]
+		public string type_code
+		{
+			get
+			{
+				return this._type_code;
+			}
+			set
+			{
+				if ((this._type_code != value))
+				{
+					this._type_code = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FDC_code", DbType="VarChar(10)")]
+		public string FDC_code
+		{
+			get
+			{
+				return this._FDC_code;
+			}
+			set
+			{
+				if ((this._FDC_code != value))
+				{
+					this._FDC_code = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WEB_code", DbType="VarChar(10)")]
+		public string WEB_code
+		{
+			get
+			{
+				return this._WEB_code;
+			}
+			set
+			{
+				if ((this._WEB_code != value))
+				{
+					this._WEB_code = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_built_date", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime built_date
+		{
+			get
+			{
+				return this._built_date;
+			}
+			set
+			{
+				if ((this._built_date != value))
+				{
+					this._built_date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChamberSVIDID", DbType="VarChar(20)")]
+		public string ChamberSVIDID
+		{
+			get
+			{
+				return this._ChamberSVIDID;
+			}
+			set
+			{
+				if ((this._ChamberSVIDID != value))
+				{
+					this._ChamberSVIDID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_id", DbType="SmallInt NOT NULL")]
+		public short type_id
+		{
+			get
+			{
+				return this._type_id;
+			}
+			set
+			{
+				if ((this._type_id != value))
+				{
+					this._type_id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string type_name
+		{
+			get
+			{
+				return this._type_name;
+			}
+			set
+			{
+				if ((this._type_name != value))
+				{
+					this._type_name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vendor_id", DbType="SmallInt")]
+		public System.Nullable<short> vendor_id
+		{
+			get
+			{
+				return this._vendor_id;
+			}
+			set
+			{
+				if ((this._vendor_id != value))
+				{
+					this._vendor_id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr1", DbType="SmallInt")]
+		public System.Nullable<short> Expr1
+		{
+			get
+			{
+				return this._Expr1;
+			}
+			set
+			{
+				if ((this._Expr1 != value))
+				{
+					this._Expr1 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr2", DbType="VarChar(5)")]
+		public string Expr2
+		{
+			get
+			{
+				return this._Expr2;
+			}
+			set
+			{
+				if ((this._Expr2 != value))
+				{
+					this._Expr2 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr3", DbType="VarChar(10)")]
+		public string Expr3
+		{
+			get
+			{
+				return this._Expr3;
+			}
+			set
+			{
+				if ((this._Expr3 != value))
+				{
+					this._Expr3 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr4", DbType="Float NOT NULL")]
+		public double Expr4
+		{
+			get
+			{
+				return this._Expr4;
+			}
+			set
+			{
+				if ((this._Expr4 != value))
+				{
+					this._Expr4 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tag_Name", DbType="VarChar(20)")]
+		public string Tag_Name
+		{
+			get
+			{
+				return this._Tag_Name;
+			}
+			set
+			{
+				if ((this._Tag_Name != value))
+				{
+					this._Tag_Name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Cht_Comment", DbType="NVarChar(50)")]
+		public string Cht_Comment
+		{
+			get
+			{
+				return this._Cht_Comment;
+			}
+			set
+			{
+				if ((this._Cht_Comment != value))
+				{
+					this._Cht_Comment = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tag_FDC", DbType="NVarChar(50)")]
+		public string Tag_FDC
+		{
+			get
+			{
+				return this._Tag_FDC;
+			}
+			set
+			{
+				if ((this._Tag_FDC != value))
+				{
+					this._Tag_FDC = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Parameter_SVID", DbType="VarChar(50)")]
+		public string Parameter_SVID
+		{
+			get
+			{
+				return this._Parameter_SVID;
+			}
+			set
+			{
+				if ((this._Parameter_SVID != value))
+				{
+					this._Parameter_SVID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChamberSVID", DbType="NVarChar(50)")]
+		public string ChamberSVID
+		{
+			get
+			{
+				return this._ChamberSVID;
+			}
+			set
+			{
+				if ((this._ChamberSVID != value))
+				{
+					this._ChamberSVID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KepType", DbType="VarChar(20)")]
+		public string KepType
+		{
+			get
+			{
+				return this._KepType;
+			}
+			set
+			{
+				if ((this._KepType != value))
+				{
+					this._KepType = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KepAccess", DbType="VarChar(20)")]
+		public string KepAccess
+		{
+			get
+			{
+				return this._KepAccess;
+			}
+			set
+			{
+				if ((this._KepAccess != value))
+				{
+					this._KepAccess = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Raw_Low", DbType="Float")]
+		public System.Nullable<double> Raw_Low
+		{
+			get
+			{
+				return this._Raw_Low;
+			}
+			set
+			{
+				if ((this._Raw_Low != value))
+				{
+					this._Raw_Low = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Raw_High", DbType="Float")]
+		public System.Nullable<double> Raw_High
+		{
+			get
+			{
+				return this._Raw_High;
+			}
+			set
+			{
+				if ((this._Raw_High != value))
+				{
+					this._Raw_High = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Scaled_Low", DbType="Float")]
+		public System.Nullable<double> Scaled_Low
+		{
+			get
+			{
+				return this._Scaled_Low;
+			}
+			set
+			{
+				if ((this._Scaled_Low != value))
+				{
+					this._Scaled_Low = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Scaled_High", DbType="Float")]
+		public System.Nullable<double> Scaled_High
+		{
+			get
+			{
+				return this._Scaled_High;
+			}
+			set
+			{
+				if ((this._Scaled_High != value))
+				{
+					this._Scaled_High = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_FDC_KEP_Tag")]
+	public partial class vw_FDC_KEP_Tag
+	{
+		
+		private string _tagname;
+		
+		private string _KEP_address;
+		
+		private string _channel_name;
+		
+		private string _toolid;
+		
+		private string _ChamberID;
+		
+		private string _Eng_Comment;
+		
+		private string _department_name;
+		
+		private string _chamberName;
+		
+		private string _process_name;
+		
+		private string _EQID;
+		
+		private string _chamber;
+		
+		private string _loc;
+		
+		private bool _load_flag;
+		
+		private System.Nullable<byte> _iog_port;
+		
+		private short _typeid;
+		
+		private string _tName;
+		
+		private string _vName;
+		
+		private byte _sid;
+		
+		private string _status;
+		
+		private System.Nullable<System.DateTime> _statusdate;
+		
+		private string _sColor;
+		
+		private string _locFloor;
+		
+		private string _vendor_Code;
+		
+		private string _type_code;
+		
+		private string _FDC_code;
+		
+		private string _WEB_code;
+		
+		private System.DateTime _built_date;
+		
+		private string _ChamberSVIDID;
+		
+		private short _type_id;
+		
+		private string _type_name;
+		
+		private System.Nullable<short> _vendor_id;
+		
+		private System.Nullable<short> _Expr1;
+		
+		private string _Expr2;
+		
+		private string _Expr3;
+		
+		private double _Expr4;
+		
+		private string _Tag_Name;
+		
+		private string _Cht_Comment;
+		
+		private string _Tag_FDC;
+		
+		private string _Parameter_SVID;
+		
+		private string _ChamberSVID;
+		
+		private string _KepType;
+		
+		private string _KepAccess;
+		
+		private System.Nullable<double> _Raw_Low;
+		
+		private System.Nullable<double> _Raw_High;
+		
+		private System.Nullable<double> _Scaled_Low;
+		
+		private System.Nullable<double> _Scaled_High;
+		
+		public vw_FDC_KEP_Tag()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tagname", DbType="NVarChar(105)")]
+		public string tagname
+		{
+			get
+			{
+				return this._tagname;
+			}
+			set
+			{
+				if ((this._tagname != value))
+				{
+					this._tagname = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KEP_address", DbType="VarChar(11)")]
+		public string KEP_address
+		{
+			get
+			{
+				return this._KEP_address;
+			}
+			set
+			{
+				if ((this._KEP_address != value))
+				{
+					this._KEP_address = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_channel_name", DbType="VarChar(20)")]
+		public string channel_name
+		{
+			get
+			{
+				return this._channel_name;
+			}
+			set
+			{
+				if ((this._channel_name != value))
+				{
+					this._channel_name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_toolid", DbType="VarChar(41)")]
+		public string toolid
+		{
+			get
+			{
+				return this._toolid;
+			}
+			set
+			{
+				if ((this._toolid != value))
+				{
+					this._toolid = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChamberID", DbType="NVarChar(50)")]
+		public string ChamberID
+		{
+			get
+			{
+				return this._ChamberID;
+			}
+			set
+			{
+				if ((this._ChamberID != value))
+				{
+					this._ChamberID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Eng_Comment", DbType="VarChar(100)")]
+		public string Eng_Comment
+		{
+			get
+			{
+				return this._Eng_Comment;
+			}
+			set
+			{
+				if ((this._Eng_Comment != value))
+				{
+					this._Eng_Comment = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_department_name", DbType="VarChar(20)")]
+		public string department_name
+		{
+			get
+			{
+				return this._department_name;
+			}
+			set
+			{
+				if ((this._department_name != value))
+				{
+					this._department_name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_chamberName", DbType="VarChar(71)")]
+		public string chamberName
+		{
+			get
+			{
+				return this._chamberName;
+			}
+			set
+			{
+				if ((this._chamberName != value))
+				{
+					this._chamberName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_process_name", DbType="VarChar(20)")]
+		public string process_name
+		{
+			get
+			{
+				return this._process_name;
+			}
+			set
+			{
+				if ((this._process_name != value))
+				{
+					this._process_name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EQID", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string EQID
+		{
+			get
+			{
+				return this._EQID;
+			}
+			set
+			{
+				if ((this._EQID != value))
+				{
+					this._EQID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_chamber", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string chamber
+		{
+			get
+			{
+				return this._chamber;
+			}
+			set
+			{
+				if ((this._chamber != value))
+				{
+					this._chamber = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_loc", DbType="VarChar(20)")]
+		public string loc
+		{
+			get
+			{
+				return this._loc;
+			}
+			set
+			{
+				if ((this._loc != value))
+				{
+					this._loc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_load_flag", DbType="Bit NOT NULL")]
+		public bool load_flag
+		{
+			get
+			{
+				return this._load_flag;
+			}
+			set
+			{
+				if ((this._load_flag != value))
+				{
+					this._load_flag = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_iog_port", DbType="TinyInt")]
+		public System.Nullable<byte> iog_port
+		{
+			get
+			{
+				return this._iog_port;
+			}
+			set
+			{
+				if ((this._iog_port != value))
+				{
+					this._iog_port = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_typeid", DbType="SmallInt NOT NULL")]
+		public short typeid
+		{
+			get
+			{
+				return this._typeid;
+			}
+			set
+			{
+				if ((this._typeid != value))
+				{
+					this._typeid = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string tName
+		{
+			get
+			{
+				return this._tName;
+			}
+			set
+			{
+				if ((this._tName != value))
+				{
+					this._tName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vName", DbType="VarChar(50)")]
+		public string vName
+		{
+			get
+			{
+				return this._vName;
+			}
+			set
+			{
+				if ((this._vName != value))
+				{
+					this._vName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sid", DbType="TinyInt NOT NULL")]
+		public byte sid
+		{
+			get
+			{
+				return this._sid;
+			}
+			set
+			{
+				if ((this._sid != value))
+				{
+					this._sid = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
+		public string status
+		{
+			get
+			{
+				return this._status;
+			}
+			set
+			{
+				if ((this._status != value))
+				{
+					this._status = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_statusdate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> statusdate
+		{
+			get
+			{
+				return this._statusdate;
+			}
+			set
+			{
+				if ((this._statusdate != value))
+				{
+					this._statusdate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sColor", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string sColor
+		{
+			get
+			{
+				return this._sColor;
+			}
+			set
+			{
+				if ((this._sColor != value))
+				{
+					this._sColor = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_locFloor", DbType="VarChar(4)")]
+		public string locFloor
+		{
+			get
+			{
+				return this._locFloor;
+			}
+			set
+			{
+				if ((this._locFloor != value))
+				{
+					this._locFloor = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vendor_Code", DbType="VarChar(5)")]
+		public string vendor_Code
+		{
+			get
+			{
+				return this._vendor_Code;
+			}
+			set
+			{
+				if ((this._vendor_Code != value))
+				{
+					this._vendor_Code = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_code", DbType="VarChar(5)")]
+		public string type_code
+		{
+			get
+			{
+				return this._type_code;
+			}
+			set
+			{
+				if ((this._type_code != value))
+				{
+					this._type_code = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FDC_code", DbType="VarChar(10)")]
+		public string FDC_code
+		{
+			get
+			{
+				return this._FDC_code;
+			}
+			set
+			{
+				if ((this._FDC_code != value))
+				{
+					this._FDC_code = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WEB_code", DbType="VarChar(10)")]
+		public string WEB_code
+		{
+			get
+			{
+				return this._WEB_code;
+			}
+			set
+			{
+				if ((this._WEB_code != value))
+				{
+					this._WEB_code = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_built_date", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime built_date
+		{
+			get
+			{
+				return this._built_date;
+			}
+			set
+			{
+				if ((this._built_date != value))
+				{
+					this._built_date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChamberSVIDID", DbType="VarChar(20)")]
+		public string ChamberSVIDID
+		{
+			get
+			{
+				return this._ChamberSVIDID;
+			}
+			set
+			{
+				if ((this._ChamberSVIDID != value))
+				{
+					this._ChamberSVIDID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_id", DbType="SmallInt NOT NULL")]
+		public short type_id
+		{
+			get
+			{
+				return this._type_id;
+			}
+			set
+			{
+				if ((this._type_id != value))
+				{
+					this._type_id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string type_name
+		{
+			get
+			{
+				return this._type_name;
+			}
+			set
+			{
+				if ((this._type_name != value))
+				{
+					this._type_name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vendor_id", DbType="SmallInt")]
+		public System.Nullable<short> vendor_id
+		{
+			get
+			{
+				return this._vendor_id;
+			}
+			set
+			{
+				if ((this._vendor_id != value))
+				{
+					this._vendor_id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr1", DbType="SmallInt")]
+		public System.Nullable<short> Expr1
+		{
+			get
+			{
+				return this._Expr1;
+			}
+			set
+			{
+				if ((this._Expr1 != value))
+				{
+					this._Expr1 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr2", DbType="VarChar(5)")]
+		public string Expr2
+		{
+			get
+			{
+				return this._Expr2;
+			}
+			set
+			{
+				if ((this._Expr2 != value))
+				{
+					this._Expr2 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr3", DbType="VarChar(10)")]
+		public string Expr3
+		{
+			get
+			{
+				return this._Expr3;
+			}
+			set
+			{
+				if ((this._Expr3 != value))
+				{
+					this._Expr3 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expr4", DbType="Float NOT NULL")]
+		public double Expr4
+		{
+			get
+			{
+				return this._Expr4;
+			}
+			set
+			{
+				if ((this._Expr4 != value))
+				{
+					this._Expr4 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tag_Name", DbType="VarChar(20)")]
+		public string Tag_Name
+		{
+			get
+			{
+				return this._Tag_Name;
+			}
+			set
+			{
+				if ((this._Tag_Name != value))
+				{
+					this._Tag_Name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Cht_Comment", DbType="NVarChar(50)")]
+		public string Cht_Comment
+		{
+			get
+			{
+				return this._Cht_Comment;
+			}
+			set
+			{
+				if ((this._Cht_Comment != value))
+				{
+					this._Cht_Comment = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tag_FDC", DbType="NVarChar(50)")]
+		public string Tag_FDC
+		{
+			get
+			{
+				return this._Tag_FDC;
+			}
+			set
+			{
+				if ((this._Tag_FDC != value))
+				{
+					this._Tag_FDC = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Parameter_SVID", DbType="VarChar(50)")]
+		public string Parameter_SVID
+		{
+			get
+			{
+				return this._Parameter_SVID;
+			}
+			set
+			{
+				if ((this._Parameter_SVID != value))
+				{
+					this._Parameter_SVID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChamberSVID", DbType="NVarChar(50)")]
+		public string ChamberSVID
+		{
+			get
+			{
+				return this._ChamberSVID;
+			}
+			set
+			{
+				if ((this._ChamberSVID != value))
+				{
+					this._ChamberSVID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KepType", DbType="VarChar(20)")]
+		public string KepType
+		{
+			get
+			{
+				return this._KepType;
+			}
+			set
+			{
+				if ((this._KepType != value))
+				{
+					this._KepType = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KepAccess", DbType="VarChar(20)")]
+		public string KepAccess
+		{
+			get
+			{
+				return this._KepAccess;
+			}
+			set
+			{
+				if ((this._KepAccess != value))
+				{
+					this._KepAccess = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Raw_Low", DbType="Float")]
+		public System.Nullable<double> Raw_Low
+		{
+			get
+			{
+				return this._Raw_Low;
+			}
+			set
+			{
+				if ((this._Raw_Low != value))
+				{
+					this._Raw_Low = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Raw_High", DbType="Float")]
+		public System.Nullable<double> Raw_High
+		{
+			get
+			{
+				return this._Raw_High;
+			}
+			set
+			{
+				if ((this._Raw_High != value))
+				{
+					this._Raw_High = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Scaled_Low", DbType="Float")]
+		public System.Nullable<double> Scaled_Low
+		{
+			get
+			{
+				return this._Scaled_Low;
+			}
+			set
+			{
+				if ((this._Scaled_Low != value))
+				{
+					this._Scaled_Low = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Scaled_High", DbType="Float")]
+		public System.Nullable<double> Scaled_High
+		{
+			get
+			{
+				return this._Scaled_High;
+			}
+			set
+			{
+				if ((this._Scaled_High != value))
+				{
+					this._Scaled_High = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ExtraSensor_info")]
+	public partial class ExtraSensor_info : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _pid;
+		
+		private byte _Sensor_index;
+		
+		private int _Sensor_type_id;
+		
+		private byte _MSD_index;
+		
+		private string _FullTagName;
+		
+		private string _Sensor_Name;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnpidChanging(int value);
+    partial void OnpidChanged();
+    partial void OnSensor_indexChanging(byte value);
+    partial void OnSensor_indexChanged();
+    partial void OnSensor_type_idChanging(int value);
+    partial void OnSensor_type_idChanged();
+    partial void OnMSD_indexChanging(byte value);
+    partial void OnMSD_indexChanged();
+    partial void OnFullTagNameChanging(string value);
+    partial void OnFullTagNameChanged();
+    partial void OnSensor_NameChanging(string value);
+    partial void OnSensor_NameChanged();
+    #endregion
+		
+		public ExtraSensor_info()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pid", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int pid
+		{
+			get
+			{
+				return this._pid;
+			}
+			set
+			{
+				if ((this._pid != value))
+				{
+					this.OnpidChanging(value);
+					this.SendPropertyChanging();
+					this._pid = value;
+					this.SendPropertyChanged("pid");
+					this.OnpidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sensor_index", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte Sensor_index
+		{
+			get
+			{
+				return this._Sensor_index;
+			}
+			set
+			{
+				if ((this._Sensor_index != value))
+				{
+					this.OnSensor_indexChanging(value);
+					this.SendPropertyChanging();
+					this._Sensor_index = value;
+					this.SendPropertyChanged("Sensor_index");
+					this.OnSensor_indexChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sensor_type_id", DbType="Int NOT NULL")]
+		public int Sensor_type_id
+		{
+			get
+			{
+				return this._Sensor_type_id;
+			}
+			set
+			{
+				if ((this._Sensor_type_id != value))
+				{
+					this.OnSensor_type_idChanging(value);
+					this.SendPropertyChanging();
+					this._Sensor_type_id = value;
+					this.SendPropertyChanged("Sensor_type_id");
+					this.OnSensor_type_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MSD_index", DbType="TinyInt NOT NULL")]
+		public byte MSD_index
+		{
+			get
+			{
+				return this._MSD_index;
+			}
+			set
+			{
+				if ((this._MSD_index != value))
+				{
+					this.OnMSD_indexChanging(value);
+					this.SendPropertyChanging();
+					this._MSD_index = value;
+					this.SendPropertyChanged("MSD_index");
+					this.OnMSD_indexChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullTagName", DbType="NVarChar(50)")]
+		public string FullTagName
+		{
+			get
+			{
+				return this._FullTagName;
+			}
+			set
+			{
+				if ((this._FullTagName != value))
+				{
+					this.OnFullTagNameChanging(value);
+					this.SendPropertyChanging();
+					this._FullTagName = value;
+					this.SendPropertyChanged("FullTagName");
+					this.OnFullTagNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sensor_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Sensor_Name
+		{
+			get
+			{
+				return this._Sensor_Name;
+			}
+			set
+			{
+				if ((this._Sensor_Name != value))
+				{
+					this.OnSensor_NameChanging(value);
+					this.SendPropertyChanging();
+					this._Sensor_Name = value;
+					this.SendPropertyChanged("Sensor_Name");
+					this.OnSensor_NameChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ATSchedule_info")]
+	public partial class ATSchedule_info : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ATSID;
+		
+		private string _ATName;
+		
+		private System.DateTime _buileDate;
+		
+		private string _ExecuteType;
+		
+		private byte _ExecuteCycle;
+		
+		private System.TimeSpan _ExecuteTime;
+		
+		private string _DataType;
+		
+		private byte _DataCycle;
+		
+		private System.TimeSpan _DataRangeTime;
+		
+		private int _SamplingTime;
+		
+		private string _Login_name;
+		
+		private EntitySet<ATC_info> _ATC_info;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnATSIDChanging(int value);
+    partial void OnATSIDChanged();
+    partial void OnATNameChanging(string value);
+    partial void OnATNameChanged();
+    partial void OnbuileDateChanging(System.DateTime value);
+    partial void OnbuileDateChanged();
+    partial void OnExecuteTypeChanging(string value);
+    partial void OnExecuteTypeChanged();
+    partial void OnExecuteCycleChanging(byte value);
+    partial void OnExecuteCycleChanged();
+    partial void OnExecuteTimeChanging(System.TimeSpan value);
+    partial void OnExecuteTimeChanged();
+    partial void OnDataTypeChanging(string value);
+    partial void OnDataTypeChanged();
+    partial void OnDataCycleChanging(byte value);
+    partial void OnDataCycleChanged();
+    partial void OnDataRangeTimeChanging(System.TimeSpan value);
+    partial void OnDataRangeTimeChanged();
+    partial void OnSamplingTimeChanging(int value);
+    partial void OnSamplingTimeChanged();
+    partial void OnLogin_nameChanging(string value);
+    partial void OnLogin_nameChanged();
+    #endregion
+		
+		public ATSchedule_info()
+		{
+			this._ATC_info = new EntitySet<ATC_info>(new Action<ATC_info>(this.attach_ATC_info), new Action<ATC_info>(this.detach_ATC_info));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATSID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ATSID
+		{
+			get
+			{
+				return this._ATSID;
+			}
+			set
+			{
+				if ((this._ATSID != value))
+				{
+					this.OnATSIDChanging(value);
+					this.SendPropertyChanging();
+					this._ATSID = value;
+					this.SendPropertyChanged("ATSID");
+					this.OnATSIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATName", DbType="NVarChar(200)")]
+		public string ATName
+		{
+			get
+			{
+				return this._ATName;
+			}
+			set
+			{
+				if ((this._ATName != value))
+				{
+					this.OnATNameChanging(value);
+					this.SendPropertyChanging();
+					this._ATName = value;
+					this.SendPropertyChanged("ATName");
+					this.OnATNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_buileDate", DbType="DateTime NOT NULL")]
+		public System.DateTime buileDate
+		{
+			get
+			{
+				return this._buileDate;
+			}
+			set
+			{
+				if ((this._buileDate != value))
+				{
+					this.OnbuileDateChanging(value);
+					this.SendPropertyChanging();
+					this._buileDate = value;
+					this.SendPropertyChanged("buileDate");
+					this.OnbuileDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExecuteType", DbType="VarChar(1) NOT NULL", CanBeNull=false)]
+		public string ExecuteType
+		{
+			get
+			{
+				return this._ExecuteType;
+			}
+			set
+			{
+				if ((this._ExecuteType != value))
+				{
+					this.OnExecuteTypeChanging(value);
+					this.SendPropertyChanging();
+					this._ExecuteType = value;
+					this.SendPropertyChanged("ExecuteType");
+					this.OnExecuteTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExecuteCycle", DbType="TinyInt NOT NULL")]
+		public byte ExecuteCycle
+		{
+			get
+			{
+				return this._ExecuteCycle;
+			}
+			set
+			{
+				if ((this._ExecuteCycle != value))
+				{
+					this.OnExecuteCycleChanging(value);
+					this.SendPropertyChanging();
+					this._ExecuteCycle = value;
+					this.SendPropertyChanged("ExecuteCycle");
+					this.OnExecuteCycleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExecuteTime", DbType="Time NOT NULL")]
+		public System.TimeSpan ExecuteTime
+		{
+			get
+			{
+				return this._ExecuteTime;
+			}
+			set
+			{
+				if ((this._ExecuteTime != value))
+				{
+					this.OnExecuteTimeChanging(value);
+					this.SendPropertyChanging();
+					this._ExecuteTime = value;
+					this.SendPropertyChanged("ExecuteTime");
+					this.OnExecuteTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataType", DbType="VarChar(1) NOT NULL", CanBeNull=false)]
+		public string DataType
+		{
+			get
+			{
+				return this._DataType;
+			}
+			set
+			{
+				if ((this._DataType != value))
+				{
+					this.OnDataTypeChanging(value);
+					this.SendPropertyChanging();
+					this._DataType = value;
+					this.SendPropertyChanged("DataType");
+					this.OnDataTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataCycle", DbType="TinyInt NOT NULL")]
+		public byte DataCycle
+		{
+			get
+			{
+				return this._DataCycle;
+			}
+			set
+			{
+				if ((this._DataCycle != value))
+				{
+					this.OnDataCycleChanging(value);
+					this.SendPropertyChanging();
+					this._DataCycle = value;
+					this.SendPropertyChanged("DataCycle");
+					this.OnDataCycleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataRangeTime", DbType="Time NOT NULL")]
+		public System.TimeSpan DataRangeTime
+		{
+			get
+			{
+				return this._DataRangeTime;
+			}
+			set
+			{
+				if ((this._DataRangeTime != value))
+				{
+					this.OnDataRangeTimeChanging(value);
+					this.SendPropertyChanging();
+					this._DataRangeTime = value;
+					this.SendPropertyChanged("DataRangeTime");
+					this.OnDataRangeTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SamplingTime", DbType="Int NOT NULL")]
+		public int SamplingTime
+		{
+			get
+			{
+				return this._SamplingTime;
+			}
+			set
+			{
+				if ((this._SamplingTime != value))
+				{
+					this.OnSamplingTimeChanging(value);
+					this.SendPropertyChanging();
+					this._SamplingTime = value;
+					this.SendPropertyChanged("SamplingTime");
+					this.OnSamplingTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Login_name", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Login_name
+		{
+			get
+			{
+				return this._Login_name;
+			}
+			set
+			{
+				if ((this._Login_name != value))
+				{
+					this.OnLogin_nameChanging(value);
+					this.SendPropertyChanging();
+					this._Login_name = value;
+					this.SendPropertyChanged("Login_name");
+					this.OnLogin_nameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ATSchedule_info_ATC_info", Storage="_ATC_info", ThisKey="ATSID", OtherKey="ATSID")]
+		public EntitySet<ATC_info> ATC_info
+		{
+			get
+			{
+				return this._ATC_info;
+			}
+			set
+			{
+				this._ATC_info.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ATC_info(ATC_info entity)
+		{
+			this.SendPropertyChanging();
+			entity.ATSchedule_info = this;
+		}
+		
+		private void detach_ATC_info(ATC_info entity)
+		{
+			this.SendPropertyChanging();
+			entity.ATSchedule_info = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_Tag_info")]
+	public partial class vw_Tag_info
+	{
+		
+		private string _FullTagName;
+		
+		private string _FDC_Tag;
+		
+		private string _sensorID;
+		
+		private string _data_Tag;
+		
+		private byte _status;
+		
+		private System.DateTime _built_date;
+		
+		private int _plc_id;
+		
+		private short _type_id;
+		
+		private string _WEB_code;
+		
+		public vw_Tag_info()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullTagName", DbType="VarChar(91)")]
+		public string FullTagName
+		{
+			get
+			{
+				return this._FullTagName;
+			}
+			set
+			{
+				if ((this._FullTagName != value))
+				{
+					this._FullTagName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FDC_Tag", DbType="NVarChar(123) NOT NULL", CanBeNull=false)]
+		public string FDC_Tag
+		{
+			get
+			{
+				return this._FDC_Tag;
+			}
+			set
+			{
+				if ((this._FDC_Tag != value))
+				{
+					this._FDC_Tag = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sensorID", DbType="VarChar(71)")]
+		public string sensorID
+		{
+			get
+			{
+				return this._sensorID;
+			}
+			set
+			{
+				if ((this._sensorID != value))
+				{
+					this._sensorID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_data_Tag", DbType="NVarChar(50)")]
+		public string data_Tag
+		{
+			get
+			{
+				return this._data_Tag;
+			}
+			set
+			{
+				if ((this._data_Tag != value))
+				{
+					this._data_Tag = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="TinyInt NOT NULL")]
+		public byte status
+		{
+			get
+			{
+				return this._status;
+			}
+			set
+			{
+				if ((this._status != value))
+				{
+					this._status = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_built_date", DbType="DateTime NOT NULL")]
+		public System.DateTime built_date
+		{
+			get
+			{
+				return this._built_date;
+			}
+			set
+			{
+				if ((this._built_date != value))
+				{
+					this._built_date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_plc_id", DbType="Int NOT NULL")]
+		public int plc_id
+		{
+			get
+			{
+				return this._plc_id;
+			}
+			set
+			{
+				if ((this._plc_id != value))
+				{
+					this._plc_id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type_id", DbType="SmallInt NOT NULL")]
+		public short type_id
+		{
+			get
+			{
+				return this._type_id;
+			}
+			set
+			{
+				if ((this._type_id != value))
+				{
+					this._type_id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WEB_code", DbType="VarChar(10)")]
+		public string WEB_code
+		{
+			get
+			{
+				return this._WEB_code;
+			}
+			set
+			{
+				if ((this._WEB_code != value))
+				{
+					this._WEB_code = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TCBook_info")]
+	public partial class TCBook_info : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TCBID;
+		
+		private string _TCName;
+		
+		private System.DateTime _builedate;
+		
+		private string _Login_name;
+		
+		private EntitySet<TCTag_info> _TCTag_info;
+		
+		private EntitySet<ATC_info> _ATC_info;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTCBIDChanging(int value);
+    partial void OnTCBIDChanged();
+    partial void OnTCNameChanging(string value);
+    partial void OnTCNameChanged();
+    partial void OnbuiledateChanging(System.DateTime value);
+    partial void OnbuiledateChanged();
+    partial void OnLogin_nameChanging(string value);
+    partial void OnLogin_nameChanged();
+    #endregion
+		
+		public TCBook_info()
+		{
+			this._TCTag_info = new EntitySet<TCTag_info>(new Action<TCTag_info>(this.attach_TCTag_info), new Action<TCTag_info>(this.detach_TCTag_info));
+			this._ATC_info = new EntitySet<ATC_info>(new Action<ATC_info>(this.attach_ATC_info), new Action<ATC_info>(this.detach_ATC_info));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TCBID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TCBID
+		{
+			get
+			{
+				return this._TCBID;
+			}
+			set
+			{
+				if ((this._TCBID != value))
+				{
+					this.OnTCBIDChanging(value);
+					this.SendPropertyChanging();
+					this._TCBID = value;
+					this.SendPropertyChanged("TCBID");
+					this.OnTCBIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TCName", DbType="NVarChar(100)")]
+		public string TCName
+		{
+			get
+			{
+				return this._TCName;
+			}
+			set
+			{
+				if ((this._TCName != value))
+				{
+					this.OnTCNameChanging(value);
+					this.SendPropertyChanging();
+					this._TCName = value;
+					this.SendPropertyChanged("TCName");
+					this.OnTCNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_builedate", DbType="DateTime NOT NULL")]
+		public System.DateTime builedate
+		{
+			get
+			{
+				return this._builedate;
+			}
+			set
+			{
+				if ((this._builedate != value))
+				{
+					this.OnbuiledateChanging(value);
+					this.SendPropertyChanging();
+					this._builedate = value;
+					this.SendPropertyChanged("builedate");
+					this.OnbuiledateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Login_name", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Login_name
+		{
+			get
+			{
+				return this._Login_name;
+			}
+			set
+			{
+				if ((this._Login_name != value))
+				{
+					this.OnLogin_nameChanging(value);
+					this.SendPropertyChanging();
+					this._Login_name = value;
+					this.SendPropertyChanged("Login_name");
+					this.OnLogin_nameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TCBook_info_TCTag_info", Storage="_TCTag_info", ThisKey="TCBID", OtherKey="TCBID")]
+		public EntitySet<TCTag_info> TCTag_info
+		{
+			get
+			{
+				return this._TCTag_info;
+			}
+			set
+			{
+				this._TCTag_info.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TCBook_info_ATC_info", Storage="_ATC_info", ThisKey="TCBID", OtherKey="TCBID")]
+		public EntitySet<ATC_info> ATC_info
+		{
+			get
+			{
+				return this._ATC_info;
+			}
+			set
+			{
+				this._ATC_info.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_TCTag_info(TCTag_info entity)
+		{
+			this.SendPropertyChanging();
+			entity.TCBook_info = this;
+		}
+		
+		private void detach_TCTag_info(TCTag_info entity)
+		{
+			this.SendPropertyChanging();
+			entity.TCBook_info = null;
+		}
+		
+		private void attach_ATC_info(ATC_info entity)
+		{
+			this.SendPropertyChanging();
+			entity.TCBook_info = this;
+		}
+		
+		private void detach_ATC_info(ATC_info entity)
+		{
+			this.SendPropertyChanging();
+			entity.TCBook_info = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TCTag_info")]
+	public partial class TCTag_info : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TCBID;
+		
+		private string _FullTagName;
+		
+		private string _toolid;
+		
+		private EntityRef<TCBook_info> _TCBook_info;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTCBIDChanging(int value);
+    partial void OnTCBIDChanged();
+    partial void OnFullTagNameChanging(string value);
+    partial void OnFullTagNameChanged();
+    partial void OntoolidChanging(string value);
+    partial void OntoolidChanged();
+    #endregion
+		
+		public TCTag_info()
+		{
+			this._TCBook_info = default(EntityRef<TCBook_info>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TCBID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int TCBID
+		{
+			get
+			{
+				return this._TCBID;
+			}
+			set
+			{
+				if ((this._TCBID != value))
+				{
+					if (this._TCBook_info.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTCBIDChanging(value);
+					this.SendPropertyChanging();
+					this._TCBID = value;
+					this.SendPropertyChanged("TCBID");
+					this.OnTCBIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullTagName", DbType="VarChar(125) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string FullTagName
+		{
+			get
+			{
+				return this._FullTagName;
+			}
+			set
+			{
+				if ((this._FullTagName != value))
+				{
+					this.OnFullTagNameChanging(value);
+					this.SendPropertyChanging();
+					this._FullTagName = value;
+					this.SendPropertyChanged("FullTagName");
+					this.OnFullTagNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_toolid", DbType="VarChar(50)")]
+		public string toolid
+		{
+			get
+			{
+				return this._toolid;
+			}
+			set
+			{
+				if ((this._toolid != value))
+				{
+					this.OntoolidChanging(value);
+					this.SendPropertyChanging();
+					this._toolid = value;
+					this.SendPropertyChanged("toolid");
+					this.OntoolidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TCBook_info_TCTag_info", Storage="_TCBook_info", ThisKey="TCBID", OtherKey="TCBID", IsForeignKey=true)]
+		public TCBook_info TCBook_info
+		{
+			get
+			{
+				return this._TCBook_info.Entity;
+			}
+			set
+			{
+				TCBook_info previousValue = this._TCBook_info.Entity;
+				if (((previousValue != value) 
+							|| (this._TCBook_info.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TCBook_info.Entity = null;
+						previousValue.TCTag_info.Remove(this);
+					}
+					this._TCBook_info.Entity = value;
+					if ((value != null))
+					{
+						value.TCTag_info.Add(this);
+						this._TCBID = value.TCBID;
+					}
+					else
+					{
+						this._TCBID = default(int);
+					}
+					this.SendPropertyChanged("TCBook_info");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_TCBook_info")]
+	public partial class vw_TCBook_info
+	{
+		
+		private int _TCBID;
+		
+		private string _TCName;
+		
+		private System.DateTime _builedate;
+		
+		private string _Login_name;
+		
+		private string _tagString;
+		
+		private string _toolidString;
+		
+		private string _dataTagString;
+		
+		public vw_TCBook_info()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TCBID", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
+		public int TCBID
+		{
+			get
+			{
+				return this._TCBID;
+			}
+			set
+			{
+				if ((this._TCBID != value))
+				{
+					this._TCBID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TCName", DbType="NVarChar(100)")]
+		public string TCName
+		{
+			get
+			{
+				return this._TCName;
+			}
+			set
+			{
+				if ((this._TCName != value))
+				{
+					this._TCName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_builedate", DbType="DateTime NOT NULL")]
+		public System.DateTime builedate
+		{
+			get
+			{
+				return this._builedate;
+			}
+			set
+			{
+				if ((this._builedate != value))
+				{
+					this._builedate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Login_name", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Login_name
+		{
+			get
+			{
+				return this._Login_name;
+			}
+			set
+			{
+				if ((this._Login_name != value))
+				{
+					this._Login_name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tagString", DbType="NVarChar(MAX)")]
+		public string tagString
+		{
+			get
+			{
+				return this._tagString;
+			}
+			set
+			{
+				if ((this._tagString != value))
+				{
+					this._tagString = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_toolidString", DbType="NVarChar(MAX)")]
+		public string toolidString
+		{
+			get
+			{
+				return this._toolidString;
+			}
+			set
+			{
+				if ((this._toolidString != value))
+				{
+					this._toolidString = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dataTagString", DbType="NVarChar(MAX)")]
+		public string dataTagString
+		{
+			get
+			{
+				return this._dataTagString;
+			}
+			set
+			{
+				if ((this._dataTagString != value))
+				{
+					this._dataTagString = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ATC_info")]
+	public partial class ATC_info : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ATSID;
+		
+		private int _TCBID;
+		
+		private EntityRef<ATSchedule_info> _ATSchedule_info;
+		
+		private EntityRef<TCBook_info> _TCBook_info;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnATSIDChanging(int value);
+    partial void OnATSIDChanged();
+    partial void OnTCBIDChanging(int value);
+    partial void OnTCBIDChanged();
+    #endregion
+		
+		public ATC_info()
+		{
+			this._ATSchedule_info = default(EntityRef<ATSchedule_info>);
+			this._TCBook_info = default(EntityRef<TCBook_info>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATSID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int ATSID
+		{
+			get
+			{
+				return this._ATSID;
+			}
+			set
+			{
+				if ((this._ATSID != value))
+				{
+					if (this._ATSchedule_info.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnATSIDChanging(value);
+					this.SendPropertyChanging();
+					this._ATSID = value;
+					this.SendPropertyChanged("ATSID");
+					this.OnATSIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TCBID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int TCBID
+		{
+			get
+			{
+				return this._TCBID;
+			}
+			set
+			{
+				if ((this._TCBID != value))
+				{
+					if (this._TCBook_info.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTCBIDChanging(value);
+					this.SendPropertyChanging();
+					this._TCBID = value;
+					this.SendPropertyChanged("TCBID");
+					this.OnTCBIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ATSchedule_info_ATC_info", Storage="_ATSchedule_info", ThisKey="ATSID", OtherKey="ATSID", IsForeignKey=true)]
+		public ATSchedule_info ATSchedule_info
+		{
+			get
+			{
+				return this._ATSchedule_info.Entity;
+			}
+			set
+			{
+				ATSchedule_info previousValue = this._ATSchedule_info.Entity;
+				if (((previousValue != value) 
+							|| (this._ATSchedule_info.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ATSchedule_info.Entity = null;
+						previousValue.ATC_info.Remove(this);
+					}
+					this._ATSchedule_info.Entity = value;
+					if ((value != null))
+					{
+						value.ATC_info.Add(this);
+						this._ATSID = value.ATSID;
+					}
+					else
+					{
+						this._ATSID = default(int);
+					}
+					this.SendPropertyChanged("ATSchedule_info");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TCBook_info_ATC_info", Storage="_TCBook_info", ThisKey="TCBID", OtherKey="TCBID", IsForeignKey=true)]
+		public TCBook_info TCBook_info
+		{
+			get
+			{
+				return this._TCBook_info.Entity;
+			}
+			set
+			{
+				TCBook_info previousValue = this._TCBook_info.Entity;
+				if (((previousValue != value) 
+							|| (this._TCBook_info.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TCBook_info.Entity = null;
+						previousValue.ATC_info.Remove(this);
+					}
+					this._TCBook_info.Entity = value;
+					if ((value != null))
+					{
+						value.ATC_info.Add(this);
+						this._TCBID = value.TCBID;
+					}
+					else
+					{
+						this._TCBID = default(int);
+					}
+					this.SendPropertyChanged("TCBook_info");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vw_ATScheduleLastHistory")]
+	public partial class vw_ATScheduleLastHistory
+	{
+		
+		private int _ATSID;
+		
+		private string _ATName;
+		
+		private System.DateTime _buileDate;
+		
+		private string _ExecuteType;
+		
+		private byte _ExecuteCycle;
+		
+		private System.TimeSpan _ExecuteTime;
+		
+		private string _DataType;
+		
+		private byte _DataCycle;
+		
+		private System.TimeSpan _DataRangeTime;
+		
+		private int _SamplingTime;
+		
+		private string _Login_name;
+		
+		private string _FolderName;
+		
+		private System.Nullable<System.DateTime> _ExcuteDate;
+		
+		public vw_ATScheduleLastHistory()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATSID", DbType="Int NOT NULL")]
+		public int ATSID
+		{
+			get
+			{
+				return this._ATSID;
+			}
+			set
+			{
+				if ((this._ATSID != value))
+				{
+					this._ATSID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATName", DbType="NVarChar(200)")]
+		public string ATName
+		{
+			get
+			{
+				return this._ATName;
+			}
+			set
+			{
+				if ((this._ATName != value))
+				{
+					this._ATName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_buileDate", DbType="DateTime NOT NULL")]
+		public System.DateTime buileDate
+		{
+			get
+			{
+				return this._buileDate;
+			}
+			set
+			{
+				if ((this._buileDate != value))
+				{
+					this._buileDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExecuteType", DbType="VarChar(1) NOT NULL", CanBeNull=false)]
+		public string ExecuteType
+		{
+			get
+			{
+				return this._ExecuteType;
+			}
+			set
+			{
+				if ((this._ExecuteType != value))
+				{
+					this._ExecuteType = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExecuteCycle", DbType="TinyInt NOT NULL")]
+		public byte ExecuteCycle
+		{
+			get
+			{
+				return this._ExecuteCycle;
+			}
+			set
+			{
+				if ((this._ExecuteCycle != value))
+				{
+					this._ExecuteCycle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExecuteTime", DbType="Time NOT NULL")]
+		public System.TimeSpan ExecuteTime
+		{
+			get
+			{
+				return this._ExecuteTime;
+			}
+			set
+			{
+				if ((this._ExecuteTime != value))
+				{
+					this._ExecuteTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataType", DbType="VarChar(1) NOT NULL", CanBeNull=false)]
+		public string DataType
+		{
+			get
+			{
+				return this._DataType;
+			}
+			set
+			{
+				if ((this._DataType != value))
+				{
+					this._DataType = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataCycle", DbType="TinyInt NOT NULL")]
+		public byte DataCycle
+		{
+			get
+			{
+				return this._DataCycle;
+			}
+			set
+			{
+				if ((this._DataCycle != value))
+				{
+					this._DataCycle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataRangeTime", DbType="Time NOT NULL")]
+		public System.TimeSpan DataRangeTime
+		{
+			get
+			{
+				return this._DataRangeTime;
+			}
+			set
+			{
+				if ((this._DataRangeTime != value))
+				{
+					this._DataRangeTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SamplingTime", DbType="Int NOT NULL")]
+		public int SamplingTime
+		{
+			get
+			{
+				return this._SamplingTime;
+			}
+			set
+			{
+				if ((this._SamplingTime != value))
+				{
+					this._SamplingTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Login_name", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Login_name
+		{
+			get
+			{
+				return this._Login_name;
+			}
+			set
+			{
+				if ((this._Login_name != value))
+				{
+					this._Login_name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FolderName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FolderName
+		{
+			get
+			{
+				return this._FolderName;
+			}
+			set
+			{
+				if ((this._FolderName != value))
+				{
+					this._FolderName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExcuteDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ExcuteDate
+		{
+			get
+			{
+				return this._ExcuteDate;
+			}
+			set
+			{
+				if ((this._ExcuteDate != value))
+				{
+					this._ExcuteDate = value;
 				}
 			}
 		}

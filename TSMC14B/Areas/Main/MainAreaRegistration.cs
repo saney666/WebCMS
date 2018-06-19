@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace TSMC14B.Areas.Main
+namespace WebCMS.Areas.Main
 {
     public class MainAreaRegistration : AreaRegistration
     {

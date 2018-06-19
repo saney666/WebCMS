@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace TSMC14B.Models
+namespace WebCMS.Models
 {
 
     public class ChangePasswordModel

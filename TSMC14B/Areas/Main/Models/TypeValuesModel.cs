@@ -5,9 +5,9 @@ using System.Web;
 using OfficeOpenXml;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
-using TSMC14B.Models;
+using WebCMS.Models;
 
-namespace TSMC14B.Areas.Main.Models
+namespace WebCMS.Areas.Main.Models
 {
     public class TypeValuesModel
     {

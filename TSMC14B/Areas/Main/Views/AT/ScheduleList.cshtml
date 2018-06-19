@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "ATSchedule";
+    Layout = "~/Areas/Main/Views/Shared/_Layout.cshtml";
+    Layout = "../Shared/_Layout.cshtml";
+}
+@section JavaScript{
+    <link href="@Url.Content("~/Content/Themes/Shared/flexigrid/main.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Themes/Shared/ptTimeSelect/jquery.datetimepicker.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.datetimepicker.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.flexigrid.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+            $('.flexme').flexigrid({
+                title: 'Schedule List',
+                width: 1214,
+                height: "auto",
+                url: '@Url.Action("JsonScheduleList")?page=1&rp=20',
+                dataType: 'json',
+                colModel: [
+                    { display: 'ATSID', name: 'ATSID', width: 60, sortable: false, align: 'center', hide: true },
+                    { display: '@WebCMS.Menu.ATName', name: 'ATName', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.buileDate', name: 'buileDate', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.ExecuteType', name: 'ExecuteType', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.ExecuteCycle', name: 'ExecuteCycle', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.ExecuteTime', name: 'ExecuteTime', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.DataType', name: 'DataType', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.DataCycle', name: 'DataCycle', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.DataRangeTime', name: 'DataRangeTime', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.SamplingTime', name: 'SamplingTime', width: 80, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.Login_name', name: 'Login_name', width: 80, sortable: false, align: 'center', hide: true },
+                    { display: '@WebCMS.Menu.EditTCBook', name: 'TrendChart', width: 70, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.DownLoad', name: 'downLoad', width: 70, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.Edit@WebCMS.Menu.Schedule', name: 'edit', width: 70, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.Delete', name: 'delete', width: 60, sortable: false, align: 'center', hide: false },
+                ],
+                procmsg: '@WebCMS.Menu.procmsg',
+                rptext: '@WebCMS.Menu.rptext',
+                pagestat: '@WebCMS.Menu.pagestat',
+                pagetext: '@WebCMS.Menu.pagetext',
+                outof: '@WebCMS.Menu.outof',
+                nomsg: '@WebCMS.Menu.nomsg',
+                usepager: true,
+                useRp: true,
+                rp: 20,
+                nowrap: false,
+                onSuccess: function () {
+                    $('.flexme > tbody > tr > td[abbrr="downLoad"] > div').empty();
+                    $('.flexme > tbody > tr > td[abbrr="downLoad"] > div').each(function () {
+                        $(this).append('<a href="#" class="downLoad" ><div style="width:100%;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="DownLoad" /></div></a>');
+                    });
+                    $('.downLoad').click(function () {
+                        var ATSID = $(this).parent().parent().parent().children(':eq(0)').text();
+                        location.href = '@Url.Action("DownLoadATCPPT")?ATSID=' + ATSID;
+                    });
+
+                    $('.flexme > tbody > tr > td[abbrr="edit"] > div').empty();
+                    $('.flexme > tbody > tr > td[abbrr="edit"] > div').each(function () {
+                        //  if ($(this).parent().parent().children(':eq(11)').text() != '800' && parseInt($(this).parent().parent().children(':eq(11)').text()) < 500) {
+                        //      $(this).parent().parent().children(':eq(8)').children('div').text('');
+                        // }
+                        //  var value = $(this).parent().parent().children(':eq(8)').text();
+                        //  var Tag_Name = $(this).parent().parent().children(':eq(7)').text();
+                        //  if (Tag_Name.length > 0) {
+                        //     if ((parseFloat(value) || value == '0') && $(this).parent().parent().children(':eq(11)').text() == '800' && $(this).parent().parent().children(':eq(9)').text() != 'Comm Error') {
+                        $(this).append('<a href="#" class="edit" ><div style="width:100%;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="Edit" /></div></a>');
+                        //     }
+                        // }
+                    });
+
+                    $('.edit').click(function () {
+                        var ATSID = $(this).parent().parent().parent().children(':eq(0)').text();
+                        OpenModelWindow('@Url.Action("editSchedule")?ATSID='+ATSID, { width: 800, height: 400, caption: "EditSchedule", onclose: function () { $('.flexme').flexReload(); } });
+                        //window.open('@Url.Action("MyChart4", "MachineGroup")?toolId=' + toolid + '&TagName=' + Tag_Name + '&StartDate=' + StartDate.getFullYear() + '-' + ((StartDate.getMonth() + 1) < 10 ? '0' + (StartDate.getMonth() + 1) : (StartDate.getMonth() + 1)) + '-' + (StartDate.getDate() < 10 ? '0' + StartDate.getDate() : StartDate.getDate()) + ' ' + (StartDate.getHours() < 10 ? '0' + StartDate.getHours() : StartDate.getHours()) + ':' + (StartDate.getMinutes() < 10 ? '0' + StartDate.getMinutes() : StartDate.getMinutes()) + '&EndDate=' + EndDate.getFullYear() + '-' + ((EndDate.getMonth() + 1) < 10 ? '0' + (EndDate.getMonth() + 1) : (EndDate.getMonth() + 1)) + '-' + (EndDate.getDate() < 10 ? '0' + EndDate.getDate() : EndDate.getDate()) + ' ' + (EndDate.getHours() < 10 ? '0' + EndDate.getHours() : EndDate.getHours()) + ':' + (EndDate.getMinutes() < 10 ? '0' + EndDate.getMinutes() : EndDate.getMinutes()) + '&flag=3&Y1Y2=Y1', '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=yes,resizable=yes,top=25,left=200,width=825,height=625');
+                    });
+
+                    $('.flexme > tbody > tr > td[abbrr="delete"] > div').empty();
+                    $('.flexme > tbody > tr > td[abbrr="delete"] > div').each(function () {
+                        $(this).append('<a href="#" class="delete" ><div style="width:100%;"><img src="@Url.Content("~/images/uncheck.png")" alt="delete" /></div></a>');
+
+                        //if ($(this).parent().parent().children(':eq(11)').text() != '800' && parseInt($(this).parent().parent().children(':eq(11)').text()) < 500) {
+                        //    $(this).parent().parent().children(':eq(8)').children('div').text('');
+                        //}
+                        //var value = $(this).parent().parent().children(':eq(8)').text();
+                        //var Tag_Name = $(this).parent().parent().children(':eq(7)').text();
+
+                        //if (Tag_Name.length > 0) {
+                        //    if ((parseFloat(value) || value == '0' || value == '') && ($(this).parent().parent().children(':eq(11)').text() == '800' || $(this).parent().parent().children(':eq(11)').text() == '500' || $(this).parent().parent().children(':eq(11)').text() == '400') && $(this).parent().parent().children(':eq(9)').text() != 'Comm Error') {
+                        //        var time = new Date($(this).parent().parent().children(':eq(3)').text());
+                        //        var Tag_Name = $(this).parent().parent().children(':eq(7)').text();
+                        //        var toolid = $(this).parent().parent().children(':eq(4)').text();
+                        //        var StartDate = new Date(time - (1000 * 60 * 60 * 12));
+                        //        var EndDate = new Date(time.setHours(time.getHours() + 12));
+                        //        if (value == '' && $(this).parent().parent().children(':eq(11)').text() == '400') {
+                        //            $(this).append('<a href="@Url.Action("PLCCheckDemo", "MachineGroup")?toolId=' + toolid + '&SD=' + StartDate.getFullYear() + '-' + ((StartDate.getMonth() + 1) < 10 ? '0' + (StartDate.getMonth() + 1) : (StartDate.getMonth() + 1)) + '-' + (StartDate.getDate() < 10 ? '0' + StartDate.getDate() : StartDate.getDate()) + ' ' + (StartDate.getHours() < 10 ? '0' + StartDate.getHours() : StartDate.getHours()) + ':' + (StartDate.getMinutes() < 10 ? '0' + StartDate.getMinutes() : StartDate.getMinutes()) + '&ED=' + EndDate.getFullYear() + '-' + ((EndDate.getMonth() + 1) < 10 ? '0' + (EndDate.getMonth() + 1) : (EndDate.getMonth() + 1)) + '-' + (EndDate.getDate() < 10 ? '0' + EndDate.getDate() : EndDate.getDate()) + ' ' + (EndDate.getHours() < 10 ? '0' + EndDate.getHours() : EndDate.getHours()) + ':' + (EndDate.getMinutes() < 10 ? '0' + EndDate.getMinutes() : EndDate.getMinutes()) + '&IsStack=1" target="_blank" class="edit" ><div style="width:100%;"><img src="@Url.Content("~/images/tt2.jpg")" alt="編輯" /></div></a>');
+                        //        } else {
+                        //            $(this).append('<a href="@Url.Action("PLCCheckDemo", "MachineGroup")?toolId=' + toolid + '&Tag=' + Tag_Name + '&SD=' + StartDate.getFullYear() + '-' + ((StartDate.getMonth() + 1) < 10 ? '0' + (StartDate.getMonth() + 1) : (StartDate.getMonth() + 1)) + '-' + (StartDate.getDate() < 10 ? '0' + StartDate.getDate() : StartDate.getDate()) + ' ' + (StartDate.getHours() < 10 ? '0' + StartDate.getHours() : StartDate.getHours()) + ':' + (StartDate.getMinutes() < 10 ? '0' + StartDate.getMinutes() : StartDate.getMinutes()) + '&ED=' + EndDate.getFullYear() + '-' + ((EndDate.getMonth() + 1) < 10 ? '0' + (EndDate.getMonth() + 1) : (EndDate.getMonth() + 1)) + '-' + (EndDate.getDate() < 10 ? '0' + EndDate.getDate() : EndDate.getDate()) + ' ' + (EndDate.getHours() < 10 ? '0' + EndDate.getHours() : EndDate.getHours()) + ':' + (EndDate.getMinutes() < 10 ? '0' + EndDate.getMinutes() : EndDate.getMinutes()) + '&IsStack=1" target="_blank" class="edit" ><div style="width:100%;"><img src="@Url.Content("~/images/tt2.jpg")" alt="編輯" /></div></a>');
+                        //        }
+                        //    }
+                        //}
+                    });
+
+                    $('.delete').click(function () {
+                        var ATSID = $(this).parent().parent().parent().children(':eq(0)').text();
+                        if (confirm('@WebCMS.Menu.confirm@WebCMS.Menu.Delete?')) {
+                            $.post('@Url.Action("JsonScheduleDelete")', { "ATSID": ATSID }, function (data) {
+                                parent.hiAlert(data);
+                                $('.flexme').flexReload();
+                            }, "json");
+                        }
+                    });
+
+                    $('.flexme > tbody > tr > td[abbrr="TrendChart"] > div').empty();
+                    $('.flexme > tbody > tr > td[abbrr="TrendChart"] > div').each(function () {
+                        $(this).append('<a href="#" class="TrendChart" ><div style="width:100%;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="TrendChart" /></div></a>');
+                    });
+                    $('.TrendChart').click(function () {
+                        var ATSID = $(this).parent().parent().parent().children(':eq(0)').text();
+                        var ATName = $(this).parent().parent().parent().children(':eq(1)').text();
+                        OpenModelWindow('@Url.Action("editScheduleChart")?ATSID=' + ATSID + '&ATName=' + ATName, { width: 800, height: 600, caption: "EditSchedule", onclose: function () { $('.flexme').flexReload(); } });
+                    });
+                },
+                singleSelect: true,
+                rpOptions: [5, 10, 15, 20, 30, 50, 100],
+            });
+
+            $('#AddSchedule').click(function () {
+                //window.open('@Url.Action("AddSchedule")', '_blank', 'toolbar=no,location=no,titlebar=no,scrollbars=yes,resizable=yes,top=25,left=200,width=825,height=625');
+                OpenModelWindow('@Url.Action("AddSchedule")', { width: 800, height: 400, caption: "AddSchedule", onclose: function () { $('.flexme').flexReload(); } });
+            });
+        });
+    </script>
+
+}
+<h2>ATScheduleSetting</h2>
+<input id="AddSchedule" type="button" value="@WebCMS.Menu.Add@WebCMS.Menu.Schedule" />
+<table class="flexme" />

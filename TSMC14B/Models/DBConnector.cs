@@ -9,7 +9,7 @@ using System.Data.Odbc;
 using System.Configuration;
 using System.Data.SqlClient;
 
-namespace TSMC14B.Models
+namespace WebCMS.Models
 {
     public class DBConnector
     {

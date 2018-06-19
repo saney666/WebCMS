@@ -33,7 +33,7 @@
             $('#department_name').change(function () {
                 $.post('@Url.Action("JsonTool")', { "dName": this.value }, function (data) {
                     $('#Tools').empty();
-                    $('#Tools').append('<option value="">' + '@TSMC14B.Menu.plaseSelectOption' + '</option>');
+                    $('#Tools').append('<option value="">' + '@WebCMS.Menu.plaseSelectOption' + '</option>');
                     for (var i in data) {
                         $('#Tools').append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
                     }
@@ -48,21 +48,21 @@
                 dataType: 'json',
                 colModel: [
                     { display: 'pid', name: 'pid', width: 60, sortable: false, align: 'center', hide: true },
-                    { display: '@TSMC14B.Menu.department_name', name: 'department_name', width: 60, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.department_name', name: 'department_name', width: 60, sortable: false, align: 'center', hide: false },
                     { display: '設定時間', name: 'builtdate', width: 120, sortable: false, align: 'center', hide: false },
                     { display: 'Name', name: 'chamberName', width: 150, sortable: false, align: 'center', hide: false },
                     { display: '延後時間', name: 'FDCPMTime', width: 140, sortable: false, align: 'center', hide: false },
-                    { display: '理由', name: 'memo', width: 140, sortable: false, align: 'center', hide: false },
+                    { display: '原因', name: 'memo', width: 140, sortable: false, align: 'center', hide: false },
                     { display: '狀態', name: 'FDCPMStatus', width: 80, sortable: false, align: 'center', hide: false },
                     { display: '操作人員', name: 'login_name', width: 60, sortable: false, align: 'center', hide: false },
                     { display: '', name: 'stop', width: 300, sortable: false, align: 'left', hide: false }
                 ],
-                procmsg: '@TSMC14B.Menu.procmsg',
-                rptext: '@TSMC14B.Menu.rptext',
-                pagestat: '@TSMC14B.Menu.pagestat',
-                pagetext: '@TSMC14B.Menu.pagetext',
-                outof: '@TSMC14B.Menu.outof',
-                nomsg: '@TSMC14B.Menu.nomsg',
+                procmsg: '@WebCMS.Menu.procmsg',
+                rptext: '@WebCMS.Menu.rptext',
+                pagestat: '@WebCMS.Menu.pagestat',
+                pagetext: '@WebCMS.Menu.pagetext',
+                outof: '@WebCMS.Menu.outof',
+                nomsg: '@WebCMS.Menu.nomsg',
                 usepager: true,
                 useRp: true,
                 rp: 20,
@@ -73,9 +73,9 @@
                         $('.flexme > tbody > tr > td[abbrr="stop"] > div').each(function () {
                             var dept = $(this).parent().parent().children(':eq(1)').text();
                             var pid = $(this).parent().parent().children(':eq(0)').text();
-                            
+                            var memo = $(this).parent().parent().children(':eq(5)').text();
                             if (dept == '@Session["UserdepartmentName"]' || parseInt('@Session["UserLevel"]') >= 900) {
-                                $(this).append('<span ><input  id="tbx_' + pid + '" class="FDCPMPCUPTIME" style="width: 110px" ><input type="button" id="btns_' + pid + '" class="FDCPMSetting" value="設定" style="width: 80px" /><input type="button" id="btnr_' + pid + '" class="FDCPMReSet stop" value="解除" style="width: 80px" /></span>');
+                                $(this).append('<span ><input  id="tbx_' + pid + '" class="FDCPMPCUPTIME" style="width: 110px" ><input type="button" id="btns_' + pid + '" class="FDCPMSetting" value="設定" style="width: 70px" /><br/><input  id="tbx_' + pid + 'memo" class="FDCPMmemo" style="width: 110px" ><input type="button" id="btnr_' + pid + '" class="FDCPMReSet stop" value="解除" style="width: 70px" /></span>');
                                 //$('.flexme > tbody > tr > td[abbrr="stop"] > div')
                                 //<a href="#" class="stop" ><span style="width:100%;"><img src="@Url.Content("~/images/stop.png")" alt="" /></span></a>
                             }
@@ -83,8 +83,8 @@
 
                         $('.stop').click(function (i, e) {
                             var pid = $(this).parent().parent().parent().parent().children(':eq(0)').text();
-                            
-                            FDCPMNOW(pid);
+                            var memo = $('#tbx_' + pid + 'memo').val().trim();
+                            FDCPMNOW(pid, memo);
                         });
 
                         var d = new Date(Date.now());
@@ -126,12 +126,18 @@
                 location.href = '@Url.Action("FDCPM")?history=' + $('.FDCPM:checked').val() + '&dept=' + $('#department_name').val() + '&tool=' + $('#Tools').val() + '&startdate=' + $('#FDCPMStartDate').val() + '&enddate=' + $('#FDCPMEndDate').val() + '&output=' + id;
                 }
         }
-function FDCPMNOW(pid) {
-    var dt = new Date(Date.now() + 1000 * 5);
-    var setDateTime = dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
-        if (confirm('是否設定開始資料收集')) {
-            $.post('@Url.Action("JsonEQFDCPM","MachineGroup")', [{ name: 'pid', value: pid }, { name: 'delayFDCUploadTime', value: setDateTime }, { name: 'SetFlag', value: false }], function (data) { setTimeout(function () { $('.flexme').flexReload(); alert(data.result); }, 2000) });
-        }
+        function FDCPMNOW(pid, memo) {
+            if (memo.trim().length>0) {
+                var dt = new Date(Date.now() + 1000 * 5);
+                var setDateTime = dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
+                if (confirm('是否設定開始資料收集')) {
+                    $.post('@Url.Action("JsonEQFDCPM","MachineGroup")', [{ name: 'pid', value: pid }, { name: 'delayFDCUploadTime', value: setDateTime }, { name: 'SetFlag', value: false }, { name: 'memo', value: memo }], function (data) { setTimeout(function () { $('.flexme').flexReload(); alert(data.result); }, 2000) });
+                }
+            } else {
+                alert('請填寫提前解除原因');
+                return false;
+            }
+           
 }
 function FDCPM(pid, setDateTime,memo) {
     var setDateTime = setDateTime;
@@ -150,7 +156,7 @@ function FDCPM(pid, setDateTime,memo) {
     <table border="1" class="tb" style="width: 550px">
         <tr>
             <td style="text-align: left;">
-                <label for="lbl_department_name">@TSMC14B.Menu.plaseSelectDep</label>
+                <label for="lbl_department_name">@WebCMS.Menu.plaseSelectDep</label>
                 <select id="department_name">
                     <option value="">ALL</option>
                     @foreach (var item in ViewBag.department_name as IEnumerable<SelectListItem>)
@@ -167,7 +173,7 @@ function FDCPM(pid, setDateTime,memo) {
             </td>
             <td>
                 <span id="spTools" style="display: none;">
-                    <label for="lbl_chamberName">@TSMC14B.Menu.plaseSelectEQ</label>
+                    <label for="lbl_chamberName">@WebCMS.Menu.plaseSelectEQ</label>
                     <select id="Tools">
                         <option value="">請選擇</option>
                         @foreach (var item in ViewBag.Tool)
@@ -186,7 +192,7 @@ function FDCPM(pid, setDateTime,memo) {
         </tr>
     </table>
 </div>
-<input type="button" id="sbmit" value="@TSMC14B.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search');" />
-<input type="button" id="btnExport" value="@TSMC14B.Menu.ChartExport" style="width: 80px;" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp; 
+<input type="button" id="sbmit" value="@WebCMS.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search');" />
+<input type="button" id="btnExport" value="@WebCMS.Menu.ChartExport" style="width: 80px;" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp; 
 <table class="flexme">
 </table>

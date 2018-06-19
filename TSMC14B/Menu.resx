@@ -510,4 +510,94 @@
   <data name="PhoneCallSend" xml:space="preserve">
     <value>發送</value>
   </data>
+  <data name="ATName" xml:space="preserve">
+    <value>排程名稱</value>
+  </data>
+  <data name="DataCycle" xml:space="preserve">
+    <value>往前推時間</value>
+  </data>
+  <data name="DataRangeTime" xml:space="preserve">
+    <value>資料區間</value>
+  </data>
+  <data name="DataType" xml:space="preserve">
+    <value>資料類型</value>
+  </data>
+  <data name="every" xml:space="preserve">
+    <value>每</value>
+  </data>
+  <data name="ExecuteCycle" xml:space="preserve">
+    <value>執行週期</value>
+  </data>
+  <data name="ExecuteTime" xml:space="preserve">
+    <value>執行時間</value>
+  </data>
+  <data name="ExecuteType" xml:space="preserve">
+    <value>執行類型</value>
+  </data>
+  <data name="Login_name" xml:space="preserve">
+    <value>登入帳號</value>
+  </data>
+  <data name="SamplingTime" xml:space="preserve">
+    <value>取樣時間</value>
+  </data>
+  <data name="Schedule" xml:space="preserve">
+    <value>排程</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="day" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="friday" xml:space="preserve">
+    <value>星期五</value>
+  </data>
+  <data name="hour" xml:space="preserve">
+    <value>時</value>
+  </data>
+  <data name="monday" xml:space="preserve">
+    <value>星期一</value>
+  </data>
+  <data name="PlaseCheck" xml:space="preserve">
+    <value>請檢查輸入</value>
+  </data>
+  <data name="saturday" xml:space="preserve">
+    <value>星期六</value>
+  </data>
+  <data name="sunday" xml:space="preserve">
+    <value>星期日</value>
+  </data>
+  <data name="thursday" xml:space="preserve">
+    <value>星期四</value>
+  </data>
+  <data name="tuesday" xml:space="preserve">
+    <value>星期二</value>
+  </data>
+  <data name="wednesday" xml:space="preserve">
+    <value>星期三</value>
+  </data>
+  <data name="week" xml:space="preserve">
+    <value>周</value>
+  </data>
+  <data name="ATSchedule" xml:space="preserve">
+    <value>ATSchedule</value>
+  </data>
+  <data name="buileDate" xml:space="preserve">
+    <value>建立日期</value>
+  </data>
+  <data name="DownLoad" xml:space="preserve">
+    <value>下載</value>
+  </data>
+  <data name="BookMark" xml:space="preserve">
+    <value>書籤</value>
+  </data>
+  <data name="TCName" xml:space="preserve">
+    <value>製圖名稱</value>
+  </data>
+  <data name="AddTCBook" xml:space="preserve">
+    <value>新增製圖</value>
+  </data>
+  <data name="EditTCBook" xml:space="preserve">
+    <value>修改製圖</value>
+  </data>
 </root>

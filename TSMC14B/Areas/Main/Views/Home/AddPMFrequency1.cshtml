@@ -1,4 +1,4 @@
-﻿@model TSMC14B.Areas.Main.Models.PMfrequencySetModel
+﻿@model WebCMS.Areas.Main.Models.PMfrequencySetModel
 @{
     //ViewBag.Title = "編輯";
     //Layout = null;
@@ -21,10 +21,8 @@
                             freq_id = 0;
                             frequency = 0;
                             hiConfirm('是否確定新增?', '確認', function (r) { if (r) { $.post('@Url.Action("AddPMScheduleSet")', [{ name: 'selectplcid', value: plc_id }, { name: 'selecttoolid', value: ToolID }, { name: 'selectfreqid', value: freq_id }, { name: 'selectfrequency', value: frequency }, { name: 'selecttolerance', value: tolerance }, { name: 'selectstatus', value: onoffStatus }, { name: 'selectpowerondate', value: PowerOnDate }, { name: 'selectUnSetTooLate', value: UnSetTooLate }], function (data) { alert(data.Msg); setTimeout("CloseModelWindow();", 1000); }, 'json'); } });
-                            //alert(plc_id + ToolID + freq_id + frequency + tolerance + onoffStatus + PowerOnDate + UnSetTooLate);
                         } else {
                             hiConfirm('是否確定新增?', '確認', function (r) { if (r) { $.post('@Url.Action("AddPMScheduleSet")', [{ name: 'selectplcid', value: plc_id }, { name: 'selecttoolid', value: ToolID }, { name: 'selectfreqid', value: freq_id }, { name: 'selectfrequency', value: frequency }, { name: 'selecttolerance', value: tolerance }, { name: 'selectstatus', value: onoffStatus }, { name: 'selectpowerondate', value: PowerOnDate }, { name: 'selectUnSetTooLate', value: UnSetTooLate }], function (data) { alert(data.Msg); setTimeout("CloseModelWindow();", 1000); }, 'json'); } });
-                            //alert(plc_id + ToolID + freq_id + frequency + tolerance + onoffStatus + PowerOnDate + UnSetTooLate);
                         }
                     }
                     else {

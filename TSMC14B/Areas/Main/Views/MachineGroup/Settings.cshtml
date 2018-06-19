@@ -1,4 +1,4 @@
-﻿@model TSMC14B.Areas.Main.Models.AlarmTagNameModel
+﻿@model WebCMS.Areas.Main.Models.AlarmTagNameModel
 @{
     ViewBag.Title = "Settings";
     Layout = "../Shared/_Layout.cshtml";
@@ -10,11 +10,9 @@
     <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-
             if ("@Request["vName"]" == "HJ") {
                 $("#AlarmArea").css('display', 'none');
             }
-
             $(".rbn1").change(function () {
                 var option;
                 option = $('.rbn1:checked').val();
@@ -25,7 +23,6 @@
                 else if (option == 2)
                     $('.AT').css('display', 'block');
             });
-            
             $('.typeid').css("display", "none");
             $('.rbn2').change(function () {
                 $('.rbn2:checked').each(function () {
@@ -63,9 +60,7 @@
             function changeIndex(chkvalue) {
                 var objval; var isFound; var tempval;
                 if ((chkvalue == "")) {
-                    //$("#toolId option:selected").attr("selected", "");
                     $("#toolid option:nth-child(1)").attr("selected", true);
-                    //$("#toolId").attr("disabled", "");
                     isFound = false;
                     return;
                 };
@@ -96,10 +91,6 @@
                     });
 
                     $.post('@Url.Action("JsonTypeCheck")', [{ name: 'Vendor', value: vendorname }, { name: 'typeid', value: typeid == "" ? "" : typeid }], function (date) {
-                        //$('#TagFullName').empty();
-                        //$.each(date, function (i, item) {
-                        //    $('#TagFullName').append($('<option></option>').val(item.Key).text(item.Value));
-                        //});
                         $("#td").empty();
                         $.each(date, function (i, item) {
                             $('#td').append($('<td><input type="checkbox" id="' + item.Key + '" name="' + item.Value + '" value="' + item.Key + '" class="cb_Tag" /><label for="' + item.Key + '"  style="cursor: pointer;">' + item.Value + '</label></td>'));

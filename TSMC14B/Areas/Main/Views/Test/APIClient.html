@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var t;
+    $(function () {
+        SetTimer(5);
+        $('#btnSetSelectCount').click(function () {
+            SetTimer($('#tbxSelectCount').val());
+        });
+    });
+    function SetTimer(Count) {
+        clearTimeout(t);
+        $.get('https://api.thingspeak.com/channels/304709/feeds.json?api_key=3WO9ZNYP1K7M0OQY&results=' + Count, function (data) {
+
+            $('#lblChannelCreated_at').text(getDateToString(data.channel.created_at));
+            $('#lblID').text(data.channel.id);
+            $('#lblUpdated_at').text(getDateToString(data.channel.updated_at));
+
+            $('#dataTable tbody').empty();
+
+            $('#dataTable tbody').append('<tr>');
+            $('#dataTable tbody').append('<td>entry_id</td>');
+            $('#dataTable tbody').append('<td>' + data.channel.field1 + '</td>');
+            $('#dataTable tbody').append('<td>' + data.channel.field2 + '</td>');
+            $('#dataTable tbody').append('<td>' + data.channel.field3 + '</td>');
+            $('#dataTable tbody').append('<td>' + data.channel.field4 + '</td>');
+            $('#dataTable tbody').append('<td>' + data.channel.field5 + '</td>');
+            $('#dataTable tbody').append('<td>' + data.channel.field6 + '</td>');
+            $('#dataTable tbody').append('<td>' + data.channel.field7 + '</td>');
+            $('#dataTable tbody').append('<td>' + data.channel.field8 + '</td>');
+            $('#dataTable tbody').append('<td>updateTime</td>');
+            $('#dataTable tbody').append('</tr>');
+            
+            if (data.feeds.length > 0) {
+                for (var i = data.feeds.length-1; i >= 0; i--) {
+
+                    $('#dataTable tbody').append('<tr>');
+                    $('#dataTable tbody').append('<td>' + data.feeds[i].entry_id + '</td>');
+                    $('#dataTable tbody').append(SetTablefield($('<td></td>'), data.feeds[i].field1));
+                    $('#dataTable tbody').append(SetTablefield($('<td></td>'), data.feeds[i].field2));
+                    $('#dataTable tbody').append(SetTablefield($('<td></td>'), data.feeds[i].field3));
+                    $('#dataTable tbody').append(SetTablefield($('<td></td>'), data.feeds[i].field4));
+                    $('#dataTable tbody').append(SetTablefield($('<td></td>'), data.feeds[i].field5));
+                    $('#dataTable tbody').append(SetTablefield($('<td></td>'), data.feeds[i].field6));
+                    $('#dataTable tbody').append(SetTablefield($('<td></td>'), data.feeds[i].field7));
+                    $('#dataTable tbody').append(SetTablefield($('<td></td>'), data.feeds[i].field8));
+                    $('#dataTable tbody').append('<td>' + getDateToString(data.feeds[i].created_at) + '</td>')
+                    $('#dataTable tbody').append('</tr>');
+                }
+            }
+        });
+        t = setTimeout(function () { SetTimer(Count); }, 5000);
+    }
+    function SetTablefield(obj, data) {
+        if (parseInt(data) > 80) {
+            $(obj).text(data).css('color', 'red');
+        } else {
+            $(obj).text(data);
+        }
+        return obj[0].outerHTML;
+    }
+    function getDateToString(dateString) {
+        var d = new Date(dateString);
+        return d.getFullYear() + '-' + ((d.getMonth() + 1)<10?'0'+(d.getMonth() + 1):(d.getMonth() + 1)) + '-' + (d.getDate()<10?'0'+d.getDate():d.getDate()) + ' ' + (d.getHours()<10?'0'+d.getHours():d.getHours()) + ':' + (d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes()) + ':' + (d.getSeconds()<10?'0'+d.getSeconds():d.getSeconds());
+    }
+</script>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+</head>
+<body>
+    ChannelCreated_at：<label id="lblChannelCreated_at"></label>
+    <br />
+    ID：<label id="lblID"></label>
+    <br />
+    Updated_at：<label id="lblUpdated_at"></label>
+    <br />
+    SelectCount：<input id="tbxSelectCount" type="text" style="width:50px" value="5" /><input id="btnSetSelectCount" type="button" value="Set" />
+    <div id="dataArea">
+        <table border="1" id="dataTable">
+            <thead>
+                <tr>
+                    <th>entry_id</th>
+                    <th>field1</th>
+                    <th>field2</th>
+                    <th>field3</th>
+                    <th>field4</th>
+                    <th>field5</th>
+                    <th>field6</th>
+                    <th>field7</th>
+                    <th>field8</th>
+                    <th>field</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="thentry_id">entry_id</td>
+                    <td id="thfield1"></td>
+                    <td id="thfield2"></td>
+                    <td id="thfield3"></td>
+                    <td id="thfield4"></td>
+                    <td id="thfield5"></td>
+                    <td id="thfield6"></td>
+                    <td id="thfield7"></td>
+                    <td id="thfield8"></td>
+                    <td>updateTime</td>
+                </tr>
+            </tbody>
+        </table>
+        Refresh：5 Seconds
+        <br />
+    </div>
+</body>
+</html>

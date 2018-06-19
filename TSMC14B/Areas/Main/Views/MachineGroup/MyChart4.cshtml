@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "MyChart4";
+    ViewBag.Title = "TrendChart";
 }
 <script type="text/javascript">
     var vName = '@ViewData["vName"]';
@@ -42,28 +42,43 @@
 
                 //$("#Y1Y2").html('YMax:' + data.YMax + ' YMin:' + data.YMin + 'XMax:' + data.XMax + ' XMin:' + data.XMin);
                 //$("#Y1Y2").html(data.ImageMap);
+                //$("#Y1Y2").html('X:' + data.PositionX + ' Y:' + data.PositionY + 'Bottom:' + data.PositionBottom + ' Right:' + data.PositionRight);
         });
 
         $("#chart").mousedown(function (e) {
             event.preventDefault();
             if (e.button == 0) {
-                var value = YMax - ((YMax - YMin) / 466) * (e.clientY - 90);
+
+                var RangeXMax = 780;
+                var RangeXMin = 85;
+                var RangeYMax = 556;
+                var RangeYMin = 90;
+
+                if (YMax.toString().length > 10) {
+                    RangeYMin = 80;
+                }
+                
+                if (TagName.split(',').length > 3) {
+                    RangeYMin = RangeYMin + (TagName.split(',').length / 3 * 10);
+                }
+                
+                var value = (YMax - ((YMax - YMin) / (RangeYMax - RangeYMin)) * (e.clientY - RangeYMin))*1.04;
                 //$("#XY").html('X:' + e.clientX + ' Y:' + e.clientY + 'Value:' + value);
                 editYMax = value;
                 mousedownX = e.clientX;
                 mousedownY = e.clientY;
 
-                if (e.clientX <= 85) {
-                    mousedownX = 85;
+                if (e.clientX <= RangeXMin) {
+                    mousedownX = RangeXMin;
                 }
-                if (e.clientX >= 785) {
-                    mousedownX = 785;
+                if (e.clientX >= RangeXMax) {
+                    mousedownX = RangeXMax;
                 }
-                if (e.clientY <= 88) {
-                    mousedownY = 88
+                if (e.clientY <= RangeYMin) {
+                    mousedownY = RangeYMin
                 }
-                if (e.clientY >= 556) {
-                    mousedownY = 556
+                if (e.clientY >= RangeYMax) {
+                    mousedownY = RangeYMax
                 }
                 
                 Rangeflag = 1;
@@ -72,27 +87,41 @@
         $("#chart").mousemove(function (e) {
             var RangeX = e.clientX;
             var RangeY = e.clientY;
-            if (e.clientX <= 85) {
-                RangeX = 85;
+
+            var RangeXMax = 780;
+            var RangeXMin = 85;
+            var RangeYMax = 556;
+            var RangeYMin = 90;
+            
+            if (YMax.toString().length >10) {
+                RangeYMin = 80;
             }
-            if (e.clientX >= 785) {
-                RangeX = 785;
+
+            if (TagName.split(',').length > 3) {
+                RangeYMin = RangeYMin + (TagName.split(',').length / 3 * 10);
             }
-            if (e.clientY <= 88) {
-                RangeY=88
+
+            if (e.clientX <= RangeXMin) {
+                RangeX = RangeXMin;
             }
-            if (e.clientY >= 556) {
-                RangeY = 556
+            if (e.clientX >= RangeXMax) {
+                RangeX = RangeXMax;
+            }
+            if (e.clientY <= RangeYMin) {
+                RangeY = RangeYMin
+            }
+            if (e.clientY >= RangeYMax) {
+                RangeY = RangeYMax
             }
             //$("#XY").html('X:' + RangeX + ' Y:' + RangeY);
-            var value = Math.floor((YMax - ((YMax - YMin) / 466) * (RangeY - 90)) * 100) / 100;
+            var value = Math.round((YMax - ((YMax - YMin) / (RangeYMax - RangeYMin)) * (RangeY - RangeYMin)) * 100) / 100;
             var tempSdate = new Date(EditStartDate);
             var tempEdate = new Date(EditEndDate);
-            var tempDT = new Date(tempSdate.valueOf() + ((tempEdate - tempSdate) / 700) * (RangeX - 85));
+            var tempDT = new Date(tempSdate.valueOf() + ((tempEdate - tempSdate) / (RangeXMax - RangeXMin+1)) * (RangeX - RangeXMin));
 
-            //$("#XY").html('Value:' + value + ' Date:' + tempDT.getFullYear() + '/' + (parseInt(tempDT.getMonth()) + 1) + '/' + tempDT.getDate() + ' ' + AddZero(tempDT.getHours()) + ':' + AddZero(tempDT.getMinutes()) + ':' + AddZero(tempDT.getSeconds()));
+            //$("#XY").html('Value:' + value + ' Date:' + tempDT.getFullYear() + '/' + (parseInt(tempDT.getMonth()) + 1) + '/' + tempDT.getDate() + ' ' + AddZero(tempDT.getHours()) + ':' + AddZero(tempDT.getMinutes()) + ':' + AddZero(tempDT.getSeconds()) + '.' + ('00' + tempDT.getMilliseconds()).substring(('00' + tempDT.getMilliseconds()).length-3, ('00' + tempDT.getMilliseconds()).length-2));
             if (Rangeflag == 0) {
-                if (RangeX >= 78 && RangeX <= 785 && RangeY >= 88 && RangeY <= 556) {
+                if (RangeX >= RangeXMin && RangeX <= RangeXMax && RangeY >= RangeYMin && RangeY <= RangeYMax) {
                     $("#divRange").css('left', (RangeX - 10) + 'px');
                     $("#divRange").css('top', (RangeY - 20) + 'px');
                 }
@@ -117,17 +146,28 @@
             if (e.button == 0) {
                 //$("#XY").html('X:' + e.clientX + ' Y:' + e.clientY);
                 
+                var RangeXMax = 780;
+                var RangeXMin = 85;
+                var RangeYMax = 556;
+                var RangeYMin = 90;
+                
+                if (YMax.toString().length > 10) {
+                    RangeYMin = 80;
+                }
+
+                if (TagName.split(',').length > 3) {
+                    RangeYMin = RangeYMin + (TagName.split(',').length / 3 * 10);
+                }
+
                 mouseupX = e.clientX;
                 mouseupY = e.clientY;
                 if ((mouseupX - mousedownX) > 20 && (mouseupY - mousedownY) > 20) {
-                    var value = YMax - ((YMax - YMin) / 466) * (e.clientY - 90);
+                    var value = (YMax - ((YMax - YMin) / (RangeYMax - RangeYMin)) * (e.clientY - RangeYMin))*0.96;
                     var tempSdate = new Date(EditStartDate);
                     var tempEdate = new Date(EditEndDate);
-                    
-                    //var pixelPerMicrosecond = (UTCEdate - UTCSdate) / 850;
-                    var pixelPerMicrosecond = ((tempEdate - tempSdate) / 700);
-                    tempSdate = new Date(tempSdate.valueOf() + (pixelPerMicrosecond * (mousedownX - 85)));
-                    tempEdate = new Date(tempEdate.valueOf() - (pixelPerMicrosecond * (785 - mouseupX))+1000);
+                    var pixelPerMicrosecond = ((tempEdate - tempSdate) / (RangeXMax - RangeXMin));
+                    tempSdate = new Date(tempSdate.valueOf() + (pixelPerMicrosecond * (mousedownX - RangeXMin)));
+                    tempEdate = new Date(tempEdate.valueOf() - (pixelPerMicrosecond * (RangeXMax - mouseupX)) + 1000);
                     EditStartDate = tempSdate;
                     EditEndDate = tempEdate;
 
@@ -136,6 +176,7 @@
                     //$("#XY").html('editYMax:' + editYMax + ' editYMin:' + editYMin);
                     //var StartDate = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
                     //var EndDate = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
+
                     YMax = 0;
                     YMin = 0;
                     var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds() +'.'+tempSdate.getMilliseconds() ;
@@ -167,35 +208,48 @@
             var tTop = e.clientY-75;
             var theight = 150;
 
-            if (tLeft <= 85) {
-                tLeft = 85;
+            var RangeXMax = 785;
+            var RangeXMin = 85;
+            var RangeYMax = 556;
+            var RangeYMin = 90;
+
+            if (YMax.toString().length > 10) {
+                RangeYMin = 80;
             }
-            if ((e.clientX + 100) >= 785) {
-                twidth = twidth - (e.clientX-10 + 100 - 785)-10;
+
+            if (TagName.split(',').length > 3) {
+                RangeYMin = RangeYMin + (TagName.split(',').length / 3 * 9);
             }
-            if (tTop <= 88) {
-                tTop = 88
+
+            if (tLeft <= RangeXMin) {
+                tLeft = RangeXMin;
             }
-            if ((e.clientY + 75) >= 556) {
-                theight = theight - (e.clientY-20 + 75-556)-20;
+            if ((e.clientX + 100) >= RangeXMax) {
+                twidth = twidth - (e.clientX - 10 + 100 - RangeXMax) - 10;
+            }
+            if (tTop <= RangeYMin) {
+                tTop = RangeYMin
+            }
+            if ((e.clientY + 75) >= RangeYMax) {
+                theight = theight - (e.clientY - 20 + 75 - RangeYMax) - 20;
             }
             Rangeflag = 2;
             $("#divRange").animate({ left: (tLeft - 10), top: (tTop - 20) }, "fast").animate({ width: twidth, height: theight }, "normal", "swing", function () {
                 $("#divRange").css({width:1,height:1,left:(e.clientX - 10) + 'px',top:(e.clientY - 20) + 'px'});
                 var tempSdate = new Date(EditStartDate);
                 var tempEdate = new Date(EditEndDate);
-                var pixelPerMicrosecond = ((tempEdate - tempSdate) / 700);
-                tempSdate = new Date(tempSdate.valueOf() + (pixelPerMicrosecond * (tLeft - 85)));
-                tempEdate = new Date(tempEdate.valueOf() - (pixelPerMicrosecond * (785 - tLeft-twidth))+1000);
+                var pixelPerMicrosecond = ((tempEdate - tempSdate) / (RangeXMax - RangeXMin));
+                tempSdate = new Date(tempSdate.valueOf() + (pixelPerMicrosecond * (tLeft - RangeXMin)));
+                tempEdate = new Date(tempEdate.valueOf() - (pixelPerMicrosecond * (RangeXMax - tLeft - twidth)) + 1000);
                 EditStartDate = tempSdate;
                 EditEndDate = tempEdate;
-                var value = YMax - ((YMax - YMin) / 466) * (tTop + theight - 90);
+                var value = YMax - ((YMax - YMin) / (RangeYMax - RangeYMin)) * (tTop + theight - RangeYMin);
                 editYMin = value;
-                editYMax = YMax - ((YMax - YMin) / 466) * (tTop - 90);
+                editYMax = YMax - ((YMax - YMin) / (RangeYMax - RangeYMin)) * (tTop - RangeYMin);
                 var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
                 var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
                 var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'YMax': editYMax, 'YMin': editYMin, 'isStack': isStack };
-                //console.log(p);
+                
                 $("#chart").css('background-image', '');
                 $.post('@Url.Action("JsonMyChart")', p,
                                     function (data) {
@@ -217,15 +271,16 @@
     function DateShiftLeft() {
         var tempSdate = new Date(EditStartDate);
         var tempEdate = new Date(EditEndDate);
-        tempSdate = new Date(tempSdate.valueOf() - ((tempEdate - tempSdate) / 3));
-        tempEdate = new Date(tempEdate.valueOf() - ((tempEdate - tempSdate) / 3)+1000);
+        tempSdate = new Date(tempSdate.valueOf() - ((tempEdate.valueOf() - tempSdate.valueOf()) / 3));
+        //tempEdate = new Date(tempEdate.valueOf() - ((tempEdate.valueOf() - tempSdate.valueOf()) / 3) + 1000);
+        tempEdate = new Date(tempSdate.valueOf() + (7*24*60*60*1000));
         EditStartDate = tempSdate;
         EditEndDate = tempEdate;
 
         var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
         var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
         var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'YMax': editYMax, 'YMin': editYMin, 'isStack': isStack };
-        //console.log(p);
+        
         $("#chart").css('background-image', '');
         $.post('@Url.Action("JsonMyChart")', p,
             function (data) {
@@ -237,15 +292,15 @@
     function DateShiftRight() {
         var tempSdate = new Date(EditStartDate);
         var tempEdate = new Date(EditEndDate);
-        tempSdate = new Date(tempSdate.valueOf() + ((tempEdate - tempSdate) / 3));
-        tempEdate = new Date(tempEdate.valueOf() + ((tempEdate - tempSdate) / 3)+1000);
+        tempSdate = new Date(tempSdate.valueOf() + ((tempEdate.valueOf() - tempSdate.valueOf()) / 3));
+        //tempEdate = new Date(tempEdate.valueOf() + ((tempEdate.valueOf() - tempSdate.valueOf()) / 3) + 1000);
+        tempEdate = new Date(tempSdate.valueOf() + (7 * 24 * 60 * 60 * 1000));
         EditStartDate = tempSdate;
         EditEndDate = tempEdate;
 
         var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
         var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
         var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'YMax': editYMax, 'YMin': editYMin, 'isStack': isStack };
-        //console.log(p);
         $("#chart").css('background-image', '');
         $.post('@Url.Action("JsonMyChart")',p ,
             function (data) {
@@ -257,42 +312,39 @@
     function DateZoomIn() {
         var tempSdate = new Date(EditStartDate);
         var tempEdate = new Date(EditEndDate);
-        tempSdate = new Date(tempSdate.valueOf() + ((tempEdate - tempSdate) / 4));
-        tempEdate = new Date(tempEdate.valueOf() - ((tempEdate - tempSdate) / 4));
+        tempSdate = new Date(tempSdate.valueOf() + ((tempEdate.valueOf() - tempSdate.valueOf()) / 4));
+        tempEdate = new Date(tempEdate.valueOf() - ((tempEdate.valueOf() - tempSdate.valueOf()) / 4));
         EditStartDate = tempSdate;
         EditEndDate = tempEdate;
         
-        editYMax = editYMax - Math.abs(editYMax - editYMin) / 4;
-        editYMin = editYMin + Math.abs(editYMax - editYMin) / 4;
+        editYMax = editYMax - (Math.abs(editYMax - editYMin) / 4);
+        editYMin = editYMin + (Math.abs(editYMax - editYMin) / 4);
 
         var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
         var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
         var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'YMax': editYMax, 'YMin': editYMin, 'isStack': isStack };
-        //console.log(p);
         $("#chart").css('background-image', '');
         $.post('@Url.Action("JsonMyChart")',p ,
             function (data) {
                 $("#chart").css('background-image', 'url(' + data.ImgCode + ')');
                 YMax = data.YMax;
                 YMin = data.YMin;
-                
             });
     }
     function DateZoomOut() {
         var tempSdate = new Date(EditStartDate);
         var tempEdate = new Date(EditEndDate);
-        tempSdate = new Date(tempSdate.valueOf() - ((tempEdate - tempSdate) / 4));
-        tempEdate = new Date(tempEdate.valueOf() + ((tempEdate - tempSdate) / 4));
+        tempSdate = new Date(tempSdate.valueOf() - ((tempEdate.valueOf() - tempSdate.valueOf()) / 4));
+        tempEdate = new Date(tempEdate.valueOf() + ((tempEdate.valueOf() - tempSdate.valueOf()) / 4));
         EditStartDate = tempSdate;
         EditEndDate = tempEdate;
 
-        editYMax = editYMax + Math.abs(editYMax - editYMin) / 4;
-        editYMin = editYMin - Math.abs(editYMax - editYMin) / 4;
+        editYMax = editYMax + (Math.abs(editYMax - editYMin) / 4);
+        editYMin = editYMin - (Math.abs(editYMax - editYMin) / 4);
 
         var SD = tempSdate.getFullYear() + '/' + (parseInt(tempSdate.getMonth()) + 1) + '/' + tempSdate.getDate() + ' ' + tempSdate.getHours() + ':' + tempSdate.getMinutes() + ':' + tempSdate.getSeconds();
         var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
         var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'YMax': editYMax, 'YMin': editYMin, 'isStack': isStack };
-        //console.log(p);
         $("#chart").css('background-image', '');
         $.post('@Url.Action("JsonMyChart")',p ,
             function (data) {
@@ -311,7 +363,6 @@
         var ED = tempEdate.getFullYear() + '/' + (parseInt(tempEdate.getMonth()) + 1) + '/' + tempEdate.getDate() + ' ' + tempEdate.getHours() + ':' + tempEdate.getMinutes() + ':' + tempEdate.getSeconds();
         //var p = [{ name: 'toolId', value: toolId }, { name: 'TagName', value: TagName }, { name: 'StartDate', value: SD }, { name: 'EndDate', value: ED }, { name: 'flag', value: 3 }, { name: 'Y1Y2', value: Y1Y2 }, { name: 'isLimit', value: true }, { name: 'isStack', value: isStack }];
         var p = { 'toolId': toolId, 'TagName': TagName, 'StartDate': SD, 'EndDate': ED, 'flag': 3, 'Y1Y2': Y1Y2, 'isLimit': true, 'isStack': isStack };
-        //console.log(p);
         $("#chart").css('background-image', '');
         $.post('@Url.Action("JsonMyChart")',p ,
             function (data) {
@@ -340,4 +391,3 @@
 <div  style="background-color:rgba(0%,0%,0%,0.5);width: 800px; height: 600px;vertical-align:middle;text-align:center;top:21px;position:absolute;">
     <img style="width:100px;height:100px;margin:0 auto;vertical-align: middle;position:absolute;top:250px;left:350px;" src="/Content/Icons/circle_animation.gif" alt="Loading" />
 </div>
-<img usemap="ChartImageMap"  src="#" style="width: 800px; height: 600px;vertical-align:middle;text-align:center;top:21px;z-index:101;" />

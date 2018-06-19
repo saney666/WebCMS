@@ -6,9 +6,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Data.Linq;
 using System.Web.Configuration;
-using TSMC14B.Models;
+using WebCMS.Models;
 using OfficeOpenXml;
-namespace TSMC14B.Areas.Main.Models
+namespace WebCMS.Areas.Main.Models
 {
     public class FDCPMModel
     {
@@ -127,18 +127,16 @@ namespace TSMC14B.Areas.Main.Models
             return dt;
         }
 
-
         internal static IEnumerable<FDCPMModel> GetFDCPMList(bool IsHistory, string dept, string StartDate, string EndDate, string chamberName)
         {
             DataTable dt = GetFDCPMdt(IsHistory, dept, StartDate, EndDate, chamberName);
             
-
             return from row in dt.AsEnumerable()
                    select new FDCPMModel
                    {
                        department_name = row.IsNull("department_name") ? string.Empty : row.Field<string>("department_name"),
                        chamberName = row.IsNull("chamberName") ? string.Empty : row.Field<string>("chamberName"),
-                       FDCPMStatus = row.Field<bool>("IsFDCPM") ? "延後" : "提前解除",
+                       FDCPMStatus = row.Field<bool>("IsFDCPM") ? "PM" : "解除PM",
                        memo = row.Field<string>("memo"),
                        FDCPMTime = row.IsNull("FDCPMTime") ? string.Empty : row.Field<DateTime>("FDCPMTime").ToString("yyyy/MM/dd HH:mm:ss"),
                        pid =  row.Field<int>("pid"),

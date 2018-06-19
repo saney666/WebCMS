@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = ViewBag.dept;
+    Layout = "~/Areas/Main/Views/Shared/_MobilLayout.cshtml";
+}
+
+@section JavaScript{
+
+}
+
+<div data-role="header">
+    <a href="#leftpanel" class="ui-btn-left ui-btn ui-icon-bars ui-btn-icon-left ui-btn-inline ui-corner-all ui-mini" data-role="button" role="button">menu</a>
+    <h2>@ViewData["title"]</h2>
+</div>
+<form>
+<ul data-role="listview" class="ui-listview-outer" data-inset="true">
+
+    @foreach (var item in ViewData["process_name"] as IEnumerable<string>)
+    {
+        string processName = item.ToString();
+        List<WebCMS.Areas.Main.Models.vw_eq_status> codes2 = (from row in ViewData["Device"] as List<WebCMS.Areas.Main.Models.vw_eq_status> where row.process_name == processName select row).ToList();
+
+        string sColor="";
+
+        foreach (var i in codes2.Select(x=>x.sColor))
+        {
+            if (i=="red")
+            {
+                sColor = i;
+                break;
+            }
+            else if (i == "yellow" && sColor != "red")
+            {
+                sColor = i;
+                
+            }
+            else if (i == "lightgreen" && sColor != "red" && sColor != "yellow")
+            {
+                sColor = i;
+                
+            }
+        }
+        
+        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false" class="process">
+            <h2>@processName <span class="ui-li-count" style="background-color:@sColor"> </span></h2>
+            <ul data-role="listview" data-shadow="false" data-inset="true" data-corner="false">
+                @foreach (var item2 in codes2.Select(x => x.toolid).Distinct())
+                {
+                    string ToolID = item2;
+                    var codes3 = (from row in codes2 as List<WebCMS.Areas.Main.Models.vw_eq_status> where row.toolid == ToolID select row).ToList();
+                    sColor = "";
+                    foreach (var i in codes3.Select(x => x.sColor))
+                    {
+                        if (i == "red")
+                        {
+                            sColor = i;
+                            break;
+                        }
+                        else if (i == "yellow" && sColor != "red")
+                        {
+                            sColor = i;
+                            
+                        }
+                        else if (i == "lightgreen" && sColor != "red" && sColor != "yellow")
+                        {
+                            sColor = i;
+                            
+                        }
+                    }
+                    
+                    <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
+                        <h2>@ToolID <span class="ui-li-count" style="background-color:@sColor"> </span></h2>
+                            @foreach (var item3 in codes3.Select(x=>x.chamber).Distinct())
+                            {
+                                string chamber = item3;
+                                List<WebCMS.Areas.Main.Models.vw_eq_status> codes4 = (from row in ViewData["Device"] as List<WebCMS.Areas.Main.Models.vw_eq_status> where row.toolid == ToolID && row.chamber == chamber select row).ToList();
+                                <fieldset data-role="controlgroup" data-type="horizontal" style="border-width:1px;border-style:groove;">
+                                    <legend >@chamber</legend>
+                                    @foreach (var item4 in codes4)
+                                    {
+                                        <label style="background-color:@item4.sColor;">@item4.WEB_code<input type="radio" name="@item4.chamber" id="choose-@item4.chamberName-regular"  onclick="javascript:location.href='@Url.Action("Accessory", new {pid=item4.pid })'" /></label>
+                                    }
+                                </fieldset>
+                            }
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+</ul>
+</form>
+
+

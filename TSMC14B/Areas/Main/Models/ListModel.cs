@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
-using TSMC14B.Models;
+using WebCMS.Models;
 
-namespace TSMC14B.Areas.Main.Models
+namespace WebCMS.Areas.Main.Models
 {
     public class ListModel
     {
@@ -29,10 +29,6 @@ namespace TSMC14B.Areas.Main.Models
 
         public static IEnumerable<ListModel> GetTypeInfoList()
         {
-            //using (tsmc14BDataContext db = new tsmc14BDataContext())
-            //{
-            //    return (from row in db.vw_eq_status select new ListModel{Text=row.vName,Value=row.vid.ToString()}).Distinct();
-            //}
             DataSet ds = DBConnector.executeQuery("Intouch", "SELECT * FROM type_info order by type_id");
 
             IEnumerable<ListModel> tempList = null;
@@ -40,7 +36,6 @@ namespace TSMC14B.Areas.Main.Models
             if (ds.Tables.Count > 0)
             {
                 tempList = from dept in ds.Tables[0].AsEnumerable()
-                           //orderby dept.Field<int>("display_order")
                            select new ListModel
                            {
                                Text = dept["type_name"].ToString(),
@@ -51,20 +46,34 @@ namespace TSMC14B.Areas.Main.Models
             return tempList;
         }
 
-        public static IEnumerable<ListModel> GetDepartmentList()
+        public static IEnumerable<ListModel> GetDepartmentTitleList()
         {
-            //using (tsmc14BDataContext db = new tsmc14BDataContext())
-            //{
-            //    return (from row in db.vw_eq_status select new ListModel{Text=row.vName,Value=row.vid.ToString()}).Distinct();
-            //}
-            DataSet ds = DBConnector.executeQuery("Intouch", "SELECT DISTINCT department_id,department_name,display_order FROM department_info vw order by display_order");
+            DataSet ds = DBConnector.executeQuery("Intouch", "SELECT DISTINCT department_id,department_name,display_order FROM department_info vw where display_order is not null order by display_order");
 
             IEnumerable<ListModel> tempList = null;
 
             if (ds.Tables.Count > 0)
             {
                 tempList = from dept in ds.Tables[0].AsEnumerable()
-                           //orderby dept.Field<int>("display_order")
+                           select new ListModel
+                           {
+                               Text = dept["department_name"].ToString(),
+                               Value = dept["department_id"].ToString(),
+                           };
+            }
+
+            return tempList;
+        }
+
+        public static IEnumerable<ListModel> GetDepartmentList()
+        {
+            DataSet ds = DBConnector.executeQuery("Intouch", "SELECT DISTINCT department_id,department_name,display_order FROM department_info vw order by department_name");
+
+            IEnumerable<ListModel> tempList = null;
+
+            if (ds.Tables.Count > 0)
+            {
+                tempList = from dept in ds.Tables[0].AsEnumerable()
                            select new ListModel
                            {
                                Text = dept["department_name"].ToString(),
@@ -77,10 +86,6 @@ namespace TSMC14B.Areas.Main.Models
 
         public static IEnumerable<ListModel> GetGroupList(string vName)
         {
-            //using (tsmc14BDataContext db = new tsmc14BDataContext())
-            //{
-            //    return (from row in db.vw_eq_status where row.vid.ToString() == vid select new ListModel { Text = row.gname, Value = row.gname }).Distinct();
-            //}
             DataSet ds = null;
             if (vName == "DPM")
             {
@@ -119,7 +124,6 @@ namespace TSMC14B.Areas.Main.Models
             if (ds.Tables.Count > 0)
             {
                 tempList = from dept in ds.Tables[0].AsEnumerable()
-                           //orderby dept.Field<int>("display_order")
                            select new ListModel
                            {
                                Text = dept.Field<string>("vName"),
@@ -151,10 +155,6 @@ namespace TSMC14B.Areas.Main.Models
 
         public static IEnumerable<ListModel> GetToolIDList(string department_name)
         {
-            //using (tsmc14BDataContext db = new tsmc14BDataContext())
-            //{
-            //    return (from row in db.vw_eq_status where row.vid.ToString()==vid select new ListModel { Text = row.toolid, Value = row.pid.ToString() }).Distinct();
-            //}
             string sqlStr = null;
             if (string.IsNullOrEmpty(department_name))
                 sqlStr = "SELECT DISTINCT chamberName FROM vw_eq_status";
@@ -179,12 +179,61 @@ namespace TSMC14B.Areas.Main.Models
             return tempList;
         }
 
+        public static IEnumerable<ListModel> GetParameterList()
+        {
+            string sqlStr = null;
+
+            sqlStr = "SELECT distinct Tag_Name,Eng_Comment FROM analog_comment";
+
+            DataSet ds = DBConnector.executeQuery("Intouch", sqlStr);
+
+            IEnumerable<ListModel> tempList = null;
+
+            if (ds.Tables.Count > 0)
+            {
+                tempList = (from dept in ds.Tables[0].AsEnumerable()
+                            orderby dept.Field<string>("Eng_Comment")
+                            select new ListModel
+                            {
+                                Text = dept.Field<string>("Eng_Comment"),
+                                Value = dept.Field<string>("Tag_Name"),
+                            }).ToList();
+            }
+
+            return tempList;
+        }
+
+        public static IEnumerable<ListModel> GetProcessNameList(string vendor)
+        {
+            string sqlStr = null;
+
+            sqlStr = "SELECT distinct department_name,process_name FROM vw_eq_status ";
+
+            if (string.IsNullOrEmpty(vendor))
+            {
+                sqlStr += "where department_name='" + vendor + "' ";
+            }
+
+            DataSet ds = DBConnector.executeQuery("Intouch", sqlStr);
+
+            IEnumerable<ListModel> tempList = null;
+
+            if (ds.Tables.Count > 0)
+            {
+                tempList = (from dept in ds.Tables[0].AsEnumerable()
+                            orderby dept.Field<string>("process_name")
+                            select new ListModel
+                            {
+                                Text = dept.Field<string>("process_name"),
+                                Value = dept.Field<string>("process_name"),
+                            }).ToList();
+            }
+
+            return tempList;
+        }
+
         public static IEnumerable<ListModel> GetToolIDList(string vid, string groupName)
         {
-            //using (tsmc14BDataContext db = new tsmc14BDataContext())
-            //{
-            //    return (from row in db.vw_eq_status where row.vid.ToString() == vid && row.gname == groupName select new ListModel { Text = row.toolid, Value = row.pid.ToString() }).Distinct();
-            //}
             string sqlStr = null;
             if (!string.IsNullOrEmpty(groupName))
                 sqlStr += " AND groupName = '" + groupName + "'";
@@ -226,10 +275,6 @@ namespace TSMC14B.Areas.Main.Models
             DataSet ds = null;
             if (vName == "DPM")
             {
-                using (tsmc14BDataContext db = new tsmc14BDataContext())
-                {
-                    //_pid2 = (from row in db.vw_dpm_status where row.toolid == toolID select row.pid).FirstOrDefault();
-                }
                 ds = DBConnector.executeQuery("Intouch", "uSP_Select_ValueNames_DPM @pid=" + _pid2);
             }
             else
@@ -306,20 +351,6 @@ namespace TSMC14B.Areas.Main.Models
 
         public static short GetVid(string vName)
         {
-            //if (vName == "DPM")
-            //{
-            //    using (tsmc14BDataContext db = new tsmc14BDataContext())
-            //    {
-            //        return (from row in db.vw_dpm_status select row.vid).FirstOrDefault().Value;
-            //    }
-            //}
-            //else
-            //{
-            //    using (tsmc14BDataContext db = new tsmc14BDataContext())
-            //    {
-            //        return (from row in db.vw_eq_status where row.vName == vName select row.vid).FirstOrDefault().Value;
-            //    }
-            //}
             using (tsmc14BDataContext db = new tsmc14BDataContext())
             {
                 return (from row in db.vendor_info where row.vendor_name == vName select row.vendor_id).FirstOrDefault();
@@ -336,10 +367,6 @@ namespace TSMC14B.Areas.Main.Models
 
         public static short Gettid(string tName)
         {
-            //using (tsmc14BDataContext db = new tsmc14BDataContext())
-            //{
-            //    return (from row in db.vw_eq_status where row.tName == tName select row.typeid).FirstOrDefault();
-            //}
             using (tsmc14BDataContext db = new tsmc14BDataContext())
             {
                 return (from row in db.type_info where row.type_name == tName select row.type_id).FirstOrDefault();
@@ -348,10 +375,6 @@ namespace TSMC14B.Areas.Main.Models
 
         public static string GettName(string tid)
         {
-            //using (tsmc14BDataContext db = new tsmc14BDataContext())
-            //{
-            //    return (from row in db.vw_eq_status where row.typeid == Convert.ToInt16(tid) select row.tName).FirstOrDefault();
-            //}
             using (tsmc14BDataContext db = new tsmc14BDataContext())
             {
                 return (from row in db.type_info where row.type_id == Convert.ToInt16(tid) select row.type_name).FirstOrDefault();
@@ -360,10 +383,6 @@ namespace TSMC14B.Areas.Main.Models
 
         public static int GetPid(string Toolid)
         {
-            //using (tsmc14BDataContext db = new tsmc14BDataContext())
-            //{
-            //    return (from row in db.vw_eq_status where row.toolid == Toolid select row.pid).FirstOrDefault();
-            //}
             using (tsmc14BDataContext db = new tsmc14BDataContext())
             {
                 return (from row in db.vw_eq_status where row.chamberName == Toolid select row.pid).FirstOrDefault();
@@ -381,7 +400,7 @@ namespace TSMC14B.Areas.Main.Models
         public static List<string> GetAlarmId(string ToolID, string AlarmTime)
         {
             DateTime _AlarmTime = Convert.ToDateTime(AlarmTime);
-            //2014-01-28 11:34:57
+            
             DataSet ds = DBConnector.executeQuery("Intouch", "exec [uSP_Select_AlarmHistory] @fromDate = N'" + AlarmTime + "',@toDate = N'" + _AlarmTime.AddSeconds(1).ToString("yyyy-MM-dd HH:mm:ss") + "',@toolID = N'" + ToolID + "',@onceadayFlag = 0");
 
             List<string> tmp = new List<string>();
@@ -393,11 +412,9 @@ namespace TSMC14B.Areas.Main.Models
                 tmp.Add(dr["alarmID"].ToString());
                 tmp.Add(dr["vendor_name"].ToString());
                 tmp.Add(dr["vendor_name"].ToString());
-
             }
 
             return tmp;
-
         }
 
         public static IEnumerable<ListModel> GetTypeByVname(string vName, string gName)
@@ -420,7 +437,6 @@ namespace TSMC14B.Areas.Main.Models
             }
 
             return tempList;
-
         }
 
         public static IEnumerable<ListModel> GetTypeByVname2Id(string vName, string gName)
@@ -521,10 +537,6 @@ namespace TSMC14B.Areas.Main.Models
 
         public static IEnumerable<ListModel> GetToolIDPIDList(string vName)
         {
-            //using (tsmc14BDataContext db = new tsmc14BDataContext())
-            //{
-            //    return (from row in db.vw_eq_status where row.vid.ToString()==vid select new ListModel { Text = row.toolid, Value = row.pid.ToString() }).Distinct();
-            //}
             string sqlStr = null;
             if (string.IsNullOrEmpty(vName))
                 sqlStr = "SELECT DISTINCT pid,toolid FROM vw_eq_status";

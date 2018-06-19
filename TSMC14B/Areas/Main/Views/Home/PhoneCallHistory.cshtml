@@ -8,7 +8,7 @@
 
         $(document).ready(function () {
             $('.flexme').flexigrid({
-                title: '@TSMC14B.Menu.LimitList',
+                title: '@WebCMS.Menu.LimitList',
             width: 700,
             height: "auto",
             url: '@Url.Action("JsonPhoneCallHistory")?tagname=@Request["tagname"]',
@@ -20,12 +20,12 @@
                 { display: 'CallOut', name: 'CallOut', width: 85, sortable: false, align: 'center', hide: false },
                 { display: 'editer', name: 'login_name', width: 60, sortable: false, align: 'center', hide: false },
             ],
-            procmsg: '@TSMC14B.Menu.procmsg',
-            rptext: '@TSMC14B.Menu.rptext',
-            pagestat: '@TSMC14B.Menu.pagestat',
-            pagetext: '@TSMC14B.Menu.pagetext',
-            outof: '@TSMC14B.Menu.outof',
-            nomsg: '@TSMC14B.Menu.nomsg',
+            procmsg: '@WebCMS.Menu.procmsg',
+            rptext: '@WebCMS.Menu.rptext',
+            pagestat: '@WebCMS.Menu.pagestat',
+            pagetext: '@WebCMS.Menu.pagetext',
+            outof: '@WebCMS.Menu.outof',
+            nomsg: '@WebCMS.Menu.nomsg',
             usepager: true,
             useRp: true,
             rp: 20,
@@ -34,12 +34,12 @@
                 //$('.flexme > tbody > tr > td[abbrr="edit"] > div').remove();
                 //$('.flexme > tbody > tr > td[abbrr="edit"]').each(function () {
                 //    if ($(this).parent().children(':eq(0)').text() == '@Session["UserdepartmentName"]' || parseInt('@Session["UserLevel"]')>900) {
-                //        $(this).append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@TSMC14B.Menu.Edit" /></div></a>');
+                //        $(this).append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@WebCMS.Menu.Edit" /></div></a>');
                 //    }
                 //});
 
                 //$('.edit').click(function () {
-                //    OpenModelWindow('@Url.Action("EditLimit")?TagName=' + $(this).parent().parent().children(':eq(1)').text(), { width: 700, height: 400, caption: "@TSMC14B.Menu.Edit", onclose: function () { $('.flexme').flexReload(); } });
+                //    OpenModelWindow('@Url.Action("EditLimit")?TagName=' + $(this).parent().parent().children(':eq(1)').text(), { width: 700, height: 400, caption: "@WebCMS.Menu.Edit", onclose: function () { $('.flexme').flexReload(); } });
                 //});
             },
             singleSelect: true,

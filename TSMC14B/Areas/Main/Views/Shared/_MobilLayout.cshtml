@@ -1,0 +1,92 @@
+﻿@{
+    //ViewBag.Title = "_MobilLayout";
+    Layout = "~/Views/Shared/_MobilLayout.cshtml";
+
+    if (string.IsNullOrEmpty((string)Session["UserName"]))
+    {
+        string url = Request.Url.PathAndQuery;
+        ViewBag.reUrl = Request.Url.PathAndQuery;
+        Response.Redirect("/Main/mobile/LoginPage??reUrl==" + url, true);
+    }
+}
+
+@section head{
+    @*    <script type="text/javascript">
+
+        if ("@Session["UserName"]" == '') {
+            location.href = ("/Main/mobile/LoginPage");
+        }
+    </script>*@
+    @RenderSection("JavaScript", false)
+
+    <style>
+        .ui-li-static.ui-collapsible {
+            padding: 0;
+        }
+
+        .ui-listview > .ui-li-static.ui-li-has-count {
+            padding-right: 0;
+        }
+
+        .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview,
+        .ui-li-static.ui-collapsible > .ui-collapsible-heading {
+            margin: 0;
+        }
+
+        .ui-li-static.ui-collapsible > .ui-collapsible-content {
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-right: 0;
+            border-bottom-width: 0;
+        }
+
+            .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li.ui-last-child,
+            .ui-li-static.ui-collapsible.ui-collapsible-collapsed > .ui-collapsible-heading > a.ui-btn {
+                border-bottom-width: 0;
+            }
+
+            .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li.ui-first-child,
+            .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li.ui-first-child > a.ui-btn,
+            .ui-li-static.ui-collapsible > .ui-collapsible-heading > a.ui-btn {
+                border-top-width: 0;
+            }
+
+            .ui-li-static.ui-collapsible > .ui-collapsible-heading > a.ui-btn,
+            .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > .ui-li-static,
+            .ui-li-static.ui-collapsible > .ui-collapsible-content > .ui-listview > li > a.ui-btn,
+            .ui-li-static.ui-collapsible > .ui-collapsible-content {
+                border-right-width: 0;
+            }
+
+        .ui-listview-outer > .ui-li-static.ui-collapsible .ui-li-static.ui-collapsible.ui-collapsible,
+        .ui-listview-outer > .ui-li-static.ui-collapsible > .ui-collapsible-heading > a.ui-btn,
+        .ui-li-static.ui-collapsible > .ui-collapsible-content {
+            border-left-width: 0;
+        }
+    </style>
+}
+
+<div data-role="panel" id="leftpanel" data-position="left" data-display="overlay" data-theme="a" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-a ui-panel-animate ui-panel-open">
+    <div class="ui-panel-inner">
+        <h3>hi,@(Session["UserName"] as string)@Html.ActionLink(@WebCMS.Menu.LogOut, "Logout", null, new { style = "color:#034af3;" })
+            @(Session["message"] as string)</h3>
+        @{
+            IEnumerable<WebCMS.Areas.Main.Models.ListModel> codes2 = WebCMS.Areas.Main.Models.ListModel.GetDepartmentTitleList();
+        }
+        <ul data-role="listview">
+            @foreach (WebCMS.Areas.Main.Models.ListModel item in codes2)
+            {
+                if (item.Text == ViewData["bar"] as string)
+                {
+                <li><a style="color:#034af3;" href="@Url.Action("ToolCheck", new { vName = item.Text })">@item.Text</a></li>
+                }
+                else
+                {
+                <li><a href="@Url.Action("ToolCheck", new { vName = item.Text })">@item.Text</a></li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+@RenderBody()

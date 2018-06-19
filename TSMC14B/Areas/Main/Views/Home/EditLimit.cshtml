@@ -1,6 +1,6 @@
-﻿@model TSMC14B.Areas.Main.Models.AlarmLimitModel
+﻿@model WebCMS.Areas.Main.Models.AlarmLimitModel
 @{
-    ViewBag.Title = @TSMC14B.Menu.Edit;
+    ViewBag.Title = @WebCMS.Menu.Edit;
 }
 @section JavaScript{
     <script type="text/javascript">
@@ -10,6 +10,17 @@
                 CloseModelWindow();
             }
         });
+        function CheckDelayTime() {
+            var vv = $('#DelayTime').val();
+            if (vv != null && (parseInt(vv) == 0 || (parseInt(vv) >= 10 && parseInt(vv) <= 7200))) {
+
+            } else {
+                event.preventDefault();
+                alert('請設定0或10~7200秒之間');
+            }
+
+            return;
+        }
     </script>
 }
 @using (Html.BeginForm())
@@ -27,35 +38,46 @@
         </ul>
         <ul class="ul">
             <li>@Html.LabelFor(model => model.IsHiEnable)</li>
-            <li>@Html.RadioButtonFor(model => model.IsHiEnable, true) @TSMC14B.Menu.Manually  @Html.TextBoxFor(model => model.Limit_Max, new { style = "width: 100px;" })</li>
+            <li>@Html.RadioButtonFor(model => model.IsHiEnable, true) @WebCMS.Menu.Manually  @Html.TextBoxFor(model => model.Limit_Max, new { style = "width: 100px;" })</li>
             <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-            <li>@Html.RadioButtonFor(model => model.IsHiEnable, false) @TSMC14B.Menu.DefaultValue : @Html.DisplayFor(model => model.Limit_Max_Type)</li>
+            <li>@Html.RadioButtonFor(model => model.IsHiEnable, false) @WebCMS.Menu.DefaultValue : @Html.DisplayFor(model => model.Limit_Max_Type)</li>
         </ul>
-@*        <ul class="ul">
+        @*        <ul class="ul">
             <li>@Html.LabelFor(model => model.Limit_Max)</li>
-            <li> @TSMC14B.Menu.DefaultValue : @Html.DisplayFor(model => model.Limit_Max_Type)</li>
+            <li> @WebCMS.Menu.DefaultValue : @Html.DisplayFor(model => model.Limit_Max_Type)</li>
         </ul>*@
         <ul class="ul">
             <li>@Html.LabelFor(model => model.IsLoEnable)</li>
-            <li>@Html.RadioButtonFor(model => model.IsLoEnable, true) @TSMC14B.Menu.Manually @Html.TextBoxFor(model => model.Limit_Min, new { style = "width: 100px;" })</li>
+            <li>@Html.RadioButtonFor(model => model.IsLoEnable, true) @WebCMS.Menu.Manually @Html.TextBoxFor(model => model.Limit_Min, new { style = "width: 100px;" })</li>
             <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-            <li>@Html.RadioButtonFor(model => model.IsLoEnable, false) @TSMC14B.Menu.DefaultValue : @Html.DisplayFor(model => model.Limit_Min_Type)</li>
+            <li>@Html.RadioButtonFor(model => model.IsLoEnable, false) @WebCMS.Menu.DefaultValue : @Html.DisplayFor(model => model.Limit_Min_Type)</li>
         </ul>
-@*        <ul class="ul">
+        @*        <ul class="ul">
             <li>@Html.LabelFor(model => model.Limit_Min)</li>
-            <li> @TSMC14B.Menu.DefaultValue : @Html.DisplayFor(model => model.Limit_Min_Type)</li>
+            <li> @WebCMS.Menu.DefaultValue : @Html.DisplayFor(model => model.Limit_Min_Type)</li>
         </ul>*@
+        @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN")
+        { 
+            <ul class="ul">
+                <li>@Html.LabelFor(model => model.DelayTime)</li>
+                <li>@Html.TextBoxFor(model => model.DelayTime, new { style = "width: 100px;" }) <span style="color: red;">請設定0或10~60秒之間</span></li>
+            </ul>
+        }
+        else
+        {
+            <ul class="ul" style="display:none;">
+                <li>@Html.LabelFor(model => model.DelayTime)</li>
+                <li>@Html.TextBoxFor(model => model.DelayTime, new { style = "width: 100px;" }) <span style="color: red;">請設定0或10~60秒之間</span></li>
+            </ul>
+        }
+
         <ul class="ul">
-            <li>@Html.LabelFor(model => model.DelayTime)</li>
-            <li>@Html.TextBoxFor(model => model.DelayTime, new { style = "width: 100px;" })</li>
-        </ul>
-        <ul class="ul">
             <li>
-                <input type="submit" value="@TSMC14B.Menu.confirm" style="width: 80px" />&nbsp;&nbsp;&nbsp;</li>
+                <input type="submit" value="@WebCMS.Menu.confirm" style="width: 80px" onclick="javascript: CheckDelayTime();" />&nbsp;&nbsp;&nbsp;</li>
             <li>
-                <input type="button" value="@TSMC14B.Menu.Refill" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;</li>
+                <input type="button" value="@WebCMS.Menu.Refill" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;</li>
             <li>
-                <input type="button" value="@TSMC14B.Menu.Cancel" style="width: 80px" onclick="CloseModelWindow();" /></li>
+                <input type="button" value="@WebCMS.Menu.Cancel" style="width: 80px" onclick="CloseModelWindow();" /></li>
         </ul>
     </fieldset>
 }

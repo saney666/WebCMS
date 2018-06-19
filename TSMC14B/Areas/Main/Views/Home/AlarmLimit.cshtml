@@ -1,8 +1,8 @@
-﻿@*@model TSMC14B.Areas.Main.Models.AlarmLimitModel
+﻿@*@model WebCMS.Areas.Main.Models.AlarmLimitModel
 *@
 @{
     Layout = "../Shared/_Layout.cshtml";
-    ViewBag.Title = @TSMC14B.Menu.EqLimitSetting;
+    ViewBag.Title = @WebCMS.Menu.EqLimitSetting;
 }
 
 @section JavaScript{
@@ -12,31 +12,40 @@
 
         $(document).ready(function () {
             $('.flexme').flexigrid({
-                title: '@TSMC14B.Menu.LimitList',
+                title: '@WebCMS.Menu.LimitList',
             width: 1200,
             height: "auto",
             //url: '@Url.Action("JsonAlarmLimit")',
             dataType: 'json',
             colModel: [
-                { display: '@TSMC14B.Menu.department_name', name: 'department_name', width: 50, sortable: false, align: 'center', hide: false },
+                { display: '@WebCMS.Menu.department_name', name: 'department_name', width: 50, sortable: false, align: 'center', hide: false },
                 { display: '', name: 'FullTagName', width: 70, sortable: false, align: 'center', hide: true },
                 { display: 'TagName', name: 'FDC_Tag', width: 330, sortable: false, align: 'left', hide: false },
-                { display: '@TSMC14B.Menu.Limit_Max_Setting', name: 'Limit_Max_Setting', width: 70, sortable: false, align: 'center', hide: false },
-                { display: '@TSMC14B.Menu.Limit_Max', name: 'Limit_Max', width: 70, sortable: false, align: 'center', hide: true },
-                { display: '@TSMC14B.Menu.IsHiEnable', name: 'IsHiEnable', width: 70, sortable: false, align: 'center', hide: true },
-                { display: '@TSMC14B.Menu.Limit_Min_Setting', name: 'Limit_Min_Setting', width: 70, sortable: false, align: 'center', hide: false },
-                { display: '@TSMC14B.Menu.Limit_Min', name: 'Limit_Min', width: 70, sortable: false, align: 'center', hide: true },
-                { display: '@TSMC14B.Menu.IsLoEnable', name: 'IsLoEnable', width: 70, sortable: false, align: 'center', hide: true },
-                { display: 'DelayTime(sec)', name: 'DelayTime', width: 90, sortable: false, align: 'center', hide: false },
-                { display: '@TSMC14B.Menu.LastEditUser', name: 'login_name', width: 60, sortable: false, align: 'center', hide: false },
-                { display: '@TSMC14B.Menu.Setting', name: 'edit', width: 60, sortable: false, align: 'center', hide: false }
+                { display: 'Type', name: 'type_name', width: 80, sortable: false, align: 'left', hide: false },
+                { display: '@WebCMS.Menu.Limit_Max_Setting', name: 'Limit_Max_Setting', width: 70, sortable: false, align: 'center', hide: false },
+                { display: '@WebCMS.Menu.Limit_Max', name: 'Limit_Max', width: 70, sortable: false, align: 'center', hide: true },
+                { display: '@WebCMS.Menu.IsHiEnable', name: 'IsHiEnable', width: 70, sortable: false, align: 'center', hide: true },
+                { display: '@WebCMS.Menu.Limit_Min_Setting', name: 'Limit_Min_Setting', width: 70, sortable: false, align: 'center', hide: false },
+                { display: '@WebCMS.Menu.Limit_Min', name: 'Limit_Min', width: 70, sortable: false, align: 'center', hide: true },
+                { display: '@WebCMS.Menu.IsLoEnable', name: 'IsLoEnable', width: 70, sortable: false, align: 'center', hide: true },
+
+                 @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN")
+                        { 
+                         @: { display: 'DelayTime(sec)', name: 'DelayTime', width: 90, sortable: false, align: 'center', hide: false },
+                        }else
+	                    {
+                          @: { display: 'DelayTime(sec)', name: 'DelayTime', width: 90, sortable: false, align: 'center', hide: true },
+	                    }
+                { display: '@WebCMS.Menu.LastEditUser', name: 'login_name', width: 60, sortable: false, align: 'center', hide: false },
+                { display: '@WebCMS.Menu.Setting', name: 'edit', width: 60, sortable: false, align: 'center', hide: false },
+                { display: 'Apply', name: 'Apply', width: 60, sortable: false, align: 'center', hide: false }
             ],
-            procmsg: '@TSMC14B.Menu.procmsg',
-            rptext: '@TSMC14B.Menu.rptext',
-            pagestat: '@TSMC14B.Menu.pagestat',
-            pagetext: '@TSMC14B.Menu.pagetext',
-            outof: '@TSMC14B.Menu.outof',
-            nomsg: '@TSMC14B.Menu.nomsg',
+            procmsg: '@WebCMS.Menu.procmsg',
+            rptext: '@WebCMS.Menu.rptext',
+            pagestat: '@WebCMS.Menu.pagestat',
+            pagetext: '@WebCMS.Menu.pagetext',
+            outof: '@WebCMS.Menu.outof',
+            nomsg: '@WebCMS.Menu.nomsg',
             usepager: true,
             useRp: true,
             rp: 20,
@@ -44,19 +53,18 @@
             onSuccess: function () {
                 $('.flexme > tbody > tr > td[abbrr="edit"] > div').empty();
                 $('.flexme > tbody > tr > td[abbrr="edit"] > div').each(function () {
-                    if ($(this).parent().parent().children(':eq(0)').text() == '@Session["UserdepartmentName"]'  || parseInt('@Session["UserLevel"]') >= 600) {
-                        $(this).append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@TSMC14B.Menu.Edit" /></div></a>');
+                    if ($(this).parent().parent().children(':eq(0)').text() == '@Session["UserdepartmentName"]' || parseInt('@Session["UserLevel"]') >= 600) {
+                        $(this).append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@WebCMS.Menu.Edit" /></div></a>');
                     }
                 });
 
                 $('.edit').click(function () {
-                    OpenModelWindow('@Url.Action("EditLimit")?TagName=' + $(this).parent().parent().parent().children(':eq(1)').text(), { width: 700, height: 400, caption: "@TSMC14B.Menu.Edit", onclose: function () { $('.flexme').flexReload(); } });
+                    OpenModelWindow('@Url.Action("EditLimit")?TagName=' + $(this).parent().parent().parent().children(':eq(1)').text(), { width: 700, height: 400, caption: "@WebCMS.Menu.Edit", onclose: function () { $('.flexme').flexReload(); } });
                 });
 
                 $('.flexme > tbody > tr > td[abbrr="login_name"] > div').each(function () {
                     if ($(this).text().trim() != '') {
                         var tagname = $(this).parent().parent().children(':eq(1)').text();
-                        console.log(tagname);
                         $(this).html('<a href="#" class="history" >' + $(this).text() + '</a>');
                     }
                 });
@@ -64,9 +72,28 @@
                 $('.history').click(function () {
                     OpenModelWindow('@Url.Action("AlarmLimitHistory")?TagName=' + $(this).parent().parent().parent().children(':eq(1)').text(), { width: 850, height: 600, caption: "History", onclose: function () {  } });
                 });
+                $('.flexme > tbody > tr > td[abbrr="Apply"] > div').empty();
+                $('.flexme > tbody > tr > td[abbrr="Apply"] > div').each(function () {
+                    if ($(this).parent().parent().children(':eq(0)').text() == '@Session["UserdepartmentName"]' || parseInt('@Session["UserLevel"]') >= 600) {
+                        $(this).append('<input type="checkbox" data-tagname=' + $(this).parent().parent().children(':eq(1)').text() + ' class="cbxApply" />');
+                        $('#AllCheck').css('display', '');
+                        $('#lblAllCheck').css('display', '');
+                    } else {
+                        $('#AllCheck').css('display', 'none');
+                        $('#lblAllCheck').css('display', 'none');
+                    }
+                });
             },
             singleSelect: true,
             rpOptions: [5, 10, 15, 20, 30, 50],
+        });
+
+        $('#AllCheck').change(function () {
+            if ($(this).attr('checked')) {
+                $('.flexme > tbody > tr > td[abbrr="Apply"] > div > input').attr('checked', 'checked');
+            } else {
+                $('.flexme > tbody > tr > td[abbrr="Apply"] > div > input').attr('checked', false);
+            }
         });
 
         $('#tbxToolidtip1').keyup(function (event) {
@@ -76,7 +103,7 @@
                 changeIndex($("#tbxToolidtip1").val(), 'toolid');
             }
         });
-
+            
         $('#tbxToolidtip2').keyup(function (event) {
             if (event.keyCode == 13) {
                 @*location.href = '@Url.Action("PLCCheckLimit")?vName=@Request["vName"]&ToolID=' + $('#toolid').val();*@
@@ -105,7 +132,7 @@
         $('#department_name').change(function () {
             $.post('@Url.Action("JsonTool")', { "dName": this.value }, function (data) {
                 $('#Tools').empty();
-
+                $('#Tools').append('<option value="">' + '@WebCMS.Menu.plaseSelectOption' + '</option>');
                 for (var i in data) {
                     $('#Tools').append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
                 }
@@ -115,22 +142,41 @@
 
     function ChartExport(id) {
         if (id == 'search') {
-            var urlStr = '@Url.Action("JsonAlarmLimit")?tool=' + $('#Tools').val() + '&page=1&rp=20';
+            var urlStr = '@Url.Action("JsonAlarmLimit")?tool=' + $('#Tools').val() + '&vendor=' + $('#department_name').val() + '&parameter=' + $('#Parameter').val() + '&page=1&rp=20';
             $(".flexme").flexOptions({ url: urlStr });
             $('.flexme').flexReload();
         } else {
-            location.href = "@Url.Action("AlarmLimit")?tool=" + $('#Tools').val() + "&output=" + id;;
+            location.href = "@Url.Action("AlarmLimit")?tool=" + $('#Tools').val() + "&output=" + id;
+        }
+    }
+
+    function ApplyAll() {
+        if ($('.cbxApply:checked').length>0) {
+            var Tagname;
+            $('.cbxApply:checked').each(function (i,e) {
+                if (Tagname == null) {
+                    Tagname = $(e).data('tagname');
+                } else {
+                    Tagname = Tagname + ',' + $(e).data('tagname');
+                }
+            });
+
+            if (Tagname!=null) {
+                OpenModelWindow('@Url.Action("EditAllLimit")?TagName=' + Tagname, { width: 700, height: 250, caption: "@WebCMS.Menu.Edit", onclose: function () { $('.flexme').flexReload(); } });
+            }
+        } else {
+            alert('請勾選欲修改的參數');
         }
     }
     </script>
 }
-<h2>@TSMC14B.Menu.EqLimitSetting</h2>
+<h2>@WebCMS.Menu.EqLimitSetting</h2>
 <div align="left">
     <div>
         <table border="1" class="tb" style="width: 550px">
-            <tr>
+            <tr> 
                 <td style="text-align: left;">
-                    <label for="lbl_department_name">@TSMC14B.Menu.plaseSelectDep</label>
+                    <label for="lbl_department_name">@WebCMS.Menu.plaseSelectDep</label>
                     <select id="department_name">
                         @foreach (var item in ViewBag.department_name as IEnumerable<SelectListItem>)
                         {
@@ -145,9 +191,20 @@
                     </select>
                 </td>
                 <td>
-                    <label for="lbl_chamberName">@TSMC14B.Menu.plaseSelectEQ</label>
+                    <label for="lbl_chamberName">@WebCMS.Menu.plaseSelectEQ</label>
                     <select id="Tools">
+                        <option value="">@WebCMS.Menu.plaseSelectOption</option>
                         @foreach (var item in ViewBag.Tool)
+                        {
+                            <option  value="@item.Value" >@item.Text</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <label for="lbl_Parameter">請選擇Parameter</label>
+                    <select id="Parameter">
+                        <option value="">@WebCMS.Menu.plaseSelectOption</option>
+                        @foreach (var item in ViewBag.Parameter)
                         {
                             <option  value="@item.Value" >@item.Text</option>
                         }
@@ -159,8 +216,11 @@
                 <td style="text-align: right;"></td>
             </tr>
         </table>
-        <input type="button" id="sbmit" value="@TSMC14B.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search');" />
-        <input type="button" id="btnExport" value="@TSMC14B.Menu.ChartExport" style="width: 80px;display:none;" onclick="javascript: ChartExport('export');" />&nbsp;&nbsp;&nbsp;    
+        <input type="button" id="sbmit" value="@WebCMS.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search');" />
+        <input type="button" id="btnExport" value="@WebCMS.Menu.ChartExport" style="width: 80px;" onclick="javascript: ChartExport('export');" />
+        <input type="button" id="btnAllApply" value="ApplyAll" style="width: 80px;" onclick="javascript: ApplyAll();" />&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="AllCheck"  style="display:none;"  /><label id="lblAllCheck" style="display:none;" for="AllCheck" >@WebCMS.Menu.SelectAll</label>
     </div>
     <table class="flexme"></table>
+    <div style="height:100px"></div>
 </div>

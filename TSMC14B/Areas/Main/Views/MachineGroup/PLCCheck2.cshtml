@@ -1,4 +1,4 @@
-﻿@model TSMC14B.Areas.Main.Models.PLCCheckModel
+﻿@model WebCMS.Areas.Main.Models.PLCCheckModel
 @{
     Layout = "../Shared/_Layout.cshtml";
     ViewBag.Title = Request["vName"] + " EQP Type";
@@ -497,10 +497,10 @@ function getCookie(cname) {
 </style>
 <h2>@Request["vName"]</h2>
 @*@Html.Partial("MachineGroupTitle", ViewData["PageName"] = "PLCCheck")*@
-<input type="button" name="reload" value="Reload Page" onclick="javascript: reload();" style="color: red; font-weight: bold;" />
-<input type="radio" id="EQPType1" name="EQPType" class="EQPType" value="0" checked="checked" /><label for="EQPType1">EQP Type(Tool Only)</label>
-<input type="radio" id="EQPType2" name="EQPType" class="EQPType" value="1" /><label for="EQPType2">EQP Type(All Status)</label>
-<span style="color:blue">@TSMC14B.Menu.LastUpdateTime:@DateTime.Now.ToString("MM/dd HH:mm:ss")</span>
+@*<input type="button" name="reload" value="Reload Page" onclick="javascript: reload();" style="color: red; font-weight: bold;" />*@
+<input type="radio" id="EQPType1" name="EQPType" class="EQPType" value="0" checked="checked" /><label for="EQPType1">Tool Only</label>
+<input type="radio" id="EQPType2" name="EQPType" class="EQPType" value="1" /><label for="EQPType2">All Extend</label>
+<span style="color:blue">@WebCMS.Menu.LastUpdateTime:@DateTime.Now.ToString("MM/dd HH:mm:ss")</span>
 <hr />
 <table style="border: groove; border-width: thin; width: 800px">
     <tr>
@@ -516,14 +516,14 @@ function getCookie(cname) {
             <td colspan="50" style="border-bottom-width: thin; border-bottom-style: groove;">
                 @{
                     string processName = item.ToString();
-                    List<TSMC14B.Areas.Main.Models.vw_eq_status> codes2 = (from row in ViewData["Device"] as List<TSMC14B.Areas.Main.Models.vw_eq_status> where row.process_name == processName select row).ToList();
+                    List<WebCMS.Areas.Main.Models.vw_eq_status> codes2 = (from row in ViewData["Device"] as List<WebCMS.Areas.Main.Models.vw_eq_status> where row.process_name == processName select row).ToList();
                 }
                 @foreach (var item2 in (from c in codes2 select c.EQID).Distinct())
                 {
                     string EQID = item2.ToString();
-                    List<TSMC14B.Areas.Main.Models.vw_eq_status> codes3 = (from row in ViewData["Device"] as List<TSMC14B.Areas.Main.Models.vw_eq_status> where row.process_name == processName && row.EQID == EQID select row).ToList();
+                    List<WebCMS.Areas.Main.Models.vw_eq_status> codes3 = (from row in ViewData["Device"] as List<WebCMS.Areas.Main.Models.vw_eq_status> where row.process_name == processName && row.EQID == EQID select row).ToList();
 
-                    var codes4 = from row in ViewData["Device"] as List<TSMC14B.Areas.Main.Models.vw_eq_status> where row.process_name == processName && row.EQID == EQID group row by row.chamber;
+                    var codes4 = from row in ViewData["Device"] as List<WebCMS.Areas.Main.Models.vw_eq_status> where row.process_name == processName && row.EQID == EQID group row by row.chamber;
 
                     Int16 toolStatus = 0;
                     foreach (var item3 in from c in codes3 select c)
@@ -587,7 +587,6 @@ function getCookie(cname) {
                             toolColor = "lightgreen";
                             break;
                     }
-                
                         <span style="display: inline-flex; border: outset; border-width: 3px;border-color: lightgray;  background-color:@toolColor; padding: 2px">
                         
                         <label class="EQID" style="border: solid; border-width: 1px; border-color: black; font-weight: bold; font-size:20px;">@item2</label>
@@ -661,7 +660,14 @@ function getCookie(cname) {
                                 }
                                 
                                 @:<table class="chamber" style="display:none;border:groove; border-width: 2px;border-color: lightgray;padding:1px;margin:1px;background-color:@chamberColor;"><tr><td>
-                                    @item4
+                                     if (item4=="Snsr")
+                                     {
+                                         @:Sensor
+                                     }
+                                     else
+                                     {
+                                         @item4
+                                     }
                                 @:</td></tr><tr><td>
                                 foreach (var item3 in from c in codes3 where c.chamber == item4 select c)
                                 {
@@ -673,7 +679,7 @@ function getCookie(cname) {
                 }
             </td>
         </tr>         
-    } 
+    }
 </table>
 <div style="height:50px">
     

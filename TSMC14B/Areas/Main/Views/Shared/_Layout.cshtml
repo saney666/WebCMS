@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     //Session["UserName"] = "web";
+    
     if (string.IsNullOrEmpty((string)Session["UserName"]))
     {
         string url = Request.Url.PathAndQuery;
@@ -209,27 +210,47 @@
                 <table border="0" style="padding: 0px 0px 0px 0px; border-spacing: 0px 0px; border-collapse: collapse;">
                     <tr>
                         <td style="border-collapse: collapse;background-image: url(
-                            @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN")
+                            @if (System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN")
                             {
                                 @Url.Content("~/images/Top_1.zh-CN.gif")
                             }
                             else
                             {
-                                @Url.Content("~/images/Top_1.gif")
+                                if (System.Configuration.ConfigurationManager.AppSettings["DB"] == "Module")
+                                {
+                                    @Url.Content("~/images/Top_2.gif")
+                                }
+                                else if (System.Configuration.ConfigurationManager.AppSettings["FAB"] == "UMC12P5")
+                                {
+                                    @Url.Content("~/images/Top_1.gif")
+                                }
+                                else
+                                {
+                                    @Url.Content("~/images/title1_UMCProjectM.gif")
+                                }
                             }
-                            
-                            ); height: 46px; text-align:right; vertical-align:bottom; width:411px"></td>
+                            ); height: 46px; text-align:center; vertical-align:middle;letter-spacing:2px; width:411px">
+                            <span style="font-size:x-large;font-weight:bold;"> UMC8F</span>
+                        </td>
                         <td style="border-collapse:collapse; background-image: url(@Url.Content("~/images/Top_2.gif"));background-repeat: no-repeat; height: 46px; text-align:right; vertical-align:bottom; width:443px;background-color: #5988c7;">
                             <span style="font-size: 16px;font-weight:bold;background-color:white;">
                                 &nbsp;&nbsp;
                                 <label>hi,@(Session["UserName"] as string)</label>
                             <label id="showLeft" style="font-size: 14px;font-weight:bold;"></label>
-                            @Html.ActionLink(@TSMC14B.Menu.LogOut, "Logout", "Login",null, new { style="color:#034af3;"}) @(Session["message"] as string)
+                            @Html.ActionLink(@WebCMS.Menu.LogOut, "Logout", "Login",null, new { style="color:#034af3;"}) @(Session["message"] as string)
                                 &nbsp;&nbsp;
+                                @if (System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN") {
+                                    @:,
+                                    @Html.ActionLink("IE 兼容性设定教学", "CookieTeaching", "Home",null, new { style="color:#034af3;"})
+                                }
+                                @if (System.Configuration.ConfigurationManager.AppSettings["FAB"]=="UMC12P5")
+                                {
+                                    <a href="http://10.12.9.214" style="color:#034af3;">Project M</a>
+                                }
                             </span>
                         </td>
                         <td style="border-collapse:collapse; background-image: url(
-                            @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN")
+                            @if (System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN")
                             {
                                  @Url.Content("~/images/Top_3.zh-CN.gif")
                             }
@@ -245,15 +266,14 @@
         </tr>
         <tr>
             <td >
-                <div id="menuDemo" style="width: 1214px;" >
+                <div id="menuDemo" @*style="width: 1214px;*@" >
                     <ul >
                         @*<li id="homeMenu">
                @Html.ActionLink("首頁", "Index", "Home", null, new { @class = "Main" })
             </li>
                         *@
                         @{
-                            //IEnumerable<TSMC14B.Areas.Main.Models.StatusCountModel> codes2 = TSMC14B.Areas.Main.Models.StatusCountModel.IndexAllStatusList();
-                            IEnumerable<TSMC14B.Areas.Main.Models.ListModel> codes2 = TSMC14B.Areas.Main.Models.ListModel.GetDepartmentList();
+                            IEnumerable<WebCMS.Areas.Main.Models.ListModel> codes2 = WebCMS.Areas.Main.Models.ListModel.GetDepartmentTitleList();
                         }
 
                         @foreach (var item in from c in codes2 select c.Text)
@@ -263,16 +283,16 @@
                             </li>
                         }
 
-                        @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN" && Session["UserLevel"] != null && (Int16)Session["UserLevel"] >= 500)
+                        @if (System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN" && Session["UserLevel"] != null && (Int16)Session["UserLevel"] >= 500)
                         { 
                             <li>
-                                @Html.ActionLink("延後上報", "FDCPM", "Home", null, new { @class = "FDCPM" })
+                                @Html.ActionLink("PM", "FDCPM", "Home", null, new { @class = "FDCPM" })
                             </li>
                         }
                         @if (Session["UserLevel"]!=null&&(Int16)Session["UserLevel"] != 100 && Session["UserName"] !=null && (string)Session["UserName"] == "engineer" && 1 == 0)
                         {
                             <li>
-                                @Html.ActionLink(@TSMC14B.Menu.PM, "PMConfig", "Home", null, new { @class = "PMConfig" })
+                                @Html.ActionLink(@WebCMS.Menu.PM, "PMConfig", "Home", null, new { @class = "PMConfig" })
                             </li>
                             <li>
                                 @*@Html.ActionLink("History", "PMHistory", "Home", null, null)*@
@@ -308,9 +328,9 @@
                             {
                                 <li class="Limit">@Html.ActionLink("Limit", "AlarmLimit", "Home", null, new { @class = "barAlarmLimit" })</li>
                             }
-                            @if (Session["UserLevel"] != null && (Int16)Session["UserLevel"] >= 800)
+                            @if (Session["UserLevel"] != null && (Int16)Session["UserLevel"] >= 800 && System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN")
                             {
-                                <li class="PhoneCall">@Html.ActionLink("ENS Link", "PhoneCall", "Home", null, new { @class = "barPhoneCall" })</li>
+                                //<li class="PhoneCall">@Html.ActionLink("ENS Link", "PhoneCall", "Home", null, new { @class = "barPhoneCall" })</li>
                             }
                             @*@if (Session["UserLevel"] != null && (Int16)Session["UserLevel"] >= 800)
                             {
@@ -319,8 +339,14 @@
                                 </li>
                             }*@
                             <li id="LoginManage">
-                                @Html.ActionLink(@TSMC14B.Menu.LoginManage, "LoginManage", "Login", null, new { @class = "barAccount" })
+                                @Html.ActionLink(@WebCMS.Menu.LoginManage, "LoginManage", "Login", null, new { @class = "barAccount" })
                             </li>
+                            @if ( !string.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings["ATEnable"]) && System.Configuration.ConfigurationManager.AppSettings["ATEnable"] == "true" )
+                            {
+                                <li id="ATSchedule">
+                                    @Html.ActionLink(@WebCMS.Menu.ATSchedule, "ScheduleList", "AT", null, new { @class = "barATSchedule" })
+                                </li>
+                            }
                         </ul>
                 </div>
             </td>
@@ -329,7 +355,6 @@
     <br />
     <br />
     <br />
-    
 </div>
 <div>@RenderBody()
     

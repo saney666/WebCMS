@@ -4,27 +4,63 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using TSMC14B.Areas.Main.Models;
+using WebCMS.Areas.Main.Models;
 using System.Threading;
+using System.Text.RegularExpressions;
 
-namespace TSMC14B.Areas.Main.Controllers
+namespace WebCMS.Areas.Main.Controllers
 {
     public class HomeController : Controller
     {
         #region Index
         public ActionResult Index()
         {
-            //ViewBag.phoneCallStatusLight = AlarmNowModel.GetPCstatusLight();
-            //ViewBag.phoneCallStatus = ListModel.GetPCstatusList();
+            //string u = Request.ServerVariables["HTTP_USER_AGENT"];
+            //Regex b = new System.Text.RegularExpressions.Regex(@"(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            //Regex v = new System.Text.RegularExpressions.Regex(@"1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            //if ((b.IsMatch(u) || v.IsMatch(u.Substring(0, 4))))
+            //{
+            //    return RedirectToAction("LoginPage", "Mobile");
+            //}
 
-            ViewBag.eqCount = StatusCountModel.IndexAllStatusList();
+            //ViewBag.eqCount = StatusCountModel.IndexAllStatusList();
+
+            string userName;
+            LoginModel LoginUser1;
 
             if (Session["UserName"] == null)
             {
-                return RedirectToAction("LoginPage", "Login");
+                if (string.IsNullOrEmpty(User.Identity.Name) && User.Identity.Name.Contains('\\'))
+                {
+                    userName = User.Identity.Name.Split('\\')[1];
+                    //判斷是否有建資料
+                    LoginUser1 = LoginModel.Get(userName);
+                    if (LoginUser1 != null)
+                    {
+                        Session["UserID"] = LoginUser1.UserName.Trim();
+                        Session["UserName"] = LoginUser1.title.Trim();
+                        Session["UserLevel"] = LoginUser1.login_level;
+                        Session["UserLevelName"] = LoginUser1.Level.Trim();
+                        Session["UserdepartmentId"] = LoginUser1.department_id;
+                        Session["UserdepartmentName"] = LoginUser1.department_name;
+                    }
+                }
             }
 
-            LoginModel LoginUser1 = LoginModel.Get(Session["UserName"].ToString());
+            if (Session["UserName"] == null)
+            {
+
+                if (System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN" || System.Configuration.ConfigurationManager.AppSettings["FAB"] == "Demo" || System.Configuration.ConfigurationManager.AppSettings["DB"] == "Module")
+                {
+                    return RedirectToAction("LoginPage", "Login");
+                }
+                else
+                {
+                    return RedirectToAction("FABSelect", "Login");
+                }
+            }
+
+            LoginUser1 = LoginModel.Get(Session["UserName"].ToString());
 
             string DefvName = string.Empty;
 
@@ -34,10 +70,12 @@ namespace TSMC14B.Areas.Main.Controllers
 
             if (LoginUser1 != null && LoginUser1.login_level <= 800)
             {
-                using (tsmc14BDataContext db = new tsmc14BDataContext())
-                {
-                    DefvName = (from row in db.department_info where row.department_name == LoginUser1.department_name orderby row.display_order select row.department_name).FirstOrDefault();
-                }
+                //using (tsmc14BDataContext db = new tsmc14BDataContext())
+                //{
+                //    DefvName = (from row in db.department_info where row.department_name == LoginUser1.department_name orderby row.display_order select row.department_name).FirstOrDefault();
+                //}
+
+                DefvName = LoginUser1.department_name;
             }
 
             if (DefvName.Length == 0)
@@ -49,7 +87,6 @@ namespace TSMC14B.Areas.Main.Controllers
             }
             return RedirectToAction("PLCCheck2", "MachineGroup", new { vName = DefvName });
 
-            //return View();
         }
 
         public JsonResult JsonIndex(int page, int rp)
@@ -68,19 +105,6 @@ namespace TSMC14B.Areas.Main.Controllers
         {
             return Json(StatusCountModel.IndexAllStatusList());
         }
-
-        //public JsonResult JsonPhoneCall()
-        //{
-        //    //IEnumerable<ListModel> ls = ListModel.GetPCstatusList();
-        //    //return Json(new
-        //    //{
-        //    //    page = page,
-        //    //    total = ls.Count(),
-        //    //    rows = from c in ls.Skip((page - 1) * rp).Take(rp)
-        //    //           select c
-        //    //});
-        //    return Json(ListModel.GetPCstatusList(), JsonRequestBehavior.AllowGet);
-        //}
 
         public JsonResult JsonPerWarning(int page, int rp)
         {
@@ -129,6 +153,11 @@ namespace TSMC14B.Areas.Main.Controllers
             return Json(ListModel.GetAlarmTagList(Comment), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult CookieTeaching()
+        {
+            return View();
+        }
+
         #endregion
 
         #region 其他狀態數
@@ -160,7 +189,7 @@ namespace TSMC14B.Areas.Main.Controllers
         {
             if (output != "export")
             {
-                IEnumerable<ListModel> codes = ListModel.GetDepartmentList();
+                IEnumerable<ListModel> codes = ListModel.GetDepartmentTitleList();
                 ViewBag.Vendor = from c in codes
                                  select new SelectListItem
                                  {
@@ -175,8 +204,7 @@ namespace TSMC14B.Areas.Main.Controllers
                                      Value = c.Value,
                                      Text = c.Text
                                  };
-                //IEnumerable<PMModel> ls = PMModel.PMHistoryList(Vendor == null ? "CS250" : Vendor, toolId == null ? "*" : toolId, StartDate == null ? DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd HH:mm") : StartDate, EndDate == null ? DateTime.Now.ToString("yyyy-MM-dd HH:mm") : EndDate).Take(1);
-                //return View(ls);
+                
                 ViewBag.UserLevel = (string)Session["UserLevelName"];
                 ViewData["bar"] = "Report";
                 return View();
@@ -231,7 +259,7 @@ namespace TSMC14B.Areas.Main.Controllers
         #region PM
         public ActionResult PMConfig(string Vendor, string Device, string toolId, string pmFlag, string output)
         {
-            IEnumerable<ListModel> codes = ListModel.GetDepartmentList();
+            IEnumerable<ListModel> codes = ListModel.GetDepartmentTitleList();
             ViewBag.Vendor = from c in codes
                              select new SelectListItem
                              {
@@ -404,42 +432,72 @@ namespace TSMC14B.Areas.Main.Controllers
 
         #region Alarm Report
 
-        public ActionResult AlarmDeal(string StartDate, string EndDate, string ToolID, string AlarmMsg, string Closed, string Vendor, string gname, string output)
+        public ActionResult AlarmDeal(string StartDate, string EndDate, string ToolID, string process_name, string AlarmMsg, string Closed, string Vendor, string gname, string output)
         {
             if (output != "export")
             {
-                ViewBag.CBL = from c in StatusCountModel.IndexAllStatusList()
-                              select new SelectListItem
-                              {
-                                  Value = c.vName,
-                                  Text = c.vName
-                              };
-                //ViewBag.List = from c in AlarmReportModel.ReportList(StartDate == null ? DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd HH:mm") : StartDate, EndDate == null ? DateTime.Now.ToString("yyyy-MM-dd HH:mm") : Convert.ToDateTime(EndDate).AddDays(1).ToString("yyyy-MM-dd HH:mm"), ToolID == null ? "*" : ToolID, AlarmMsg == null ? "*" : AlarmMsg, Closed == string.Empty ? null : Closed, Vendor == null ? "'CS250'" : Vendor).Take(1)
-                //               select c;
-                ViewData["DepartmentList"] = ListModel.GetDepartmentList();
+                //ViewBag.CBL = from c in StatusCountModel.IndexAllStatusList()
+                //              select new SelectListItem
+                //              {
+                //                  Value = c.vName,
+                //                  Text = c.vName
+                //              };
+      
+                ViewData["DepartmentList"] = ListModel.GetDepartmentTitleList();
                 ViewBag.bar = "Report";
 
                 using (tsmc14BDataContext db = new tsmc14BDataContext())
                 {
-                    ViewData["AlarmCount"] = (from row in db.vw_AlarmReport_AlarmCount select row).ToList();
+                    db.CommandTimeout = 3000;
+                    //ViewData["AlarmCount"] = (from row in db.vw_AlarmReport_AlarmCount select row).ToList();
                 }
-
 
                 return View();
             }
             else
             {
-                byte[] file = AlarmReportModel.GetAlarmDealFile(StartDate, EndDate, ToolID, AlarmMsg, Closed, Vendor, gname, System.Configuration.ConfigurationManager.AppSettings["AlarmLevel"]);
-                return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "AlarmReport_" + DateTime.Now.ToShortDateString() + ".xlsx");
+                byte[] file = AlarmReportModel.GetAlarmDealFile(StartDate, EndDate, ToolID, process_name, AlarmMsg, Closed, Vendor, gname, System.Configuration.ConfigurationManager.AppSettings["AlarmLevel"], System.Configuration.ConfigurationManager.AppSettings["FABIP"]);
+                return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "AlarmReport_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xlsx");
             }
         }
 
-        public JsonResult JsonAlarmDeal(string StartDate, string EndDate, string ToolID, string AlarmMsg, string Closed, string Vendor, string gname, int page, int rp)
+        public ActionResult AlarmCountByDept(string sdate, string edate, string output)
+        {
+            if (output != "export")
+            {
+                ViewData["dtAlarmCountByDept"] = AlarmReportModel.dtAlarmCountByDept(DateTime.Now.AddDays(-56), DateTime.Now);
+
+                return View();
+            }
+            else
+            {
+                byte[] file = AlarmReportModel.GetAlarmCountByDeptFile(DateTime.Now.AddDays(-56), DateTime.Now);
+                return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "AlarmCountByDept_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xlsx");
+            }
+        }
+
+        public ActionResult AlarmCountByModule(string sdate, string edate, string dept, string output)
+        {
+            if (output != "export")
+            {
+                ViewData["DepartmentList"] = ListModel.GetDepartmentTitleList();
+                ViewData["dtAlarmCountByModule"] = AlarmReportModel.dtAlarmCountByModule(DateTime.Now.AddDays(-56), DateTime.Now, dept);
+
+                return View();
+            }
+            else
+            {
+                byte[] file = AlarmReportModel.GetAlarmCountByModuleFile(DateTime.Now.AddDays(-56), DateTime.Now, dept);
+                return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "AlarmCountByModule_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xlsx");
+            }
+        }
+
+        public JsonResult JsonAlarmDeal(string StartDate, string EndDate, string ToolID, string process_name, string AlarmMsg, string Closed, string Vendor, string gname, int page, int rp)
         {
             if (!string.IsNullOrEmpty((string)Session["UserName"]))
             {
                 StartDate = StartDate.Replace("\\", string.Empty).Replace("\"", string.Empty).Trim();
-                IEnumerable<AlarmReportModel> ls = AlarmReportModel.ReportList(StartDate == null ? DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd HH:mm") : StartDate, EndDate == null ? DateTime.Now.ToString("yyyy-MM-dd HH:mm") : EndDate, ToolID == null ? "*" : ToolID, AlarmMsg == null ? "*" : AlarmMsg, Closed == string.Empty ? null : Closed, Vendor == null ? "'CS250'" : Vendor, gname, System.Configuration.ConfigurationManager.AppSettings["AlarmLevel"]);
+                IEnumerable<AlarmReportModel> ls = AlarmReportModel.ReportList(StartDate == null ? DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd HH:mm") : StartDate, EndDate == null ? DateTime.Now.ToString("yyyy-MM-dd HH:mm") : EndDate, ToolID == null ? "*" : ToolID, process_name==null? "*" : process_name, AlarmMsg == null ? "*" : AlarmMsg, Closed == string.Empty ? null : Closed, Vendor == null ? "'CS250'" : Vendor, gname, System.Configuration.ConfigurationManager.AppSettings["AlarmLevel"]);
 
                 return Json(new
                 {
@@ -456,7 +514,6 @@ namespace TSMC14B.Areas.Main.Controllers
         [HttpGet]
         public ActionResult EditAlarmReport(int AlarmID, string vName, string Sys, string toolid, string AlarmTime)
         {
-
             if (!string.IsNullOrEmpty((string)Session["UserName"]))
             {
                 int _AlarmID = AlarmID;
@@ -561,7 +618,6 @@ namespace TSMC14B.Areas.Main.Controllers
 
         public ActionResult Emergency(string Vendor)
         {
-            //ViewBag.phoneCallStatus = AlarmNowModel.phoneCallStatus();
 
             IEnumerable<ListModel> codes = ListModel.GetPCstatusList();
             ViewBag.phoneCallStatus = from c in codes
@@ -623,7 +679,6 @@ namespace TSMC14B.Areas.Main.Controllers
 
             var tid = EmergencyModel.GetVendorgName();
 
-
             if (tid.Count() > 0)
             {
                 foreach (var product in tid)
@@ -634,7 +689,7 @@ namespace TSMC14B.Areas.Main.Controllers
                     ));
                 }
             }
-
+            
             return this.Json(items);
         }
 
@@ -732,14 +787,13 @@ namespace TSMC14B.Areas.Main.Controllers
 
         public ActionResult FrequencyDetail(string tName)
         {
-
             var tName1 = tName;
             return View();
         }
 
         public ActionResult EditFrequency(string Vendor)
         {
-            IEnumerable<ListModel> codes = ListModel.GetDepartmentList();
+            IEnumerable<ListModel> codes = ListModel.GetDepartmentTitleList();
             ViewBag.Vendor = from c in codes
                              select new SelectListItem
                              {
@@ -762,7 +816,6 @@ namespace TSMC14B.Areas.Main.Controllers
                                  Value = c.Value,
                                  Text = c.Text
                              };
-
 
             //待處理中清單
             ViewBag.List = from c in PMModel.NotyetPMList()
@@ -896,7 +949,6 @@ namespace TSMC14B.Areas.Main.Controllers
 
         public JsonResult JsonPMFrequencyDetailList(String vName, String groupName, int page, int rp)
         {
-
             IEnumerable<PMfrequencySetModel> ls = PMfrequencySetModel.PMFrequencyDetailList(vName, groupName);
             return Json(new
             {
@@ -905,7 +957,6 @@ namespace TSMC14B.Areas.Main.Controllers
                 rows = from c in ls.Skip((page - 1) * rp).Take(rp)
                        select c
             });
-
         }
 
         [HttpGet]
@@ -928,9 +979,6 @@ namespace TSMC14B.Areas.Main.Controllers
                 }
                 else
                 {
-                    //ViewBag.MessageType = "警告";
-                    //ViewBag.Message = "此機台未新增PM週期初始值，請新增PM週期初始值..";
-                    //return View("Message");
                     PMfrequencySetModel arm = PMfrequencySetModel.GetPMSchedule(toolid, frequency, tolerance, (string)Session["UserName"]);
                     ViewBag.Title = "新增";
                     return View(arm);
@@ -957,9 +1005,6 @@ namespace TSMC14B.Areas.Main.Controllers
                                         Text = c.Text
                                     };
 
-                //ViewBag.MessageType = "警告";
-                //ViewBag.Message = "此機台未新增PM週期初始值，請新增PM週期初始值..";
-                //return View("Message");
                 PMfrequencySetModel arm = PMfrequencySetModel.GetPMSchedule1(toolid, frequency, tolerance, (string)Session["UserName"]);
                 ViewBag.Title = "新增";
                 return View(arm);
@@ -993,9 +1038,6 @@ namespace TSMC14B.Areas.Main.Controllers
                 }
                 else
                 {
-                    //ViewBag.MessageType = "警告";
-                    //ViewBag.Message = "此機台未新增PM週期初始值，請新增PM週期初始值..";
-                    //return View("Message");
                     PMfrequencySetModel arm = PMfrequencySetModel.GetPMSchedule(toolid, frequency, tolerance, (string)Session["UserName"]);
                     ViewBag.Title = "新增";
                     return View(arm);
@@ -1056,14 +1098,11 @@ namespace TSMC14B.Areas.Main.Controllers
                 }
                 else
                 {
-                    //return this.Json("PM上限天數範圍或是格式有誤");
                     return Json(new { IsSuccess = IsSuccess, Msg = Msg });
                 }
             }
             else
             {
-                //ViewBag.MessageType = "警告";
-                //ViewBag.Message = "您無權限使用本功能或長時間未使用已自動登出，請重新登入，如有疑問請洽管理員，謝謝…";
                 return this.Json("您無權限使用本功能或長時間未使用已自動登出，請重新登入，如有疑問請洽管理員，謝謝…");
             }
         }
@@ -1092,7 +1131,7 @@ namespace TSMC14B.Areas.Main.Controllers
                     try
                     {
                         string DBMsg = pm.addPM_Schedule(selectplcid, selecttoolid, selectfreqid, selectfrequency, selecttolerance, status, selectpowerondate, UsrID, selectUnSetTooLate);
-                        //string DBMsg = string.Empty;
+                        
                         if (!string.IsNullOrEmpty(DBMsg) && DBMsg.Contains("完成"))
                         {
                             ViewBag.Message = DBMsg;
@@ -1115,15 +1154,12 @@ namespace TSMC14B.Areas.Main.Controllers
                 }
                 else
                 {
-                    //return this.Json("PM上限天數範圍或是格式有誤");
                     return Json(new { IsSuccess = IsSuccess, Msg = Msg });
                 }
 
             }
             else
             {
-                //ViewBag.MessageType = "警告";
-                //ViewBag.Message = "您無權限使用本功能或長時間未使用已自動登出，請重新登入，如有疑問請洽管理員，謝謝…";
                 return this.Json("您無權限使用本功能或長時間未使用已自動登出，請重新登入，如有疑問請洽管理員，謝謝…");
             }
         }
@@ -1141,7 +1177,6 @@ namespace TSMC14B.Areas.Main.Controllers
                 try
                 {
                     string DBMsg = pm.addPM_ScheduleALL(selecttoolid, selectfreqid, selectfrequency, selecttolerance, UsrID);
-                    //string DBMsg = string.Empty;
                     if (!string.IsNullOrEmpty(DBMsg) && DBMsg.Contains("完成"))
                     {
                         ViewBag.Message = DBMsg;
@@ -1164,8 +1199,6 @@ namespace TSMC14B.Areas.Main.Controllers
             }
             else
             {
-                //ViewBag.MessageType = "警告";
-                //ViewBag.Message = "您無權限使用本功能或長時間未使用已自動登出，請重新登入，如有疑問請洽管理員，謝謝…";
                 return this.Json("您無權限使用本功能或長時間未使用已自動登出，請重新登入，如有疑問請洽管理員，謝謝…");
             }
         }
@@ -1309,8 +1342,16 @@ namespace TSMC14B.Areas.Main.Controllers
                                        Value = c.Text,
                                        Text = c.Text
                                    };
-                    return View();
 
+                    IEnumerable<ListModel> Parameter = ListModel.GetParameterList();
+                    ViewBag.Parameter = from c in Parameter
+                                        select new SelectListItem
+                                        {
+                                            Value = c.Value,
+                                            Text = c.Text
+                                        };
+
+                    return View();
                 }
                 else
                 {
@@ -1322,6 +1363,10 @@ namespace TSMC14B.Areas.Main.Controllers
             else
             {
                 byte[] file = AlarmLimitModel.GetAlarmLimitFile(tool);
+                if (string.IsNullOrEmpty(tool))
+                {
+                    tool = "ALL";
+                }
                 return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "AlarmLimit_" + tool + "_" + DateTime.Now.ToString("yyyy_MM_dd") + ".xlsx");
             }
         }
@@ -1357,12 +1402,17 @@ namespace TSMC14B.Areas.Main.Controllers
                 return null;
         }
 
-        public JsonResult JsonAlarmLimit(string tool, int page, int rp)
+        public JsonResult JsonAlarmLimit(string tool,string vendor,string parameter, int page, int rp)
         {
             if (!string.IsNullOrEmpty((string)Session["UserName"]))
             {
                 IEnumerable<AlarmLimitModel> al = null;
-                al = AlarmLimitModel.GetLimitList(tool);
+
+                al = AlarmLimitModel.GetParameterLimitList(vendor, tool, parameter);
+
+                if (al==null){
+                    return null;
+                }
 
                 return Json(new
                 {
@@ -1463,6 +1513,50 @@ namespace TSMC14B.Areas.Main.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult EditAllLimit(string tagname)
+        {
+            if (!string.IsNullOrEmpty((string)Session["UserName"]))
+            {
+
+                AlarmLimitModel arm = AlarmLimitModel.GetAllLimit(tagname);
+
+                return View(arm);
+            }
+            else
+            {
+                ViewBag.MessageType = "警告";
+                ViewBag.Message = "您無權限使用本功能或長時間未使用已自動登出，請重新登入，如有疑問請洽管理員，謝謝…";
+                return View("Message");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditAllLimit(AlarmLimitModel arm, string TagName)
+        {
+            if (!string.IsNullOrEmpty((string)Session["UserName"]))
+            {
+                if (ModelState.IsValid)
+                {
+                    string DBMsg = arm.UpdateAll((string)Session["UserName"], TagName);
+                    if (string.IsNullOrEmpty(DBMsg))
+                        ViewBag.Message = "修改完成…";
+                    else
+                        ViewBag.Message = DBMsg;
+                }
+                else
+                    ViewBag.Message = "資料不正確…";
+
+                return View(arm);
+            }
+            else
+            {
+                ViewBag.MessageType = "警告";
+                ViewBag.Message = "您無權限使用本功能或長時間未使用已自動登出，請重新登入，如有疑問請洽管理員，謝謝…";
+                return View("Message");
+            }
+        }
+
         public ActionResult AlarmLimitHistory()
         {
             return View();
@@ -1496,7 +1590,7 @@ namespace TSMC14B.Areas.Main.Controllers
                 if (!string.IsNullOrEmpty((string)Session["UserName"]))
                 {
                     ViewBag.bar = "PhoneCall";
-                    IEnumerable<ListModel> department_name = ListModel.GetDepartmentList();
+                    IEnumerable<ListModel> department_name = ListModel.GetDepartmentTitleList();
                     ViewBag.department_name = from c in department_name
                                               select new SelectListItem
                                               {
@@ -1651,14 +1745,14 @@ namespace TSMC14B.Areas.Main.Controllers
         #endregion
 
         #region FDCPM
-        public ActionResult FDCPM(string history,string dept,string tool,string startdate,string enddate, string output)
+        public ActionResult FDCPM(string history, string dept, string tool, string startdate, string enddate, string output)
         {
             if (output != "export")
             {
                 if (!string.IsNullOrEmpty((string)Session["UserName"]))
                 {
                     ViewBag.bar = "FDCPM";
-                    IEnumerable<ListModel> department_name = ListModel.GetDepartmentList();
+                    IEnumerable<ListModel> department_name = ListModel.GetDepartmentTitleList();
                     ViewBag.department_name = from c in department_name
                                               select new SelectListItem
                                               {
@@ -1685,12 +1779,12 @@ namespace TSMC14B.Areas.Main.Controllers
             }
             else
             {
-                byte[] file = FDCPMModel.GetFDCPMFile(history == "1", dept,startdate,enddate,tool);
+                byte[] file = FDCPMModel.GetFDCPMFile(history == "1", dept, startdate, enddate, tool);
                 return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Delayed_Upload_" + DateTime.Now.ToString("yyyy_MM_dd") + ".xlsx");
             }
         }
 
-        public JsonResult JsonFDCPM(string history,string dept,string tool,string startdate,string enddate,int page, int rp)
+        public JsonResult JsonFDCPM(string history, string dept, string tool, string startdate, string enddate, int page, int rp)
         {
             IEnumerable<FDCPMModel> al = FDCPMModel.GetFDCPMList(history == "1", dept, startdate, enddate, tool);
 

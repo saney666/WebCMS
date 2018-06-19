@@ -1,0 +1,513 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AlarmMessage" xml:space="preserve">
+    <value> Alarm message </value>
+  </data>
+  <data name="AlarmMonth" xml:space="preserve">
+    <value> one week warning </value>
+  </data>
+  <data name="AlarmMonthExport" xml:space="preserve">
+    <value> One week warning export </value>
+  </data>
+  <data name="AlarmNow" xml:space="preserve">
+    <value> Instant warning </value>
+  </data>
+  <data name="AlarmType" xml:space="preserve">
+    <value> status </value>
+  </data>
+  <data name="AlarmValue" xml:space="preserve">
+    <value> value </value>
+  </data>
+  <data name="AlarmWeek" xml:space="preserve">
+    <value> 24 hour warning </value>
+  </data>
+  <data name="AlarmWeekExport" xml:space="preserve">
+    <value> 24 hour warning export </value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value> all </value>
+  </data>
+  <data name="alreadySelectValueTag" xml:space="preserve">
+    <value> selected value </value>
+  </data>
+  <data name="cancelPM" xml:space="preserve">
+    <value> quarantine </value>
+  </data>
+  <data name="cancelPMing" xml:space="preserve">
+    <value> Resolve </value>
+  </data>
+  <data name="ChangeParts" xml:space="preserve">
+    <value> part replacement history </value>
+  </data>
+  <data name="ChartExport" xml:space="preserve">
+    <value> export data </value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value> Clear selection </value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value> closed </value>
+  </data>
+  <data name="DealWith" xml:space="preserve">
+    <value> processing status </value>
+  </data>
+  <data name="department_name" xml:space="preserve">
+    <value> department </value>
+  </data>
+  <data name="draw" xml:space="preserve">
+    <value> draw </value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value> edit </value>
+  </data>
+  <data name="effectDateTime" xml:space="preserve">
+    <value> affect time and time </value>
+  </data>
+  <data name="effectOutPut" xml:space="preserve">
+    <value> affect production </value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value> select end time </value>
+  </data>
+  <data name="EndTimeNotOverNowTime" xml:space="preserve">
+    <value> end time Do not select more than the current time </value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value> enter </value>
+  </data>
+  <data name="EqFdcTable" xml:space="preserve">
+    <value> Device FDC Table </value>
+  </data>
+  <data name="EqLimitSetting" xml:space="preserve">
+    <value> Device upper and lower limits </value>
+  </data>
+  <data name="eqValueChart" xml:space="preserve">
+    <value> Device Value Statistics </value>
+  </data>
+  <data name="IsCancelPM" xml:space="preserve">
+    <value> whether to quarantine </value>
+  </data>
+  <data name="IsHiEnable" xml:space="preserve">
+    <value> upper limit </value>
+  </data>
+  <data name="IsLoEnable" xml:space="preserve">
+    <value> lower limit </value>
+  </data>
+  <data name="IsPM" xml:space="preserve">
+    <value> is quarantine </value>
+  </data>
+  <data name="LastEditUser" xml:space="preserve">
+    <value> last modifier </value>
+  </data>
+  <data name="LastUpdateTime" xml:space="preserve">
+    <value> recent update time </value>
+  </data>
+  <data name="LimitList" xml:space="preserve">
+    <value> upper and lower limits list </value>
+  </data>
+  <data name="Limit_Max" xml:space="preserve">
+    <value> Manual upper limit </value>
+  </data>
+  <data name="Limit_Max_Setting" xml:space="preserve">
+    <value> current limit setting </value>
+  </data>
+  <data name="Limit_Min" xml:space="preserve">
+    <value> Manual lower limit </value>
+  </data>
+  <data name="Limit_Min_Setting" xml:space="preserve">
+    <value> current limit setting </value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value> column </value>
+  </data>
+  <data name="LoginManage" xml:space="preserve">
+    <value> account management </value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value> log out </value>
+  </data>
+  <data name="MoreValueTagMoreEq" xml:space="preserve">
+    <value> Most value multiple devices </value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value> no </value>
+  </data>
+  <data name="noSelectValueTag" xml:space="preserve">
+    <value> not selected value </value>
+  </data>
+  <data name="OneEqMoreValueTag" xml:space="preserve">
+    <value> single device majority </value>
+  </data>
+  <data name="OneValueTagMoreEq" xml:space="preserve">
+    <value> single value multiple device </value>
+  </data>
+  <data name="plaseSelectDate" xml:space="preserve">
+    <value> Please select date </value>
+  </data>
+  <data name="plaseSelectDep" xml:space="preserve">
+    <value> Please select the department </value>
+  </data>
+  <data name="plaseSelectEQ" xml:space="preserve">
+    <value> Please select device </value>
+  </data>
+  <data name="plaseSelectOption" xml:space="preserve">
+    <value> Please select </value>
+  </data>
+  <data name="plaseSelectValueName" xml:space="preserve">
+    <value> Please check the value name </value>
+  </data>
+  <data name="plc_name" xml:space="preserve">
+    <value> machine number </value>
+  </data>
+  <data name="PM" xml:space="preserve">
+    <value> quarantine </value>
+  </data>
+  <data name="PMing" xml:space="preserve">
+    <value> quarantine </value>
+  </data>
+  <data name="Query" xml:space="preserve">
+    <value> query </value>
+  </data>
+  <data name="QueryString" xml:space="preserve">
+    <value> query string </value>
+  </data>
+  <data name="ReceptionName" xml:space="preserve">
+    <value> handler </value>
+  </data>
+  <data name="Stack" xml:space="preserve">
+    <value> overlay </value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value> Select the start time </value>
+  </data>
+  <data name="status" xml:space="preserve">
+    <value> status </value>
+  </data>
+  <data name="TagName" xml:space="preserve">
+    <value> numeric name </value>
+  </data>
+  <data name="typeName" xml:space="preserve">
+    <value> model </value>
+  </data>
+  <data name="Weekly" xml:space="preserve">
+    <value> cycle </value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value> is </value>
+  </data>
+  <data name="_DateTime" xml:space="preserve">
+    <value> date / time </value>
+  </data>
+  <data name="AddNewUserName" xml:space="preserve">
+    <value> Add account </value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value> Cancel </value>
+  </data>
+  <data name="ChangePassward" xml:space="preserve">
+    <value> change your password </value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value> clear </value>
+  </data>
+  <data name="Competence" xml:space="preserve">
+    <value> Permissions </value>
+  </data>
+  <data name="confirm" xml:space="preserve">
+    <value> confirm </value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value> delete </value>
+  </data>
+  <data name="IsDelete" xml:space="preserve">
+    <value> whether to delete </value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value> level </value>
+  </data>
+  <data name="LogInManageSystem" xml:space="preserve">
+    <value> login account management system </value>
+  </data>
+  <data name="LogInPage" xml:space="preserve">
+    <value> login page </value>
+  </data>
+  <data name="modify" xml:space="preserve">
+    <value> modify </value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value> new password </value>
+  </data>
+  <data name="nomsg" xml:space="preserve">
+    <value> no item </value>
+  </data>
+  <data name="outof" xml:space="preserve">
+    <value> total </value>
+  </data>
+  <data name="pagestat" xml:space="preserve">
+    <value> displays the {from} item to the {to} item, total {total} item </value>
+  </data>
+  <data name="pagetext" xml:space="preserve">
+    <value> page </value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value> password </value>
+  </data>
+  <data name="passwordAtLast" xml:space="preserve">
+    <value> password at least 8 words up to 20 words </value>
+  </data>
+  <data name="PasswordEnterError" xml:space="preserve">
+    <value> password input error </value>
+  </data>
+  <data name="PasswordMustSame" xml:space="preserve">
+    <value> The password must be the same </value>
+  </data>
+  <data name="PleaseComplete" xml:space="preserve">
+    <value> Please fill in the full </value>
+  </data>
+  <data name="procmsg" xml:space="preserve">
+    <value>in search</value>
+  </data>
+  <data name="Refill" xml:space="preserve">
+    <value> Refill </value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value> is required </value>
+  </data>
+  <data name="rptext" xml:space="preserve">
+    <value> number per page </value>
+  </data>
+  <data name="title" xml:space="preserve">
+    <value> name </value>
+  </data>
+  <data name="titleLongest" xml:space="preserve">
+    <value> name up to 20 words ... </value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value> login account </value>
+  </data>
+  <data name="UserNameAlreadyExists" xml:space="preserve">
+    <value> account already exists </value>
+  </data>
+  <data name="UserNameManage" xml:space="preserve">
+    <value> query to manage all accounts </value>
+  </data>
+  <data name="UserNameMust" xml:space="preserve">
+    <value> Account Required </value>
+  </data>
+  <data name="bsHead" xml:space="preserve">
+    <value> size header </value>
+  </data>
+  <data name="GasValve" xml:space="preserve">
+    <value> Pneumatic valve </value>
+  </data>
+  <data name="HandValve" xml:space="preserve">
+    <value> hand valve </value>
+  </data>
+  <data name="IsHasPM" xml:space="preserve">
+    <value> whether there is actual PM </value>
+  </data>
+  <data name="LPipe" xml:space="preserve">
+    <value> L </value>
+  </data>
+  <data name="memo" xml:space="preserve">
+    <value> pm Cause </value>
+  </data>
+  <data name="ms" xml:space="preserve">
+    <value> water vapor separation box </value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value> operator </value>
+  </data>
+  <data name="other" xml:space="preserve">
+    <value> other </value>
+  </data>
+  <data name="PendingList" xml:space="preserve">
+    <value> pending list </value>
+  </data>
+  <data name="plaseCheckType" xml:space="preserve">
+    <value> Please check category </value>
+  </data>
+  <data name="plasePMMemo" xml:space="preserve">
+    <value> Please fill in PM reason </value>
+  </data>
+  <data name="plaseSelectType" xml:space="preserve">
+    <value> Please select type </value>
+  </data>
+  <data name="pmCycle" xml:space="preserve">
+    <value> PM cycle (days) </value>
+  </data>
+  <data name="PMingList" xml:space="preserve">
+    <value> list in PM </value>
+  </data>
+  <data name="pmNextTime" xml:space="preserve">
+    <value> next PM time </value>
+  </data>
+  <data name="pmSet" xml:space="preserve">
+    <value> set pm time </value>
+  </data>
+  <data name="pmUnset" xml:space="preserve">
+    <value> release pm time </value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value> set </value>
+  </data>
+  <data name="TemporaryPFlag" xml:space="preserve">
+    <value> Temporarily pull P </value>
+  </data>
+  <data name="ThreeWay" xml:space="preserve">
+    <value> three links </value>
+  </data>
+  <data name="ToolId" xml:space="preserve">
+    <value> machine name </value>
+  </data>
+  <data name="toolidinput" xml:space="preserve">
+    <value> Enter the Tool ID and press Enter </value>
+  </data>
+  <data name="Tpipe" xml:space="preserve">
+    <value> T pipe </value>
+  </data>
+  <data name="Turning" xml:space="preserve">
+    <value> corner </value>
+  </data>
+  <data name="UpdateDate" xml:space="preserve">
+    <value> update date </value>
+  </data>
+  <data name="Upturning" xml:space="preserve">
+    <value> Inlet above elbow </value>
+  </data>
+  <data name="Vendor" xml:space="preserve">
+    <value> vendor </value>
+  </data>
+  <data name="Manually" xml:space="preserve">
+    <value> Custom </value>
+  </data>
+  <data name="DefaultValue" xml:space="preserve">
+    <value> default </value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value> Select All </value>
+  </data>
+  <data name="PhoneCallNotSend" xml:space="preserve">
+    <value> does not send </value>
+  </data>
+  <data name="PhoneCallSend" xml:space="preserve">
+    <value> send </value>
+  </data>
+</root>

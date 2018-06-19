@@ -1,4 +1,4 @@
-﻿@model TSMC14B.Areas.Main.Models.PLCCheckModel
+﻿@model WebCMS.Areas.Main.Models.PLCCheckModel
 @{
     ViewBag.Title = "Emergency";
     Layout = "~/Areas/Main/Views/Shared/_Layout.cshtml";
@@ -332,7 +332,6 @@
 
         var xx = 0;
         function countSecond() {
-            
             xx = xx + 1;
             if (xx > 3) {
                 $('#device').each(function (e) {

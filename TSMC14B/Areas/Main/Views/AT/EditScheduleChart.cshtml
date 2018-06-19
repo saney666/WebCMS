@@ -1,0 +1,82 @@
+﻿@{
+    
+}
+@section JavaScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+
+            $('#cbxSelectAll').change(function () {
+                if ($('#cbxSelectAll').attr('checked') == 'checked') {
+                    $('.TCBook').attr('checked', 'checked');
+                } else {
+                    $('.TCBook').attr('checked', null);
+                }
+            });
+
+            $('.TCBook,#cbxSelectAll').change(function () {
+                CheckSelectTBID();
+            });
+        });
+
+
+        function CheckData() {
+            //event.preventDefault();
+        };
+        function CheckSelectTBID() {
+            var TCBIDString = '';
+            console.log($('.TCBook:checked'));
+            $('.TCBook:checked').each(function (i, item) {
+                TCBIDString = TCBIDString + item.value + ','
+            });
+            $('#TCBIDString').val(TCBIDString.substr(0, TCBIDString.length - 1));
+            console.log($('#TCBIDString').val());
+        }
+    </script>
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset style="width: 90%; margin: 0 auto;">
+        <legend>@ViewBag.Title</legend>
+        <ul class="ul">
+            <li>
+                <label>@TSMC14B.Menu.ATName</label></li>
+            <li>@ViewData["ATName"]</li>
+        </ul>
+        <ul class="ul">
+            <li><label>@TSMC14B.Menu.TCName</label></li>
+            <li>
+                <div style="height:300px;width:100%; overflow: auto;border-width:1px;border:groove;">
+                @{
+    var aaa = ViewData["SelectTCBID"] as IEnumerable<WebCMS.Areas.Main.Models.ATC_info>;
+                }
+
+                    <input type="checkbox" id="cbxSelectAll" name="cbxSelectAll" class="cbxSelectAll" /><label for="cbxSelectAll" style="border-bottom:initial;float:initial;padding-left:initial;width:initial;">@TSMC14B.Menu.SelectAll</label>
+                @foreach (var item in ViewData["TCBookData"] as IEnumerable<WebCMS.Areas.Main.Models.vw_TCBook_info>)
+                {
+                    <div>
+                        <input type="checkbox" id="@item.TCBID" name="@item.TCBID" class="TCBook" value="@item.TCBID" @if (aaa!=null && aaa.Where(x=>x.TCBID==item.TCBID).Any()) 
+                                                                                                                      { @: checked="checked" 
+                                                                                                                      } 
+                            />
+                        <label for="@item.TCBID" style="border-bottom:initial;float:initial;padding-left:initial;width:initial;">@item.TCName</label>
+                    </div>
+                }
+                    <input id="TCBIDString" name="TCBIDString" type="hidden" value="" />
+                </div>
+            </li>
+        </ul>
+        <ul class="ul">
+            <li>
+                <input type="submit" value="@TSMC14B.Menu.confirm" style="width: 80px" onclick="javascript: CheckData();" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Refill" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Cancel" style="width: 80px" onclick="CloseModelWindow();" /></li>
+        </ul>
+    </fieldset>
+}

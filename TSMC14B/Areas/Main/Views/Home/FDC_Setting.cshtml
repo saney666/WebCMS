@@ -23,7 +23,7 @@
                 if (e.keyCode == 13) {
                     //ChartExport('search');
                     var ddltoolid = $("#toolid").val();
-                    if (ddltoolid == "@TSMC14B.Menu.plaseSelectOption")
+                    if (ddltoolid == "@WebCMS.Menu.plaseSelectOption")
                         ddltoolid = "";
                     var urlStr = '@Url.Action("AlarmCheckList")?vName=@Request["vName"]&toolId=' + ddltoolid + '&Device=' + $("#device").val() + '&fromDate=' + $("#StartDate").val() + '&toDate=' + $("#EndDate").val() + '&onceaday=0&output=0&page=1&rp=20';
                     $(".flexme").flexOptions({ url: urlStr });
@@ -66,9 +66,9 @@
                 if (option == "0") {
                     var selectedValue = $('#device option:selected').val();
                     var vendorname = '@Request["vName"]';
-                    $.post('@Url.Action("JsonAlarmCheck")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@TSMC14B.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
+                    $.post('@Url.Action("JsonAlarmCheck")', [{ name: 'Vendor', value: vendorname }, { name: 'Device', value: selectedValue == "@WebCMS.Menu.plaseSelectOption" ? "" : selectedValue }], function (data) {
                         $('#toolid').empty();
-                        $('#toolid').append($('<option></option>').val('').text('@TSMC14B.Menu.plaseSelectOption'));
+                        $('#toolid').append($('<option></option>').val('').text('@WebCMS.Menu.plaseSelectOption'));
                         $.each(data, function (i, item) {
                             $('#toolid').append($('<option></option>').val(item.Value).text(item.Value));
                         });
@@ -185,13 +185,13 @@
             //});
 
             $('.flexme').flexigrid({
-                title: '@TSMC14B.Menu.EqFdcTable',
+                title: '@WebCMS.Menu.EqFdcTable',
                 height: "auto",
                 width: 1150,
                 url: '@Url.Action("JsonSensorTag")?page=1&rp=20',
                 dataType: 'json',
                 colModel: [
-                    { display: '@TSMC14B.Menu.department_name', name: 'department_name', width: 50, sortable: false, align: 'center', hide: false },
+                    { display: '@WebCMS.Menu.department_name', name: 'department_name', width: 50, sortable: false, align: 'center', hide: false },
                     { display: 'Sensor', name: 'Sensor', width: 130, sortable: true, align: 'center', hide: false },
                     { display: 'Tool', name: 'Tool', width: 100, sortable: true, align: 'center', hide: false },
                     { display: 'Tooltype', name: 'ToolType', width: 120, sortable: true, align: 'center', hide: false },
@@ -202,28 +202,28 @@
                     { display: 'LinkprocessData', name: 'LinkProcessData', width: 120, sortable: true, align: 'center', hide: false },
                     { display: '', name: 'edit', width: 10, sortable: false, align: 'left', hide: false }
                 ],
-                procmsg: '@TSMC14B.Menu.procmsg',
-                rptext: '@TSMC14B.Menu.rptext',
-                pagestat: '@TSMC14B.Menu.pagestat',
-                pagetext: '@TSMC14B.Menu.pagetext',
-                outof: '@TSMC14B.Menu.outof',
-                nomsg: '@TSMC14B.Menu.nomsg',
+                procmsg: '@WebCMS.Menu.procmsg',
+                rptext: '@WebCMS.Menu.rptext',
+                pagestat: '@WebCMS.Menu.pagestat',
+                pagetext: '@WebCMS.Menu.pagetext',
+                outof: '@WebCMS.Menu.outof',
+                nomsg: '@WebCMS.Menu.nomsg',
                 usepager: true,
                 useRp: true,
                 rp: 20,
                 nowrap: false,
                 onSuccess: function () {
                     $('.flexme > tbody > tr > td[abbrr="edit"] > div').remove();
-                    //$('.flexme > tbody > tr > td[abbrr="edit"]').append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@TSMC14B.Menu.Edit" /></div></a>');
+                    //$('.flexme > tbody > tr > td[abbrr="edit"]').append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@WebCMS.Menu.Edit" /></div></a>');
                     
                     $('.flexme > tbody > tr > td[abbrr="edit"]').each(function () {
                         if ($(this).parent().children(':eq(0)').text() == '@Session["UserdepartmentName"]' || parseInt('@Session["UserLevel"]') > 900) {
-                            $(this).append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@TSMC14B.Menu.Edit" /></div></a>');
+                            $(this).append('<a href="#" class="edit" ><div style="width:10px;"><img src="@Url.Content("~/Content/Icons/Item.Edit.gif")" alt="@WebCMS.Menu.Edit" /></div></a>');
                         }
                     });
                     $('.edit').click(function () {
 
-                        OpenModelWindow('@Url.Action("EditSensorTag_info")?SensorId=' + $(this).parent().parent().children(':eq(1)').text(), { width: 600, height: 400, caption: "@TSMC14B.Menu.Edit", onclose: function () { $('.flexme').flexReload(); } });
+                        OpenModelWindow('@Url.Action("EditSensorTag_info")?SensorId=' + $(this).parent().parent().children(':eq(1)').text(), { width: 600, height: 400, caption: "@WebCMS.Menu.Edit", onclose: function () { $('.flexme').flexReload(); } });
                     });
                 },
                 singleSelect: true,
@@ -252,11 +252,11 @@
         <td style="text-align: right;"></td>
         <td></td>
         <td>
-            <label for="lbl_SearchTag">@TSMC14B.Menu.QueryString:</label>
+            <label for="lbl_SearchTag">@WebCMS.Menu.QueryString:</label>
         </td>
         <td>
             <input type="text" id="tbx_SearchTag" value="" />
-            <input type="button" id="sbmit" value="@TSMC14B.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search')" />
+            <input type="button" id="sbmit" value="@WebCMS.Menu.Query" style="width: 80px" onclick="javascript: ChartExport('search')" />
         </td>
     </tr>
 </table>

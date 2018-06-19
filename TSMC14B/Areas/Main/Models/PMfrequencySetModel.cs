@@ -8,10 +8,10 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
-using TSMC14B.Models;
+using WebCMS.Models;
 using OfficeOpenXml.Style;
 
-namespace TSMC14B.Areas.Main.Models
+namespace WebCMS.Areas.Main.Models
 {
     public class PMfrequencySetModel
     {
@@ -387,38 +387,15 @@ namespace TSMC14B.Areas.Main.Models
         //編輯PMSchedule的資料秀出
         public static PMfrequencySetModel GetPMSchedule1(string toolid, int frequency, int tolerance, string UsrName)
         {
-            //string[] split = toolid.Split(',');
-            //int i = 0;
-            //foreach (string s in split)
-            //{
-            //    if (s != string.Empty)
-            //    {
-            //        i = i + 1;
-            //    }
-
-            //}
-            //DataSet CodeDS = DBConnector.executeQuery("Intouch", "Select * from PM_Schedule where tool_id = '" + toolid + "'");
-            //DataSet CodeDS = DBConnector.executeQuery("Intouch", "SELECT VES.[pid], VPS.[tool_id],VPS.[PMDate],PS.[frequency],PS.[tolerance],PS.[userlogin],PS.[date],VPS.[onoffStatus],VPS.[PowerOnDate] FROM PM_Schedule PS right join vw_pm_schedule_control VPS  on VPS.tool_id=PS.tool_id join vw_eq_status VES on VPS.tool_id = VES.toolid where VPS.tool_id = '" + toolid + "'");
-
-            //DataTable dt = CodeDS.Tables[0];
+          
             DateTime myDate = DateTime.Now;
             string myDateString = myDate.ToString("yyyy-MM-dd HH:mm:ss");
-            // 將查詢到的資料回傳
-            //if (dt.Rows.Count == 0)
-            //{
-            //    return null;
-            //}
+          
             return new PMfrequencySetModel
             {
-                //id = dt.Rows[0].IsNull("id") ? 0 : dt.Rows[0].Field<int>("id"),
-                //plc_id = dt.Rows[0].IsNull("pid") ? (int)i : dt.Rows[0].Field<int>("pid"),
                 ToolID = toolid,
-                //freq_id = dt.Rows[0].IsNull("freq_id") ? (Byte)0 : dt.Rows[0].Field<Byte>("freq_id"),
-                //PMDate = dt.Rows[0].IsNull("PMDate") ? myDate.ToString("yyyy-MM-dd") : dt.Rows[0].Field<DateTime>("PMDate").ToString("yyyy-MM-dd"),
                 frequency = 0,
                 tolerance = 0,
-                //onoffStatus = dt.Rows[0].IsNull("onoffStatus") ? "ON" : dt.Rows[0].Field<string>("onoffStatus") == "1" ? "ON" : "OFF",
-                //PowerOnDate = dt.Rows[0].IsNull("PowerOnDate") ? myDate.ToString("yyyy-MM-dd") : dt.Rows[0].Field<DateTime>("PowerOnDate").ToString("yyyy-MM-dd"),
                 userlogin = UsrName,
                 date = myDateString,
             };

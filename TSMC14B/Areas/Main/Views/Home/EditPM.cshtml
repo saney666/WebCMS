@@ -14,14 +14,14 @@
                 sType = sType.substring(0, sType.length - 1);
                 if (sType.length > 0) {
                     if ($('#memo').val().length > 0) {
-                        hiConfirm('@TSMC14B.Menu.IsCancelPM ' + tid + '？', '@TSMC14B.Menu.confirm', function (r) { if (r) { $.post('@Url.Action("CancelPM")', [{ name: 'toolId', value: tid }, { name: 'selectType', value: sType }, { name: 'pmFlag', value: '0' }, { name: 'memo', value: $('#memo').val() }, { name: 'bellow', value: $('#Bellow').val() }, { name: 'turning', value: $('#Turning').val() }, { name: 'threeway', value: $('#ThreeWay').val() }, { name: 'handvalve', value: $('#HandValve').val() }, { name: 'bshead', value: $('#bsHead').val() }, { name: 'gasvalve', value: $('#GasValve').val() }, { name: 'lpipe', value: $('#LPipe').val() }, { name: 'entry', value: $('#Entry').val() }, { name: 'inlet', value: $('#Inlet').val() }, { name: 'mixingbox', value: $('#MixingBox').val() }, { name: 'reactor', value: $('#Reactor').val() }, { name: 'tank', value: $('#Tank').val() }, { name: 'outlet', value: $('#Outlet').val() }, { name: 'tpipe', value: $('#Tpipe').val() }, { name: 'pmlpipe', value: $('#Pmlpipe').val() }, { name: 'upturning', value: $('#Upturning').val() }, { name: 'ms', value: $('#ms').val() }, { name: 'inlet_TP', value: $('#Inlet_TP').val() }, { name: 'mixingbox_TP', value: $('#MixingBox_TP').val() }, { name: 'reactor_TP', value: $('#Reactor_TP').val() }, { name: 'tank_TP', value: $('#Tank_TP').val() }, { name: 'outlet_TP', value: $('#Outlet_TP').val() }, { name: 'tpipe_TP', value: $('#Tpipe_TP').val() }, { name: 'pmlpipe_TP', value: $('#Pmlpipe_TP').val() }, { name: 'upturning_TP', value: $('#Upturning_TP').val() }, { name: 'ms_TP', value: $('#ms_TP').val() }], function (data) { parent.hiAlert(data.Msg); CloseModelWindow(); }, 'json'); } });
+                        hiConfirm('@WebCMS.Menu.IsCancelPM ' + tid + '？', '@WebCMS.Menu.confirm', function (r) { if (r) { $.post('@Url.Action("CancelPM")', [{ name: 'toolId', value: tid }, { name: 'selectType', value: sType }, { name: 'pmFlag', value: '0' }, { name: 'memo', value: $('#memo').val() }, { name: 'bellow', value: $('#Bellow').val() }, { name: 'turning', value: $('#Turning').val() }, { name: 'threeway', value: $('#ThreeWay').val() }, { name: 'handvalve', value: $('#HandValve').val() }, { name: 'bshead', value: $('#bsHead').val() }, { name: 'gasvalve', value: $('#GasValve').val() }, { name: 'lpipe', value: $('#LPipe').val() }, { name: 'entry', value: $('#Entry').val() }, { name: 'inlet', value: $('#Inlet').val() }, { name: 'mixingbox', value: $('#MixingBox').val() }, { name: 'reactor', value: $('#Reactor').val() }, { name: 'tank', value: $('#Tank').val() }, { name: 'outlet', value: $('#Outlet').val() }, { name: 'tpipe', value: $('#Tpipe').val() }, { name: 'pmlpipe', value: $('#Pmlpipe').val() }, { name: 'upturning', value: $('#Upturning').val() }, { name: 'ms', value: $('#ms').val() }, { name: 'inlet_TP', value: $('#Inlet_TP').val() }, { name: 'mixingbox_TP', value: $('#MixingBox_TP').val() }, { name: 'reactor_TP', value: $('#Reactor_TP').val() }, { name: 'tank_TP', value: $('#Tank_TP').val() }, { name: 'outlet_TP', value: $('#Outlet_TP').val() }, { name: 'tpipe_TP', value: $('#Tpipe_TP').val() }, { name: 'pmlpipe_TP', value: $('#Pmlpipe_TP').val() }, { name: 'upturning_TP', value: $('#Upturning_TP').val() }, { name: 'ms_TP', value: $('#ms_TP').val() }], function (data) { parent.hiAlert(data.Msg); CloseModelWindow(); }, 'json'); } });
                     }
                     else {
-                        alert('@TSMC14B.Menu.plasePMMemo');
+                        alert('@WebCMS.Menu.plasePMMemo');
                     }
                 }
                 else {
-                    alert('@TSMC14B.Menu.plaseCheckType');
+                    alert('@WebCMS.Menu.plaseCheckType');
                 }
             });
             $("#pumping").change(function () {
@@ -62,12 +62,12 @@
         });
     </script>
 }
-<h2 style="width:475px">@TSMC14B.Menu.cancelPM@TSMC14B.Menu.ToolId：@Request["ToolID"]</h2>
+<h2 style="width:475px">@WebCMS.Menu.cancelPM@WebCMS.Menu.ToolId：@Request["ToolID"]</h2>
 <br />
 <table border="1" class="tb" style="width:500px">
     <tr>
         <td style="text-align: right;">
-            <label id="lbl_Type" for="lbl_Type">@TSMC14B.Menu.plaseSelectType：</label>
+            <label id="lbl_Type" for="lbl_Type">@WebCMS.Menu.plaseSelectType：</label>
         </td>
         <td colspan="3">
             <input class="cb_sType" name="sType" id="PM" type="checkbox" value="pm_flag" /><label for="PM">PM</label>
@@ -78,12 +78,12 @@
             <input class="cb_sType" name="sType" id="CMS" type="checkbox" value="cmsError_flag" style="display:none;" /><label for="CMS" style="display:none;" >CMS異常未上線</label>
             <input class="cb_sType" name="sType" id="Other" type="checkbox" value="other_flag" /><label for="Other">Other</label>
             <input class="cb_sType" name="sType" id="PT" type="checkbox" value="pt_done" style="display:none;" /><label for="PT" style="display:none;" >PT校正</label>
-            <input class="cb_sType" name="sType" id="TP" type="checkbox" value="TemporaryP_flag" /><label for="TP">@TSMC14B.Menu.TemporaryPFlag</label>
+            <input class="cb_sType" name="sType" id="TP" type="checkbox" value="TemporaryP_flag" /><label for="TP">@WebCMS.Menu.TemporaryPFlag</label>
         </td>
     </tr>
     <tr>
         <td style="text-align: right;">
-            <label id="lbl_memo" for="lbl_memo">@TSMC14B.Menu.memo：</label>
+            <label id="lbl_memo" for="lbl_memo">@WebCMS.Menu.memo：</label>
         </td>
         <td colspan="3">
             @Html.TextBox("memo")
@@ -100,7 +100,7 @@
         </td>
         <td style="text-align: right;">
             <div class="pump" style="display: none;">
-                <label id="lbl_turning" for="lbl_turning">@TSMC14B.Menu.Turning：</label>
+                <label id="lbl_turning" for="lbl_turning">@WebCMS.Menu.Turning：</label>
             </div>
         </td>
         <td>
@@ -110,7 +110,7 @@
     <tr>
         <td style="text-align: right;">
             <div class="pump" style="display: none;">
-                <label id="lbl_threeway" for="lbl_threeway">@TSMC14B.Menu.ThreeWay：</label>
+                <label id="lbl_threeway" for="lbl_threeway">@WebCMS.Menu.ThreeWay：</label>
             </div>
         </td>
         <td>
@@ -118,7 +118,7 @@
         </td>
         <td style="text-align: right;">
             <div class="pump" style="display: none;">
-                <label id="lbl_handvalve" for="lbl_handvalve">@TSMC14B.Menu.HandValve：</label>
+                <label id="lbl_handvalve" for="lbl_handvalve">@WebCMS.Menu.HandValve：</label>
             </div>
         </td>
         <td>
@@ -128,7 +128,7 @@
     <tr>
         <td style="text-align: right; display: none;">
             <div @*class="pump"*@ >
-                <label id="lbl_bshead" for="lbl_bshead">@TSMC14B.Menu.bsHead：</label>
+                <label id="lbl_bshead" for="lbl_bshead">@WebCMS.Menu.bsHead：</label>
             </div>
         </td>
         <td style="display: none;">
@@ -136,7 +136,7 @@
         </td>
         <td style="text-align: right;">
             <div class="pump" style="display: none;">
-                <label id="lbl_gasvalve" for="lbl_gasvalve">@TSMC14B.Menu.GasValve：</label>
+                <label id="lbl_gasvalve" for="lbl_gasvalve">@WebCMS.Menu.GasValve：</label>
             </div>
         </td>
         <td>
@@ -144,7 +144,7 @@
         </td>
         <td style="text-align: right;">
             <div class="pump" style="display: none;">
-                <label id="lbl_lpipe" for="lbl_lpipe">@TSMC14B.Menu.LPipe：</label>
+                <label id="lbl_lpipe" for="lbl_lpipe">@WebCMS.Menu.LPipe：</label>
             </div>
         </td>
         <td>
@@ -209,7 +209,7 @@
         </td>
         <td style="text-align: right;">
             <div class="pump2" style="display: none;">
-                <label id="lbl_t" for="lbl_t">@TSMC14B.Menu.Tpipe：</label>
+                <label id="lbl_t" for="lbl_t">@WebCMS.Menu.Tpipe：</label>
             </div>
         </td>
         <td>
@@ -219,7 +219,7 @@
     <tr>
         <td style="text-align: right;">
             <div class="pump2" style="display: none;">
-                <label id="lbl_Pmlpipe" for="lbl_Pmlpipe">@TSMC14B.Menu.LPipe：</label>
+                <label id="lbl_Pmlpipe" for="lbl_Pmlpipe">@WebCMS.Menu.LPipe：</label>
             </div>
         </td>
         <td>
@@ -227,7 +227,7 @@
         </td>
         <td style="text-align: right;">
             <div class="pump2" style="display: none;">
-                <label id="lbl_upturning" for="lbl_upturning">@TSMC14B.Menu.Upturning：</label>
+                <label id="lbl_upturning" for="lbl_upturning">@WebCMS.Menu.Upturning：</label>
             </div>
         </td>
         <td>
@@ -237,7 +237,7 @@
     <tr>
         <td style="text-align: right;">
             <div class="pump2" style="display: none;">
-                <label id="lbl_ms" for="lbl_ms">@TSMC14B.Menu.ms：</label>
+                <label id="lbl_ms" for="lbl_ms">@WebCMS.Menu.ms：</label>
             </div>
         </td>
         <td>
@@ -291,7 +291,7 @@
         </td>
         <td style="text-align: right;">
             <div class="pump3" style="display: none;">
-                <label id="lbl_t_TP" for="lbl_t_TP">@TSMC14B.Menu.Tpipe：</label>
+                <label id="lbl_t_TP" for="lbl_t_TP">@WebCMS.Menu.Tpipe：</label>
             </div>
         </td>
         <td>
@@ -301,7 +301,7 @@
     <tr>
         <td style="text-align: right;">
             <div class="pump3" style="display: none;">
-                <label id="lbl_Pmlpipe_TP" for="lbl_Pmlpipe_TP">@TSMC14B.Menu.LPipe：</label>
+                <label id="lbl_Pmlpipe_TP" for="lbl_Pmlpipe_TP">@WebCMS.Menu.LPipe：</label>
             </div>
         </td>
         <td>
@@ -309,7 +309,7 @@
         </td>
         <td style="text-align: right;">
             <div class="pump3" style="display: none;">
-                <label id="lbl_upturning_TP" for="lbl_upturning_TP">@TSMC14B.Menu.Upturning：</label>
+                <label id="lbl_upturning_TP" for="lbl_upturning_TP">@WebCMS.Menu.Upturning：</label>
             </div>
         </td>
         <td>
@@ -319,7 +319,7 @@
     <tr>
         <td style="text-align: right;">
             <div class="pump3" style="display: none;">
-                <label id="lbl_ms_TP" for="lbl_ms_TP">@TSMC14B.Menu.ms：</label>
+                <label id="lbl_ms_TP" for="lbl_ms_TP">@WebCMS.Menu.ms：</label>
             </div>
         </td>
         <td>
@@ -328,7 +328,7 @@
     </tr>
     <tr>
         <td align="right" colspan="4">
-            <input type="button" id="sbmit" value="@TSMC14B.Menu.Setting" style="width: 80px" />
+            <input type="button" id="sbmit" value="@WebCMS.Menu.Setting" style="width: 80px" />
         </td>
     </tr>
 </table>

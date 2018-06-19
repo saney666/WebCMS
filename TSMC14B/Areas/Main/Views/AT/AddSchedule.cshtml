@@ -1,0 +1,130 @@
+﻿@model WebCMS.Areas.Main.Models.ATScheduleModel
+@{
+    
+}
+@section JavaScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ("@ViewBag.Message" != "") {
+                parent.hiAlert("@ViewBag.Message");
+                CloseModelWindow();
+            }
+            if ($('#ExecuteType').val() == "w") {
+                $('#spExecuteCycle').css('display', '');
+            }
+            $('#ExecuteType').change(function () {
+
+                if ($(this).val() == 'w') {
+                    $('#spExecuteCycle').css('display', '');
+                } else {
+                    $('#spExecuteCycle').css('display', 'none');
+                }
+            });
+        });
+        function CheckData() {
+            //event.preventDefault();
+            @* if ($('#ATName').val() == '') {
+                alert("@TSMC14B.Menu.PlaseCheck");
+                return;
+            }*@
+            @*    if ($('#tbxExecuteHour').val() == '' || parseInt($('#tbxExecuteHour').val()) <= 0) {
+                alert("@TSMC14B.Menu.PlaseCheck");
+                return;
+            }
+            if ($('#tbxExecuteMinute').val() == '' || parseInt($('#tbxExecuteHour').val()) <= 0) {
+                alert("@TSMC14B.Menu.PlaseCheck");
+                return;
+            }*@
+            @*     if ($('#tbxDataHour').val() == '' || parseInt($('#tbxExecuteHour').val()) <= 0) {
+                alert("@TSMC14B.Menu.PlaseCheck");
+                return;
+            }
+            if ($('#tbxDataMinute').val() == '' || parseInt($('#tbxExecuteHour').val()) <= 0) {
+                alert("@TSMC14B.Menu.PlaseCheck");
+                return;
+            }*@
+
+@*            $.post('@Url.Action("JsonAddSchedule")', [{ name: 'UserID', value: '@Session["UserID"]' }, { name: 'ATName', value: $('#ATName').val() },
+                { name: 'ExecuteTime', value: $('#tbxExecuteHour').val() + ':' + $('#tbxExecuteMinute').val() },
+                { name: 'ExecuteType', value: $('#SelectExecuteType').val() },
+                { name: 'DataTime', value: $('#tbxDataHour').val() + ':' + $('#tbxDataMinute').val() },
+                { name: 'DataType', value: $('#SelectDataType').val() },
+            ], function (data) { alert(data.Msg); }, 'json');*@
+        };
+    </script>
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset style="width: 90%; margin: 0 auto;">
+        <legend>@ViewBag.Title</legend>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.ATName)</li>
+            <li>@Html.TextBoxFor(model => model.ATName)</li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.ExecuteTime)</li>
+            <li>@WebCMS.Menu.every
+                @{
+    List<SelectListItem> ExecuteTypeSelectItem = new List<SelectListItem>();
+    ExecuteTypeSelectItem.Add(new SelectListItem() { Value = "d", Text = WebCMS.Menu.day, Selected = true });
+    ExecuteTypeSelectItem.Add(new SelectListItem() { Value = "w", Text = WebCMS.Menu.week });
+                }
+
+                @Html.DropDownListFor(x => x.ExecuteType, ExecuteTypeSelectItem)
+                <span id="spExecuteCycle" style="display: none;">
+    
+                    @{
+    List<SelectListItem> weekDaySelectItem = new List<SelectListItem>();
+    weekDaySelectItem.Add(new SelectListItem() { Value = "1", Text = WebCMS.Menu.sunday });
+    weekDaySelectItem.Add(new SelectListItem() { Value = "2", Text = WebCMS.Menu.monday });
+    weekDaySelectItem.Add(new SelectListItem() { Value = "3", Text = WebCMS.Menu.tuesday });
+    weekDaySelectItem.Add(new SelectListItem() { Value = "4", Text = WebCMS.Menu.wednesday });
+    weekDaySelectItem.Add(new SelectListItem() { Value = "5", Text = WebCMS.Menu.thursday });
+    weekDaySelectItem.Add(new SelectListItem() { Value = "6", Text = WebCMS.Menu.friday });
+    weekDaySelectItem.Add(new SelectListItem() { Value = "7", Text = WebCMS.Menu.saturday });
+                    }
+                    @Html.DropDownListFor(x => x.ExecuteCycle, weekDaySelectItem)
+                </span>
+                @*<input id="tbxExecuteHour" type="number" value="00" style="width: 40px" min="0" max="23" />：<input id="tbxExecuteMinute" type="number" value="00" style="width: 40px" max="59" min="0" />*@
+                @Html.TextBoxFor(x => x.ExecuteHour, new { style = "width: 40px;" })：@Html.TextBoxFor(x => x.ExecuteMinute, new { style = "width: 40px;" })
+            </li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.DataRangeTime)</li>
+            <li>
+                @*<input id="tbxDataHour" type="number" value="00" style="width: 30px" max="23" min="0" />：<input id="tbxDataMinute" type="number" value="00" style="width: 30px" min="0" max="59" />*@
+                @Html.TextBoxFor(x => x.DataRangeHour, new { style = "width: 40px;" })：@Html.TextBoxFor(x => x.DataRangeMinute, new { style = "width: 40px;" })
+
+            </li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.DataCycle)</li>
+            <li>
+                @*<input id="DataCycle" name="DataCycle" type="number" value="1" style="width: 30px" min="1" max="99" />*@
+                @Html.TextBoxFor(x=>x.DataCycle,new { style = "width: 40px;" })
+                @{
+    List<SelectListItem> DataTypeSelectItem = new List<SelectListItem>();
+    DataTypeSelectItem.Add(new SelectListItem() { Value = "h", Text = TSMC14B.Menu.hour });
+    DataTypeSelectItem.Add(new SelectListItem() { Value = "d", Text = TSMC14B.Menu.day });
+    DataTypeSelectItem.Add(new SelectListItem() { Value = "w", Text = TSMC14B.Menu.week });
+                }
+                @Html.DropDownListFor(x => x.DataType, DataTypeSelectItem)
+            </li>
+        </ul>
+        <ul class="ul">
+            <li>@Html.LabelFor(model => model.SamplingTime)</li>
+            <li>
+                @Html.TextBoxFor(model => model.SamplingTime, new { style = "width: 40px;"})
+            </li>
+        </ul>
+        <ul class="ul">
+            <li>
+                <input type="submit" value="@TSMC14B.Menu.confirm" style="width: 80px" onclick="javascript: CheckData();" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Refill" style="width: 80px" onclick="javascript: location.reload();" />&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <input type="button" value="@TSMC14B.Menu.Cancel" style="width: 80px" onclick="CloseModelWindow();" /></li>
+        </ul>
+    </fieldset>
+}

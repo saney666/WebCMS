@@ -4,13 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using TSMC14B.Areas.Main.Models;
+using WebCMS.Areas.Main.Models;
 
-namespace TSMC14B.Areas.Main.Controllers
+namespace WebCMS.Areas.Main.Controllers
 {
     public class LoginController : Controller
     {
         [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)] // will disable caching for Index only
+
         public ActionResult LoginPage()
         {
             ViewBag.bar = "Account";
@@ -100,7 +101,14 @@ namespace TSMC14B.Areas.Main.Controllers
         public ActionResult Logout()
         {
             Session["UserName"] = null;
-            return Redirect("/Main/Login/LoginPage");
+            if (System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() == "zh-CN" || System.Web.Configuration.WebConfigurationManager.AppSettings["FAB"] == "Demo" || System.Web.Configuration.WebConfigurationManager.AppSettings["DB"] == "Module")
+            {
+                return Redirect("/Main/Login/LoginPage");
+            }
+            else
+            {
+                return Redirect("/Main/Login/FABSelect");
+            }
         }
 
         public ActionResult LoginManage()
@@ -141,9 +149,16 @@ namespace TSMC14B.Areas.Main.Controllers
             return View();
         }
 
-        public JsonResult JsonActQuery(int page, int rp)
+        public JsonResult JsonActQuery(string dept ,int page, int rp)
         {
+
             IEnumerable<LoginModel> ls = LoginModel.List((Int16)Session["UserLevel"], (byte?)Session["UserdepartmentId"]);
+
+            if (dept!=null && dept.Length>0)
+            {
+                 ls = (from row in ls where row.department_name == dept select row).ToList();
+            }
+
             return Json(new
             {
                 page = page,
@@ -292,7 +307,7 @@ namespace TSMC14B.Areas.Main.Controllers
                             false,//將管理者登入的 Cookie 設定成 Session Cookie
                             "",//userdata看你想存放啥
                             FormsAuthentication.FormsCookiePath);
-
+                        
                         string encTicket = FormsAuthentication.Encrypt(ticket);
 
                         Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
@@ -344,5 +359,11 @@ namespace TSMC14B.Areas.Main.Controllers
 
             return Json(new { IsSuccess = IsSuccess, Msg = Msg }, JsonRequestBehavior.AllowGet);
         }
+
+        public ViewResult FABSelect() {
+
+            return View();
+        }
+
     }
 }

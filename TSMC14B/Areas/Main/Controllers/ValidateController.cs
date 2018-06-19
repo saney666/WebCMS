@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using TSMC14B.Areas.Main.Models;
+using WebCMS.Areas.Main.Models;
 
-namespace TSMC14B.Areas.Main.Controllers
+namespace WebCMS.Areas.Main.Controllers
 {
     public class ValidateController : Controller
     {

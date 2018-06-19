@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
-using TSMC14B.Models;
+using WebCMS.Models;
 
-namespace TSMC14B.Areas.Main.Models
+namespace WebCMS.Areas.Main.Models
 {
     public class PhoneCallModel
     {
@@ -77,8 +77,7 @@ namespace TSMC14B.Areas.Main.Models
         public static PhoneCallModel GetPhoneCall(string tagname)
         {
             PhoneCallModel PhoneCall = new PhoneCallModel();
-            //DataTable dt = GetAlarmListdt(Tool);
-
+            
             string sqlStr = "SELECT department_name,FullTagName,data_Tag,plc_id,sensorID,login_name,CallOut,Alarmid  FROM vw_PhoneCallSetting where fulltagName = '" + tagname + "'";
 
             DataSet DeptDS = DBConnector.executeQuery("Intouch", sqlStr);
@@ -103,7 +102,6 @@ namespace TSMC14B.Areas.Main.Models
         {
             try
             {
-
                 DBConnector.executeSQL("Intouch", "EXEC [dbo].[uSP_Change_PhoneCallSetting] @FullTagName='" + FullTagName + "',@data_Tag='" + data_Tag + "',@plc_id=" + plc_id + ",@sensorID='" + sensorID + "',@CallOut=" + CallOut + ",@login_name='" + Usr + "'");
             }
             catch (Exception ex)
@@ -115,8 +113,7 @@ namespace TSMC14B.Areas.Main.Models
 
         internal static string SetAllSwitch(string tool, bool Switch, string Usr)
         {
-            string Str = "";
-            string rString = "";
+            string rString = string.Empty;
 
             using (tsmc14BDataContext db = new tsmc14BDataContext())
             {
@@ -141,7 +138,7 @@ namespace TSMC14B.Areas.Main.Models
 
         internal static string SetPhoneCallSetting(string[] data, string Usr)
         {
-            string rString = "";
+            string rString = string.Empty;
 
             using (tsmc14BDataContext db = new tsmc14BDataContext())
             {
@@ -176,7 +173,6 @@ namespace TSMC14B.Areas.Main.Models
         internal static IEnumerable<PhoneCallModel> GetPhoneCallHistory(string tagname)
         {
             IEnumerable<PhoneCallModel> PhoneCallHistory;
-            //DataTable dt = GetAlarmListdt(Tool);
 
             string sqlStr = "SELECT FullTagName,data_Tag,Callout,login_name,builtdate FROM PhoneCallSrttingHistory where FullTagName='"+tagname+"' order by builtdate desc";
 
@@ -218,7 +214,6 @@ namespace TSMC14B.Areas.Main.Models
             
             if (al.Count() > 0)
             {
-                //sheet1.Cells["A2"].LoadFromDataTable(dt, false);
                 int i = 2;
                 foreach (var item in al)
                 {

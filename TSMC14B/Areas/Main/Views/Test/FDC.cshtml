@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "FDC";
+}
+<style>
+    td {
+        border-width: 1px;
+        border-style: groove;
+        padding: 5px;
+        background-color:lightgoldenrodyellow;
+    }
+</style>
+
+<h2>FDC</h2>
+<table>
+    <tr>
+        <td>@Html.ActionLink("FDC_PFEIFFER", "FDCExport", new { type = "PFEIFFER" })</td>
+        <td>@Html.ActionLink("FDC_Edward", "FDCExport", new { type = "Edward" })</td>
+        <td>@Html.ActionLink("FDC_HJ", "FDCExport", new { type = "HJ" })</td>
+        <td>@Html.ActionLink("FDC_HN2", "FDCExport", new { type = "HN2" })</td>
+        <td>@Html.ActionLink("FDC_ExtraSensor", "FDCExport", new { type = "ExtraSensor" })</td>
+    </tr>
+</table>
+<br />
+<br />
+
+<div>
+    <span>
+        <label>List IOG CSV</label></span>
+    <br />
+    <br />
+
+    @foreach (var item in ViewData["FDCDevice"] as List<string>)
+    {
+        @Html.ActionLink(item, "FDCDeviceExport", new { channel_name = item }, new {style="background-color:lightgoldenrodyellow;" })<br />
+    }
+
+</div>

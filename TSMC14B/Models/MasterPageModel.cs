@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Web;
-using TSMC14B.Models;
+using WebCMS.Models;
 
-namespace TSMC14B.Models
+namespace WebCMS.Models
 {
     public class MasterPageModel
     {

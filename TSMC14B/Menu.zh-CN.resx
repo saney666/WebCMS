@@ -223,13 +223,13 @@
     <value>上下限清单</value>
   </data>
   <data name="Limit_Max" xml:space="preserve">
-    <value>手动上限值</value>
+    <value>自定义上限值</value>
   </data>
   <data name="Limit_Max_Setting" xml:space="preserve">
     <value>目前上限设定</value>
   </data>
   <data name="Limit_Min" xml:space="preserve">
-    <value>手动下限值</value>
+    <value>自定义下限值</value>
   </data>
   <data name="Limit_Min_Setting" xml:space="preserve">
     <value>目前下限设定</value>
@@ -493,7 +493,7 @@
     <value>厂商</value>
   </data>
   <data name="Manually" xml:space="preserve">
-    <value>手动</value>
+    <value>自定义</value>
   </data>
   <data name="DefaultValue" xml:space="preserve">
     <value>预设值</value>
@@ -503,5 +503,101 @@
   </data>
   <data name="PhoneCallSend" xml:space="preserve">
     <value>发送</value>
+  </data>
+  <data name="ATName" xml:space="preserve">
+    <value>排程名称</value>
+  </data>
+  <data name="DataCycle" xml:space="preserve">
+    <value>往前推时间</value>
+  </data>
+  <data name="DataRangeTime" xml:space="preserve">
+    <value>资料区间</value>
+  </data>
+  <data name="DataType" xml:space="preserve">
+    <value>资料类型</value>
+  </data>
+  <data name="every" xml:space="preserve">
+    <value>每</value>
+  </data>
+  <data name="ExecuteCycle" xml:space="preserve">
+    <value>执行周期</value>
+  </data>
+  <data name="ExecuteTime" xml:space="preserve">
+    <value>执行时间</value>
+  </data>
+  <data name="ExecuteType" xml:space="preserve">
+    <value>执行类型</value>
+  </data>
+  <data name="Login_name" xml:space="preserve">
+    <value>登入帐号</value>
+  </data>
+  <data name="SamplingTime" xml:space="preserve">
+    <value>取样时间</value>
+  </data>
+  <data name="Schedule" xml:space="preserve">
+    <value>时间表</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="day" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="friday" xml:space="preserve">
+    <value>周五</value>
+  </data>
+  <data name="hour" xml:space="preserve">
+    <value>时</value>
+  </data>
+  <data name="monday" xml:space="preserve">
+    <value>周一</value>
+  </data>
+  <data name="PlaseCheck" xml:space="preserve">
+    <value>请检查输入</value>
+  </data>
+  <data name="saturday" xml:space="preserve">
+    <value>周六</value>
+  </data>
+  <data name="sunday" xml:space="preserve">
+    <value>周日</value>
+  </data>
+  <data name="thursday" xml:space="preserve">
+    <value>周四</value>
+  </data>
+  <data name="tuesday" xml:space="preserve">
+    <value>周二</value>
+  </data>
+  <data name="wednesday" xml:space="preserve">
+    <value>周三</value>
+  </data>
+  <data name="week" xml:space="preserve">
+    <value>周</value>
+  </data>
+  <data name="ATSchedule" xml:space="preserve">
+    <value>ATSchedule</value>
+  </data>
+  <data name="buileDate" xml:space="preserve">
+    <value>建立日期</value>
+  </data>
+  <data name="DownLoad" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="BookMark" xml:space="preserve">
+    <value>书签</value>
+  </data>
+  <data name="TCName" xml:space="preserve">
+    <value>制图名称</value>
+  </data>
+  <data name="AddTCBook" xml:space="preserve">
+    <value>新增制图</value>
+  </data>
+  <data name="EditTCBook" xml:space="preserve">
+    <value>修改制图</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>设定</value>
   </data>
 </root>

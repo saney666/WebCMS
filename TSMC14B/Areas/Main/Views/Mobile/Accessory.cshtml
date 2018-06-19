@@ -1,0 +1,107 @@
+﻿@{
+    //ViewBag.Title = "Accessory";
+    Layout = "~/Areas/Main/Views/Shared/_MobilLayout.cshtml";
+}
+
+@section JavaScript{
+    <script type="text/javascript">
+        $(function () {
+            Getdata();
+            GetAlarmNow();
+            $('#tbAlarmNow').table("rebuild");
+        });
+        var meter2 = 0;
+        function Getdata() {
+            clearTimeout(meter2);
+            $.post('@Url.Action("JsonEQValueNow", "MachineGroup")', [{ name: 'pid', value: '@ViewBag.pid' }],
+                function (data) {
+                    if (data.rows.length > 0) {
+                        $('#DataArea').empty();
+                        var flag = 0;
+                        var content = "<div data-role='collapsible' data-collapsed='false'><ul data-role='listview'>";
+                        $.each(data.rows, function (i, item) {
+                            var linkStrnig = '@Url.Action("MyChart4", "MachineGroup")?toolId=@ViewData["toolid"]&TagName=' + item.TagName + '&StartDate=@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd") @DateTime.Now.AddDays(-7).ToString("HH:mm:ss")&EndDate=@DateTime.Now.ToString("yyyy-MM-dd") @DateTime.Now.ToString("HH:mm:ss")&flag=3&Y1Y2=Y1';
+                            if (item.Cht_Comment == 'Run_Hours' || item.Cht_Comment == 'Run_Hour') {
+                                content = content + "<li ><lable>" + item.Cht_Comment + "：" + item.Value + " " + item.Unit + "</lable></il>"
+                            } else {
+                                content = content + "<li ><a id='" + item.TagName + "' target='_blank' data-ajax='false'  href='" + linkStrnig + "' >" + item.Cht_Comment + "：" + item.Value + " " + item.Unit + "</a></il>";
+                            }
+                        });
+                        content = content + "</ul></div>";
+                        $(content).appendTo('#DataArea').enhanceWithin();
+                        }
+                    if ($('#EQStatus').text().length == 0) {
+                        $('#EQStatus').text(data.status).css('background-color', data.sColor);
+                    }
+                    meter2 = setTimeout("Getdata();", 2000);
+                });
+                }
+                var meter3 = 0;
+                function GetAlarmNow() {
+                    clearTimeout(meter3);
+                    $.post('@Url.Action("JsonEQAlarm", "MachineGroup")', [{ name: 'ToolID', value: '@ViewData["toolid"]' }, { name: 'page', value: 1 }, { name: 'rp', value: 100 }],
+                function (data) {
+                    if (data) {
+                        $('#AlarmNow').empty();
+                        var Alarmcontent = "<table data-role='table' id='tbAlarmNow' class='ui-responsive' style='width:100%'>" +
+                            '<thead><tr>' +
+                            '<th data-priority="1">@WebCMS.Menu._DateTime</th>' +
+                            '<th data-priority="1">@WebCMS.Menu.AlarmValue</th>' +
+                            '<th data-priority="1">@WebCMS.Menu.AlarmMessage</th>' +
+                            '</tr></thead><tbody>'
+                        $.each(data.rows, function (i, item) {
+                            Alarmcontent = Alarmcontent + '<tr><td>' + item._DateTime + '</td><td>' + item.AlarmValue + '</td><td>' + item.AlarmMessage + '</td></tr>';
+                        });
+                        Alarmcontent = Alarmcontent + '</tbody></table>';
+                        $(Alarmcontent).appendTo('#AlarmNow');
+                    }
+                    meter2 = setTimeout("Getdata();", 10000);
+                });
+            }
+    </script>
+    <style>
+        .movie-list thead th,
+        .movie-list tbody tr:last-child {
+            border-bottom: 1px solid #d6d6d6;
+            border-bottom: 1px solid rgba(0,0,0,.1);
+        }
+
+        .movie-list tbody th,
+        .movie-list tbody td {
+            border-bottom: 1px solid #e6e6e6;
+            border-bottom: 1px solid rgba(0,0,0,.5);
+        }
+
+        .movie-list tbody tr:last-child th,
+        .movie-list tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .movie-list tbody tr:nth-child(odd) td,
+        .movie-list tbody tr:nth-child(odd) th {
+            background-color: #eeeeee;
+            background-color: rgba(0,0,0,.04);
+        }
+    </style>
+}
+<div data-role="header">
+    <a href="@Url.Action("ToolCheck", new { vName = ViewBag.vName, type = "PUMP" })" class="ui-btn-left ui-btn ui-icon-carat-l ui-btn-icon-left ui-btn-inline ui-corner-all ui-mini" data-role="button" role="button">Back</a>
+    <a href="#leftpanel" class="ui-btn ui-icon-bars ui-btn-icon-left ui-btn-inline ui-corner-all ui-mini" data-role="button" role="button">Menu</a>
+    <h2>@ViewData["title"]</h2>
+</div>
+<span>機型：@ViewBag.tName 機號：@ViewBag.plc_name 狀態：<span id="EQStatus"></span></span>
+<br />
+<div id="DataArea"></div>
+<div id="AlarmNow">
+    <table data-role='table' id='tbAlarmNow' class='ui-responsive' style='width:100%'>
+        <thead>
+            <tr>
+                <th data-priority="1">@WebCMS.Menu._DateTime</th>
+                <th data-priority="1">@WebCMS.Menu.AlarmValue</th>
+                <th data-priority="1">@WebCMS.Menu.AlarmMessage</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,237 @@
+﻿@{
+    ViewBag.Title = "AlarmCountByDept";
+    Layout = "~/Areas/Main/Views/Shared/_Layout.cshtml";
+    
+}
+@section JavaScript{
+    <script src="/Scripts/Highcharts/code/highcharts.js"></script>
+    <script src="/Scripts/Highcharts/code/exporting.js"></script>
+    <script src="/Scripts/Highcharts/code/offline-exporting.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            /* Automate testing of module somewhat */
+
+            var nav = Highcharts.win.navigator,
+                isMSBrowser = /Edge\/|Trident\/|MSIE /.test(nav.userAgent),
+                isEdgeBrowser = /Edge\/\d+/.test(nav.userAgent),
+                containerEl = document.getElementById('container'),
+                parentEl = containerEl.parentNode,
+                oldDownloadURL = Highcharts.downloadURL;
+
+            function addText(text) {
+                var heading = document.createElement('h2');
+                heading.innerHTML = text;
+                parentEl.appendChild(heading);
+            }
+
+            function addURLView(title, url) {
+                var iframe = document.createElement('iframe');
+                if (isMSBrowser && Highcharts.isObject(url)) {
+                    addText(title +
+                    ': Microsoft browsers do not support Blob iframe.src, test manually'
+                    );
+                    return;
+                }
+                iframe.src = url;
+                iframe.width = 400;
+                iframe.height = 300;
+                iframe.title = title;
+                iframe.style.display = 'inline-block';
+                parentEl.appendChild(iframe);
+            }
+
+            function fallbackHandler(options) {
+                if (options.type !== 'image/svg+xml' && isEdgeBrowser ||
+                    options.type === 'application/pdf' && isMSBrowser) {
+                    addText(options.type + ' fell back on purpose');
+                } else {
+                    throw 'Should not have to fall back for this combination. ' +
+                        options.type;
+                }
+            }
+
+            Highcharts.downloadURL = function (dataURL, filename) {
+                // Emulate toBlob behavior for long URLs
+                if (dataURL.length > 2000000) {
+                    dataURL = Highcharts.dataURLtoBlob(dataURL);
+                    if (!dataURL) {
+                        throw 'Data URL length limit reached';
+                    }
+                }
+                // Show result in an iframe instead of downloading
+                // addURLView(filename, dataURL);
+            };
+
+            Highcharts.Chart.prototype.exportTest = function (type) {
+                this.exportChartLocal({
+                    type: type
+                }, {
+                    title: {
+                        text: type
+                    },
+                    subtitle: {
+                        text: false
+                    }
+                });
+            };
+
+            Highcharts.Chart.prototype.callbacks.push(function (chart) {
+                if (!chart.options.chart.forExport) {
+                    var menu = chart.exportSVGElements && chart.exportSVGElements[0],
+                        oldHandler;
+                    chart.exportTest('image/png');
+                    chart.exportTest('image/jpeg');
+                    chart.exportTest('image/svg+xml');
+                    chart.exportTest('application/pdf');
+
+                    // Allow manual testing by resetting downloadURL handler when trying
+                    // to export manually
+                    if (menu) {
+                        oldHandler = menu.element.onclick;
+                        menu.element.onclick = function () {
+                            Highcharts.downloadURL = oldDownloadURL;
+                            oldHandler.call(this);
+                        };
+                    }
+                }
+            });
+
+            /* End of automation code */
+
+            Highcharts.chart('container', {
+                exporting: {
+                    chartOptions: { // specific options for the exported image
+                        plotOptions: {
+                            series: {
+                                dataLabels: {
+                                    enabled: true
+                                }
+                            }
+                        }
+                    },
+                    sourceWidth: 1214,
+                    sourceHeight: 400,
+                    scale: 1,
+                    fallbackToExportServer: false,
+                    error: fallbackHandler
+                },
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'SPC Chart ByDept'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    categories: [
+                        @foreach (System.Data.DataRow item in (ViewData["dtAlarmCountByDept"] as System.Data.DataTable).Rows)
+                        {
+                            @:'@item[0]',
+                        }
+                    ]
+                },
+                yAxis: {
+                    title: {
+                        text: 'AlarmCount'
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: [
+                    @foreach (System.Data.DataColumn item in (ViewData["dtAlarmCountByDept"] as System.Data.DataTable).Columns)
+                    {
+                        if (item.ColumnName == "WeekDay")
+                        {
+                            continue;
+                        }
+                        @:{
+                                                @:name: '@item.ColumnName',
+                                                @:data: [
+                        foreach (System.Data.DataRow item2 in (ViewData["dtAlarmCountByDept"] as System.Data.DataTable).Rows)
+                        {
+                        @:@item2[item],
+                        }
+                        @:]
+                        @:},
+                    }
+                ]
+            });
+            });
+            function ChartExport(s) {
+                if (s == 'export') {
+                    location.href = "@Url.Action("AlarmCountByDept")?output=export";
+                }
+            }
+    </script>
+}
+
+<style type="text/css">
+    #AlarmCountByDept {
+        border: 1px solid #000000;
+        border-collapse: collapse;
+    }
+
+        #AlarmCountByDept tr, #AlarmCountByDept td {
+            border: 1px solid #000000;
+        }
+</style>
+<h2>AlarmCountByDept</h2>
+<div id="container" style="width: 1214px; height: 400px"></div>
+<table id="AlarmCountByDept" style="width: 1214px" class="AlarmCountByDept">
+    <tr style="border: 1px solid #000000;">
+        @foreach (var Column in (ViewData["dtAlarmCountByDept"] as System.Data.DataTable).Columns)
+        {
+            if (Column.ToString() == "WeekDay")
+            {
+                <td style="width: 170px; border: 1px solid #000000;">
+                    <input type="button" id="btnExport" value="@WebCMS.Menu.ChartExport" style="width: 170px;" onclick="javascript: ChartExport('export');" />
+                </td>
+            }
+            else if (Column.ToString() == "Total")
+            {
+                <td style="border: 1px solid #000000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Column</td>
+            }
+            else
+            {
+                <td style="border: 1px solid #000000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("AlarmCountByModule", new { dept = Column })" target="_blank">@Column</a></td>
+            }
+        }
+    </tr>
+    @foreach (System.Data.DataRow Row in (ViewData["dtAlarmCountByDept"] as System.Data.DataTable).Rows)
+    {
+        DateTime sd = DateTime.Parse(Row["WeekDay"].ToString());
+        DateTime ed = (DateTime.Parse(Row["WeekDay"].ToString())).AddDays(7);
+        
+        <tr style="border: 1px solid #000000;">
+            
+            @for (int i = 0; i < Row.ItemArray.Count(); i++)
+            {
+                string vendor = (ViewData["dtAlarmCountByDept"] as System.Data.DataTable).Columns[i].ColumnName;
+
+                if (i != 0 && i != Row.ItemArray.Count() - 1)
+                {
+                    <td style="border: 1px solid #000000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("AlarmDeal", new { StartDate = sd.ToString("yyyy-MM-dd 00:00"), EndDate = ed.ToString("yyyy-MM-dd 00:00"), ToolID = "", process_name = "", AlarmMsg = "", Closed = "", Vendor = vendor, gname = "", output = "export" })">@Row[i]</a> @*<span style="width:100px;"><a href="@Url.Action("AlarmDeal", new {StartDate=sd.ToString("yyyy-MM-dd 00:00"),EndDate = ed.ToString("yyyy-MM-dd 00:00"), ToolID = "", process_name = "", AlarmMsg = "", Closed = "", Vendor = vendor, gname = "", output = "" ,search ="1"})" target="_blank">AlarmReport</a></span>*@</td>
+                }
+                else if (i == Row.ItemArray.Count() - 1)
+                {
+		            <td style="border: 1px solid #000000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@*<a href="@Url.Action("AlarmDeal", new { StartDate = sd.ToString("yyyy-MM-dd 00:00"), EndDate = ed.ToString("yyyy-MM-dd 00:00"), ToolID = "", process_name = "", AlarmMsg = "", Closed = "", Vendor = "", gname = "", output = "export" })">*@@Row[i]@*</a>*@ @*<span style="width:100px;"><a href="@Url.Action("AlarmDeal", new { StartDate = sd.ToString("yyyy-MM-dd 00:00"), EndDate = ed.ToString("yyyy-MM-dd 00:00"), ToolID = "", process_name = "", AlarmMsg = "", Closed = "", Vendor = "", gname = "", output = "", search = "1" })" target="_blank" >AlarmReport</a></span>*@</td>
+                }
+                else
+                {
+                    <td style="border: 1px solid #000000;">@Row[i] ~ @DateTime.Parse(Row[i].ToString()).AddDays(6).ToString("yyyy-MM-dd")</td>
+                }
+            }
+        </tr>    
+    }
+</table>
+<div  style="height:200px">
+</div>

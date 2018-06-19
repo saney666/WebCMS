@@ -1,4 +1,4 @@
-﻿@model TSMC14B.Areas.Main.Models.ChamberModel
+﻿@model WebCMS.Areas.Main.Models.ChamberModel
 @{
     Layout = "../Shared/_Layout.cshtml";
     ViewBag.Title = Request["Chamber"];
@@ -20,13 +20,13 @@
                 url: '@Url.Action("JsonEQAlarm")?ToolID=@ViewData["toolid"]',
                 dataType: 'json',
                 colModel: [
-                        { display: '@TSMC14B.Menu._DateTime', name: '_DateTime', width: 150, sortable: false, align: 'center', hide: false },
+                        { display: '@WebCMS.Menu._DateTime', name: '_DateTime', width: 150, sortable: false, align: 'center', hide: false },
                         { display: 'Tool ID', name: 'ToolID', width: 120, sortable: false, align: 'center', hide: false },
-                        { display: '@TSMC14B.Menu.Location', name: 'Location', width: 70, sortable: false, align: 'center', hide: false },
-                        { display: '@TSMC14B.Menu.department_name', name: 'department_name', width: 60, sortable: false, align: 'center', hide: false },
-                        { display: '@TSMC14B.Menu.AlarmValue', name: 'AlarmValue', width: 60, sortable: false, align: 'center', hide: false },
-                        { display: '@TSMC14B.Menu.AlarmType', name: 'AlarmType', width: 60, sortable: false, align: 'center', hide: false },
-                        { display: '@TSMC14B.Menu.AlarmMessage', name: 'AlarmMessage', width: 250, sortable: false, align: 'center', hide: false },
+                        { display: '@WebCMS.Menu.Location', name: 'Location', width: 70, sortable: false, align: 'center', hide: false },
+                        { display: '@WebCMS.Menu.department_name', name: 'department_name', width: 60, sortable: false, align: 'center', hide: false },
+                        { display: '@WebCMS.Menu.AlarmValue', name: 'AlarmValue', width: 60, sortable: false, align: 'center', hide: false },
+                        { display: '@WebCMS.Menu.AlarmType', name: 'AlarmType', width: 60, sortable: false, align: 'center', hide: false },
+                        { display: '@WebCMS.Menu.AlarmMessage', name: 'AlarmMessage', width: 250, sortable: false, align: 'center', hide: false },
                         { display: 'Alarm Level', name: 'AlarmLevel', width: 80, sortable: false, align: 'center', hide: true },
                 ],
                 onSuccess: function () {
@@ -113,12 +113,12 @@
                 //    $('.flexme td:nth-child(4)').hide();
                 //});*@
                 },
-                procmsg: '@TSMC14B.Menu.procmsg',
-                rptext: '@TSMC14B.Menu.rptext',
-                pagestat: '@TSMC14B.Menu.pagestat',
-                pagetext: '@TSMC14B.Menu.pagetext',
-                outof: '@TSMC14B.Menu.outof',
-                nomsg: '@TSMC14B.Menu.nomsg',
+                procmsg: '@WebCMS.Menu.procmsg',
+                rptext: '@WebCMS.Menu.rptext',
+                pagestat: '@WebCMS.Menu.pagestat',
+                pagetext: '@WebCMS.Menu.pagetext',
+                outof: '@WebCMS.Menu.outof',
+                nomsg: '@WebCMS.Menu.nomsg',
                 usepager: true,
                 useRp: true,
                 rp: 20,
@@ -169,10 +169,10 @@
                     else
                         hiConfirm('是否隔離？', '確認', function (r) { if (r) { $.post('@Url.Action("CancelPM")', [{ name: 'toolId', value: toolidd }, { name: 'pmFlag', value: pmFlagg }, { name: 'memo', value: '' }], function (data) { alert(data.Msg); setTimeout("location.reload();", 5000); }, 'json'); } });*@
                     if (pmFlagg == 1) {
-                        hiConfirm('@TSMC14B.Menu.IsPM？', '確認', function (r) { if (r) { $.post('@Url.Action("CancelPM", "Home")', [{ name: 'toolId', value: toolidd }, { name: 'pmFlag', value: pmFlagg }, { name: 'memo', value: '' }], function (data) { alert(data.Msg); setTimeout("location.reload();", 5000); }, 'json'); } });
+                        hiConfirm('@WebCMS.Menu.IsPM？', '確認', function (r) { if (r) { $.post('@Url.Action("CancelPM", "Home")', [{ name: 'toolId', value: toolidd }, { name: 'pmFlag', value: pmFlagg }, { name: 'memo', value: '' }], function (data) { alert(data.Msg); setTimeout("location.reload();", 5000); }, 'json'); } });
                     } else if (pmFlagg == 0) {
                         //if ($('#memo').val().length > 0) {
-                        hiConfirm('@TSMC14B.Menu.IsCancelPM？', '確認', function (r) { if (r) { $.post('@Url.Action("CancelPM", "Home")', [{ name: 'toolId', value: toolidd }, { name: 'selectType', value: sType }, { name: 'pmFlag', value: pmFlagg }, { name: 'memo', value: $('#memo').val() }], function (data) { alert(data.Msg); setTimeout("location.reload();", 5000); }, 'json'); } });
+                        hiConfirm('@WebCMS.Menu.IsCancelPM？', '確認', function (r) { if (r) { $.post('@Url.Action("CancelPM", "Home")', [{ name: 'toolId', value: toolidd }, { name: 'selectType', value: sType }, { name: 'pmFlag', value: pmFlagg }, { name: 'memo', value: $('#memo').val() }], function (data) { alert(data.Msg); setTimeout("location.reload();", 5000); }, 'json'); } });
                         //} else {
                         //alert('請填寫隔離原因');
                         //}
@@ -201,7 +201,6 @@
                                       if ('@ViewBag.AccessoryType' == 'HJ') {
                                               $('#HJFDCArea').append('<table><tr>');
                                               $.each(data.rows, function (i, item) {
-                                                  
                                                   if(item.Cht_Comment=='Mean'||item.Cht_Comment=='Stdev'||item.Cht_Comment=='Max'||item.Cht_Comment=='Min'){
                                                       $('#HJFDCArea').append('<td style="width:170px;background-color:#f2ffff;border-style:ridge;border-width:3px;border-color:silver;padding:2px 3px 2px 3px;margin:3px 0px 3px 0px;position:relative;font-weight: bold;" ><a href="#" id="' + item.TagName + '" class="ChartLink2">' + item.Cht_Comment + '</a>：<span id="DP_Current">' + item.Value + '  ' + item.Unit + '</span></td>')
                                                   }else {
@@ -272,19 +271,19 @@
 
                                           @*switch (data.IsPM) {
                                               case 0:
-                                                  $('#btn_PM').val('@TSMC14B.Menu.cancelPM');
+                                                  $('#btn_PM').val('@WebCMS.Menu.cancelPM');
                                                   $('#UnPM_Setting').css('display', 'block');
                                                   break;
                                               case 1:
-                                                  $('#btn_PM').val('@TSMC14B.Menu.PM');
+                                                  $('#btn_PM').val('@WebCMS.Menu.PM');
                                                   $('#UnPM_Setting').css('display', 'none');
                                                   break;
                                               case 2:
-                                                  $('#btn_PM').val('@TSMC14B.Menu.PMing');
+                                                  $('#btn_PM').val('@WebCMS.Menu.PMing');
                                                   $('#UnPM_Setting').css('display', 'none');
                                                   break;
                                               case 3:
-                                                  $('#btn_PM').val('@TSMC14B.Menu.cancelPMing');
+                                                  $('#btn_PM').val('@WebCMS.Menu.cancelPMing');
                                                   $('#UnPM_Setting').css('display', 'none');
                                                   break;
                                           }*@
@@ -354,7 +353,7 @@ else if (tempvn == 'MainMonthExport') {
  }
 function FDCPM() {
     var setDateTime=$('#tbxnextFDCUploadSetDate').val();
-    var memo=$('#tbxnextFDCUploadMemo').val();
+    var memo=$('#tbxnextFDCUploadMemo').val().trim();
     if(memo.length>0){
         if (confirm('是否設定延遲資料收集')) {
             $.post('@Url.Action("JsonEQFDCPM")', [{ name: 'pid', value: '@ViewBag.plcId' },{name:'delayFDCUploadTime',value:setDateTime},{name:'SetFlag',value:true},{name:'memo',value:memo}],function (data) {alert(data.result);reload();});
@@ -366,9 +365,15 @@ function FDCPM() {
 }
 function FDCPMNOW() {
     var dt = new Date(Date.now()+1000*5);
-    var setDateTime=dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
-    if (confirm('是否設定開始資料收集')) {
-        $.post('@Url.Action("JsonEQFDCPM")', [{ name: 'pid', value: '@ViewBag.plcId' },{name:'delayFDCUploadTime',value:setDateTime},{name:'SetFlag',value:false}],function (data) {alert(data.result);reload();});
+    var memo=$('#tbxnextFDCUploadMemo').val().trim();
+    if(memo.length>0){
+        var setDateTime=dt.getFullYear() + '-' + ((dt.getMonth() + 1) < 10 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '-' + (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
+        if (confirm('是否設定開始資料收集')) {
+            $.post('@Url.Action("JsonEQFDCPM")', [{ name: 'pid', value: '@ViewBag.plcId' },{name:'delayFDCUploadTime',value:setDateTime},{name:'SetFlag',value:false},{name:'memo',value:memo}],function (data) {alert(data.result);reload();});
+        }
+    }else {
+        alert('請填寫提前解除原因');
+        return false;
     }
 }
 </script>
@@ -600,36 +605,39 @@ function FDCPMNOW() {
         > 
     <label  >@ViewData["toolid"] 
     
-          @if (Session["UserLevel"] !=null && (Int16)Session["UserLevel"] == 999)
-         { @ViewData["IOGNO"] 
-                                                                                                           }    
+          @if (Session["UserLevel"] != null && (Int16)Session["UserLevel"] == 999)
+          { @ViewData["IOGNO"] 
+          }    
         </label>
 </h2>
 <div class="btnDiv3">
+    <div>
     @Html.ActionLink("TrendChart", "PLCCheckDemo", new { vName = ViewData["vName"], ToolID = ViewData["toolid"] }, new { target = "_blank", @class = "btnPreWarning" })
 
+    @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN")
+    {                   
+        <span id="FDCPM" style="font-weight:bold;display:none;text-align:right;position:absolute;right:0px;">
+            PM設定至:
+            <input class="text-box single-line" id="tbxnextFDCUploadSetDate" name="tbxnextFDCUploadSetDate"   type="text" value="" style="width:120px">
+            原因:
+            <input class="text-box single-line" id="tbxnextFDCUploadMemo" name="tbxnextFDCUploadMemo" type="text" value="" placeholder="請填寫原因">
+            <input type="button" class="btnDevicesConn"  value="設定PM" onclick="javascript:FDCPM();" />
+            <input type="button" class="btnDevicesConn"  value="設定解除PM" onclick="javascript:FDCPMNOW();" />
+        </span>
+    }
+    </div>
+    <hr />
+    <div>
     @{
-        List<TSMC14B.Areas.Main.Models.vw_eq_status> dataRows = ViewData["OtherAccessory"] as List<TSMC14B.Areas.Main.Models.vw_eq_status>;
+        List<WebCMS.Areas.Main.Models.vw_eq_status> dataRows = ViewData["OtherAccessory"] as List<WebCMS.Areas.Main.Models.vw_eq_status>;
         foreach (var item in dataRows)
         {
                            <input type="button"
                                class="btnDevicesConn" name="ALSPUT01" value="@item.chamberName"
-                               onclick="location.href = 'Accessory?pid=@item.pid'" />
+                               onclick="location.href = 'Accessory?pid=@item.pid    '" />
         }
     }
-
-    @if (@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString() != "zh-CN" )
-    {                   
-        <span id="FDCPM" style="font-weight:bold;right:0px;position:absolute;display:none;">
-            延後資料收集至:
-            <input class="text-box single-line" id="tbxnextFDCUploadSetDate" name="tbxnextFDCUploadSetDate"  placeholder="請填寫原因" type="text" value="" style="width:100px">
-            原因:
-            <input class="text-box single-line" id="tbxnextFDCUploadMemo" name="tbxnextFDCUploadMemo" type="text" value="">
-            <input type="button" class="btnDevicesConn"  value="設定延後收集資料" onclick="javascript:FDCPM();" />
-            <input type="button" class="btnDevicesConn"  value="設定開始收集資料" onclick="javascript:FDCPMNOW();" />
-        </span>
-   }
-
+    </div>
     <div style="position: absolute; top: 100px; left: 1000px;
          @if (ViewBag.IsAuth)
          { @: display:block;
@@ -654,36 +662,38 @@ function FDCPMNOW() {
             </div>*@
         @*<input id="btn_PM" style="display:none;" data-toolid="@ViewData["toolid"]" data-pmflag="@ViewData["IsPM"]" type="button" value="@switch ((int)ViewData["IsPM"])
                                                                                                                    {
-                                                                                                                       case 0:@:@TSMC14B.Menu.cancelPM
-                                                                                                                break; case 1: @: @TSMC14B.Menu.PM
-                                                                                                                break; case 2: @: @TSMC14B.Menu.PMing
-                                                                                                                break; case 3: @: @TSMC14B.Menu.cancelPMing
+                                                                                                                       case 0:@:@WebCMS.Menu.cancelPM
+                                                                                                                break; case 1: @: @WebCMS.Menu.PM
+                                                                                                                break; case 2: @: @WebCMS.Menu.PMing
+                                                                                                                break; case 3: @: @WebCMS.Menu.cancelPMing
                                                                                                                 break; } " class=" btnprewarning" />*@
     </div>
 </div>
-<hr />
+
 <div style="position: relative; vertical-align: middle;">
     <div class="btnDiv4">
         <table style="width: 1100px; height: 400px">
             <tr>
                 @if (ViewBag.AccessoryType == "PUMP")
                 {
-                    <td style="width: 350px; background-image: url('@ViewData["tImageUrl"]'); -moz-background-size: 450px; -o-background-size: 450px; -webkit-background-size: 450px; background-size: 450px; background-repeat: no-repeat; background-position: 0px 0px;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='@ViewData["tImageUrl"]', sizingMethod='scale');-ms-filter: " progid:dximagetransform.microsoft.alphaimageloader( src='@ViewData["tImageUrl"]' , sizingmethod='scale' )";">
-                        @*<img src="/images/Ed_IH600_1.jpg" alt="Edward Pum" style="width:600px;" />*@
-                    </td>
+                    @*<td style="width: 350px; background-image: url('@ViewData["tImageUrl"]'); -moz-background-size: 450px; -o-background-size: 450px; -webkit-background-size: 450px; background-size: 450px; background-repeat: no-repeat; background-position: 0px 0px;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='@ViewData["tImageUrl"]', sizingMethod='scale');-ms-filter: " progid:dximagetransform.microsoft.alphaimageloader( src='@ViewData["tImageUrl"]' , sizingmethod='scale' )";">
+                        
+                    </td>*@
                 }
                 <td style="width: 750px; position: relative; overflow: auto;">
                     <div style="height: 50px; font-size: 25px;">
-                        <label style="font-weight: bold;">@TSMC14B.Menu.typeName：</label><span id="tName">@ViewBag.tName</span>
+                        <label style="font-weight: bold;">@WebCMS.Menu.typeName：</label><span id="tName">@ViewBag.tName</span>
                         @if (@ViewBag.AccessoryType == "PUMP")
                         {
-                            <label style="font-weight: bold;">@TSMC14B.Menu.plc_name：</label><span id="plc_name">@ViewBag.plc_name</span>
+                            @*<label style="font-weight: bold;">@WebCMS.Menu.plc_name：</label><span id="plc_name">@ViewBag.plc_name</span>*@
                         }
-                        <label style="font-weight: bold;">@TSMC14B.Menu.status：</label><span id="EQStatus"></span>
+                        <label style="font-weight: bold;">@WebCMS.Menu.status：</label><span id="EQStatus"></span>
                     </div>
 
                     <div id="DataArea" style="position: absolute;">
                         <div id="HJFDCArea"></div>
+                        @if (ViewBag.AccessoryType == "PUMP")
+                        {
                         <table>
                             <tr>
                                 <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_DP_C" class="ChartLink">DP_Current</a>：<span id="DP_Current"></span></td>
@@ -709,6 +719,7 @@ function FDCPMNOW() {
                                 <td style="width: 170px; background-color: #f2ffff; border-style: ridge; border-width: 3px; border-color: silver; padding: 2px 3px 2px 3px; margin: 3px 0px 3px 0px; position: relative;"><a href="#" id="_MB_T" class="ChartLink">MB_Temp</a>：<span id="MB_Temp"></span></td>
                             </tr>
                         </table>
+                        }
                     </div>
                 </td>
             </tr>
@@ -716,11 +727,11 @@ function FDCPMNOW() {
     </div>
 </div>
 <div class="btnDiv5">
-    <input id="btn_AlarmNow" type="button" value="@TSMC14B.Menu.AlarmNow" class="btnPreWarning" onclick="javascript: Alarm('MainNow');" />
-    <input id="btn_AlarmWeek" type="button" value="@TSMC14B.Menu.AlarmWeek" class="btnPreWarning" onclick="javascript: Alarm('MainWeek');" />
-    <input id="btn_AlarmWeekExport" type="button" value="@TSMC14B.Menu.AlarmWeekExport" class="btnPreWarning" onclick="javascript: Alarm('MainWeekExport');" />
-    <input id="btn_AlarmMonth" type="button" value="@TSMC14B.Menu.AlarmMonth" class="btnPreWarning" onclick="javascript: Alarm('MainMonth');" />
-    <input id="btn_AlarmMonthExport" type="button" value="@TSMC14B.Menu.AlarmMonthExport" class="btnPreWarning" onclick="javascript: Alarm('MainMonthExport');" />
+    <input id="btn_AlarmNow" type="button" value="@WebCMS.Menu.AlarmNow" class="btnPreWarning" onclick="javascript: Alarm('MainNow');" />
+    <input id="btn_AlarmWeek" type="button" value="@WebCMS.Menu.AlarmWeek" class="btnPreWarning" onclick="javascript: Alarm('MainWeek');" />
+    <input id="btn_AlarmWeekExport" type="button" value="@WebCMS.Menu.AlarmWeekExport" class="btnPreWarning" onclick="javascript: Alarm('MainWeekExport');" />
+    <input id="btn_AlarmMonth" type="button" value="@WebCMS.Menu.AlarmMonth" class="btnPreWarning" onclick="javascript: Alarm('MainMonth');" />
+    <input id="btn_AlarmMonthExport" type="button" value="@WebCMS.Menu.AlarmMonthExport" class="btnPreWarning" onclick="javascript: Alarm('MainMonthExport');" />
     <label style="font-size:larger;font-weight:bold;color:black;" ><label id="nextFDCUpload">@ViewBag.nextFDCUploadTime</label></label>
     
     <div id="gridTitle" style="font-size: 11px; font-weight: bold; color: black; background-color: #e0d8d8; height: 20px; width: 1195px; padding-top: 10px;">&nbsp&nbsp Alarm Now List</div>
